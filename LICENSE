@@ -1,4 +1,4 @@
- This license applies to all parts of Dart that are not externally maintained
+This license applies to all parts of Dart that are not externally maintained
 libraries. The external maintained libraries used by this project are under
 'js_deck/' and 'dart_prettify".  The libraries may have their own licenses; we
 recommend you read them, as their terms may differ from the terms below.  Most
