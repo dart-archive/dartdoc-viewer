@@ -6,7 +6,7 @@ import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/item.dart';
 
 /**
- * Function to create some dummy methods data.
+ * Function to create some dummy method data.
  */
 List<Item> fetchDummyMethods() {
   List<Item> methods = new List<Item>();
