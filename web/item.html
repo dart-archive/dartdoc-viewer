@@ -7,10 +7,10 @@
     apply-author-styles>
     
     <template>
-      
-      <div class="item" on-click="app.printItemName(item)"> <!-- onclick go to next level -->
+      <!-- When an item is clicked, go to next level. -->
+      <div class="item" on-click="app.printItemName(item)"> 
         <span>{{title}}</span>
-        <span class="button" on-click="app.printItemName(item)">></span>  <!-- onclick go to next level -->
+        <span class="button" on-click="app.printItemName(item)">></span>  
       </div>
       
     </template>

@@ -4,13 +4,14 @@
   <head>
     <title>Dart API Reference</title>
     
-    <!-- Viewport meta tag to control layout on mobile devices. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- Viewport meta tag controls the layout on mobile devices. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, 
+       maximum-scale=1, user-scalable=no">
     
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
     
-    <!-- Importing the x-item component. -->
-    <link rel="import" href="item.html">
+    <!-- Importing the doc-section component for use below. -->
+    <link rel="import" href="section.html">
     
     <script type="application/dart" src="app.dart"></script>
     
@@ -29,15 +30,12 @@
       <div class="page-title">File abstract class</div>
       <!-- Description of the class. -->
       <div class="description">File objects are references to files.</div>
+        
+      <template iterate="section in dummySections">
+        <doc-section section="{{section}}"></doc-section>
+      </template>
       
-      <section>
-        <div class="title">Methods</div>
-        
-        <template iterate="item in dummyMethods">
-          <section-item item="{{item}}"></section-item>
-        </template>
-        
-      </section>
+      
     </div>
     
 

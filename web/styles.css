@@ -9,24 +9,24 @@ body {
 }
 
 pre {
-  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
   background: #fcfcfc;
   border: 1px solid #eee;
   border-radius: 4px;
-  -webkit-border-radius: 4px; 
-  -moz-border-radius: 4px;
-  padding: 10px;
+  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
   overflow-x: auto;
+  padding: 10px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;  
 }
 
 code {
-  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
   background: #fcfcfc;
   border: 1px solid #eee;
   border-radius: 4px;
-  -webkit-border-radius: 4px; 
-  -moz-border-radius: 4px;
+  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
   padding: 0 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px; 
 }
 
 nav {

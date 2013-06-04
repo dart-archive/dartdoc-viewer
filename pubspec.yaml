@@ -3,7 +3,3 @@ description: Dart API Reference
 dependencies:
   browser: any
   web_ui: any
-
-#dependencies:
-#  js: any
-#  unittest: any
