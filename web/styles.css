@@ -1,0 +1,98 @@
+
+body {
+  margin: 0;
+  font: 12px Open Sans, Lucida Sans Unicode, Lucida Grande, sans-serif;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: #333;
+}
+
+pre {
+  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
+  background: #fcfcfc;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  -webkit-border-radius: 4px; 
+  -moz-border-radius: 4px;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+code {
+  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
+  background: #fcfcfc;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  -webkit-border-radius: 4px; 
+  -moz-border-radius: 4px;
+  padding: 0 4px;
+}
+
+nav {
+  background: #efefef;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.main {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.page-title {
+  font-size: 18px;
+  padding: 10px;
+}
+
+.description {
+  font-size: 10px;
+  font-style: italic;
+  padding: 0 10px 10px 20px;
+}
+
+section .title {
+  padding: 10px;
+  font-size: 14px;
+}
+
+section a {
+  text-decoration: none;
+  color: #333;
+}
+
+section a .item {
+  text-decoration: none;
+  color: #333;
+}
+
+section .item {
+  position: relative;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background: #fdfdfd;
+  border-bottom: 1px solid #ddd;
+  -webkit-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+section .item:HOVER {
+  opacity: .7;
+}
+
+section .item .button {
+  position: absolute;
+  right: 10px;
+  font-weight: 700;
+}
+
+section .content {
+  padding: 0 10px 10px 20px;
+}
