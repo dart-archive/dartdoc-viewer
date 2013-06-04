@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta charset="utf-8">
 
 <html>
   <head>
@@ -7,7 +8,6 @@
     <!-- Viewport meta tag controls the layout on mobile devices. -->
     <meta name="viewport" content="width=device-width, initial-scale=1, 
        maximum-scale=1, user-scalable=no">
-    
     <link rel="stylesheet" href="styles.css">
     
     <!-- Importing the doc-section component for use below. -->
@@ -21,21 +21,23 @@
  
   <body>   
     
+    <!-- TODO(janicejl): get breadcrumb path from parsed yaml. -->
     <nav>
       dart:io / File
     </nav>
     
-    <div class="main">
-      <!-- Title of the class page. -->
-      <div class="page-title">File abstract class</div>
-      <!-- Description of the class. -->
-      <div class="description">File objects are references to files.</div>
+    <main>
+      <!-- TODO(janicejl): page title should be the item being viewed. -->
+      <h1>File abstract class</h1>
+      <div class="description">
+        File objects are references to files.
+      </div>
         
       <template iterate="section in dummySections">
         <doc-section section="{{section}}"></doc-section>
       </template>
       
-    </div>
+    </main>
     
   </body>
 </html>

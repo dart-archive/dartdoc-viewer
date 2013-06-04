@@ -38,13 +38,13 @@ nav {
   font-size: 14px;
 }
 
-.main {
+main {
   position: absolute;
   left: 0;
   right: 0;
 }
 
-.page-title {
+h1 {
   font-size: 18px;
   padding: 10px;
 }

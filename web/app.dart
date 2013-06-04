@@ -4,6 +4,17 @@ import 'dart:html';
 import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/section.dart';
 import 'package:dartdoc_viewer/item.dart';
+import 'package:yaml/yaml.dart';
+
+List<Section> loadData() {
+  String path = "./yaml/test.yaml";
+  
+  HttpResponse.request.url(path).then( (HttpResponse) {
+    var doc = loadYaml(HttpReponse);
+    print(doc);
+  });
+}
+
 
 /**
  * Function to create some dummy method data.
@@ -46,7 +57,9 @@ void printItemName(Item item) {
 }
 
 final List<Section> dummySections = toObservable([]);
+final List<Section> testYaml = toObservable([]);
 
 main() {
   dummySections.addAll(fetchDummySections());
+  //testYaml.addAll(loadData());
 }
