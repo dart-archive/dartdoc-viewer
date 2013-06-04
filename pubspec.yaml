@@ -3,3 +3,4 @@ description: Dart API Reference
 dependencies:
   browser: any
   web_ui: any
+  yaml: any

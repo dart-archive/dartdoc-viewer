@@ -45,3 +45,7 @@ packages:
     description: web_ui
     source: hosted
     version: "0.4.8+4"
+  yaml:
+    description: yaml
+    source: hosted
+    version: "0.5.11+1"

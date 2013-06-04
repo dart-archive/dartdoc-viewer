@@ -17,7 +17,6 @@ class Section {
   String title;
   final List<Item> items = toObservable([]);
   
-  
   Section(this.title, List<Item> newItems) {
     items.addAll(newItems);
   }
