@@ -3,14 +3,13 @@
 <html><body>   
   
   <!-- Custom element for each item in a section. -->
-  <element name="section-item" constructor="ItemHtml" extends="div" 
+  <element name="category-item" constructor="ItemHtml" extends="div" 
     apply-author-styles>
     
     <template>
       <!-- When an item is clicked, go to next level. -->
-      <div class="item" on-click="app.printItemName(item)"> 
-        <span>{{title}}</span>
-        <span class="button" on-click="app.printItemName(item)">></span>  
+      <div class="item" on-click="print(item.name)"> 
+        <span>{{title}}</span> 
       </div>
       
     </template>
@@ -21,9 +20,9 @@
       import 'app.dart' as app;
       
       class ItemHtml extends WebComponent {
-        Item item;
+        CategoryItem item;
         
-        String get title => item.title;
+        String get title => item.name;
       }
       
     </script>

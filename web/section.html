@@ -10,7 +10,7 @@
   
   <body>   
   
-    <element name="doc-section" constructor="SectionHtml" extends="section" 
+    <element name="doc-category" constructor="CategoryHtml" extends="section" 
        apply-author-styles>
       
       <template>
@@ -18,8 +18,8 @@
         <section>
           <div class="title">{{title}}</div>
           
-          <template iterate="item in section.items">
-            <section-item item="{{item}}"></section-item>
+          <template iterate="item in category.items">
+            <category-item item="{{item}}"></category-item>
           </template>
           
         </section>
@@ -32,10 +32,10 @@
         import 'package:dartdoc_viewer/section.dart';
         import 'app.dart' as app;
         
-        class SectionHtml extends WebComponent {
-          Section section;
+        class CategoryHtml extends WebComponent {
+          Category category;
           
-          String get title => section.title;
+          String get title => category.name;
         }
       </script>
       
