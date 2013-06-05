@@ -3,14 +3,14 @@
 <html><body>   
   
   <!-- Custom element for each item in a section. -->
-  <element name="category-item" constructor="ItemHtml" extends="div" 
+  <element name="category-item" constructor="ItemHtml" extends="article" 
     apply-author-styles>
     
     <template>
       <!-- When an item is clicked, go to next level. -->
-      <div class="item" on-click="print(item.name)"> 
-        <span>{{title}}</span> 
-      </div>
+      <article on-click="print(item.name)"> 
+        <h1>{{title}}</h1> 
+      </article>
       
     </template>
     

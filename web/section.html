@@ -10,19 +10,19 @@
   
   <body>   
   
-    <element name="doc-category" constructor="CategoryHtml" extends="section" 
+    <element name="doc-category" constructor="CategoryHtml" extends="details" 
        apply-author-styles>
       
       <template>
         
-        <section>
-          <div class="title">{{title}}</div>
+        <details>
+          <summary>{{title}}</summary>
           
           <template iterate="item in category.items">
             <category-item item="{{item}}"></category-item>
           </template>
           
-        </section>
+        </details>
         
       </template>
       
