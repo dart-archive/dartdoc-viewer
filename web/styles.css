@@ -9,24 +9,29 @@ body {
 }
 
 pre {
+  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
   background: #fcfcfc;
   border: 1px solid #eee;
   border-radius: 4px;
-  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
-  overflow-x: auto;
-  padding: 10px;
+  -webkit-border-radius: 4px; 
   -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;  
+  padding: 10px;
+  overflow-x: auto;
 }
 
 code {
+  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
   background: #fcfcfc;
   border: 1px solid #eee;
   border-radius: 4px;
-  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
-  padding: 0 4px;
-  -moz-border-radius: 4px;
   -webkit-border-radius: 4px; 
+  -moz-border-radius: 4px;
+  padding: 0 4px;
+}
+
+pre > code {
+  border: 0;
+  padding: 0;
 }
 
 nav {
@@ -38,6 +43,23 @@ nav {
   font-size: 14px;
 }
 
+nav ul {
+  list-style: none;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+nav li {
+  float: left;
+  display: block;
+  padding: 2px;
+}
+
+nav li:before {
+  content: ' / ';
+}
+
 main {
   position: absolute;
   left: 0;
@@ -45,32 +67,31 @@ main {
 }
 
 h1 {
-  font-size: 18px;
   padding: 10px;
 }
 
-.description {
+main section {
   font-size: 10px;
   font-style: italic;
   padding: 0 10px 10px 20px;
 }
 
-section .title {
+details summary {
   padding: 10px;
   font-size: 14px;
 }
 
-section a {
+details a {
   text-decoration: none;
   color: #333;
 }
 
-section a .item {
+details a article {
   text-decoration: none;
   color: #333;
 }
 
-section .item {
+details article {
   position: relative;
   left: 0;
   right: 0;
@@ -82,16 +103,16 @@ section .item {
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
 }
 
-section .item:HOVER {
+details article:HOVER {
   opacity: .7;
 }
 
-section .item .button {
-  position: absolute;
-  right: 10px;
-  font-weight: 700;
+details article h1 {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
 }
 
-section .content {
+details .content {
   padding: 0 10px 10px 20px;
 }

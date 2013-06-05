@@ -14,16 +14,11 @@
        apply-author-styles>
       
       <template>
+        <summary>{{title}}</summary>
         
-        <details>
-          <summary>{{title}}</summary>
-          
-          <template iterate="item in category.items">
-            <category-item item="{{item}}"></category-item>
-          </template>
-          
-        </details>
-        
+        <template iterate="item in category.items">
+          <category-item item="{{item}}"></category-item>
+        </template>
       </template>
       
       <script type="application/dart">

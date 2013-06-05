@@ -3,15 +3,12 @@
 <html><body>   
   
   <!-- Custom element for each item in a section. -->
-  <element name="category-item" constructor="ItemHtml" extends="article" 
+  <element name="category-item" constructor="ItemHtml" extends="article"  
     apply-author-styles>
     
     <template>
       <!-- When an item is clicked, go to next level. -->
-      <article on-click="print(item.name)"> 
-        <h1>{{title}}</h1> 
-      </article>
-      
+      <h1 on-click="print(item.name)">{{title}}</h1> 
     </template>
     
     <script type="application/dart">
