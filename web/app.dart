@@ -4,26 +4,6 @@ import 'dart:html';
 import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/section.dart';
 import 'package:dartdoc_viewer/item.dart';
-import 'package:yaml/yaml.dart';
-
-List<Section> loadData() {
-  String path = "../yaml/test.yaml";
-  
-  HttpRequest.getString(path).then( (response) {
-    var doc = loadYaml(response);
-    print(doc);
-    
-    List<Section> sections = new List<Section>();
-    for (String k in doc.keys) {
-      print(k);
-      List<Item> items = new List<Item>();
-      for(String i in doc[k].keys) {
-        print(i);
-      }
-    }
-    
-  });
-}
 
 
 /**
@@ -67,10 +47,7 @@ void printItemName(Item item) {
 }
 
 final List<Section> dummySections = toObservable([]);
-final List<Section> testYaml = toObservable([]);
 
 main() {
   dummySections.addAll(fetchDummySections());
-  loadData();
-  //testYaml.addAll(loadData());
 }
