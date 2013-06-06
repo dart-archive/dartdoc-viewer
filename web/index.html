@@ -10,18 +10,21 @@
 <script src="packages/browser/dart.js"></script>
 
 <nav>
-  dart:io / File
+  <ul class="breadcrumb">
+    <li>dart:io
+    <li>File
+  </ul>
 </nav>
 <!-- TODO(janicejl): get breadcrumb path from parsed yaml. -->
 <main>
   <!-- TODO(janicejl): page title should be the item being viewed. -->
   <h1>File abstract class</h1>
-  <section>
+  <section class="description">
     File objects are references to files.
   </section>
     
   <template iterate="category in dummyCategories">
-    <doc-category category="{{category}}"></doc-category>
+    <doc-category category="{{category}}" class="category"></doc-category>
   </template>
   
 </main>

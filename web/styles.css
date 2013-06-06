@@ -1,118 +1,120 @@
-body {
+/*
+    dartdoc-viewer CSS
+
+    nav bar coloring - 
+      background: #efefef;
+
+    item coloring - 
+      background: #fdfdfd;
+      border-bottom: 1px solid #ddd;
+      -webkit-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
+      -moz-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
+*/
+
+/* Apply a natural box layout model to all elements. */
+* { 
+  -moz-box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+  box-sizing: border-box; 
+}
+
+html {
   margin: 0;
+  padding: 0;
   font: 12px Open Sans, Lucida Sans Unicode, Lucida Grande, sans-serif;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   color: #333;
 }
 
-pre {
-  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
+body {
+  margin: 0;
+}
+
+/*
+  The combination of pre followed by code signifies a fragment of code example. 
+  This puts the code in a surrounded grey box with horizontal scroll. 
+*/
+pre code {
+  font: 1rem Menlo, Monaco, Consolas, Courier, monospace;
+  display: block;
   background: #fcfcfc;
   border: 1px solid #eee;
   border-radius: 4px;
   -webkit-border-radius: 4px; 
   -moz-border-radius: 4px;
-  padding: 10px;
-  overflow-x: auto;
-}
-
-code {
-  font: 12px Menlo, Monaco, Consolas, Courier, monospace;
-  background: #fcfcfc;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  -webkit-border-radius: 4px; 
-  -moz-border-radius: 4px;
-  padding: 0 4px;
-}
-
-pre > code {
-  border: 0;
-  padding: 0;
+  padding: 2%;
+  overflow-x: auto; 
 }
 
 nav {
   background: #efefef;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: 10px;
-  font-size: 14px;
+  font-size: 1.2rem;
+  padding: 1%;
 }
 
-nav ul {
+.breadcrumb {
   list-style: none;
   overflow: hidden;
-  padding: 0;
+  padding: 1%;
   margin: 0;
 }
 
-nav li {
+.breadcrumb li {
   float: left;
-  display: block;
-  padding: 2px;
+  padding: 1%;
 }
 
-nav li:before {
+.breadcrumb li:before {
   content: ' / ';
 }
 
-main {
-  position: absolute;
-  left: 0;
-  right: 0;
+main h1 {
+  padding-left: 2%;
 }
 
-h1 {
-  padding: 10px;
-}
-
-main section {
-  font-size: 10px;
+main .description {
+  font-size: 0.8rem;
   font-style: italic;
-  padding: 0 10px 10px 20px;
+  padding: 0 2% 2% 4%;
 }
 
-details summary {
-  padding: 10px;
-  font-size: 14px;
+.category summary {
+  padding: 2%;
+  font-size: 1.2rem;
 }
 
-details a {
+.category a {
   text-decoration: none;
   color: #333;
 }
 
-details a article {
+.category a article {
   text-decoration: none;
   color: #333;
 }
 
-details article {
+.category article {
   position: relative;
-  left: 0;
-  right: 0;
-  padding: 10px;
+  width: 100%;
+  padding: 2%;
   background: #fdfdfd;
   border-bottom: 1px solid #ddd;
   -webkit-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
 }
 
-details article:HOVER {
+.category article:FOCUS,
+.category article:ACTIVE,
+.category article:HOVER {
   opacity: .7;
 }
 
-details article h1 {
-  padding: 0;
+.category article h1 {
   margin: 0;
-  font-size: 12px;
+  font-size: 1rem;
 }
 
-details .content {
-  padding: 0 10px 10px 20px;
+.category .content {
+  padding: 0 2% 2% 4%;
 }
