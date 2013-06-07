@@ -18,12 +18,12 @@
 <!-- TODO(janicejl): get breadcrumb path from parsed yaml. -->
 <main>
   <!-- TODO(janicejl): page title should be the item being viewed. -->
-  <h1>File abstract class</h1>
+  <h1>{{title}}</h1>
   <section class="description">
     File objects are references to files.
   </section>
     
-  <template iterate="category in dummyCategories">
+  <template iterate="category in page.categories">
     <doc-category category="{{category}}" class="category"></doc-category>
   </template>
   

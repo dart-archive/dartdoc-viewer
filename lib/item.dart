@@ -1,6 +1,7 @@
 library item;
 
 import 'package:web_ui/web_ui.dart';
+import 'package:dartdoc_viewer/page.dart';
 
 /**
  * An item belongs to a category group. 
@@ -13,5 +14,12 @@ class CategoryItem {
   
   String name;
   
-  CategoryItem(this.name);
+  Page page;
+  
+  CategoryItem(this.name) {
+    page = new Page(this.name);
+  }
+  
+  CategoryItem.withPage(this.name, this.page);
+  
 }
