@@ -36,8 +36,12 @@ generateContent(String name, Map<String, String> map, bool needPage) {
       if (needPage) {
         subContent = generateContent(k, map[k], false);
       } else {
-        subContent = new CategoryItem.withPage(k, 
-            generateContent(k, map[k], true));
+        if (pageIndex.containsKey(k)) {
+          subContent = new CategoryItem.withPage(k, pageIndex[k]);
+        } else {
+          subContent = new CategoryItem.withPage(k, 
+              generateContent(k, map[k], true));
+        }
       }
     } else {
       if (needPage) {
