@@ -1,7 +1,7 @@
 library category;
 
 import 'package:web_ui/web_ui.dart';
-import 'package:dartdoc_viewer/item.dart';
+import 'package:dartdoc_viewer/page.dart';
 
 /**
  * A category belongs to a class or library page. 
@@ -21,4 +21,22 @@ class Category {
   Category.withItems(this.name, List<CategoryItem> newItems) {
     items.addAll(newItems);
   }
+}
+
+/**
+ * An item belongs to a category group. 
+ * 
+ * Items include methods, properties, constructors in classes and libraries.  
+ * The Item class will have all the details about the item. 
+ */
+@observable
+class CategoryItem {
+  String name;
+  Page page;
+  
+  CategoryItem(this.name) {
+    page = new Page(this.name);
+  }
+  
+  CategoryItem.withPage(this.name, this.page);
 }

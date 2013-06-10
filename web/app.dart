@@ -7,7 +7,6 @@ import 'dart:html';
 import 'dart:async';
 import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/category.dart';
-import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/page.dart';
 import 'package:yaml/yaml.dart';
 
