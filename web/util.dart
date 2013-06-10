@@ -23,8 +23,8 @@ List<Category> fetchDummyCategories() {
   
   List<CategoryItem> methods = fetchDummyMethods();
   
-  List<Category> categories = [new Category.withItemList("Constructors", constructors),
-                               new Category.withItemList("Properties", properties),
-                               new Category.withItemList("Methods", methods)];
+  List<Category> categories = [new Category.withItems("Constructors", constructors),
+                               new Category.withItems("Properties", properties),
+                               new Category.withItems("Methods", methods)];
   return categories;
 }

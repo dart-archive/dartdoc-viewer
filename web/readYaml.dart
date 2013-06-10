@@ -44,7 +44,7 @@ Page generatePage(String name, Map<String, String> pageMap) {
     }
     categories.add(category);
   }
-  Page page = new Page.withCategoriesList(name, categories);
+  Page page = new Page.withCategories(name, categories);
   return page;
 }
 
@@ -68,6 +68,6 @@ Category generateCategory(String name, Map<String, String> categoryMap) {
     }
     items.add(item);
   }
-  Category category = new Category.withItemList(name, items);
+  Category category = new Category.withItems(name, items);
   return category;
 }

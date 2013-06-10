@@ -18,7 +18,7 @@ class Category {
   
   Category(this.name);
   
-  Category.withItemList(this.name, List<CategoryItem> newItems) {
+  Category.withItems(this.name, List<CategoryItem> newItems) {
     items.addAll(newItems);
   }
 }
