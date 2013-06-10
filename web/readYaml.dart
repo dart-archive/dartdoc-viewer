@@ -1,7 +1,7 @@
 part of dartdoc_viewer;
 
 Future getHttp() {
-  String path = "../yaml/test.yaml";
+  String path = "../yaml/largeTest.yaml";
   
   return HttpRequest.getString(path);
 }
@@ -30,7 +30,13 @@ Page generatePage(String name, Map<String, String> pageMap) {
     print(k);
     print(pageMap[k]);
     
-    Category category = generateCategory(k, pageMap[k]);
+    Category category;
+    
+    if (pageMap[k].toString().contains(": {")) {
+      category = generateCategory(k, pageMap[k]);
+    } else {
+      category = new Category(k);
+    }
     
     categories.add(category);
   }
@@ -60,7 +66,7 @@ Category generateCategory(String name, Map<String, String> categoryMap) {
     items.add(item);
   }
   
-  Category category = new Category(name, items);
+  Category category = new Category.withItemList(name, items);
   
   return category;
 }

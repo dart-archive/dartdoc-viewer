@@ -17,7 +17,9 @@ class Category {
   String name;
   final List<CategoryItem> items = toObservable([]);
   
-  Category(this.name, List<CategoryItem> newItems) {
+  Category(this.name);
+  
+  Category.withItemList(this.name, List<CategoryItem> newItems) {
     items.addAll(newItems);
   }
 }
