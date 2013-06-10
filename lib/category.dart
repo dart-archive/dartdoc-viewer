@@ -4,9 +4,10 @@ import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/page.dart';
 
 /**
- * A category belongs to a class or library page. 
+ * A set of distinct items in a class or library. 
  * 
  * Categories separate items in a class or library. 
+ * A category belongs to a class or library page. 
  * Examples of categories include constructors, properties or methods. 
  * Each categories will have a list of items under it. 
  * The Category class will have all the details about the category. 
