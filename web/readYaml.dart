@@ -7,8 +7,7 @@ part of dartdoc_viewer;
  *  find all the pages, categories and items. 
  */
 
-Future getHttp() {
-  String path = "../yaml/largeTest.yaml";
+Future getYamlFile(path) {
   return HttpRequest.getString(path);
 }
 

@@ -24,8 +24,9 @@ String get title => page.name;
 @observable Page page = new Page("");
 
 main() {
-  var http = getHttp();
-  http.then( (response) {
+  var path = "../yaml/largeTest.yaml";
+  var yaml = getYamlFile(path);
+  yaml.then( (response) {
     page = loadData(response);
   });
 }
