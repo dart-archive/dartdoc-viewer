@@ -19,6 +19,13 @@ Map<String, Page> pageIndex = toObservable({});
 String get title => currentPage.name;
 @observable Page currentPage = new Page("");
 
+/**
+ * Changes the currentPage to the page of the item clicked.
+ */
+changePage(Page page) {
+  currentPage = page;
+}
+
 main() {
   var path = "../yaml/largeTest.yaml";
   var yaml = getYamlFile(path);

@@ -37,9 +37,9 @@ generateContent(String name, Map<String, String> map, bool needPage) {
         subContent = generateContent(k, map[k], false);
       } else {
         if (pageIndex.containsKey(k)) {
-          subContent = new CategoryItem.withPage(k, pageIndex[k]);
+          subContent = new CategoryItem(k, pageIndex[k]);
         } else {
-          subContent = new CategoryItem.withPage(k, 
+          subContent = new CategoryItem(k, 
               generateContent(k, map[k], true));
         }
       }
@@ -54,10 +54,10 @@ generateContent(String name, Map<String, String> map, bool needPage) {
   }
   var content;
   if (needPage) {
-    content = new Page.withCategories(name, subContentList);
+    content = new Page(name, subContentList);
     pageIndex[name] = content;
   } else {
-    content = new Category.withItems(name, subContentList);
+    content = new Category(name, subContentList);
   }
   return content;
 }

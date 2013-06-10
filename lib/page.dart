@@ -4,18 +4,18 @@ import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/category.dart';
 
 /**
- * A page object represents a single page in the documentation. 
+ * A single page in the documentation. 
  * 
- * Page objects will have a list of categories. 
+ * The list of categories will separate the items on the page. 
  */
 @observable 
 class Page {
   String name;
   final List<Category> categories = toObservable([]);
   
-  Page(this.name);
-  
-  Page.withCategories(this.name, List<Category> newCategories) {
-    categories.addAll(newCategories);
+  Page(this.name, [List<Category> newCategories]) {
+    if (newCategories != null) {
+      categories.addAll(newCategories);
+    }
   }
 }
