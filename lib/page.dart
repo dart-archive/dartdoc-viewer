@@ -18,5 +18,4 @@ class Page {
   Page.withCategoriesList(this.name, List<Category> newCategories) {
     categories.addAll(newCategories);
   }
-  
 }

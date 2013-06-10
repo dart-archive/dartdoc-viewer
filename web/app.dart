@@ -1,8 +1,8 @@
 library dartdoc_viewer;
+
 /**
  * Dartdoc_viewer creates html documentation based off Yaml files.
  */
-
 import 'dart:html';
 import 'dart:async';
 import 'package:web_ui/web_ui.dart';

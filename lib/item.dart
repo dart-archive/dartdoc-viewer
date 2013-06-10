@@ -11,9 +11,7 @@ import 'package:dartdoc_viewer/page.dart';
  */
 @observable
 class CategoryItem {
-  
   String name;
-  
   Page page;
   
   CategoryItem(this.name) {
@@ -21,5 +19,4 @@ class CategoryItem {
   }
   
   CategoryItem.withPage(this.name, this.page);
-  
 }

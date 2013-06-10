@@ -13,7 +13,6 @@ import 'package:dartdoc_viewer/item.dart';
  */
 @observable
 class Category {
-  
   String name;
   final List<CategoryItem> items = toObservable([]);
   

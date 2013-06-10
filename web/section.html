@@ -1,26 +1,19 @@
 <!DOCTYPE html>
-
 <html>
-  
   <head>
     <!-- Importing the section-item component for 
          use in the section custom element. -->
     <link rel="import" href="item.html">
   </head>
-  
   <body>   
-  
     <element name="doc-category" constructor="CategoryHtml" extends="details" 
-        apply-author-styles>
-      
+        apply-author-styles>     
       <template>
-        <summary>{{title}}</summary>
-        
+        <summary>{{title}}</summary>      
         <template iterate="item in category.items">
           <category-item item="{{item}}"></category-item>
         </template>
       </template>
-      
       <script type="application/dart">
         import 'package:web_ui/web_ui.dart';
         import 'package:dartdoc_viewer/item.dart';
@@ -33,8 +26,6 @@
           String get title => category.name;
         }
       </script>
-      
     </element>
-  
   </body>
 </html>
