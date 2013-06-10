@@ -14,19 +14,17 @@ import 'package:yaml/yaml.dart';
 part 'util.dart';
 part 'readYaml.dart';
 
-final List<Category> dummyCategories = toObservable([]);
-final List<Category> testYaml = toObservable([]);
+final List<Page> pageList = toObservable([]);
+Map<String, Page> pageIndex = toObservable({});
 
-Map<String, String> testMap = toObservable({});
-
-String get title => page.name;
-
-@observable Page page = new Page("");
+String get title => currentPage.name;
+@observable Page currentPage = new Page("");
 
 main() {
   var path = "../yaml/largeTest.yaml";
   var yaml = getYamlFile(path);
   yaml.then( (response) {
-    page = loadData(response);
+    pageList.addAll(loadData(response));
+    currentPage = pageList.first;
   });
 }

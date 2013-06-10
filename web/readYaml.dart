@@ -11,12 +11,14 @@ Future getYamlFile(path) {
   return HttpRequest.getString(path);
 }
 
-Page loadData(response) {
+List<Page> loadData(response) {
   var doc = loadYaml(response);
+  List<Page> pageList = new List<Page>();
   for (String k in doc.keys) {
-    page = generatePage(k, doc[k]);
-    return page;
+    Page page = generatePage(k, doc[k]);
+    pageList.add(page);
   }
+  return pageList;
 }
 
 /**
@@ -28,7 +30,7 @@ Page generatePage(String name, Map<String, String> pageMap) {
     Category category;
     // To check whether there is another map contained inside. 
     // If there is another map, it is necessary to generate a list of items. 
-    if (pageMap[k].toString().contains(": {")) {
+    if (pageMap[k].toString()[0] == '{') {
       category = generateCategory(k, pageMap[k]);
     } else {
       category = new Category(k);
@@ -36,6 +38,7 @@ Page generatePage(String name, Map<String, String> pageMap) {
     categories.add(category);
   }
   Page page = new Page.withCategories(name, categories);
+  pageIndex[name] = page;
   return page;
 }
 
@@ -48,7 +51,7 @@ Category generateCategory(String name, Map<String, String> categoryMap) {
     CategoryItem item;
     // To check whether there is another map contained inside. 
     // If there is another map, it is necessary to generate another page. 
-    if (categoryMap[k].toString().contains(": {")) {
+    if (categoryMap[k].toString()[0] == '{') {
       item = new CategoryItem.withPage(k, generatePage(k, categoryMap[k]));
     } else {
       item = new CategoryItem(k);
