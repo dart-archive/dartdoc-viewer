@@ -22,7 +22,7 @@ class Page extends Content {
   }
   
   Page.withMap(this.name, Map<String, String> map) {
-    generateContent(name, map);
+    generateContent(map);
   }
   
   /**
@@ -30,7 +30,7 @@ class Page extends Content {
    * 
    * [map] can be of type Map<String, String> or String. 
    */
-  void addItems(String name, map) {
+  void addItem(String name, map) {
     if (map is Map) {
       categories.add(new Category.withMap(name, map));
     } else {

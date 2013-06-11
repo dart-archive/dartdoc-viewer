@@ -57,7 +57,7 @@ main h1 {
   padding-left: 2%;
 }
 
-main{
+main .description {
   font: italic .8rem; 
 }
 

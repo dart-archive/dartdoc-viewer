@@ -5,13 +5,8 @@ import 'package:dartdoc_viewer/page.dart';
 import 'package:dartdoc_viewer/readYaml.dart';
 
 /**
- * A [Category] is a group of [CategoryItem]s that is functionally distinct 
- * from any other category. 
+ * A group of items that is functionally distinct from any other Category.
  * 
- * A [Category] separate items in a class or library and 
- * belongs to a class or library page. 
- * Examples of categories include constructors, properties or methods. 
- * Each categories will have a list of items under it. 
  * The [Category] class will have all the details about the category, 
  * such as comment descriptions or implementation details 
  * like return types and parameter lists. 
@@ -28,7 +23,7 @@ class Category extends Content {
   }
   
   Category.withMap (this.name, Map<String, String> map) {
-    generateContent(name, map);
+    generateContent(map);
   }
   
   /**
@@ -36,7 +31,7 @@ class Category extends Content {
    * 
    * [map] can be of type Map<String, String> or String. 
    */
-  void addItems(String name, map) {
+  void addItem(String name, map) {
     if (map is Map) {
       items.add(new CategoryItem(name, new Page.withMap(name, map)));
     } else {

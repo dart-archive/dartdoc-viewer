@@ -16,6 +16,7 @@ import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/page.dart';
 import 'package:dartdoc_viewer/readYaml.dart';
 
+// TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the Yaml file being read in. 
 const sourcePath = "../../test/yaml/largeTest.yaml";
 

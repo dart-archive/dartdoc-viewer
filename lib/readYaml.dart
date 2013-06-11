@@ -11,7 +11,7 @@ import 'package:dartdoc_viewer/page.dart';
  *  Recursively goes through the YAML file to 
  *  find all the pages, categories and items. 
  */
-Future<String> getYamlFile(path) {
+Future<String> getYamlFile(String path) {
   return HttpRequest.getString(path);
 }
 
@@ -26,9 +26,9 @@ Iterable<Page> loadData(String response) {
  * [generateContent] recursively adds the details to the object. 
  */
 abstract class Content {
-  Object generateContent(String name, Map<String, String> map) {
+  void generateContent(Map<String, String> map) {
     for (var k in map.keys) {
-      addItems(k, map[k]);
+      addItem(k, map[k]);
     }
   }
   
@@ -37,5 +37,5 @@ abstract class Content {
    * 
    * [map] can be of type Map<String, String> or String. 
    */
-  void addItems(String name, map);
+  void addItem(String name, map);
 }
