@@ -1,17 +1,3 @@
-/*
-    dartdoc-viewer CSS
-
-    nav bar coloring - 
-      background: #efefef;
-
-    item coloring - 
-      background: #fdfdfd;
-      border-bottom: 1px solid #ddd;
-      -webkit-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
-      -moz-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
-      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
-*/
-
 /* Apply a natural box layout model to all elements. */
 * { 
   -moz-box-sizing: border-box; 
@@ -48,22 +34,22 @@ pre code {
 
 nav {
   background: #efefef;
-  font-size: 1.2rem;
+  font: 1.2rem;
   padding: 1%;
 }
 
-.breadcrumb {
+.breadcrumbs {
   overflow: hidden;
   padding: 1%;
   margin: 0;
 }
 
-.breadcrumb a {
+.breadcrumbs a {
   float: left;
   padding: 1%;
 }
 
-.breadcrumb a:before {
+.breadcrumbs a:before {
   content: ' / ';
 }
 
@@ -71,9 +57,11 @@ main h1 {
   padding-left: 2%;
 }
 
-main .description {
-  font-size: 0.8rem;
-  font-style: italic;
+main{
+  font: italic .8rem; 
+}
+
+.description {
   padding: 0 2% 2% 4%;
 }
 
@@ -82,38 +70,24 @@ main .description {
   font-size: 1.2rem;
 }
 
-.category a {
-  text-decoration: none;
-  color: #333;
-}
-
-.category a article {
-  text-decoration: none;
-  color: #333;
-}
-
 .category article {
-  position: relative;
   width: 100%;
   padding: 2%;
   background: #fdfdfd;
   border-bottom: 1px solid #ddd;
-  -webkit-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: inset 0 0 15px rgba(0, 0, 0, .05);
+  -moz-box-shadow: inset 0 0 15px rgba(0, 0, 0, .05);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, .05);
 }
 
 .category article:FOCUS,
 .category article:ACTIVE,
 .category article:HOVER {
   opacity: .7;
+  text-decoration: underline;
 }
 
 .category article h1 {
   margin: 0;
   font-size: 1rem;
-}
-
-.category .content {
-  padding: 0 2% 2% 4%;
 }
