@@ -53,18 +53,17 @@ nav {
 }
 
 .breadcrumb {
-  list-style: none;
   overflow: hidden;
   padding: 1%;
   margin: 0;
 }
 
-.breadcrumb li {
+.breadcrumb a {
   float: left;
   padding: 1%;
 }
 
-.breadcrumb li:before {
+.breadcrumb a:before {
   content: ' / ';
 }
 

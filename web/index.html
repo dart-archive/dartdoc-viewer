@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>Dart API Reference</title>
+
 <link rel="stylesheet" href="styles.css">
-<!-- Importing the doc-section component for use below. -->
 <link rel="import" href="category.html">
+
 <script type="application/dart" src="app.dart"></script>
 <script src="packages/browser/dart.js"></script>
-<nav>
-  <ul class="breadcrumb">
-    <li>dart:io
-    <li>File
-  </ul>
+
+<nav class="breadcrumb">
+  <a href="#">dart:io</a>
+  <a href="#">File</a>
 </nav>
+
 <!-- TODO(janicejl): get breadcrumb path from parsed yaml. -->
 <main>
-  <!-- TODO(janicejl): page title should be the item being viewed. -->
   <h1>{{title}}</h1>
   <section class="description">
     File objects are references to files.
   </section>
-  <template iterate="category in currentPage.categories">
-    <doc-category category="{{category}}" class="category"></doc-category>
+  <template instantiate="if currentPage != null">
+    <template iterate="category in currentPage.categories">
+      <doc-category category="{{category}}" class="category"></doc-category>
+    </template>
   </template>
 </main>

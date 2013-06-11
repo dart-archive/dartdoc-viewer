@@ -1,30 +1,30 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <!-- Importing the category-item component for 
-         use in the category custom element. -->
-    <link rel="import" href="item.html">
-  </head>
-  <body>   
-    <element name="doc-category" constructor="CategoryHtml" extends="details" 
-        apply-author-styles>     
-      <template>
-        <summary>{{title}}</summary>      
-        <template iterate="item in category.items">
-          <category-item item="{{item}}"></category-item>
-        </template>
-      </template>
-      <script type="application/dart">
-        import 'package:web_ui/web_ui.dart';
-        import 'package:dartdoc_viewer/category.dart';
-        import 'app.dart' as app;
-        
-        class CategoryHtml extends WebComponent {
-          Category category;
-          
-          String get title => category.name;
-        }
-      </script>
-    </element>
-  </body>
-</html>
+<link rel="import" href="item.html">
+
+<element name="doc-category" constructor="CategoryHtml" extends="details" 
+    apply-author-styles>     
+  <template>
+    <summary>{{title}}</summary>      
+    <template iterate="item in category.items">
+      <category-item item="{{item}}"></category-item>
+    </template>
+  </template>
+  
+  <script type="application/dart">
+    import 'package:web_ui/web_ui.dart';
+    import 'package:dartdoc_viewer/category.dart';
+    import 'app.dart' as app;
+    
+    /**
+     * An HTML representation of a Category. 
+     *
+     * Only has information that needs to be rendered 
+     * for the html such as the Category title. 
+     */
+    class CategoryHtml extends WebComponent {
+      Category category;
+      
+      String get title => category.name;
+    }
+  </script>
+</element>
