@@ -2,6 +2,7 @@ library category;
 
 import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/page.dart';
+import 'package:dartdoc_viewer/readYaml.dart';
 
 /**
  * A [Category] is a group of [CategoryItem]s that is functionally distinct 
@@ -16,13 +17,30 @@ import 'package:dartdoc_viewer/page.dart';
  * like return types and parameter lists. 
  */
 @observable
-class Category {
+class Category extends Content {
   String name;
   final List<CategoryItem> items = toObservable([]);
   
   Category(this.name, [List<CategoryItem> newItems]) {
     if (newItems != null) {
       items.addAll(newItems);
+    }
+  }
+  
+  Category.withMap (this.name, Map<String, String> map) {
+    generateContent(name, map);
+  }
+  
+  /**
+   * Adds a item to the list of items. 
+   * 
+   * [map] can be of type Map<String, String> or String. 
+   */
+  void addItems(String name, map) {
+    if (map is Map) {
+      items.add(new CategoryItem(name, new Page.withMap(name, map)));
+    } else {
+      items.add(new CategoryItem(name));
     }
   }
 }

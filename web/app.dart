@@ -9,24 +9,18 @@
 // TODO(janicejl): Add a link to the dart docgen landing page in future. 
 library dartdoc_viewer;
 
-import 'dart:async';
 import 'dart:html';
 import 'package:web_ui/web_ui.dart';
-import 'package:yaml/yaml.dart';
 import 'package:dartdoc_viewer/category.dart';
+import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/page.dart';
-
-part 'readYaml.dart';
-part 'util.dart';
+import 'package:dartdoc_viewer/readYaml.dart';
 
 // Path to the Yaml file being read in. 
-const sourcePath = "../yaml/largeTest.yaml";
-
-//Map of pages generated from the YAML file. Keys are the title of the pages. 
-Map<String, Page> pageIndex = toObservable({});
+const sourcePath = "../../test/yaml/largeTest.yaml";
 
 //Function to set the title of the current page. 
-String get title => currentPage == null ? "untitled" : currentPage.name;
+String get title => currentPage == null ? "" : currentPage.name;
 
 // The current page being shown.
 @observable Page currentPage = null;
