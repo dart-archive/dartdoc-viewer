@@ -11,9 +11,8 @@ library dartdoc_viewer;
 
 import 'dart:html';
 import 'package:web_ui/web_ui.dart';
-import 'package:dartdoc_viewer/category.dart';
 import 'package:dartdoc_viewer/data.dart';
-import 'package:dartdoc_viewer/page.dart';
+import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/readYaml.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
@@ -24,12 +23,12 @@ const sourcePath = "../../test/yaml/largeTest.yaml";
 String get title => currentPage == null ? "" : currentPage.name;
 
 // The current page being shown.
-@observable Page currentPage = null;
+@observable Item currentPage = null;
 
 /**
  * Changes the currentPage to the page of the item clicked.
  */
-changePage(Page page) {
+changePage(Item page) {
   currentPage = page;
 }
 

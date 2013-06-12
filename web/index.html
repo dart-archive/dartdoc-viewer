@@ -19,9 +19,11 @@
   <section class="description">
     File objects are references to files.
   </section>
+  
   <template instantiate="if currentPage != null">
-    <template iterate="category in currentPage.categories">
+    <template iterate="category in currentPage.content">
       <doc-category category="{{category}}" class="category"></doc-category>
     </template>
   </template>
+  
 </main>

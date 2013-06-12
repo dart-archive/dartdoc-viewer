@@ -3,7 +3,7 @@ library read_yaml;
 import 'dart:async';
 import 'dart:html';
 import 'package:yaml/yaml.dart';
-import 'package:dartdoc_viewer/page.dart';
+import 'package:dartdoc_viewer/item.dart';
 
 /**
  *  Used to read a YAML file and generate a page. 
@@ -15,27 +15,7 @@ Future<String> getYamlFile(String path) {
   return HttpRequest.getString(path);
 }
 
-Iterable<Page> loadData(String response) {
+Iterable<Item> loadData(String response) {
   var doc = loadYaml(response);
-  return doc.keys.map((String k) => new Page.withMap(k, doc[k])); 
-}
-
-/**
- * [Content] is the details of an object.
- * 
- * [generateContent] recursively adds the details to the object. 
- */
-abstract class Content {
-  void generateContent(Map<String, String> map) {
-    for (var k in map.keys) {
-      addItem(k, map[k]);
-    }
-  }
-  
-  /**
-   * Adds content to the list of subContents. 
-   * 
-   * [map] can be of type Map<String, String> or String. 
-   */
-  void addItem(String name, map);
+  return doc.keys.map((String k) => new Item.withYaml(k, doc[k])); 
 }

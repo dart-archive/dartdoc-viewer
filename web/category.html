@@ -1,27 +1,39 @@
 <!DOCTYPE html>
 <link rel="import" href="item.html">
+<link rel="import" href="literal.html">
 
 <element name="doc-category" constructor="CategoryHtml" extends="details" 
     apply-author-styles>     
   <template>
     <summary>{{title}}</summary>      
-    <template iterate="item in category.items">
-      <category-item item="{{item}}"></category-item>
+    <template iterate="item in category.content">
+      <template if="item is Item">
+        <category-item item="{{item}}"></category-item>
+      </template>
+      
+      <template if="item is Literal">
+        <category-literal literal="{{item}}"></category-literal>
+      </template>
+      
+      <template if="item is Category">
+        <doc-category category="{{item}}"></doc-category>
+      </template>
     </template>
   </template>
   
   <script type="application/dart">
     import 'package:web_ui/web_ui.dart';
-    import 'package:dartdoc_viewer/category.dart';
+    import 'package:dartdoc_viewer/item.dart';
     import 'app.dart' as app;
     
     /**
      * An HTML representation of a Category. 
      */
     class CategoryHtml extends WebComponent {
-      Category category;
+      CategoryItem category;
       
       String get title => category.name;
     }
+
   </script>
 </element>

@@ -2,19 +2,18 @@
 <element name="category-item" constructor="ItemHtml" extends="article"  
   apply-author-styles>
   <template>
-    <h1 on-click="app.changePage(item.page)">{{title}}</h1> 
+    <h1 on-click="print(title)">{{title}}</h1> 
   </template>
-  
   <script type="application/dart">
     import 'package:web_ui/web_ui.dart';
-    import 'package:dartdoc_viewer/category.dart';
+    import 'package:dartdoc_viewer/item.dart';
     import 'app.dart' as app;
     
     /**
-     * An HTML representation of a CategoryItem. 
+     * An HTML representation of a Item. 
      */
     class ItemHtml extends WebComponent {
-      CategoryItem item;
+      Item item;
       
       String get title => item.name;
     }
