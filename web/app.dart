@@ -13,11 +13,11 @@ import 'dart:html';
 import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
-import 'package:dartdoc_viewer/readYaml.dart';
+import 'package:dartdoc_viewer/read_yaml.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the Yaml file being read in. 
-const sourcePath = "../../test/yaml/largeTest.yaml";
+const sourcePath = "../../test/yaml/large_test.yaml";
 
 //Function to set the title of the current page. 
 String get title => currentPage == null ? "" : currentPage.name;

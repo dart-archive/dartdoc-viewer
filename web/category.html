@@ -8,15 +8,15 @@
     <summary>{{title}}</summary>      
     <template iterate="item in category.content">
       <template if="item is Item">
-        <category-item item="{{item}}"></category-item>
+        <item-element item="{{item}}"></item-element>
       </template>
       
       <template if="item is Literal">
-        <category-literal literal="{{item}}"></category-literal>
+        <literal-element literal="{{item}}"></literal-element>
       </template>
       
       <template if="item is Category">
-        <doc-category category="{{item}}"></doc-category>
+        <doc-category category="{{item}}" class="category"></doc-category>
       </template>
     </template>
   </template>

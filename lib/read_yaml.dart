@@ -17,5 +17,5 @@ Future<String> getYamlFile(String path) {
 
 Iterable<Item> loadData(String response) {
   var doc = loadYaml(response);
-  return doc.keys.map((String k) => new Item.withYaml(k, doc[k])); 
+  return doc.keys.map((String k) => new Item.fromYaml(k, doc[k])); 
 }

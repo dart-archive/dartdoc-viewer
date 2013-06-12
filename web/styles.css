@@ -91,3 +91,7 @@ main .description {
   margin: 0;
   font-size: 1rem;
 }
+
+.category .category {
+  padding-left: 3%;
+}
