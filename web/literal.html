@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<element name="literal-element" constructor="LiteralHtml" extends="div"  
-  apply-author-styles>
+<element name="dartdoc-literal" constructor="LiteralElement" extends="div"  
+    apply-author-styles>
   <template>
     <p class="description">{{content}}</p>
   </template>
@@ -11,8 +11,10 @@
     
     /**
      * An HTML representation of a Literal. 
+     *
+     * Used as a placeholder for an CategoryItem object. 
      */
-    class LiteralHtml extends WebComponent {
+    class LiteralElement extends WebComponent {
       Literal literal;
       
       String get content => literal.content;

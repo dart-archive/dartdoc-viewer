@@ -2,21 +2,21 @@
 <link rel="import" href="item.html">
 <link rel="import" href="literal.html">
 
-<element name="doc-category" constructor="CategoryHtml" extends="details" 
+<element name="dartdoc-category" constructor="CategoryElement" extends="details" 
     apply-author-styles>     
   <template>
     <summary>{{title}}</summary>      
     <template iterate="item in category.content">
       <template if="item is Item">
-        <item-element item="{{item}}"></item-element>
+        <dartdoc-item item="{{item}}"></dartdoc-item>
       </template>
       
       <template if="item is Literal">
-        <literal-element literal="{{item}}"></literal-element>
+        <dartdoc-literal literal="{{item}}"></dartdoc-literal>
       </template>
       
       <template if="item is Category">
-        <doc-category category="{{item}}" class="category"></doc-category>
+        <dartdoc-category category="{{item}}" class="category"></dartdoc-category>
       </template>
     </template>
   </template>
@@ -28,8 +28,10 @@
     
     /**
      * An HTML representation of a Category. 
+     *
+     * Used as a placeholder for an CategoryItem object. 
      */
-    class CategoryHtml extends WebComponent {
+    class CategoryElement extends WebComponent {
       CategoryItem category;
       
       String get title => category.name;
