@@ -9,6 +9,9 @@ import 'package:dartdoc_viewer/read_yaml.dart';
  */
 @observable
 class CategoryItem {
+  
+  // Path through content to this page from the homepage.
+  String path;
   List<CategoryItem> content = toObservable([]);
   
   // Empty constructor needed as the super constructor for Literals. 
@@ -17,11 +20,17 @@ class CategoryItem {
   /**
    * Returns a CategoryItem based off a map input based off Yaml. 
    */
-  CategoryItem.fromYaml(yaml) {
+  CategoryItem.fromYaml(yaml, path) {
+    this.path = path;
     if (yaml is Map) {
-      yaml.keys.forEach((k) => 
+      int i = 0;
+      yaml.keys.forEach((k) {
+        var childPath = path == "" ? i.toString() : "$path/$i";
         content.add(Category._isCategoryKey(k) ? 
-          new Category.fromYaml(k, yaml[k]) : new Item.fromYaml(k, yaml[k])));
+            new Category.fromYaml(k, yaml[k], childPath) : 
+              new Item.fromYaml(k, yaml[k], childPath));
+        i++;
+      });
     } else if (yaml is List) {
       yaml.forEach((n) => content.add(new Literal(n)));
     } else {
@@ -37,8 +46,11 @@ class CategoryItem {
  */
 class Item extends CategoryItem {
   String name;
+  Item previous;
   
-  Item.fromYaml(String this.name, yaml) : super.fromYaml(yaml);
+  Item.fromYaml(String this.name, yaml, path) : 
+    super.fromYaml(yaml, path);
+  
 }
 
 /**
@@ -68,7 +80,7 @@ class Category extends CategoryItem {
     "operators", "final"
   ];
   
-  Category.fromYaml(String this.name, yaml) : super.fromYaml(yaml);
+  Category.fromYaml(String this.name, yaml, path) : super.fromYaml(yaml, path);
   
   static bool _isCategoryKey(String key) => _categoryKey.contains(key);
 }

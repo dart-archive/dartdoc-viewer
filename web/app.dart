@@ -10,6 +10,7 @@
 library dartdoc_viewer;
 
 import 'dart:html';
+import 'dart:math';
 import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
@@ -22,19 +23,54 @@ const sourcePath = "../../test/yaml/large_test.yaml";
 //Function to set the title of the current page. 
 String get title => currentPage == null ? "" : currentPage.name;
 
+Item homePage;
+
 // The current page being shown.
 @observable Item currentPage = null;
 
 /**
  * Changes the currentPage to the page of the item clicked.
  */
-changePage(Item page) {
-  currentPage = page;
+changePage(Item page, {bool isFromPopState: false}) {
+  if (page != null) {
+    if (!isFromPopState) {
+      var state = window.location.hash;
+      if (state == "") {
+        state = "/#${page.name}";
+      } else {
+        state = "/$state/${page.name}";
+      }
+      window.history.pushState(page.path, "", state);
+    }
+    currentPage = page;
+  }
 }
 
 main() {
+  window.history.pushState("", "", "");
   var sourceYaml = getYamlFile(sourcePath);
   sourceYaml.then( (response) {
     currentPage = loadData(response).first;
+    homePage = currentPage;
   });
+  
+  // Handles browser navigation
+  // TODO(tmandel): Fix that it takes two clicks on the back button from the
+  // homepage to leave the site.
+  window.onPopState.listen((event) {
+    if (event.state != null) {
+      var newPage = homePage;
+      if (event.state != "") {
+        var path = event.state.split('/');
+        path.forEach((index) => newPage = newPage.content[int.parse(index)]);
+      }
+      changePage(newPage, isFromPopState: true);
+    }
+  });
+  
+  
+      
+  
+  
+  
 }
