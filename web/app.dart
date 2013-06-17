@@ -23,6 +23,7 @@ const sourcePath = "../../test/yaml/large_test.yaml";
 //Function to set the title of the current page. 
 String get title => currentPage == null ? "" : currentPage.name;
 
+// The homepage from which everything can be reached.
 @observable Item homePage;
 
 // The current page being shown.
@@ -33,25 +34,28 @@ String get title => currentPage == null ? "" : currentPage.name;
  */
 changePage(Item page, {bool isFromPopState: false}) {
   if (page != null) {
-    if (!isFromPopState) {
-      var state = window.location.hash;
-      if (state == "") {
-        state = "/#${page.name}";
-      } else {
-        state = "/$state/${page.name}";
-      }
-      window.history.pushState(page.path, "", state);
+    if (!isFromPopState && currentPage != page) {
+      var state = page.pathString;
+      window.history.pushState(state, "", "/#$state");
     }
     currentPage = page;
   }
 }
 
-// TODO(tmandel): Use data.dart map to map 'DummyLibrary/A/' to correct item.
+/**
+ * Runs through the member structure and creates path information and
+ * populates the [pageIndex] map for proper linking.
+ */
 void buildHierarchy(CategoryItem page, Item previous) {
   if (page is Item) {
     page.pathToItem.addAll(previous.pathToItem);
     page.pathToItem.add(toObservable(page));
-    page.pathString = "${previous.pathString}${page.name}/";
+    if (previous.pathString == null) {
+      page.pathString = "${page.name}/";
+    } else {
+      page.pathString = "${previous.pathString}${page.name}/";
+    }
+    pageIndex[page.pathString] = page;
     page.content.forEach((subChild) {
       if (subChild is Item || subChild is Category) {
         buildHierarchy(subChild, page);
@@ -65,25 +69,21 @@ void buildHierarchy(CategoryItem page, Item previous) {
 }
 
 main() {
-  window.history.pushState("", "", "");
   var sourceYaml = getYamlFile(sourcePath);
-  sourceYaml.then( (response) {
+  sourceYaml.then((response) {
     currentPage = loadData(response).first;
     homePage = currentPage;
     buildHierarchy(homePage, homePage);
   });
   
   // Handles browser navigation
-  // TODO(tmandel): Fix that it takes two clicks on the back button from the
-  // homepage to leave the site.
   window.onPopState.listen((event) {
     if (event.state != null) {
-      var newPage = homePage;
       if (event.state != "") {
-        var path = event.state.split('/');
-        path.forEach((index) => newPage = newPage.content[int.parse(index)]);
-      }
-      changePage(newPage, isFromPopState: true);
+        changePage(pageIndex[event.state], isFromPopState: true);
+      } 
+    } else {
+      changePage(homePage, isFromPopState: true);
     }
   });
 }
