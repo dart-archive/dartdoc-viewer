@@ -4,17 +4,25 @@
 
 <link rel="stylesheet" href="styles.css">
 <link rel="import" href="category.html">
+<link rel="import" href="item.html">
 
 <script type="application/dart" src="app.dart"></script>
 <script src="packages/browser/dart.js"></script>
-
+  
+  
 <nav class="breadcrumbs">
-  <a href="#">dart:io</a>
-  <a href="#">File</a>
+  <template instantiate="if homePage != null">
+    <a on-click="changePage(homePage)">{{homePage.name}}</a>
+    <template iterate="item in pages">
+      <a on-click="changePage(item)">{{item.name}}</a>
+    </template>
+  </template>
 </nav>
-
+  
+  
 <!-- TODO(janicejl): get breadcrumb path from parsed yaml. -->
 <main>
+
   <h1>{{title}}</h1>
   <section class="description">
     File objects are references to files.
@@ -25,5 +33,7 @@
       <dartdoc-category category="{{category}}" class="category"></dartdoc-category>
     </template>
   </template>
+  
+  
   
 </main>

@@ -23,10 +23,13 @@ const sourcePath = "../../test/yaml/large_test.yaml";
 //Function to set the title of the current page. 
 String get title => currentPage == null ? "" : currentPage.name;
 
-Item homePage;
+@observable Item homePage;
 
 // The current page being shown.
 @observable Item currentPage = null;
+
+@observable List<Item> pages = new ObservableList();
+
 
 /**
  * Changes the currentPage to the page of the item clicked.
@@ -34,6 +37,7 @@ Item homePage;
 changePage(Item page, {bool isFromPopState: false}) {
   if (page != null) {
     if (!isFromPopState) {
+      pages.add(page);
       var state = window.location.hash;
       if (state == "") {
         state = "/#${page.name}";
