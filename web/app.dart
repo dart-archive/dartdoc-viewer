@@ -46,28 +46,22 @@ changePage(Item page, {bool isFromPopState: false}) {
   }
 }
 
+// TODO(tmandel): Use data.dart map to map 'DummyLibrary/A/' to correct item.
 void buildHierarchy(CategoryItem page, Item previous) {
-  page.content.forEach((child) {
-    if (child is Item) {
-      child.pathToItem.addAll(previous.pathToItem);
-      child.pathToItem.add(toObservable(child));
-      child.content.forEach((subChild) {
-        if (subChild is Item || subChild is Category) {
-          buildHierarchy(subChild, child);
-        }
-      });
-    } else if (child is Category) {
-      child.content.forEach((categoryChild) {
-        if (categoryChild is Item) {
-          categoryChild.pathToItem.addAll(previous.pathToItem);
-          categoryChild.pathToItem.add(categoryChild);
-          buildHierarchy(categoryChild, categoryChild);
-        } else if (categoryChild is Category) {
-          buildHierarchy(categoryChild, previous);
-        }
-      });
-    }
-  });
+  if (page is Item) {
+    page.pathToItem.addAll(previous.pathToItem);
+    page.pathToItem.add(toObservable(page));
+    page.pathString = "${previous.pathString}${page.name}/";
+    page.content.forEach((subChild) {
+      if (subChild is Item || subChild is Category) {
+        buildHierarchy(subChild, page);
+      }
+    });
+  } else if (page is Category) {
+    page.content.forEach((categoryChild) {
+      buildHierarchy(categoryChild, previous);
+    });
+  }
 }
 
 main() {
@@ -76,7 +70,6 @@ main() {
   sourceYaml.then( (response) {
     currentPage = loadData(response).first;
     homePage = currentPage;
-    homePage.pathToItem.add(homePage);
     buildHierarchy(homePage, homePage);
   });
   

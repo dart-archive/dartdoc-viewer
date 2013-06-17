@@ -47,6 +47,7 @@ class CategoryItem {
 class Item extends CategoryItem {
   String name;
   ObservableList pathToItem = new ObservableList();
+  String pathString;
   
   Item.fromYaml(String this.name, yaml, path) : 
     super.fromYaml(yaml, path);
