@@ -28,16 +28,12 @@ String get title => currentPage == null ? "" : currentPage.name;
 // The current page being shown.
 @observable Item currentPage = null;
 
-@observable List<Item> pages = new ObservableList();
-
-
 /**
  * Changes the currentPage to the page of the item clicked.
  */
 changePage(Item page, {bool isFromPopState: false}) {
   if (page != null) {
     if (!isFromPopState) {
-      pages.add(page);
       var state = window.location.hash;
       if (state == "") {
         state = "/#${page.name}";
@@ -50,12 +46,38 @@ changePage(Item page, {bool isFromPopState: false}) {
   }
 }
 
+void buildHierarchy(CategoryItem page, Item previous) {
+  page.content.forEach((child) {
+    if (child is Item) {
+      child.pathToItem.addAll(previous.pathToItem);
+      child.pathToItem.add(toObservable(child));
+      child.content.forEach((subChild) {
+        if (subChild is Item || subChild is Category) {
+          buildHierarchy(subChild, child);
+        }
+      });
+    } else if (child is Category) {
+      child.content.forEach((categoryChild) {
+        if (categoryChild is Item) {
+          categoryChild.pathToItem.addAll(previous.pathToItem);
+          categoryChild.pathToItem.add(categoryChild);
+          buildHierarchy(categoryChild, categoryChild);
+        } else if (categoryChild is Category) {
+          buildHierarchy(categoryChild, previous);
+        }
+      });
+    }
+  });
+}
+
 main() {
   window.history.pushState("", "", "");
   var sourceYaml = getYamlFile(sourcePath);
   sourceYaml.then( (response) {
     currentPage = loadData(response).first;
     homePage = currentPage;
+    homePage.pathToItem.add(homePage);
+    buildHierarchy(homePage, homePage);
   });
   
   // Handles browser navigation
@@ -71,10 +93,4 @@ main() {
       changePage(newPage, isFromPopState: true);
     }
   });
-  
-  
-      
-  
-  
-  
 }

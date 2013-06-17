@@ -11,14 +11,12 @@
   
   
 <nav class="breadcrumbs">
-  <template instantiate="if homePage != null">
-    <a on-click="changePage(homePage)">{{homePage.name}}</a>
-    <template iterate="item in pages">
+  <template instantiate="if currentPage != null">
+    <template iterate="item in currentPage.pathToItem">
       <a on-click="changePage(item)">{{item.name}}</a>
     </template>
   </template>
 </nav>
-  
   
 <!-- TODO(janicejl): get breadcrumb path from parsed yaml. -->
 <main>
@@ -33,7 +31,5 @@
       <dartdoc-category category="{{category}}" class="category"></dartdoc-category>
     </template>
   </template>
-  
-  
   
 </main>
