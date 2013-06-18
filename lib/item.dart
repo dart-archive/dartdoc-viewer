@@ -10,7 +10,7 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 @observable
 class CategoryItem {
   List<CategoryItem> content = toObservable([]);
-  
+  @observable String pathString;
   // Empty constructor needed as the super constructor for Literals. 
   CategoryItem();
   
@@ -41,8 +41,6 @@ class CategoryItem {
  */
 class Item extends CategoryItem {
   String name;
-  ObservableList pathToItem = new ObservableList();
-  String pathString;
   
   Item.fromYaml(String this.name, yaml) : 
     super.fromYaml(yaml);

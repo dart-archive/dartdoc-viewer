@@ -42,14 +42,24 @@ changePage(Item page, {bool isFromPopState: false}) {
   }
 }
 
+List<Item> getBreadcrumbs(String path) {
+  var breadcrumbs = [];
+  var regex = new RegExp(r"(([a-zA-Z0-9]+)=?)/");
+  var matches = regex.allMatches(path);
+  var currentPath = "";
+  matches.forEach((match) {
+    currentPath = "$currentPath${match.group(0)}";
+    breadcrumbs.add(pageIndex[currentPath]);
+  });
+  return breadcrumbs;
+}
+
 /**
  * Runs through the member structure and creates path information and
  * populates the [pageIndex] map for proper linking.
  */
 void buildHierarchy(CategoryItem page, Item previous) {
   if (page is Item) {
-    page.pathToItem.addAll(previous.pathToItem);
-    page.pathToItem.add(toObservable(page));
     if (previous.pathString == null) {
       page.pathString = "${page.name}/";
     } else {

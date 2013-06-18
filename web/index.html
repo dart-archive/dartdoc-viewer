@@ -12,8 +12,10 @@
   
 <nav class="breadcrumbs">
   <template instantiate="if currentPage != null">
-    <template iterate="item in currentPage.pathToItem">
-      <a on-click="changePage(item)">{{item.name}}</a>
+    <template instantiate="if currentPage.pathString != null">
+      <template iterate="item in getBreadcrumbs(currentPage.pathString)">
+        <a on-click="changePage(item)">{{item.name}}</a>
+      </template>
     </template>
   </template>
 </nav>
