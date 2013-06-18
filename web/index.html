@@ -10,11 +10,10 @@
 <script src="packages/browser/dart.js"></script>
   
 <nav class="breadcrumbs">
-  <template instantiate="if currentPage != null">
-    <template instantiate="if currentPage.pathString != null">
-      <template iterate="item in getBreadcrumbs(currentPage.pathString)">
-        <a on-click="changePage(item)">{{item.name}}</a>
-      </template>
+  <template instantiate="if currentPage != null && currentPage.path != null">
+    <template iterate="item in getBreadcrumbs(currentPage.path)">
+      <!-- TODO(tmandel): Use a better tag for these links -->
+      <a on-click="changePage(item)">{{item.name}}</a>
     </template>
   </template>
 </nav>
@@ -28,7 +27,8 @@
   
   <template instantiate="if currentPage != null">
     <template iterate="category in currentPage.content">
-      <dartdoc-category category="{{category}}" class="category"></dartdoc-category>
+      <dartdoc-category category="{{category}}" class="category">
+      </dartdoc-category>
     </template>
   </template>
   

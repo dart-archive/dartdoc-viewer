@@ -12,7 +12,7 @@ class CategoryItem {
   List<CategoryItem> content = toObservable([]);
   
   /// A string representing the path to this [CategoryItem] from the homepage.
-  @observable String pathString;
+  @observable String path;
   
   // Empty constructor needed as the super constructor for Literals. 
   CategoryItem();
@@ -37,8 +37,7 @@ class CategoryItem {
 
 /**
  * An item that has more content under it, which will be shown in another page.
- * 
- * Content can be other items, categories, or literals. 
+ * Content can be other [Item], [Category], or [Literal] objects. 
  */
 class Item extends CategoryItem {
   String name;

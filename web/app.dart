@@ -10,7 +10,6 @@
 library dartdoc_viewer;
 
 import 'dart:html';
-import 'dart:math';
 import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
@@ -35,7 +34,7 @@ String get title => currentPage == null ? "" : currentPage.name;
 changePage(Item page, {bool isFromPopState: false}) {
   if (page != null) {
     if (!isFromPopState && currentPage != page) {
-      var state = page.pathString;
+      var state = page.path;
       window.history.pushState(state, "", "/#$state");
     }
     currentPage = page;
@@ -64,9 +63,9 @@ List<Item> getBreadcrumbs(String path) {
  */
 void buildHierarchy(CategoryItem page, Item previous) {
   if (page is Item) {
-    page.pathString = previous.pathString == null ?
-        "${page.name}/" : "${previous.pathString}${page.name}/";
-    pageIndex[page.pathString] = page;
+    page.path = previous.path == null ?
+        "${page.name}/" : "${previous.path}${page.name}/";
+    pageIndex[page.path] = page;
     page.content.forEach((subChild) {
       if (subChild is Item || subChild is Category) {
         buildHierarchy(subChild, page);
