@@ -18,16 +18,14 @@ class CategoryItem {
   CategoryItem();
   
   /**
-   * Returns a CategoryItem based off a map input based off Yaml. 
+   * Returns a CategoryItem based off a map input based off YAML. 
    */
   CategoryItem.fromYaml(yaml) {
     if (yaml is Map) {
-      int i = 0;
       yaml.keys.forEach((k) {
         content.add(Category._isCategoryKey(k) ? 
             new Category.fromYaml(k, yaml[k]) : 
               new Item.fromYaml(k, yaml[k]));
-        i++;
       });
     } else if (yaml is List) {
       yaml.forEach((n) => content.add(new Literal(n)));
@@ -65,7 +63,7 @@ class Category extends CategoryItem {
   String name;
   
   /**
-   * Words that are category heading should go in this list. 
+   * Words that are [Category] headings should go in this list. 
    */
   static const List<String> _categoryKey = const [
     "libraries", "classes", "constructors", 

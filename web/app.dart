@@ -17,14 +17,17 @@ import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
-// Path to the Yaml file being read in. 
+// Path to the YAML file being read in. 
 const sourcePath = "../../test/yaml/large_test.yaml";
 
 //Function to set the title of the current page. 
 String get title => currentPage == null ? "" : currentPage.name;
 
+// The homepage from which every [Item] can be reached.
+@observable Item homePage;
+
 // The current page being shown.
-@observable Item currentPage = null;
+@observable Item currentPage;
 
 /**
  * Changes the currentPage to the page of the item clicked.
@@ -40,7 +43,7 @@ changePage(Item page, {bool isFromPopState: false}) {
 }
 
 /**
- * Creates a list of [Item] objects from the [path] input describing the
+ * Creates a list of [Item] objects from the [path] describing the
  * path to a particular [Item] object.
  */
 List<Item> getBreadcrumbs(String path) {
@@ -61,11 +64,8 @@ List<Item> getBreadcrumbs(String path) {
  */
 void buildHierarchy(CategoryItem page, Item previous) {
   if (page is Item) {
-    if (previous.pathString == null) {
-      page.pathString = "${page.name}/";
-    } else {
-      page.pathString = "${previous.pathString}${page.name}/";
-    }
+    page.pathString = previous.pathString == null ?
+        "${page.name}/" : "${previous.pathString}${page.name}/";
     pageIndex[page.pathString] = page;
     page.content.forEach((subChild) {
       if (subChild is Item || subChild is Category) {
@@ -73,8 +73,8 @@ void buildHierarchy(CategoryItem page, Item previous) {
       }
     });
   } else if (page is Category) {
-    page.content.forEach((categoryChild) {
-      buildHierarchy(categoryChild, previous);
+    page.content.forEach((subChild) {
+      buildHierarchy(subChild, previous);
     });
   }
 }
@@ -84,17 +84,18 @@ main() {
   var sourceYaml = getYamlFile(sourcePath);
   sourceYaml.then((response) {
     currentPage = loadData(response).first;
-    buildHierarchy(currentPage, currentPage);
+    homePage = currentPage;
+    buildHierarchy(homePage, homePage);
   });
   
-  // Handles browser navigation
+  // Handles browser navigation.
   window.onPopState.listen((event) {
     if (event.state != null) {
       if (event.state != "") {
         changePage(pageIndex[event.state], isFromPopState: true);
       } 
     } else {
-      changePage(currentPage, isFromPopState: true);
+      changePage(homePage, isFromPopState: true);
     }
   });
 }
