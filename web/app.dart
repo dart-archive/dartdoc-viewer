@@ -23,9 +23,6 @@ const sourcePath = "../../test/yaml/large_test.yaml";
 //Function to set the title of the current page. 
 String get title => currentPage == null ? "" : currentPage.name;
 
-// The homepage from which everything can be reached.
-@observable Item homePage;
-
 // The current page being shown.
 @observable Item currentPage = null;
 
@@ -42,6 +39,10 @@ changePage(Item page, {bool isFromPopState: false}) {
   }
 }
 
+/**
+ * Creates a list of [Item] objects from the [path] input describing the
+ * path to a particular [Item] object.
+ */
 List<Item> getBreadcrumbs(String path) {
   var breadcrumbs = [];
   var regex = new RegExp(r"(([a-zA-Z0-9]+)=?)/");
@@ -78,12 +79,12 @@ void buildHierarchy(CategoryItem page, Item previous) {
   }
 }
 
+// Builds hierarchy and sets up listener for browser navigation.
 main() {
   var sourceYaml = getYamlFile(sourcePath);
   sourceYaml.then((response) {
     currentPage = loadData(response).first;
-    homePage = currentPage;
-    buildHierarchy(homePage, homePage);
+    buildHierarchy(currentPage, currentPage);
   });
   
   // Handles browser navigation
@@ -93,7 +94,7 @@ main() {
         changePage(pageIndex[event.state], isFromPopState: true);
       } 
     } else {
-      changePage(homePage, isFromPopState: true);
+      changePage(currentPage, isFromPopState: true);
     }
   });
 }

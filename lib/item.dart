@@ -10,7 +10,10 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 @observable
 class CategoryItem {
   List<CategoryItem> content = toObservable([]);
+  
+  /// A string representing the path to this [CategoryItem] from the homepage.
   @observable String pathString;
+  
   // Empty constructor needed as the super constructor for Literals. 
   CategoryItem();
   
@@ -44,7 +47,6 @@ class Item extends CategoryItem {
   
   Item.fromYaml(String this.name, yaml) : 
     super.fromYaml(yaml);
-  
 }
 
 /**
