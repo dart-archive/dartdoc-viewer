@@ -22,11 +22,10 @@ class CategoryItem {
    */
   CategoryItem.fromYaml(yaml) {
     if (yaml is Map) {
-      yaml.keys.forEach((k) {
+      yaml.keys.forEach((k) =>
         content.add(Category._isCategoryKey(k) ? 
             new Category.fromYaml(k, yaml[k]) : 
-              new Item.fromYaml(k, yaml[k]));
-      });
+              new Item.fromYaml(k, yaml[k])));
     } else if (yaml is List) {
       yaml.forEach((n) => content.add(new Literal(n)));
     } else {
@@ -42,8 +41,7 @@ class CategoryItem {
 class Item extends CategoryItem {
   String name;
   
-  Item.fromYaml(String this.name, yaml) : 
-    super.fromYaml(yaml);
+  Item.fromYaml(String this.name, yaml) : super.fromYaml(yaml);
 }
 
 /**

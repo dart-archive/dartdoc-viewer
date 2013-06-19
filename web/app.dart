@@ -29,16 +29,25 @@ String get title => currentPage == null ? "" : currentPage.name;
 @observable Item currentPage;
 
 /**
- * Changes the currentPage to the page of the item clicked.
+ * Changes the currentPage to the page of the item clicked
+ * without pushing state onto the history.
  */
-changePage(Item page, {bool isFromPopState: false}) {
+changePageWithoutState(Item page) {
   if (page != null) {
-    if (!isFromPopState && currentPage != page) {
-      var state = page.path;
-      window.history.pushState(state, "", "/#$state");
-    }
     currentPage = page;
   }
+}
+
+/**
+ * Pushes state onto the history before updating the [currentPage].
+ */
+changePage(Item page) {
+  if (page != null && currentPage != page) {
+    var state = page.path;
+    var title = state.substring(0, state.length - 1);
+    window.history.pushState(state, title, "/#$state");
+  }
+  changePageWithoutState(page);
 }
 
 /**
@@ -47,6 +56,7 @@ changePage(Item page, {bool isFromPopState: false}) {
  */
 List<Item> getBreadcrumbs(String path) {
   var breadcrumbs = [];
+  // Matches alphanumeric variable/method names ending with a '/'.  
   var regex = new RegExp(r"(_?([a-zA-Z0-9]+)=?)/");
   var matches = regex.allMatches(path);
   var currentPath = "";
@@ -67,9 +77,7 @@ void buildHierarchy(CategoryItem page, Item previous) {
         "${page.name}/" : "${previous.path}${page.name}/";
     pageIndex[page.path] = page;
     page.content.forEach((subChild) {
-      if (subChild is Item || subChild is Category) {
-        buildHierarchy(subChild, page);
-      }
+      buildHierarchy(subChild, page);
     });
   } else if (page is Category) {
     page.content.forEach((subChild) {
@@ -91,10 +99,10 @@ main() {
   window.onPopState.listen((event) {
     if (event.state != null) {
       if (event.state != "") {
-        changePage(pageIndex[event.state], isFromPopState: true);
+        changePageWithoutState(pageIndex[event.state]);
       } 
     } else {
-      changePage(homePage, isFromPopState: true);
+      changePageWithoutState(homePage);
     }
   });
 }
