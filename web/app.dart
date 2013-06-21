@@ -90,7 +90,7 @@ void buildHierarchy(CategoryItem page, Item previous) {
 main() {
   var sourceYaml = getYamlFile(sourcePath);
   sourceYaml.then((response) {
-    currentPage = loadData(response).first;
+    currentPage = loadData(response);
     homePage = currentPage;
     buildHierarchy(homePage, homePage);
   });

@@ -1,101 +1,120 @@
-"DummyLibrary" : 
-  "classes" : 
-    "A" : 
-      "constructors" : 
-        "A" : 
-          "operator" : "false"
-          "parameters" : 
-          "comment" : "null"
-          "rtype" : "dynamic"
-          "static" : "false"
-      "variables" : 
-        "_someNumber" : 
-          "final" : "false"
-          "comment" : "null"
-          "static" : "false"
-          "type" : "int"
-        "testNum" : 
-          "final" : "false"
-          "comment" : "null"
-          "static" : "false"
-          "type" : "int"
-      "getters" : 
-        "someNumber" : 
-          "operator" : "false"
-          "parameters" : 
-          "comment" : "null"
-          "rtype" : "int"
-          "static" : "false"
-      "interfaces" : 
-        - "B"
-      "comment" : "Doc comment for class A."
-      "superclass" : "Object"
-      "abstract" : "false"
-      "methods" : 
-        "doThis" : 
-          "operator" : "false"
-          "parameters" : 
-            "a" : 
-              "type" : "int"
-              "optional" : "false"
-              "default" : "null"
-          "comment" : "null"
-          "rtype" : "void"
-          "static" : "false"
-        "multi" : 
-          "operator" : "false"
-          "parameters" : 
-            "a" : 
-              "type" : "int"
-              "optional" : "false"
-              "default" : "null"
-          "comment" : "null"
-          "rtype" : "int"
-          "static" : "false"
-    "B" : 
-      "interfaces" : 
-      "comment" : "null"
-      "superclass" : "Object"
-      "variables" : 
-      "abstract" : "true"
-  "functions" : 
-    "functions" : 
-      "getA" : 
-        "operator" : "false"
+"name" : "DummyLibrary"
+"comment" : "<p>This library is used solely for testing during development and is not intended to be run by the testing machines.</p>"
+"variables" : 
+  "_variable1" : 
+    "name" : "_variable1"
+    "comment" : "<p>Doc comment for top-level variable.</p>"
+    "final" : "false"
+    "static" : "false"
+    "type" : "int"
+"functions" : 
+  "getA" : 
+    "name" : "getA"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "A"
+    "parameters" : 
+      "testInt" : 
+        "name" : "testInt"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "int"
+        "value" : "null"
+      "testString" : 
+        "name" : "testString"
+        "optional" : "true"
+        "named" : "false"
+        "default" : "true"
+        "type" : "String"
+        "value" : "\"default\""
+  "main" : 
+    "name" : "main"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+  "variable1=" : 
+    "name" : "variable1="
+    "comment" : ""
+    "type" : "setter"
+    "static" : "false"
+    "return" : "void"
+    "parameters" : 
+      "abc" : 
+        "name" : "abc"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "int"
+        "value" : "null"
+"classes" : 
+  "A" : 
+    "name" : "A"
+    "comment" : "<p>Doc comment for class A.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "DummyLibrary.B"
+    "variables" : 
+      "_someNumber" : 
+        "name" : "_someNumber"
+        "comment" : "<p>Markdown <em>test</em> for <strong>class</strong> <code>A</code></p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "int"
+    "methods" : 
+      "A" : 
+        "name" : "A"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
         "parameters" : 
-          "testString" : 
-            "type" : "String"
-            "optional" : "true"
-            "default" : "default"
-          "testInt" : 
-            "type" : "int"
+      "someNumber" : 
+        "name" : "someNumber"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "int"
+        "parameters" : 
+      "doThis" : 
+        "name" : "doThis"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "a" : 
+            "name" : "a"
             "optional" : "false"
-            "default" : "null"
-        "comment" : "null"
-        "rtype" : "A"
-        "static" : "false"
-      "main" : 
-        "operator" : "false"
-        "parameters" : 
-        "comment" : "null"
-        "rtype" : "dynamic"
-        "static" : "false"
-    "setters" : 
-      "variable1=" : 
-        "operator" : "false"
-        "parameters" : 
-          "abc" : 
+            "named" : "false"
+            "default" : "false"
             "type" : "int"
-            "optional" : "false"
-            "default" : "null"
-        "comment" : "null"
-        "rtype" : "void"
+            "value" : "null"
+      "multi" : 
+        "name" : "multi"
+        "comment" : ""
+        "type" : "method"
         "static" : "false"
-  "comment" : "This library is used solely for testing during development and is not intended to be run by the testing machines."
-  "variables" : 
-    "_variable1" : 
-      "final" : "false"
-      "comment" : "Doc comment for top-level variable."
-      "static" : "false"
-      "type" : "int"
-
+        "return" : "int"
+        "parameters" : 
+          "a" : 
+            "name" : "a"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "int"
+            "value" : "null"
+  "B" : 
+    "name" : "B"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 

@@ -1,16 +1,41 @@
-"SmallLibrary" :
-  "classes" :
-      "A" :
-        "methods"   :
-           "someNumber" :
-               "return" : "int"
-               "args"   :
-           "doThis" :
-               "return" : "void"
-               "args" : "int"
-        "constructors" :
-           "A" :
-             "args" :
-        "properties"   :
-           "_someNumber" :
-              "type" : "int"
+"name" : "SmallLibrary"
+"comment" : ""
+"variables" : 
+  "_someNumber" :
+    "name" : "_someNumber"
+    "comment" : ""
+    "final" : "false"
+    "static" : "false"
+    "type" : "int"
+"functions" :
+"classes" :
+  "A" :
+    "name" : "A"
+    "comment" : ""
+    "superclass" : 
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" :
+    "variables" :
+    "methods" :
+       "someNumber" :
+         "name" : "someNumber"
+         "comment" : ""
+         "type" : "method"
+         "static" : "false"
+         "return" : "int"
+         "parameters" :
+       "doThis" :
+         "name" : "doThis"
+         "comment" : ""
+         "type" : "method"
+         "static" : "false"
+         "return" : "String"
+         "parameters" :
+       "A" :
+         "name" : "A"
+         "comment" : ""
+         "type" : "constructor"
+         "static" : "false"
+         "return" : "dynamic"
+         "parameters" :

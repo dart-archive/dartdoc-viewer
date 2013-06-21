@@ -22,10 +22,15 @@ class CategoryItem {
    */
   CategoryItem.fromYaml(yaml) {
     if (yaml is Map) {
-      yaml.keys.forEach((k) =>
-        content.add(Category._isCategoryKey(k) ? 
+      yaml.keys.forEach((k) {
+        // Since each object has a name field, it doesn't need a name category.
+        // TODO(tmandel): Only have name field for libraries in docgen output.
+        if (k != 'name') {
+          content.add(Category._isCategoryKey(k) ? 
             new Category.fromYaml(k, yaml[k]) : 
-              new Item.fromYaml(k, yaml[k])));
+              new Item.fromYaml(k, yaml[k]));
+        }
+      });
     } else if (yaml is List) {
       yaml.forEach((n) => content.add(new Literal(n)));
     } else {
@@ -63,12 +68,9 @@ class Category extends CategoryItem {
    * Words that are [Category] headings should go in this list. 
    */
   static const List<String> _categoryKey = const [
-    "libraries", "classes", "constructors", 
-    "functions", "variables", "comments", "setters",
-    "getters", "interfaces", "superclass", 
-    "abstract", "methods", "rtype", "parameters",
-    "type", "optional", "default", "static", 
-    "operators", "final"
+    "comment", "variables", "functions", "classes", "final", "static", "type",
+    "return", "parameters", "optional", "named", "default", "value", 
+    "superclass", "abstract", "typedef", "implements", "methods"
   ];
   
   Category.fromYaml(String this.name, yaml) : super.fromYaml(yaml);
