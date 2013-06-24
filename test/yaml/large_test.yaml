@@ -1,8 +1,10 @@
 "name" : "DummyLibrary"
-"comment" : "<p>This library is used solely for testing during development and is not intended to be run by the testing machines.</p>"
+"qualifiedname" : "DummyLibrary"
+"comment" : "<p>This library is used solely for testing during development and is notintended to be run by the testing machines.</p>"
 "variables" : 
   "_variable1" : 
     "name" : "_variable1"
+    "qualifiedname" : "DummyLibrary._variable1"
     "comment" : "<p>Doc comment for top-level variable.</p>"
     "final" : "false"
     "static" : "false"
@@ -10,34 +12,47 @@
 "functions" : 
   "getA" : 
     "name" : "getA"
+    "qualifiedname" : "DummyLibrary.getA"
     "comment" : ""
     "type" : "method"
     "static" : "false"
-    "return" : "A"
+    "return" : "DummyLibrary.A"
     "parameters" : 
       "testInt" : 
         "name" : "testInt"
+        "qualifiedname" : "DummyLibrary.getA#testInt"
         "optional" : "false"
         "named" : "false"
         "default" : "false"
-        "type" : "int"
+        "type" : "dart.core.int"
         "value" : "null"
       "testString" : 
         "name" : "testString"
+        "qualifiedname" : "DummyLibrary.getA#testString"
         "optional" : "true"
         "named" : "false"
         "default" : "true"
-        "type" : "String"
+        "type" : "dart.core.String"
         "value" : "\"default\""
   "main" : 
     "name" : "main"
+    "qualifiedname" : "DummyLibrary.main"
     "comment" : ""
     "type" : "method"
     "static" : "false"
     "return" : "dynamic"
     "parameters" : 
+  "_printVariable1" : 
+    "name" : "_printVariable1"
+    "qualifiedname" : "DummyLibrary._printVariable1"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "void"
+    "parameters" : 
   "variable1=" : 
     "name" : "variable1="
+    "qualifiedname" : "DummyLibrary.variable1="
     "comment" : ""
     "type" : "setter"
     "static" : "false"
@@ -45,23 +60,26 @@
     "parameters" : 
       "abc" : 
         "name" : "abc"
+        "qualifiedname" : "DummyLibrary.variable1=#abc"
         "optional" : "false"
         "named" : "false"
         "default" : "false"
-        "type" : "int"
+        "type" : "dart.core.int"
         "value" : "null"
 "classes" : 
   "A" : 
     "name" : "A"
+    "qualifiedname" : "DummyLibrary.A"
     "comment" : "<p>Doc comment for class A.</p>"
     "superclass" : "dart.core.Object"
     "abstract" : "false"
     "typedef" : "false"
     "implements" : 
-      - "DummyLibrary.B"
+      - "DummyLibrary._B"
     "variables" : 
       "_someNumber" : 
         "name" : "_someNumber"
+        "qualifiedname" : "DummyLibrary.A._someNumber"
         "comment" : "<p>Markdown <em>test</em> for <strong>class</strong> <code>A</code></p>"
         "final" : "false"
         "static" : "false"
@@ -69,6 +87,7 @@
     "methods" : 
       "A" : 
         "name" : "A"
+        "qualifiedname" : "DummyLibrary.A.A"
         "comment" : ""
         "type" : "constructor"
         "static" : "false"
@@ -76,13 +95,15 @@
         "parameters" : 
       "someNumber" : 
         "name" : "someNumber"
+        "qualifiedname" : "DummyLibrary.A.someNumber"
         "comment" : ""
         "type" : "getter"
         "static" : "false"
-        "return" : "int"
+        "return" : "dart.core.int"
         "parameters" : 
       "doThis" : 
         "name" : "doThis"
+        "qualifiedname" : "DummyLibrary.A.doThis"
         "comment" : ""
         "type" : "method"
         "static" : "false"
@@ -90,27 +111,31 @@
         "parameters" : 
           "a" : 
             "name" : "a"
+            "qualifiedname" : "DummyLibrary.A.doThis#a"
             "optional" : "false"
             "named" : "false"
             "default" : "false"
-            "type" : "int"
+            "type" : "dart.core.int"
             "value" : "null"
       "multi" : 
         "name" : "multi"
+        "qualifiedname" : "DummyLibrary.A.multi"
         "comment" : ""
         "type" : "method"
         "static" : "false"
-        "return" : "int"
+        "return" : "dart.core.int"
         "parameters" : 
           "a" : 
             "name" : "a"
+            "qualifiedname" : "DummyLibrary.A.multi#a"
             "optional" : "false"
             "named" : "false"
             "default" : "false"
-            "type" : "int"
+            "type" : "DummyLibrary.A"
             "value" : "null"
-  "B" : 
-    "name" : "B"
+  "_B" : 
+    "name" : "_B"
+    "qualifiedname" : "DummyLibrary._B"
     "comment" : ""
     "superclass" : "dart.core.Object"
     "abstract" : "true"

@@ -20,7 +20,11 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 const sourcePath = "../../test/yaml/large_test.yaml";
 
 //Function to set the title of the current page. 
-String get title => currentPage == null ? "" : currentPage.name;
+String get title => currentPage == null ? "" : currentPage.simpleName;
+
+// Function to get the correct comment for the current page.
+// TODO(tmandel): Change content to be a map to avoid access with ints.
+String get comment => currentPage != null ? currentPage.comment : "";
 
 // The homepage from which every [Item] can be reached.
 @observable Item homePage;
@@ -35,6 +39,7 @@ String get title => currentPage == null ? "" : currentPage.name;
 changePageWithoutState(Item page) {
   if (page != null) {
     currentPage = page;
+    loadValues();
   }
 }
 
@@ -74,7 +79,7 @@ List<Item> getBreadcrumbs(String path) {
 void buildHierarchy(CategoryItem page, Item previous) {
   if (page is Item) {
     page.path = previous.path == null ?
-        "${page.name}/" : "${previous.path}${page.name}/";
+        "${page.simpleName}/" : "${previous.path}${page.simpleName}/";
     pageIndex[page.path] = page;
     page.content.forEach((subChild) {
       buildHierarchy(subChild, page);
@@ -85,7 +90,88 @@ void buildHierarchy(CategoryItem page, Item previous) {
     });
   }
 }
+Element getPrefix() {
+  var location = currentPage.location;
+  if (location == null) {
+    return new Element.html("<p>${currentPage.returnName}</p>");
+  } else {
+    var link = currentPage.link;
+    link.onClick.listen((_) => changePage(location));
+    return link; 
+  }
+}
 
+void addParameter(Parameter parameter, Element suffix) {
+  var location = parameter.location;
+  if (location == null) {
+    suffix.appendText("${parameter.simpleType} ");
+  } else {
+    var link = new Element.html("<a>${parameter.simpleType}</a>")
+    ..onClick.listen((_) => changePage(location));
+    suffix.append(link);
+    suffix.appendText(" ");
+  }
+  suffix.appendText(parameter.name);
+}
+
+Element getSuffix() {
+  var parameters = currentPage.parameters;
+  var suffix = new ParagraphElement()
+    ..appendText("(");
+  var required = parameters.where((element) => !element.isOptional);
+  var optional = parameters.where((element) => element.isOptional);
+  required.forEach((parameter) {
+    addParameter(parameter, suffix);
+    if (parameter != required.last || !optional.isEmpty) {
+      suffix.appendText(', ');
+    }
+  });
+  if (!optional.isEmpty) {
+    optional.first.isNamed ? suffix.appendText("{") : suffix.appendText("[");
+    optional.forEach((parameter) {
+      addParameter(parameter, suffix);
+      if (parameter != optional.last) {
+        suffix.appendText(', ');
+      }
+    });
+    optional.first.isNamed ? suffix.appendText("}") : suffix.appendText("]");
+  }
+  suffix.appendText(")");
+  return suffix;
+}
+
+/**
+ * Loads proper comments and method/function descriptors for viewing.
+ */
+void loadValues() {
+  var section = query('.description');
+  section.children.clear();
+  if (currentPage.comment != null && currentPage.comment != "") {
+    section.children.add(new Element.html(currentPage.comment));
+  }
+  var descriptor = queryAll('.descriptor');
+  descriptor.forEach((element) => element.children.clear());
+  if (currentPage is Method) {
+    descriptor[0].children.add(getPrefix());
+    descriptor[1].children.add(getSuffix());
+  } else if (currentPage is Class) {
+    var links = currentPage.links;
+    var paragraph = new ParagraphElement();
+    if (!links.isEmpty) {
+      paragraph.appendText("Implements: ");
+      descriptor[1].children.add(paragraph);
+    }
+    links.forEach((element) {
+      var newPage = pageIndex[element];
+      var link = new Element.html("<a>${newPage.simpleName}</a>")
+        ..onClick.listen((_) => changePage(newPage));
+      paragraph.append(link);
+      if (element != links.last) {
+        paragraph.appendText(", ");
+      }
+    });
+  }
+}
 // Builds hierarchy and sets up listener for browser navigation.
 main() {
   var sourceYaml = getYamlFile(sourcePath);
@@ -93,6 +179,7 @@ main() {
     currentPage = loadData(response);
     homePage = currentPage;
     buildHierarchy(homePage, homePage);
+    loadValues();
   });
   
   // Handles browser navigation.

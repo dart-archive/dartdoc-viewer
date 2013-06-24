@@ -13,17 +13,18 @@
   <template instantiate="if currentPage != null && currentPage.path != null">
     <template iterate="item in getBreadcrumbs(currentPage.path)">
       <!-- TODO(tmandel): Use a better tag for these links -->
-      <a on-click="changePage(item)">{{item.name}}</a>
+      <a on-click="changePage(item)">{{item.simpleName}}</a>
     </template>
   </template>
 </nav>
   
 <main>
 
+  <!-- TODO(tmandel): Use a better tag than div for descriptors -->
+  <div class="descriptor"></div>
   <h1>{{title}}</h1>
-  <section class="description">
-    File objects are references to files.
-  </section>
+  <div class="descriptor"></div>
+  <section class="description"></section>
   
   <template instantiate="if currentPage != null">
     <template iterate="category in currentPage.content">
