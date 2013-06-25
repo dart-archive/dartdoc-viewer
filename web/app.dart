@@ -91,16 +91,17 @@ void buildHierarchy(CategoryItem page, Item previous) {
 }
 
 /**
- * Generates an HTML [Element] with the return type of a method.
+ * Generates an HTML [Element] for the return type of a method or 
+ * the type of a variable.
  */
-// Cannot go in lib/item.dart since web/app.dart cannot be imported.
+// This cannot go in lib/item.dart since web/app.dart cannot be imported.
 Element getPrefix() {
   var location = currentPage.location;
   if (location == null) {
     return new Element.html("<p>${currentPage.simpleType}</p>");
   } else {
-    var link = currentPage.link;
-    link.onClick.listen((_) => changePage(location));
+    var link = new Element.html("<a>${currentPage.simpleType}</a>")
+      ..onClick.listen((_) => changePage(location));
     return link; 
   }
 }
@@ -152,6 +153,9 @@ Element getSuffix() {
   return suffix;
 }
 
+/**
+ * Creates an HTML [Element] for the currentPage's comment and adds it.
+ */
 void loadComment() {
   var section = query('.description');
   section.children.clear();
@@ -160,6 +164,9 @@ void loadComment() {
   }
 }
 
+/**
+ * Creates an HTML [Element] for interfaces and adds it to [location].
+ */
 void loadClass(Element location) {
   var links = currentPage.implemented;
   var paragraph = new ParagraphElement();
@@ -179,20 +186,20 @@ void loadClass(Element location) {
 }
 
 /**
- * Loads proper comments and method/function descriptors for viewing.
+ * Loads proper comments and method/function descriptors for links and viewing.
  */
 void loadValues() {
   loadComment();
-  var descriptor = queryAll('.descriptor');
-  descriptor.forEach((element) => element.children.clear());
+  var descriptors = queryAll('.descriptor');
+  descriptors.forEach((element) => element.children.clear());
   
   if (currentPage is Method) {
-    descriptor[0].children.add(getPrefix());
-    descriptor[1].children.add(getSuffix());
+    descriptors[0].children.add(getPrefix());
+    descriptors[1].children.add(getSuffix());
   } else if (currentPage is Class) {
-    loadClass(descriptor[1]);
+    loadClass(descriptors[1]);
   } else if (currentPage is Variable) {
-    descriptor[0].children.add(getPrefix());
+    descriptors[0].children.add(getPrefix());
   }
 }
 

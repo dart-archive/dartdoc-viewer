@@ -37,7 +37,7 @@
   "main" : 
     "name" : "main"
     "qualifiedname" : "DummyLibrary.main"
-    "comment" : ""
+    "comment" : "<p>trying to link to <code>ArgParser</code></p>"
     "type" : "method"
     "static" : "false"
     "return" : "dynamic"
@@ -67,10 +67,108 @@
         "type" : "dart.core.int"
         "value" : "null"
 "classes" : 
+  "D" : 
+    "name" : "D"
+    "qualifiedname" : "DummyLibrary.D"
+    "comment" : "<p>Class in dart file in sub-directory.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "num" : 
+        "name" : "num"
+        "qualifiedname" : "DummyLibrary.D.num"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+      "D" : 
+        "name" : "D"
+        "qualifiedname" : "DummyLibrary.D.D"
+        "comment" : "<p>Constructor for <code>D</code></p>"
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "num" : 
+            "name" : "num"
+            "qualifiedname" : "DummyLibrary.D.D#num"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+  "C" : 
+    "name" : "C"
+    "qualifiedname" : "DummyLibrary.C"
+    "comment" : "<p>Doc comment for class C.</p>"
+    "superclass" : "dart.core.Iterable"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_someNumber" : 
+        "name" : "_someNumber"
+        "qualifiedname" : "DummyLibrary.C._someNumber"
+        "comment" : "<p>Markdown <em>test</em> for <strong>class</strong> <code>C</code></p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+      "C" : 
+        "name" : "C"
+        "qualifiedname" : "DummyLibrary.C.C"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "someNumber" : 
+        "name" : "someNumber"
+        "qualifiedname" : "DummyLibrary.C.someNumber"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "doThis" : 
+        "name" : "doThis"
+        "qualifiedname" : "DummyLibrary.C.doThis"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "DummyLibrary.C.doThis#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "multi" : 
+        "name" : "multi"
+        "qualifiedname" : "DummyLibrary.C.multi"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "DummyLibrary.C.multi#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
   "A" : 
     "name" : "A"
     "qualifiedname" : "DummyLibrary.A"
-    "comment" : "<p>Doc comment for class A.</p>"
+    "comment" : "<p>Doc comment for class A.</p><p>Multiline Test</p>"
     "superclass" : "dart.core.Object"
     "abstract" : "false"
     "typedef" : "false"
@@ -83,7 +181,7 @@
         "comment" : "<p>Markdown <em>test</em> for <strong>class</strong> <code>A</code></p>"
         "final" : "false"
         "static" : "false"
-        "type" : "DummyLibrary.A"
+        "type" : "dart.core.int"
     "methods" : 
       "A" : 
         "name" : "A"
@@ -93,10 +191,18 @@
         "static" : "false"
         "return" : "dynamic"
         "parameters" : 
+      "A.withThree" : 
+        "name" : "A.withThree"
+        "qualifiedname" : "DummyLibrary.A.A.withThree"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
       "someNumber" : 
         "name" : "someNumber"
         "qualifiedname" : "DummyLibrary.A.someNumber"
-        "comment" : ""
+        "comment" : "<p>Originally set to 12 in constructor <code>A</code>, use <code>A.withThree</code> for 3.</p>"
         "type" : "getter"
         "static" : "false"
         "return" : "dart.core.int"
@@ -131,7 +237,7 @@
             "optional" : "false"
             "named" : "false"
             "default" : "false"
-            "type" : "DummyLibrary.A"
+            "type" : "dart.core.int"
             "value" : "null"
   "_B" : 
     "name" : "_B"

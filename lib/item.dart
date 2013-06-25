@@ -1,7 +1,6 @@
 library category_item;
 
 import 'dart:html';
-
 import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
@@ -21,22 +20,23 @@ class CategoryItem {
   CategoryItem();
   
   /**
-   * Returns a CategoryItem based off a map input based off YAML. 
+   * Creates a [Category], an [Item], or a [Literal] based on YAML input
+   * and the [previous] key. Any keys contained in [skip] will be skipped. 
    */
   CategoryItem.fromYaml(yaml, {String previous: "", List<String> skip}) {
     if (skip == null) skip = [];
     if (yaml is Map) {
       yaml.keys.forEach((k) {
-        // Since each object has a name field, it doesn't need a name category.
-        // TODO(tmandel): Only have name field for libraries in docgen output.
         if (k == "comment") {
-          this.comment = yaml[k];
+          this.comment = yaml[k].replaceAll('</p><p>', ' ');
         } else if (previous == "classes") {
           content.add(new Class.fromYaml(yaml[k]));
         } else if (previous == "functions" || previous == "methods") {
           content.add(new Method.fromYaml(yaml[k]));
         } else if (previous == "variables") {
           content.add(new Variable.fromYaml(yaml[k]));
+        // Since objects have name fields, they don't need name categories.
+        // TODO(tmandel): Only have name field for libraries in docgen.
         } else if (k != "name" && k != "qualifiedname" && !skip.contains(k)) {
           content.add(Category._isCategoryKey(k) ? 
             new Category.fromYaml(k, yaml[k]) : 
@@ -52,20 +52,19 @@ class CategoryItem {
 }
 
 /**
- * An item that has more content under it, which will be shown in another page.
- * Content can be other [Item], [Category], or [Literal] objects. 
+ * An item that has more content under it, which will be shown in another page. 
  */
 class Item extends CategoryItem {
+  /// The simple name of this [Item] without hierarchy information.
   String _name;
   
+  /// The name of this [Item] with path information from its library.
   String qualifiedName;
-  
-  String get name => _name;
  
-  /// the name of this [Item] without any appended information.
+  /// The name of this [Item] without any appended information.
   String get simpleName => _name;
   
-  // Default constructor needed for Variable object.
+  // Default constructor is needed for Variable object.
   Item();
   
   Item.fromYaml(String this._name, yaml, {List<String> skip}) : 
@@ -75,6 +74,7 @@ class Item extends CategoryItem {
 }
 
 /// Changes qualified names into a path format.
+// TODO(tmandel): Fix that navigation with named constructors is broken.
 String convertQualified(String qualified) {
   return "${qualified.replaceAll(".", "/")}/";
 }
@@ -110,8 +110,10 @@ class Class extends Item {
  */
 class Method extends Item {
   bool isStatic;
-  String returnType; // Should be an Item when links work.
+  String returnType; 
   List<Parameter> parameters;
+  // TODO(tmandel): Add 'isNamed' field for constructors to fix navigation
+  // with named constructors throwing exceptions. 
   
   Method.fromYaml(yaml) : super.fromYaml(yaml['name'], yaml,
       skip: ['static', 'return', 'parameters']) {
@@ -134,12 +136,13 @@ class Method extends Item {
     return values;
   }
   
+  /// Decorated name based on properties of this [Method].
   String get name => isStatic ? "static $_name" : _name;
   
-  Element get link => new Element.html("<a>$returnName</a>");
-  
+  /// Path to the return type's Item page.
   Item get location => pageIndex[convertQualified(returnType)];
   
+  /// Return type's simple name.
   String get simpleType => this.returnType.split('.').last;
   
 }
@@ -152,13 +155,14 @@ class Parameter {
   bool isOptional;
   bool isNamed;
   bool hasDefault;
-  String _type; // is a qualified name
+  String type; // is a qualified name
   String defaultValue;
   String qualifiedName;
   
   Parameter(this._name, this.isOptional, this.isNamed, this.hasDefault,
-      this._type, this.defaultValue, this.qualifiedName);
+      this.type, this.defaultValue, this.qualifiedName);
   
+  /// Decorated name based on properties of this [Parameter].
   String get name {
     var decorated = _name;
     if (hasDefault) {
@@ -171,11 +175,11 @@ class Parameter {
     return decorated;
   }
   
-  String get type => convertQualified(_type);
+  /// Path to the [Parameter]'s [type]'s Item page.
+  Item get location => pageIndex[convertQualified(type)];
   
-  Item get location => pageIndex[type];
-  
-  String get simpleType => this._type.split('.').last;
+  /// The [type]'s simple name without path information.
+  String get simpleType => this.type.split('.').last;
 }
 
 /**
@@ -203,10 +207,10 @@ class Variable extends Item {
     return isFinal ? "$prefix final $_name" : "$prefix $_name";
   }
   
-  Element get link => new Element.html("<a>$simpleType</a>");
-  
+  /// Path to the [Variable]'s [type]'s Item page.
   Item get location => pageIndex[convertQualified(type)];
   
+  /// The [type]'s simple name without path information.
   String get simpleType => this.type.split('.').last;
 }
 
@@ -234,6 +238,8 @@ class Category extends CategoryItem {
     "superclass", "abstract", "typedef", "implements", "methods"
   ];
   
+  // A category sends in it's name to the superclass constructor to instantiate
+  // the correct objects for its contents.
   Category.fromYaml(String name, yaml) : 
     super.fromYaml(yaml, previous: name) {
     this.name = name;
