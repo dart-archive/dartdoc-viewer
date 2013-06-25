@@ -19,11 +19,10 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 // Path to the YAML file being read in. 
 const sourcePath = "../../test/yaml/large_test.yaml";
 
-//Function to set the title of the current page. 
+// Function to set the title of the current page. 
 String get title => currentPage == null ? "" : currentPage.simpleName;
 
-// Function to get the correct comment for the current page.
-// TODO(tmandel): Change content to be a map to avoid access with ints.
+// The correct comment for the current page.
 String get comment => currentPage != null ? currentPage.comment : "";
 
 // The homepage from which every [Item] can be reached.
@@ -90,10 +89,15 @@ void buildHierarchy(CategoryItem page, Item previous) {
     });
   }
 }
+
+/**
+ * Generates an HTML [Element] with the return type of a method.
+ */
+// Cannot go in lib/item.dart since web/app.dart cannot be imported.
 Element getPrefix() {
   var location = currentPage.location;
   if (location == null) {
-    return new Element.html("<p>${currentPage.returnName}</p>");
+    return new Element.html("<p>${currentPage.simpleType}</p>");
   } else {
     var link = currentPage.link;
     link.onClick.listen((_) => changePage(location));
@@ -101,6 +105,9 @@ Element getPrefix() {
   }
 }
 
+/**
+ * Creates a new link to the [parameter]'s type and adds it to [suffix]. 
+ */
 void addParameter(Parameter parameter, Element suffix) {
   var location = parameter.location;
   if (location == null) {
@@ -114,6 +121,11 @@ void addParameter(Parameter parameter, Element suffix) {
   suffix.appendText(parameter.name);
 }
 
+/**
+ * Generates an HTML [Element] with proper links based on the
+ * type of the method's parameters.
+ */
+// Cannot go in lib/item.dart since web/app.dart cannot be imported.
 Element getSuffix() {
   var parameters = currentPage.parameters;
   var suffix = new ParagraphElement()
@@ -140,39 +152,52 @@ Element getSuffix() {
   return suffix;
 }
 
-/**
- * Loads proper comments and method/function descriptors for viewing.
- */
-void loadValues() {
+void loadComment() {
   var section = query('.description');
   section.children.clear();
   if (currentPage.comment != null && currentPage.comment != "") {
     section.children.add(new Element.html(currentPage.comment));
   }
+}
+
+void loadClass(Element location) {
+  var links = currentPage.implemented;
+  var paragraph = new ParagraphElement();
+  if (!links.isEmpty) {
+    paragraph.appendText("Implements: ");
+    location.children.add(paragraph);
+  }
+  links.forEach((element) {
+    var newPage = pageIndex[element];
+    var link = new Element.html("<a>${newPage.simpleName}</a>")
+    ..onClick.listen((_) => changePage(newPage));
+    paragraph.append(link);
+    if (element != links.last) {
+      paragraph.appendText(", ");
+    }
+  });
+}
+
+/**
+ * Loads proper comments and method/function descriptors for viewing.
+ */
+void loadValues() {
+  loadComment();
   var descriptor = queryAll('.descriptor');
   descriptor.forEach((element) => element.children.clear());
+  
   if (currentPage is Method) {
     descriptor[0].children.add(getPrefix());
     descriptor[1].children.add(getSuffix());
   } else if (currentPage is Class) {
-    var links = currentPage.links;
-    var paragraph = new ParagraphElement();
-    if (!links.isEmpty) {
-      paragraph.appendText("Implements: ");
-      descriptor[1].children.add(paragraph);
-    }
-    links.forEach((element) {
-      var newPage = pageIndex[element];
-      var link = new Element.html("<a>${newPage.simpleName}</a>")
-        ..onClick.listen((_) => changePage(newPage));
-      paragraph.append(link);
-      if (element != links.last) {
-        paragraph.appendText(", ");
-      }
-    });
+    loadClass(descriptor[1]);
+  } else if (currentPage is Variable) {
+    descriptor[0].children.add(getPrefix());
   }
 }
-// Builds hierarchy and sets up listener for browser navigation.
+
+// Builds hierarchy, sets up listener for browser navigation, and loads initial
+// values for viewing and linking.
 main() {
   var sourceYaml = getYamlFile(sourcePath);
   sourceYaml.then((response) {

@@ -8,7 +8,7 @@
     "comment" : "<p>Doc comment for top-level variable.</p>"
     "final" : "false"
     "static" : "false"
-    "type" : "int"
+    "type" : "dart.core.int"
 "functions" : 
   "getA" : 
     "name" : "getA"
@@ -83,7 +83,7 @@
         "comment" : "<p>Markdown <em>test</em> for <strong>class</strong> <code>A</code></p>"
         "final" : "false"
         "static" : "false"
-        "type" : "int"
+        "type" : "DummyLibrary.A"
     "methods" : 
       "A" : 
         "name" : "A"

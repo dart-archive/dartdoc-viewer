@@ -1,8 +1,10 @@
 "name" : "SmallLibrary"
+"qualifiedname" : "SmallLibrary"
 "comment" : ""
 "variables" : 
   "_someNumber" :
     "name" : "_someNumber"
+    "qualifiedname" : "SmallLibrary._someNumber"
     "comment" : ""
     "final" : "false"
     "static" : "false"
@@ -11,6 +13,7 @@
 "classes" :
   "A" :
     "name" : "A"
+    "qualifiedname" : "SmallLibrary.A"
     "comment" : ""
     "superclass" : 
     "abstract" : "false"
@@ -20,6 +23,7 @@
     "methods" :
        "someNumber" :
          "name" : "someNumber"
+         "qualifiedname" : "SmallLibrary.A.someNumber"
          "comment" : ""
          "type" : "method"
          "static" : "false"
@@ -27,6 +31,7 @@
          "parameters" :
        "doThis" :
          "name" : "doThis"
+         "qualifiedname" : "SmallLibrary.A.doThis"
          "comment" : ""
          "type" : "method"
          "static" : "false"
@@ -34,6 +39,7 @@
          "parameters" :
        "A" :
          "name" : "A"
+         "qualifiedname" : "SmallLibrary.A.A"
          "comment" : ""
          "type" : "constructor"
          "static" : "false"

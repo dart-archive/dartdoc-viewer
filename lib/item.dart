@@ -86,13 +86,13 @@ class Class extends Item {
   Class superclass;
   bool isAbstract;
   bool isTypedef;
-  List<String> implemented;
+  List<String> _implemented;
   
   Class.fromYaml(yaml) : super.fromYaml(yaml['name'], yaml, 
       skip: ['abstract', 'typedef', 'implements']) {
         isAbstract = yaml['abstract'] == "true";
         isTypedef = yaml['typedef'] == "true";
-        implemented = yaml['implements'];
+        _implemented = yaml['implements'];
         qualifiedName = yaml['qualifiedname'];
   }
   
@@ -101,15 +101,8 @@ class Class extends Item {
     isTypedef ? "typedef ${this._name}" : "class ${this._name}";
     
   /// List of paths to be used for linking implemented interfaces.
-  // TODO(tmandel): This should be removed when every object has a 
-  // qualified name and linking becomes more universal.
-  Iterable get links {
-    if (implemented != null) {
-      return implemented.map((element) => convertQualified(element));
-    } else {
-      return [];
-    }
-  }
+  Iterable get implemented => _implemented == null ? [] : 
+      _implemented.map((element) => convertQualified(element));
 }
 
 /**
@@ -147,7 +140,7 @@ class Method extends Item {
   
   Item get location => pageIndex[convertQualified(returnType)];
   
-  String get returnName => this.returnType.split('.').last;
+  String get simpleType => this.returnType.split('.').last;
   
 }
 
@@ -191,7 +184,7 @@ class Parameter {
 class Variable extends Item {
   bool isFinal;
   bool isStatic;
-  String type; // Should be Item when links work.
+  String type;
   
   // Since variables do not contain subcategories, a call to super.fromYaml
   // is not needed.
@@ -207,8 +200,14 @@ class Variable extends Item {
   /// Decorated name based on variable return type and properties.
   String get name {
     var prefix = isStatic ? "static" : "";
-    return isFinal ? "$prefix final $type $_name" : "$prefix $type $_name";
+    return isFinal ? "$prefix final $_name" : "$prefix $_name";
   }
+  
+  Element get link => new Element.html("<a>$simpleType</a>");
+  
+  Item get location => pageIndex[convertQualified(type)];
+  
+  String get simpleType => this.type.split('.').last;
 }
 
 /**
