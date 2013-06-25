@@ -20,7 +20,7 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 const sourcePath = "../../test/yaml/large_test.yaml";
 
 // Function to set the title of the current page. 
-String get title => currentPage == null ? "" : currentPage.simpleName;
+String get title => currentPage == null ? "" : currentPage.decoratedName;
 
 // The correct comment for the current page.
 String get comment => currentPage != null ? currentPage.comment : "";
@@ -75,10 +75,10 @@ List<Item> getBreadcrumbs(String path) {
  * Runs through the member structure and creates path information and
  * populates the [pageIndex] map for proper linking.
  */
-void buildHierarchy(CategoryItem page, Item previous) {
+void buildHierarchy(Container page, Item previous) {
   if (page is Item) {
     page.path = previous.path == null ?
-        "${page.simpleName}/" : "${previous.path}${page.simpleName}/";
+        "${page.name}/" : "${previous.path}${page.name}/";
     pageIndex[page.path] = page;
     page.content.forEach((subChild) {
       buildHierarchy(subChild, page);
@@ -94,13 +94,12 @@ void buildHierarchy(CategoryItem page, Item previous) {
  * Generates an HTML [Element] for the return type of a method or 
  * the type of a variable.
  */
-// This cannot go in lib/item.dart since web/app.dart cannot be imported.
-Element getPrefix() {
-  var location = currentPage.location;
+Element getPagePreamble(LinkableType type) {
+  var location = type.location;
   if (location == null) {
-    return new Element.html("<p>${currentPage.simpleType}</p>");
+    return new Element.html("<p>${type.simpleType}</p>");
   } else {
-    var link = new Element.html("<a>${currentPage.simpleType}</a>")
+    var link = new Element.html("<a>${type.simpleType}</a>")
       ..onClick.listen((_) => changePage(location));
     return link; 
   }
@@ -110,12 +109,12 @@ Element getPrefix() {
  * Creates a new link to the [parameter]'s type and adds it to [suffix]. 
  */
 void addParameter(Parameter parameter, Element suffix) {
-  var location = parameter.location;
+  var location = parameter.type.location;
   if (location == null) {
-    suffix.appendText("${parameter.simpleType} ");
+    suffix.appendText("${parameter.type.simpleType} ");
   } else {
-    var link = new Element.html("<a>${parameter.simpleType}</a>")
-    ..onClick.listen((_) => changePage(location));
+    var link = new Element.html("<a>${parameter.type.simpleType}</a>")
+      ..onClick.listen((_) => changePage(location));
     suffix.append(link);
     suffix.appendText(" ");
   }
@@ -168,16 +167,16 @@ void loadComment() {
  * Creates an HTML [Element] for interfaces and adds it to [location].
  */
 void loadClass(Element location) {
-  var links = currentPage.implemented;
+  var links = currentPage.implements;
   var paragraph = new ParagraphElement();
   if (!links.isEmpty) {
     paragraph.appendText("Implements: ");
     location.children.add(paragraph);
   }
   links.forEach((element) {
-    var newPage = pageIndex[element];
-    var link = new Element.html("<a>${newPage.simpleName}</a>")
-    ..onClick.listen((_) => changePage(newPage));
+    var location = element.location;
+    var link = new Element.html("<a>${element.simpleType}</a>")
+    ..onClick.listen((_) => changePage(location));
     paragraph.append(link);
     if (element != links.last) {
       paragraph.appendText(", ");
@@ -194,13 +193,11 @@ void loadValues() {
   descriptors.forEach((element) => element.children.clear());
   
   if (currentPage is Method) {
-    descriptors[0].children.add(getPrefix());
+    descriptors[0].children.add(getPagePreamble(currentPage.type));
     descriptors[1].children.add(getSuffix());
   } else if (currentPage is Class) {
     loadClass(descriptors[1]);
-  } else if (currentPage is Variable) {
-    descriptors[0].children.add(getPrefix());
-  }
+  } 
 }
 
 // Builds hierarchy, sets up listener for browser navigation, and loads initial

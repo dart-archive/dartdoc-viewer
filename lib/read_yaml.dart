@@ -17,5 +17,5 @@ Future<String> getYamlFile(String path) {
 
 Item loadData(String response) {
   var doc = loadYaml(response);
-  return new Item.fromYaml(doc['name'], doc); 
+  return new Library(doc); 
 }

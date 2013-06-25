@@ -8,14 +8,14 @@
     "comment" : "<p>Doc comment for top-level variable.</p>"
     "final" : "false"
     "static" : "false"
-    "type" : "dart.core.int"
+    "type" : "DummyLibrary.C"
 "functions" : 
   "getA" : 
     "name" : "getA"
     "qualifiedname" : "DummyLibrary.getA"
     "comment" : ""
     "type" : "method"
-    "static" : "false"
+    "static" : "true"
     "return" : "DummyLibrary.A"
     "parameters" : 
       "testInt" : 

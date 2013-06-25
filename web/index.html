@@ -13,7 +13,7 @@
   <template instantiate="if currentPage != null && currentPage.path != null">
     <template iterate="item in getBreadcrumbs(currentPage.path)">
       <!-- TODO(tmandel): Use a better tag for these links -->
-      <a on-click="changePage(item)">{{item.simpleName}}</a>
+      <a on-click="changePage(item)">{{item.name}}</a>
     </template>
   </template>
 </nav>
