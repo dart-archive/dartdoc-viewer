@@ -18,6 +18,8 @@ import 'package:dartdoc_viewer/item.dart';
 // to avoid possible parsing errors.
 String empty = '';
 
+// The 'value' field is escaped more than normal to
+// account for the use of literal strings.
 String parameter =
 '''"name" : "input"
 "qualifiedname" : "Library.method#input"
@@ -93,6 +95,7 @@ String library =
     "variables" :
     "methods" :''';
 
+// A string of YAML with return types that are in scope for testing links.
 String dependencies = 
 '''"name" : "Library"
 "qualifiedname" : "Library"
@@ -144,15 +147,11 @@ String dependencies =
     "implements" : 
     "variables" : 
     "methods" :''';
-    
 
-// TODO(tmandel): After multiple libraries are included, test with ambiguous 
-// qualified names if applicable.
-// TODO(tmandel): Change type tests to be more specific once Class, Library,
-// Variable, etc. objects are included.
 void main() {
   useHtmlEnhancedConfiguration();
   
+  // Tests for the empty yaml input.
   group('empty_tests', () {
     
     test('read_empty', () {
@@ -167,6 +166,7 @@ void main() {
     });
   });
   
+  // Tests for a single parameter.
   group('parameter_tests', () {
     
     test('read_parameter', () {
@@ -195,6 +195,7 @@ void main() {
     });
   });
   
+  // Tests for a single variable.
   group('variable_tests', () {
     
     test('read_variable', () {
@@ -220,6 +221,7 @@ void main() {
     });
   });
 
+  // Tests for a class with a single method.
   group('class_tests', () {
     
     test('read_class', () {
@@ -256,6 +258,7 @@ void main() {
     });
   });
   
+  // Tests for a method with parameters.
   group('method_tests', () {
     
     test('read_method', () {
@@ -285,6 +288,7 @@ void main() {
     });
   });
   
+  // Tests for a library with a single class.
   group('library_tests', () {
     
     test('read_library', () {
@@ -328,12 +332,14 @@ void main() {
     });
   });
   
+  // Tests for links between return types, parameters, and classes.
   group('link_tests', () {
     
     test('loads_normally', () {
       expect(() => loadYaml(dependencies), returnsNormally);
     });
     
+    // TODO(tmandel): Test with superClass once it is implemented.
     test('dependencies_links', () {
       var currentMap = loadYaml(dependencies);
       var library = new Library(currentMap);
