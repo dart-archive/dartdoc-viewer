@@ -16,14 +16,6 @@ import 'package:dartdoc_viewer/item.dart';
 // to avoid possible parsing errors.
 String empty = '';
 
-String variable =
-'''"name" : "variable"
-"qualifiedname" : "Library.variable"
-"comment" : "<p>This is a test comment</p>"
-"final" : "false"
-"static" : "false"
-"type" : "dart.core.String"''';
-
 String parameter =
 '''"name" : "input"
 "qualifiedname" : "Library.method#input"
@@ -31,7 +23,15 @@ String parameter =
 "named" : "true"
 "default" : "true"
 "type" : "dart.core.String"
-"value" : "\"test\""''';
+"value" : "\\\"test\\\""''';
+
+String variable =
+'''"name" : "variable"
+"qualifiedname" : "Library.variable"
+"comment" : "<p>This is a test comment</p>"
+"final" : "false"
+"static" : "false"
+"type" : "dart.core.String"''';
 
 String method = 
 '''"name" : "getA"
@@ -98,38 +98,56 @@ void main() {
   
   group('empty_tests', () {
     
+    test('read_empty', () {
+       getYamlFile('yaml/empty.yaml').then(expectAsync1((data) {
+         expect(data, equals(empty));
+       }));
+    });
+    
     test('empty_is_null', () {
-      expect(() => loadData(empty), returnsNormally);
-      var item = loadData(empty);
-      expect(item, isNull);
+      var currentMap = loadYaml(empty);
+      expect(currentMap, isNull);
     });
   });
   
   group('parameter_tests', () {
     
+    test('read_parameter', () {
+      getYamlFile('yaml/parameter.yaml').then(expectAsync1((data) {
+        expect(data, equals(parameter));
+      }));
+    });
+    
     test('loads_normally', () {
-      expect(() => loadData(parameter), returnsNormally);
+      expect(() => loadYaml(parameter), returnsNormally);
+      var currentMap = loadYaml(parameter);
+      expect(currentMap, isNotNull);
     });
     
     test('create_instance', () {
-      var yaml = loadYaml(parameter);
-      var item = new Parameter(yaml['name'], yaml);
+      var currentMap = loadYaml(parameter);
+      var item = new Parameter(currentMap['name'], currentMap);
       expect(item is Parameter, isTrue);
     });
     
     test('inner_types', () {
-      var yaml = loadYaml(parameter);
-      var item = new Parameter(yaml['name'], yaml);
+      var currentMap = loadYaml(parameter);
+      var item = new Parameter(currentMap['name'], currentMap);
           
       expect(item.type is LinkableType, isTrue);
     });
   });
   
-  
   group('variable_tests', () {
     
+    test('read_variable', () {
+      getYamlFile('yaml/variable.yaml').then(expectAsync1((data) {
+        expect(data, equals(variable));
+      }));
+    });
+    
     test('loads_normally', () {
-      expect(() => loadData(variable), returnsNormally);
+      expect(() => loadYaml(variable), returnsNormally);
     });
     
     test('create_instance', () {
@@ -147,8 +165,14 @@ void main() {
 
   group('class_tests', () {
     
+    test('read_class', () {
+      getYamlFile('yaml/class.yaml').then(expectAsync1((data) {
+        expect(data, equals(clazz));
+      }));
+    });
+    
     test('loads_normally', () {
-      expect(() => loadData(clazz), returnsNormally);
+      expect(() => loadYaml(clazz), returnsNormally);
     });
     
     test('create_instance', () {
@@ -177,8 +201,14 @@ void main() {
   
   group('method_tests', () {
     
+    test('read_method', () {
+      getYamlFile('yaml/method.yaml').then(expectAsync1((data) {
+        expect(data, equals(method));
+      }));
+    });
+    
     test('loads_normally', () {
-      expect(() => loadData(method), returnsNormally);
+      expect(() => loadYaml(method), returnsNormally);
     });
     
     test('create_instance', () {
@@ -200,6 +230,12 @@ void main() {
   
   group('library_tests', () {
     
+    test('read_library', () {
+      getYamlFile('yaml/library.yaml').then(expectAsync1((data) {
+        expect(data, equals(library));
+      }));
+    });
+    
     test('loads_normally', () {
       expect(() => loadData(library), returnsNormally);
     });
@@ -208,6 +244,15 @@ void main() {
       var yaml = loadYaml(library);
       var item = new Library(yaml);
       expect(item is Library, isTrue);
+    });
+    
+    test('loadData', () {
+      var yaml = loadYaml(library);
+      var item = new Library(yaml);
+      var item2 = loadData(library);
+      expect(item2 is Library, isTrue);
+      expect(item2.name, equals(item.name));
+      expect(item2.comment, equals(item.comment));
     });
     
     test('inner_types', () {

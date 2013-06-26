@@ -1,0 +1,15 @@
+"name" : "getA"
+"qualifiedname" : "Library.B.getA"
+"comment" : ""
+"type" : "method"
+"static" : "false"
+"return" : "Library.A"
+"parameters" :
+  "testInt" :
+    "name" : "testInt"
+    "qualifiedname" : "Library.B.getA#testInt"
+    "optional" : "false"
+    "named" : "false"
+    "default" : "false"
+    "type" : "dart.core.int"
+    "value" : "null"

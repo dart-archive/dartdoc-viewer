@@ -1,0 +1,16 @@
+"name" : "DummyLibrary"
+"qualifiedname" : "DummyLibrary"
+"comment" : "<p>This is a library.</p>"
+"variables" :
+"functions" :
+"classes" :
+  "A" :
+    "name" : "A"
+    "qualifiedname" : "DummyLibrary.A"
+    "comment" : "<p>This is a test class</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" :
+    "variables" :
+    "methods" :

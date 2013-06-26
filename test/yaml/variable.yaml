@@ -1,0 +1,6 @@
+"name" : "variable"
+"qualifiedname" : "Library.variable"
+"comment" : "<p>This is a test comment</p>"
+"final" : "false"
+"static" : "false"
+"type" : "dart.core.String"
