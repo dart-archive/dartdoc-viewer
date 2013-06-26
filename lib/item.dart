@@ -17,21 +17,20 @@ class Container {
 /**
  * A [Container] that holds other containers.
  */
-class CategoryItem extends Container {
+class CompositeContainer extends Container {
   List<Container> content = [];
 }
 
-
 // Combines all paragraph elements into one for conversion to an HTML Element.
-String _fixComment(String comment) {
+String _mergeCommentParagraphs(String comment) {
   if (comment == null) return "";
   return comment.replaceAll("</p><p>", " ");
 }
 
 /**
- * A [CategoryItem] that contains other [Container]s to be displayed.
+ * A [CompositeContainer] that contains other [Container]s to be displayed.
  */
-class Category extends CategoryItem {
+class Category extends CompositeContainer {
   Category.forClasses(Map yaml) {
     this.name = "Classes";
     yaml.keys.forEach((key) => content.add(new Class(yaml[key])));
@@ -49,11 +48,14 @@ class Category extends CategoryItem {
 }
 
 /**
- * A [CategoryItem] synonymous with a page.
+ * A [CompositeContainer] synonymous with a page.
  */
-class Item extends CategoryItem {
+abstract class Item extends CompositeContainer {
   /// A string representing the path to this [Item] from the homepage.
   @observable String path;
+  
+  /// [Item]'s name with its properties properly appended. 
+  String get decoratedName;
 }
 
 /**
@@ -63,7 +65,7 @@ class Library extends Item {
   
   Library(Map yaml) {
     this.name = yaml['name'];
-    this.comment = _fixComment(yaml['comment']);
+    this.comment = _mergeCommentParagraphs(yaml['comment']);
     if (yaml['classes'] != null) {
       content.add(new Category.forClasses(yaml['classes']));
     }
@@ -83,14 +85,14 @@ class Library extends Item {
  */
 class Class extends Item {
   
-  String superclass;
+  String superClass;
   bool isAbstract;
   bool isTypedef;
   List<LinkableType> implements;
   
   Class(Map yaml) {
     this.name = yaml['name'];
-    this.comment = _fixComment(yaml['comment']);
+    this.comment = _mergeCommentParagraphs(yaml['comment']);
     if (yaml['variables'] != null) {
       content.add(new Category.forVariables(yaml['variables']));
     }
@@ -99,8 +101,8 @@ class Class extends Item {
     }
     this.isAbstract = yaml['abstract'] == "true";
     this.isTypedef = yaml['typedef'] == "true";
-    this.implements = [];
-    
+    this.implements = yaml['implements'] == null ? [] :
+        yaml['implements'].map((item) => new LinkableType(item)).toList();
   }
   
   String get decoratedName => isAbstract ? "abstract class ${this.name}" :
@@ -119,7 +121,7 @@ class Method extends Item {
   
   Method(Map yaml) {
     this.name = yaml['name'];
-    this.comment = _fixComment(yaml['comment']);
+    this.comment = _mergeCommentParagraphs(yaml['comment']);
     this.isStatic = yaml['static'] == "true";
     this.type = new LinkableType(yaml['return']);
     this.parameters = _getParameters(yaml['parameters']);
@@ -183,7 +185,7 @@ class Variable extends Container {
   
   Variable(Map yaml) {
     this.name = yaml['name'];
-    this.comment = _fixComment(yaml['comment']);
+    this.comment = _mergeCommentParagraphs(yaml['comment']);
     this.isFinal = yaml['final'] == "true";
     this.isStatic = yaml['static'] == "true";
     this.type = new LinkableType(yaml['type']);

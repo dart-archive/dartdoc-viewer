@@ -2,8 +2,8 @@
 <link rel="import" href="item.html">
 <link rel="import" href="variable.html">
 
-<element name="dartdoc-category" constructor="CategoryElement" extends="details" 
-    apply-author-styles>     
+<element name="dartdoc-category" constructor="CategoryElement" 
+    extends="details" apply-author-styles>     
   <template>
     <summary>{{title}}</summary>      
     <template iterate="item in category.content">
@@ -16,7 +16,8 @@
       </template>
       
       <template if="item is Category">
-        <dartdoc-category category="{{item}}" class="category"></dartdoc-category>
+        <dartdoc-category category="{{item}}" class="category">
+        </dartdoc-category>
       </template>
     </template>
   </template>
@@ -32,7 +33,7 @@
      * Used as a placeholder for an CategoryItem object. 
      */
     class CategoryElement extends WebComponent {
-      CategoryItem category;
+      CompositeContainer category;
       
       String get title => category.name;
     }

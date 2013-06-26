@@ -3,7 +3,7 @@
  * found at dart-repo/dart/pkg/docgen. 
  * 
  * The Yaml file outputted by the docgen tool will be read in to 
- * generate [Page] and [Category] and [CategoryItem]. 
+ * generate [Page] and [Category] and [CompositeContainer]. 
  * Pages, Categories and CategoryItems are used to format and layout the page. 
  */
 // TODO(janicejl): Add a link to the dart docgen landing page in future. 
@@ -31,6 +31,9 @@ String get comment => currentPage != null ? currentPage.comment : "";
 // The current page being shown.
 @observable Item currentPage;
 
+// The data for a particular page to be populated with the name.
+Content content;
+
 /**
  * Changes the currentPage to the page of the item clicked
  * without pushing state onto the history.
@@ -38,7 +41,7 @@ String get comment => currentPage != null ? currentPage.comment : "";
 changePageWithoutState(Item page) {
   if (page != null) {
     currentPage = page;
-    loadValues();
+    content.updateAll();
   }
 }
 
@@ -91,113 +94,114 @@ void buildHierarchy(Container page, Item previous) {
 }
 
 /**
- * Generates an HTML [Element] for the return type of a method or 
- * the type of a variable.
+ * The page-specific content to be displayed with a page.
  */
-Element getPagePreamble(LinkableType type) {
-  var location = type.location;
-  if (location == null) {
-    return new Element.html("<p>${type.simpleType}</p>");
-  } else {
-    var link = new Element.html("<a>${type.simpleType}</a>")
-      ..onClick.listen((_) => changePage(location));
-    return link; 
+class Content {
+  
+  /// The HTML element containing the comment describing a page.
+  Element description;
+  
+  /// The HTML element describing the return type of a page.
+  Element preDescriptor;
+  
+  /// The HTML element describing the parameters or superinterfaces of a page.
+  Element postDescriptor;
+  
+  Content() {
+    description = query('.description');
+    var descriptors = queryAll('.descriptor');
+    preDescriptor = descriptors[0];
+    postDescriptor = descriptors[1];
   }
-}
-
-/**
- * Creates a new link to the [parameter]'s type and adds it to [suffix]. 
- */
-void addParameter(Parameter parameter, Element suffix) {
-  var location = parameter.type.location;
-  if (location == null) {
-    suffix.appendText("${parameter.type.simpleType} ");
-  } else {
-    var link = new Element.html("<a>${parameter.type.simpleType}</a>")
-      ..onClick.listen((_) => changePage(location));
-    suffix.append(link);
-    suffix.appendText(" ");
-  }
-  suffix.appendText(parameter.name);
-}
-
-/**
- * Generates an HTML [Element] with proper links based on the
- * type of the method's parameters.
- */
-// Cannot go in lib/item.dart since web/app.dart cannot be imported.
-Element getSuffix() {
-  var parameters = currentPage.parameters;
-  var suffix = new ParagraphElement()
-    ..appendText("(");
-  var required = parameters.where((element) => !element.isOptional);
-  var optional = parameters.where((element) => element.isOptional);
-  required.forEach((parameter) {
-    addParameter(parameter, suffix);
-    if (parameter != required.last || !optional.isEmpty) {
-      suffix.appendText(', ');
+  
+  /**
+   * Update the [description], [preDescriptor], and [postDescriptor] to match
+   * the current page being shown.
+   */
+  void updateAll() {
+    _updateComment();
+    preDescriptor.children.clear();
+    postDescriptor.children.clear();
+    if (currentPage is Method) {
+      preDescriptor.children.add(_getType(currentPage.type));
+      _updateParameters();
+    } else if (currentPage is Class) {
+      _updateInterfaces();
     }
-  });
-  if (!optional.isEmpty) {
-    optional.first.isNamed ? suffix.appendText("{") : suffix.appendText("[");
-    optional.forEach((parameter) {
-      addParameter(parameter, suffix);
-      if (parameter != optional.last) {
-        suffix.appendText(', ');
+  }
+  
+  /// Adds the correct comment to [description].
+  void _updateComment() {
+    description.children.clear();
+    if (currentPage.comment != null && currentPage.comment != "") {
+      description.children.add(new Element.html(currentPage.comment));
+    }
+  }
+  
+  /// Adds the correct interfaces to [postDescriptor].
+  void _updateInterfaces() {
+    var interfaces = currentPage.implements;
+    var paragraph = new ParagraphElement();
+    if (!interfaces.isEmpty) {
+      paragraph.appendText("Implements: ");
+      postDescriptor.children.add(paragraph);
+    }
+    interfaces.forEach((element) {
+      var link = new Element.html("<a>${element.simpleType}</a>")
+        ..onClick.listen((_) => changePage(element.location));
+      paragraph.append(link);
+      if (element != interfaces.last) {
+        paragraph.appendText(", ");
       }
     });
-    optional.first.isNamed ? suffix.appendText("}") : suffix.appendText("]");
   }
-  suffix.appendText(")");
-  return suffix;
-}
-
-/**
- * Creates an HTML [Element] for the currentPage's comment and adds it.
- */
-void loadComment() {
-  var section = query('.description');
-  section.children.clear();
-  if (currentPage.comment != null && currentPage.comment != "") {
-    section.children.add(new Element.html(currentPage.comment));
-  }
-}
-
-/**
- * Creates an HTML [Element] for interfaces and adds it to [location].
- */
-void loadClass(Element location) {
-  var links = currentPage.implements;
-  var paragraph = new ParagraphElement();
-  if (!links.isEmpty) {
-    paragraph.appendText("Implements: ");
-    location.children.add(paragraph);
-  }
-  links.forEach((element) {
-    var location = element.location;
-    var link = new Element.html("<a>${element.simpleType}</a>")
-    ..onClick.listen((_) => changePage(location));
-    paragraph.append(link);
-    if (element != links.last) {
-      paragraph.appendText(", ");
-    }
-  });
-}
-
-/**
- * Loads proper comments and method/function descriptors for links and viewing.
- */
-void loadValues() {
-  loadComment();
-  var descriptors = queryAll('.descriptor');
-  descriptors.forEach((element) => element.children.clear());
   
-  if (currentPage is Method) {
-    descriptors[0].children.add(getPagePreamble(currentPage.type));
-    descriptors[1].children.add(getSuffix());
-  } else if (currentPage is Class) {
-    loadClass(descriptors[1]);
-  } 
+  /// Adds a single parameter to [postData].
+  void addParameter(Parameter parameter, Element postData) {
+    if (parameter.type.location != null) {
+      postData.append(_getType(parameter.type));
+    } else {
+      postData.appendText(parameter.type.simpleType);
+    }
+    postData.appendText(" ${parameter.decoratedName}");
+  }
+  
+  /// Adds the correct parameters to [postDescriptor].
+  void _updateParameters() {
+    var required = currentPage.parameters.where((item) => !item.isOptional);
+    var optional = currentPage.parameters.where((item) => item.isOptional);
+    var postData = new ParagraphElement()
+      ..appendText("(");
+    required.forEach((parameter) {
+      addParameter(parameter, postData);
+      if (parameter != required.last || !optional.isEmpty) {
+        postData.appendText(', ');
+      }
+    });
+    if (!optional.isEmpty) {
+      optional.first.isNamed ? 
+          postData.appendText("{") : postData.appendText("[");
+      optional.forEach((parameter) {
+        addParameter(parameter, postData);
+        if (parameter != optional.last) postData.appendText(', ');
+      });
+      optional.first.isNamed ? 
+          postData.appendText("}") : postData.appendText("]");
+    }
+    postData.appendText(")");
+    postDescriptor.children.add(postData);
+  }
+  
+  /// Generates an HTML [Element] given a [LinkableType].
+  Element _getType(LinkableType type) {
+    if (type.location == null) {
+      return new Element.html("<p>${type.simpleType}</p>");
+    } else {
+      var link = new Element.html("<a>${type.simpleType}</a>")
+        ..onClick.listen((_) => changePage(type.location));
+      return link; 
+    }
+  }
 }
 
 // Builds hierarchy, sets up listener for browser navigation, and loads initial
@@ -208,7 +212,8 @@ main() {
     currentPage = loadData(response);
     homePage = currentPage;
     buildHierarchy(homePage, homePage);
-    loadValues();
+    content = new Content();
+    content.updateAll();
   });
   
   // Handles browser navigation.
