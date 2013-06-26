@@ -6,6 +6,8 @@ library viewer_test;
 
 import 'dart:html';
 
+import '../web/app.dart' as app;
+
 import 'package:unittest/unittest.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:yaml/yaml.dart';
@@ -86,8 +88,63 @@ String library =
     "abstract" : "true"
     "typedef" : "false"
     "implements" :
+      - "Library.A.B"
+      - "Library.C.Y"
     "variables" :
     "methods" :''';
+
+String dependencies = 
+'''"name" : "Library"
+"qualifiedname" : "Library"
+"comment" : "<p>This is a library.</p>"
+"variables" :
+  "variable" :
+    "name" : "variable"
+    "qualifiedname" : "Library.variable"
+    "comment" : "<p>This is a test comment</p>"
+    "final" : "false"
+    "static" : "false"
+    "type" : "Library.A"
+"functions" :
+  "changeA" :
+    "name" : "changeA"
+    "qualifiedname" : "Library.A.changeA"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "Library.A"
+    "parameters" :
+      "testA" :
+        "name" : "testA"
+        "qualifiedname" : "Library.A.changeA#testInt"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "Library.A"
+        "value" : "null"
+"classes" :
+  "A" :
+    "name" : "A"
+    "qualifiedname" : "Library.A"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "Library.B"
+    "variables" : 
+    "methods" :
+  "B" :
+    "name" : "B"
+    "qualifiedname" : "Library.B"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" :''';
+    
 
 // TODO(tmandel): After multiple libraries are included, test with ambiguous 
 // qualified names if applicable.
@@ -99,9 +156,9 @@ void main() {
   group('empty_tests', () {
     
     test('read_empty', () {
-       getYamlFile('yaml/empty.yaml').then(expectAsync1((data) {
-         expect(data, equals(empty));
-       }));
+      getYamlFile('yaml/empty.yaml').then(expectAsync1((data) {
+        expect(data, equals(empty));
+      }));
     });
     
     test('empty_is_null', () {
@@ -263,10 +320,49 @@ void main() {
       expect(item.content.first is Category, isTrue);
       
       var category = item.content.first;
-      expect(category.content.length, equals(1));
-      expect(category.content.first is Class, isTrue);
+      var classA = category.content.first;
+      expect(classA is Class, isTrue);
       
-      // TODO(tmandel): Test 'implements' when I implement it...
+      var implements = classA.implements;
+      implements.forEach((element) => expect(element is LinkableType, isTrue));
+    });
+  });
+  
+  group('link_tests', () {
+    
+    test('loads_normally', () {
+      expect(() => loadYaml(dependencies), returnsNormally);
+    });
+    
+    test('dependencies_links', () {
+      var currentMap = loadYaml(dependencies);
+      var library = new Library(currentMap);
+      app.buildHierarchy(library, library);
+      
+      var variables, classes, functions;
+      library.content.forEach((category) {
+        if (category.name == 'Classes') classes = category;
+        if (category.name == 'Variables') variables = category;
+        if (category.name == 'Functions') functions = category;
+      });
+      var variable = variables.content.first;
+      var classA, classB;
+      classes.content.forEach((element) {
+        if (element.name == "A") classA = element;
+        if (element.name == "B") classB = element;
+      });
+      var function = functions.content.first;
+      
+      expect(variable.type.location, equals(classA));
+      expect(function.type.location, equals(classA));
+      
+      var parameters = function.parameters;
+      var parameter = parameters.first;
+      
+      expect(parameter.type.location, equals(classA));
+      
+      var implements = classA.implements.first;
+      expect(implements.location, equals(classB));
     });
   });
 }

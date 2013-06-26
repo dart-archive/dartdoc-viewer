@@ -12,5 +12,7 @@
     "abstract" : "true"
     "typedef" : "false"
     "implements" :
+      - "Library.A.B"
+      - "Library.C.Y"
     "variables" :
     "methods" :
