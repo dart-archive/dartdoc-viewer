@@ -11,7 +11,7 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 @observable 
 class Container {
   String name;
-  String comment = "";
+  String comment = '';
 }
 
 /**
@@ -24,7 +24,7 @@ class CompositeContainer extends Container {
 // Combines all paragraph elements into one for conversion to an HTML Element.
 String _mergeCommentParagraphs(String comment) {
   if (comment == null) return "";
-  return comment.replaceAll("</p><p>", " ");
+  return comment.replaceAll('</p><p>', ' ');
 }
 
 /**
@@ -32,12 +32,12 @@ String _mergeCommentParagraphs(String comment) {
  */
 class Category extends CompositeContainer {
   Category.forClasses(Map yaml) {
-    this.name = "Classes";
+    this.name = 'Classes';
     yaml.keys.forEach((key) => content.add(new Class(yaml[key])));
   }
   
   Category.forVariables(Map yaml) {
-    this.name = "Variables";
+    this.name = 'Variables';
     yaml.keys.forEach((key) => content.add(new Variable(yaml[key])));
   }
   
@@ -73,7 +73,7 @@ class Library extends Item {
       content.add(new Category.forVariables(yaml['variables']));
     }
     if (yaml['functions'] != null) {
-      content.add(new Category.forFunctions(yaml['functions'], "Functions"));
+      content.add(new Category.forFunctions(yaml['functions'], 'Functions'));
     }
   }
   
@@ -97,17 +97,16 @@ class Class extends Item {
       content.add(new Category.forVariables(yaml['variables']));
     }
     if (yaml['methods'] != null) {
-      content.add(new Category.forFunctions(yaml['methods'], "Methods"));
+      content.add(new Category.forFunctions(yaml['methods'], 'Methods'));
     }
-    this.isAbstract = yaml['abstract'] == "true";
-    this.isTypedef = yaml['typedef'] == "true";
+    this.isAbstract = yaml['abstract'] == 'true';
+    this.isTypedef = yaml['typedef'] == 'true';
     this.implements = yaml['implements'] == null ? [] :
         yaml['implements'].map((item) => new LinkableType(item)).toList();
   }
   
-  String get decoratedName => isAbstract ? "abstract class ${this.name}" :
-    isTypedef ? "typedef ${this.name}" : "class ${this.name}";
-  
+  String get decoratedName => isAbstract ? 'abstract class ${this.name}' :
+    isTypedef ? 'typedef ${this.name}' : 'class ${this.name}';
 }
 
 /**
@@ -122,7 +121,7 @@ class Method extends Item {
   Method(Map yaml) {
     this.name = yaml['name'];
     this.comment = _mergeCommentParagraphs(yaml['comment']);
-    this.isStatic = yaml['static'] == "true";
+    this.isStatic = yaml['static'] == 'true';
     this.type = new LinkableType(yaml['return']);
     this.parameters = _getParameters(yaml['parameters']);
   }
@@ -138,7 +137,7 @@ class Method extends Item {
     return values;
   }
   
-  String get decoratedName => isStatic ? "static $name" : name;
+  String get decoratedName => isStatic ? 'static $name' : name;
 }
 
 /**
@@ -154,9 +153,9 @@ class Parameter {
   String defaultValue;
   
   Parameter(this.name, Map yaml) {
-    this.isOptional = yaml['optional'] == "true";
-    this.isNamed = yaml['named'] == "true";
-    this.hasDefault = yaml['default'] == "true";
+    this.isOptional = yaml['optional'] == 'true';
+    this.isNamed = yaml['named'] == 'true';
+    this.hasDefault = yaml['default'] == 'true';
     this.type = new LinkableType(yaml['type']);
     this.defaultValue = yaml['value'];
   }
@@ -165,9 +164,9 @@ class Parameter {
     var decorated = name;
     if (hasDefault) {
       if (isNamed) {
-        decorated = "$decorated: $defaultValue";
+        decorated = '$decorated: $defaultValue';
       } else {
-        decorated = "$decorated=$defaultValue";
+        decorated = '$decorated=$defaultValue';
       }
     }
     return decorated;
@@ -186,15 +185,15 @@ class Variable extends Container {
   Variable(Map yaml) {
     this.name = yaml['name'];
     this.comment = _mergeCommentParagraphs(yaml['comment']);
-    this.isFinal = yaml['final'] == "true";
-    this.isStatic = yaml['static'] == "true";
+    this.isFinal = yaml['final'] == 'true';
+    this.isStatic = yaml['static'] == 'true';
     this.type = new LinkableType(yaml['type']);
   }
   
   /// The attributes of this variable to be displayed before it.
   String get prefix {
-    var prefix = isStatic ? "static " : "";
-    return isFinal ? "${prefix}final" : prefix;
+    var prefix = isStatic ? 'static ' : '';
+    return isFinal ? '${prefix}final' : prefix;
   }
 }
 
@@ -210,6 +209,5 @@ class LinkableType {
   String get simpleType => type.split('.').last;
   
   /// The [Item] describing this type.
-  Item get location => pageIndex["${type.replaceAll(".", "/")}/"];
-
+  Item get location => pageIndex['${type.replaceAll('.', '/')}/'];
 }

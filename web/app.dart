@@ -17,22 +17,19 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the YAML file being read in. 
-const sourcePath = "../../test/yaml/large_test.yaml";
+const sourcePath = '../../test/yaml/large_test.yaml';
 
 // Function to set the title of the current page. 
-String get title => currentPage == null ? "" : currentPage.decoratedName;
+String get title => currentPage == null ? '' : currentPage.decoratedName;
 
 // The correct comment for the current page.
-String get comment => currentPage != null ? currentPage.comment : "";
+String get comment => currentPage != null ? currentPage.comment : '';
 
 // The homepage from which every [Item] can be reached.
 @observable Item homePage;
 
 // The current page being shown.
 @observable Item currentPage;
-
-// The data for a particular page to be populated with the name.
-Content content;
 
 /**
  * Changes the currentPage to the page of the item clicked
@@ -41,7 +38,7 @@ Content content;
 changePageWithoutState(Item page) {
   if (page != null) {
     currentPage = page;
-    content.updateAll();
+    update();
   }
 }
 
@@ -52,7 +49,7 @@ changePage(Item page) {
   if (page != null && currentPage != page) {
     var state = page.path;
     var title = state.substring(0, state.length - 1);
-    window.history.pushState(state, title, "/#$state");
+    window.history.pushState(state, title, '/#$state');
   }
   changePageWithoutState(page);
 }
@@ -64,11 +61,11 @@ changePage(Item page) {
 List<Item> getBreadcrumbs(String path) {
   var breadcrumbs = [];
   // Matches alphanumeric variable/method names ending with a '/'.  
-  var regex = new RegExp(r"(_?([a-zA-Z0-9]+)=?)/");
+  var regex = new RegExp(r'(_?([a-zA-Z0-9]+)=?)/');
   var matches = regex.allMatches(path);
-  var currentPath = "";
+  var currentPath = '';
   matches.forEach((match) {
-    currentPath = "$currentPath${match.group(0)}";
+    currentPath = '$currentPath${match.group(0)}';
     breadcrumbs.add(pageIndex[currentPath]);
   });
   return breadcrumbs;
@@ -81,7 +78,7 @@ List<Item> getBreadcrumbs(String path) {
 void buildHierarchy(Container page, Item previous) {
   if (page is Item) {
     page.path = previous.path == null ?
-        "${page.name}/" : "${previous.path}${page.name}/";
+        '${page.name}/' : '${previous.path}${page.name}/';
     pageIndex[page.path] = page;
     page.content.forEach((subChild) {
       buildHierarchy(subChild, page);
@@ -93,114 +90,95 @@ void buildHierarchy(Container page, Item previous) {
   }
 }
 
-/**
- * The page-specific content to be displayed with a page.
- */
-class Content {
-  
-  /// The HTML element containing the comment describing a page.
-  Element description;
-  
-  /// The HTML element describing the return type of a page.
-  Element preDescriptor;
-  
-  /// The HTML element describing the parameters or superinterfaces of a page.
-  Element postDescriptor;
-  
-  Content() {
-    description = query('.description');
-    var descriptors = queryAll('.descriptor');
-    preDescriptor = descriptors[0];
-    postDescriptor = descriptors[1];
+/// Adds the correct interfaces to [postDescriptor].
+void _updateInterfaces(Element postDescriptor) {
+  var interfaces = currentPage.implements;
+  var paragraph = new ParagraphElement();
+  if (!interfaces.isEmpty) {
+    paragraph.appendText('Implements: ');
+    postDescriptor.children.add(paragraph);
   }
-  
-  /**
-   * Update the [description], [preDescriptor], and [postDescriptor] to match
-   * the current page being shown.
-   */
-  void updateAll() {
-    _updateComment();
-    preDescriptor.children.clear();
-    postDescriptor.children.clear();
-    if (currentPage is Method) {
-      preDescriptor.children.add(_getType(currentPage.type));
-      _updateParameters();
-    } else if (currentPage is Class) {
-      _updateInterfaces();
+  interfaces.forEach((element) {
+    var link = new Element.html('<a>${element.simpleType}</a>')
+      ..onClick.listen((_) => changePage(element.location));
+    paragraph.append(link);
+    if (element != interfaces.last) {
+      paragraph.appendText(', ');
     }
+  });
+}
+
+/// Generates an HTML [Element] given a [LinkableType].
+Element _getType(LinkableType type) {
+  if (type.location == null) {
+    return new Element.html('<p>${type.simpleType}</p>');
+  } else {
+    var link = new Element.html('<a>${type.simpleType}</a>')
+      ..onClick.listen((_) => changePage(type.location));
+    return link; 
   }
-  
-  /// Adds the correct comment to [description].
-  void _updateComment() {
-    description.children.clear();
-    if (currentPage.comment != null && currentPage.comment != "") {
-      description.children.add(new Element.html(currentPage.comment));
+}
+
+/// Adds a single parameter to [postData].
+void addParameter(Parameter parameter, Element postData) {
+  if (parameter.type.location != null) {
+    postData.append(_getType(parameter.type));
+  } else {
+    postData.appendText(parameter.type.simpleType);
+  }
+  postData.appendText(' ${parameter.decoratedName}');
+}
+
+/// Adds the correct parameters to [postDescriptor].
+void _updateParameters(Element postDescriptor) {
+  var required = currentPage.parameters.where((item) => !item.isOptional);
+  var optional = currentPage.parameters.where((item) => item.isOptional);
+  var postData = new ParagraphElement()
+    ..appendText('(');
+  required.forEach((parameter) {
+    addParameter(parameter, postData);
+    if (parameter != required.last || !optional.isEmpty) {
+      postData.appendText(', ');
     }
-  }
-  
-  /// Adds the correct interfaces to [postDescriptor].
-  void _updateInterfaces() {
-    var interfaces = currentPage.implements;
-    var paragraph = new ParagraphElement();
-    if (!interfaces.isEmpty) {
-      paragraph.appendText("Implements: ");
-      postDescriptor.children.add(paragraph);
-    }
-    interfaces.forEach((element) {
-      var link = new Element.html("<a>${element.simpleType}</a>")
-        ..onClick.listen((_) => changePage(element.location));
-      paragraph.append(link);
-      if (element != interfaces.last) {
-        paragraph.appendText(", ");
-      }
-    });
-  }
-  
-  /// Adds a single parameter to [postData].
-  void addParameter(Parameter parameter, Element postData) {
-    if (parameter.type.location != null) {
-      postData.append(_getType(parameter.type));
-    } else {
-      postData.appendText(parameter.type.simpleType);
-    }
-    postData.appendText(" ${parameter.decoratedName}");
-  }
-  
-  /// Adds the correct parameters to [postDescriptor].
-  void _updateParameters() {
-    var required = currentPage.parameters.where((item) => !item.isOptional);
-    var optional = currentPage.parameters.where((item) => item.isOptional);
-    var postData = new ParagraphElement()
-      ..appendText("(");
-    required.forEach((parameter) {
+  });
+  if (!optional.isEmpty) {
+    optional.first.isNamed ? 
+        postData.appendText('{') : postData.appendText('[');
+    optional.forEach((parameter) {
       addParameter(parameter, postData);
-      if (parameter != required.last || !optional.isEmpty) {
-        postData.appendText(', ');
-      }
+      if (parameter != optional.last) postData.appendText(', ');
     });
-    if (!optional.isEmpty) {
-      optional.first.isNamed ? 
-          postData.appendText("{") : postData.appendText("[");
-      optional.forEach((parameter) {
-        addParameter(parameter, postData);
-        if (parameter != optional.last) postData.appendText(', ');
-      });
-      optional.first.isNamed ? 
-          postData.appendText("}") : postData.appendText("]");
-    }
-    postData.appendText(")");
-    postDescriptor.children.add(postData);
+    optional.first.isNamed ? 
+        postData.appendText('}') : postData.appendText(']');
   }
-  
-  /// Generates an HTML [Element] given a [LinkableType].
-  Element _getType(LinkableType type) {
-    if (type.location == null) {
-      return new Element.html("<p>${type.simpleType}</p>");
-    } else {
-      var link = new Element.html("<a>${type.simpleType}</a>")
-        ..onClick.listen((_) => changePage(type.location));
-      return link; 
-    }
+  postData.appendText(')');
+  postDescriptor.children.add(postData);
+}
+
+/// Adds the correct comment to [description].
+void _updateComment() {
+  var description = query('.description');
+  description.children.clear();
+  if (currentPage.comment != null && currentPage.comment != '') {
+    description.children.add(new Element.html(currentPage.comment));
+  }
+}
+
+/**
+ * Update the comment and descriptor tags to match the current page.
+ */
+void update() {
+  _updateComment();
+  var descriptors = queryAll('.descriptor');
+  var preDescriptor = descriptors[0];
+  var postDescriptor = descriptors[1];
+  preDescriptor.children.clear();
+  postDescriptor.children.clear();
+  if (currentPage is Method) {
+    preDescriptor.children.add(_getType(currentPage.type));
+    _updateParameters(postDescriptor);
+  } else if (currentPage is Class) {
+    _updateInterfaces(postDescriptor);
   }
 }
 
@@ -212,14 +190,13 @@ main() {
     currentPage = loadData(response);
     homePage = currentPage;
     buildHierarchy(homePage, homePage);
-    content = new Content();
-    content.updateAll();
+    update();
   });
   
   // Handles browser navigation.
   window.onPopState.listen((event) {
     if (event.state != null) {
-      if (event.state != "") {
+      if (event.state != '') {
         changePageWithoutState(pageIndex[event.state]);
       } 
     } else {
