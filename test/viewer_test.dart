@@ -6,13 +6,13 @@ library viewer_test;
 
 import 'dart:html';
 
-import '../web/app.dart' as app;
-
-import 'package:unittest/unittest.dart';
-import 'package:unittest/html_enhanced_config.dart';
-import 'package:yaml/yaml.dart';
-import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/item.dart';
+import 'package:dartdoc_viewer/read_yaml.dart';
+import 'package:unittest/html_enhanced_config.dart';
+import 'package:unittest/unittest.dart';
+import 'package:yaml/yaml.dart';
+
+import '../web/app.dart' as app;
 
 // Since YAML is sensitive to whitespace, these are declared in the top-level
 // for readability and to avoid possible parsing errors.
@@ -155,6 +155,7 @@ void main() {
     // Check that read_yaml reads the right data.
     getYamlFile('yaml/empty.yaml').then(expectAsync1((data) {
       expect(data, equals(empty));
+      // Test that reading in an empty file doesn't throw an exception.
       expect(() => loadData(data), returnsNormally);
     }));
   });
@@ -207,6 +208,7 @@ void main() {
   });
   
   test('read_method', () {
+    // Check that read_yaml reads the right data.
     getYamlFile('yaml/method.yaml').then(expectAsync1((data) {
       expect(data, equals(method));
     }));
@@ -222,6 +224,7 @@ void main() {
   });
   
   test('library_test', () {
+    // Check that read_yaml reads the right data.
     getYamlFile('yaml/library.yaml').then(expectAsync1((data) {
       expect(data, equals(library));
     }));
@@ -251,6 +254,7 @@ void main() {
   });
   
   // TODO(tmandel): Test with superClass once it is implemented.
+  // Test that links that are in scope are aliased to the correct objects.
   test('dependencies_test', () {
     var currentMap = loadYaml(dependencies);
     var library = new Library(currentMap);
