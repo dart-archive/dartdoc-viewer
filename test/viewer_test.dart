@@ -146,6 +146,16 @@ String dependencies =
     "typedef" : "false"
     "implements" : 
     "variables" : 
+    "methods" :
+  "C" :
+    "name" : "C"
+    "qualifiedname" : "Library.C"
+    "comment" : ""
+    "superclass" : "Library.A"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
     "methods" :''';
 
 void main() {
@@ -206,9 +216,12 @@ void main() {
     expect(implements is List, isTrue);
     implements.forEach((interface) => 
         expect(interface is LinkableType, isTrue));
+    
+    var superClass = item.superClass;
+    expect(superClass is LinkableType, isTrue);
   });
   
-  test('read_method', () {
+  test('method_test', () {
     // Check that read_yaml reads the right data.
     getYamlFile('yaml/method.yaml').then(expectAsync1((data) {
       expect(data, equals(method));
@@ -254,7 +267,6 @@ void main() {
     implements.forEach((element) => expect(element is LinkableType, isTrue));
   });
   
-  // TODO(tmandel): Test with superClass once it is implemented.
   // Test that links that are in scope are aliased to the correct objects.
   test('dependencies_test', () {
     var currentMap = loadYaml(dependencies);
@@ -268,10 +280,11 @@ void main() {
       if (category.name == 'Functions') functions = category;
     });
     var variable = variables.content.first;
-    var classA, classB;
+    var classA, classB, classC;
     classes.content.forEach((element) {
       if (element.name == 'A') classA = element;
       if (element.name == 'B') classB = element;
+      if (element.name == 'C') classC = element;
     });
     var function = functions.content.first;
     
@@ -284,5 +297,8 @@ void main() {
     
     var implements = classA.implements.first;
     expect(implements.location, equals(classB));
+    
+    var superClass = classC.superClass;
+    expect(superClass.location, equals(classA));
   });
 }
