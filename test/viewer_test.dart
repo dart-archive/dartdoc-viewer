@@ -204,7 +204,8 @@ void main() {
     
     var implements = item.implements;
     expect(implements is List, isTrue);
-    implements.forEach((interface) => expect(interface is LinkableType, isTrue));
+    implements.forEach((interface) => 
+        expect(interface is LinkableType, isTrue));
   });
   
   test('read_method', () {
@@ -269,8 +270,8 @@ void main() {
     var variable = variables.content.first;
     var classA, classB;
     classes.content.forEach((element) {
-      if (element.name == "A") classA = element;
-      if (element.name == "B") classB = element;
+      if (element.name == 'A') classA = element;
+      if (element.name == 'B') classB = element;
     });
     var function = functions.content.first;
     
