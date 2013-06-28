@@ -85,7 +85,7 @@ class Library extends Item {
  */
 class Class extends Item {
   
-  String superClass;
+  LinkableType superClass;
   bool isAbstract;
   bool isTypedef;
   List<LinkableType> implements;
@@ -99,6 +99,7 @@ class Class extends Item {
     if (yaml['methods'] != null) {
       content.add(new Category.forFunctions(yaml['methods'], 'Methods'));
     }
+    this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = yaml['abstract'] == 'true';
     this.isTypedef = yaml['typedef'] == 'true';
     this.implements = yaml['implements'] == null ? [] :

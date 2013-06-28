@@ -91,25 +91,38 @@ void buildHierarchy(Container page, Item previous) {
 }
 
 /// Adds the correct interfaces to [postDescriptor].
-void _updateInterfaces(Element postDescriptor) {
+void _updateInheritance(Element postDescriptor) {
   var interfaces = currentPage.implements;
   var paragraph = new ParagraphElement();
   if (!interfaces.isEmpty) {
-    paragraph.appendText('Implements: ');
-    postDescriptor.children.add(paragraph);
+    paragraph.appendText("Implements: ");
   }
   interfaces.forEach((element) {
-    var link = new Element.html('<a>${element.simpleType}</a>')
-      ..onClick.listen((_) => changePage(element.location));
-    paragraph.append(link);
+    _addType(element, paragraph);
     if (element != interfaces.last) {
-      paragraph.appendText(', ');
+      paragraph.appendText(", ");
+    } else {
+      paragraph.appendHtml("<br/>");
     }
-  });
+  }); 
+  paragraph.appendText("Extends: ");
+  _addType(currentPage.superClass, paragraph);
+  postDescriptor.children.add(paragraph);
+}
+
+/// Appends a new link or a string to an existing [Element].                                                                                                                                               
+void _addType(LinkableType type, Element destination) {
+  if (type.location == null) {
+    destination.appendText(type.simpleType);
+  } else {
+    var link = new Element.html("<a>${type.simpleType}</a>")
+      ..onClick.listen((_) => changePage(type.location));
+    destination.append(link);
+  }
 }
 
 /// Generates an HTML [Element] given a [LinkableType].
-Element _getType(LinkableType type) {
+Element _getTypeElement(LinkableType type) {
   if (type.location == null) {
     return new Element.html('<p>${type.simpleType}</p>');
   } else {
@@ -120,12 +133,8 @@ Element _getType(LinkableType type) {
 }
 
 /// Adds a single parameter to [postData].
-void addParameter(Parameter parameter, Element postData) {
-  if (parameter.type.location != null) {
-    postData.append(_getType(parameter.type));
-  } else {
-    postData.appendText(parameter.type.simpleType);
-  }
+void _addParameter(Parameter parameter, Element postData) {
+  _addType(parameter.type, postData);
   postData.appendText(' ${parameter.decoratedName}');
 }
 
@@ -136,7 +145,7 @@ void _updateParameters(Element postDescriptor) {
   var postData = new ParagraphElement()
     ..appendText('(');
   required.forEach((parameter) {
-    addParameter(parameter, postData);
+    _addParameter(parameter, postData);
     if (parameter != required.last || !optional.isEmpty) {
       postData.appendText(', ');
     }
@@ -145,7 +154,7 @@ void _updateParameters(Element postDescriptor) {
     optional.first.isNamed ? 
         postData.appendText('{') : postData.appendText('[');
     optional.forEach((parameter) {
-      addParameter(parameter, postData);
+      _addParameter(parameter, postData);
       if (parameter != optional.last) postData.appendText(', ');
     });
     optional.first.isNamed ? 
@@ -175,10 +184,10 @@ void update() {
   preDescriptor.children.clear();
   postDescriptor.children.clear();
   if (currentPage is Method) {
-    preDescriptor.children.add(_getType(currentPage.type));
+    preDescriptor.children.add(_getTypeElement(currentPage.type));
     _updateParameters(postDescriptor);
   } else if (currentPage is Class) {
-    _updateInterfaces(postDescriptor);
+    _updateInheritance(postDescriptor);
   }
 }
 
