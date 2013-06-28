@@ -21,10 +21,11 @@ class CompositeContainer extends Container {
   List<Container> content = [];
 }
 
-// Combines all paragraph elements into one for conversion to an HTML Element.
-String _mergeCommentParagraphs(String comment) {
-  if (comment == null) return "";
-  return comment.replaceAll('</p><p>', ' ');
+// Wraps a comment in span element to make it a single HTML Element.
+String _wrapComment(String comment) {
+  if (comment == null) comment = '';
+  // TODO(tmandel): Seems sort of hacky. Is there a better way?
+  return '<span>$comment</span>';
 }
 
 /**
@@ -65,7 +66,7 @@ class Library extends Item {
   
   Library(Map yaml) {
     this.name = yaml['name'];
-    this.comment = _mergeCommentParagraphs(yaml['comment']);
+    this.comment = _wrapComment(yaml['comment']);
     if (yaml['classes'] != null) {
       content.add(new Category.forClasses(yaml['classes']));
     }
@@ -92,7 +93,7 @@ class Class extends Item {
   
   Class(Map yaml) {
     this.name = yaml['name'];
-    this.comment = _mergeCommentParagraphs(yaml['comment']);
+    this.comment = _wrapComment(yaml['comment']);
     if (yaml['variables'] != null) {
       content.add(new Category.forVariables(yaml['variables']));
     }
@@ -121,7 +122,7 @@ class Method extends Item {
   
   Method(Map yaml) {
     this.name = yaml['name'];
-    this.comment = _mergeCommentParagraphs(yaml['comment']);
+    this.comment = _wrapComment(yaml['comment']);
     this.isStatic = yaml['static'] == 'true';
     this.type = new LinkableType(yaml['return']);
     this.parameters = _getParameters(yaml['parameters']);
@@ -185,7 +186,7 @@ class Variable extends Container {
   
   Variable(Map yaml) {
     this.name = yaml['name'];
-    this.comment = _mergeCommentParagraphs(yaml['comment']);
+    this.comment = _wrapComment(yaml['comment']);
     this.isFinal = yaml['final'] == 'true';
     this.isStatic = yaml['static'] == 'true';
     this.type = new LinkableType(yaml['type']);
