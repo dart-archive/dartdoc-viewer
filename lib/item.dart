@@ -1,9 +1,12 @@
 library category_item;
 
+import 'dart:async';
 import 'dart:html';
 import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
+
+const docsPath = '../../docs/';
 
 /**
  * Anything that holds values and can be displayed.
@@ -19,12 +22,13 @@ class Container {
  */
 class CompositeContainer extends Container {
   List<Container> content = [];
+  
+  String get pathName => name.replaceAll('.', '_');
 }
 
 // Wraps a comment in span element to make it a single HTML Element.
 String _wrapComment(String comment) {
   if (comment == null) comment = '';
-  // TODO(tmandel): Seems sort of hacky. Is there a better way?
   return '<span>$comment</span>';
 }
 
@@ -56,7 +60,55 @@ abstract class Item extends CompositeContainer {
   @observable String path;
   
   /// [Item]'s name with its properties properly appended. 
-  String get decoratedName;
+  String get decoratedName => this.name;
+}
+
+class PlaceHolder extends Item {
+  
+  String location;
+  
+  PlaceHolder(String name, this.location) {
+    this.name = name;
+  }
+  
+  dynamic loadLibrary() {
+    // TODO(tmandel): Shouldn't be a relative path.
+    return retrieveFile('$docsPath$location');
+  }
+}
+
+class Home extends Item {
+  // TODO(tmandel): Better way to do this?
+  Home(String allLibraries) {
+    this.name = 'Dart API Reference';
+    this.path = '';
+    pageIndex[''] = this;
+    var libraries = allLibraries.split('\n');
+    libraries.forEach((library) {
+      var libraryName = library.substring(0, library.length - 5);
+      libraryNames[libraryName] = libraryName.replaceAll('.', '_');
+      content.add(new PlaceHolder(libraryName, library));
+    });
+  }
+}
+
+/**
+ * Runs through the member structure and creates path information and
+ * populates the [pageIndex] map for proper linking.
+ */
+void buildHierarchy(Container page, Item previous) {
+  if (page is Item) {
+    page.path = previous.path == null ?
+        '${page.pathName}/' : '${previous.path}${page.pathName}/';
+    pageIndex[page.path] = page;
+    page.content.forEach((subChild) {
+      buildHierarchy(subChild, page);
+    });
+  } else if (page is Category) {
+    page.content.forEach((subChild) {
+      buildHierarchy(subChild, previous);
+    });
+  }
 }
 
 /**
@@ -199,17 +251,38 @@ class Variable extends Container {
   }
 }
 
-/**
- * A Dart type that should link to other [Item]s.
+/**                                                                                                                                                                                                          
+ * A Dart type that should link to other [Item]s.                                                                                                                                                            
  */
 class LinkableType {
+
   String type;
 
-  LinkableType(this.type);
-  
-  /// The simple name for this type.
-  String get simpleType => type.split('.').last;
-  
-  /// The [Item] describing this type.
-  Item get location => pageIndex['${type.replaceAll('.', '/')}/'];
+  LinkableType(String type) {
+    var current = '';
+    List elements = type.split('.');
+    elements.forEach((element) {
+      current = current == '' ? element : '$current.$element';
+      if (libraryNames[current] != null) {
+        this.type = type.replaceFirst(current, libraryNames[current]);
+      }
+    });
+    if (this.type == null) {
+      this.type = type;
+    }
+  }
+
+  /// The simple name for this type.                                                                                                                                                                         
+  String get simpleType => this.type.split('.').last;
+
+  /// The [Item] describing this type.                                                                                                                                                                       
+  Item get location {
+    var result;
+    var member = '${type.replaceAll('.', '/')}/';
+    var possible = pageIndex[member];
+    if (possible != null) {
+      result = possible;
+    }
+    return result;
+  }
 }

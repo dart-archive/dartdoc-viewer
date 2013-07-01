@@ -1,0 +1,97 @@
+"name" : "dart._js_names"
+"comment" : ""
+"variables" : 
+  "reflectiveGlobalNames" : 
+    "name" : "reflectiveGlobalNames"
+    "qualifiedname" : "dart._js_names.reflectiveGlobalNames"
+    "comment" : "<p>A map from \"reflective\" names to mangled names (the reverse of <code>mangledGlobalNames</code>).</p>"
+    "final" : "true"
+    "static" : "false"
+    "type" : "dart.core.Map"
+  "mangledGlobalNames" : 
+    "name" : "mangledGlobalNames"
+    "qualifiedname" : "dart._js_names.mangledGlobalNames"
+    "comment" : "<p>A map from mangled names to \"reflective\" names (see <code>mangledNames</code>).  This map is for globals, that is, static and top-level members.</p>"
+    "final" : "true"
+    "static" : "false"
+    "type" : "dart.core.Map"
+  "reflectiveNames" : 
+    "name" : "reflectiveNames"
+    "qualifiedname" : "dart._js_names.reflectiveNames"
+    "comment" : "<p>A map from \"reflective\" names to mangled names (the reverse of <code>mangledNames</code>).</p>"
+    "final" : "true"
+    "static" : "false"
+    "type" : "dart.core.Map"
+  "mangledNames" : 
+    "name" : "mangledNames"
+    "qualifiedname" : "dart._js_names.mangledNames"
+    "comment" : "<p>A map from mangled names to \"reflective\" names, that is, unmangled names with some additional information, such as, number of required arguments. This map is for mangled names used as instance members.</p>"
+    "final" : "true"
+    "static" : "false"
+    "type" : "dart.core.Map"
+"functions" : 
+  "extractKeys" : 
+    "name" : "extractKeys"
+    "qualifiedname" : "dart._js_names.extractKeys"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.List"
+    "parameters" : 
+      "victim" : 
+        "name" : "victim"
+        "qualifiedname" : "dart._js_names.extractKeys#victim"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "computeReflectiveNames" : 
+    "name" : "computeReflectiveNames"
+    "qualifiedname" : "dart._js_names.computeReflectiveNames"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.Map"
+    "parameters" : 
+      "map" : 
+        "name" : "map"
+        "qualifiedname" : "dart._js_names.computeReflectiveNames#map"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Map"
+        "value" : "null"
+  "computeMangledNames" : 
+    "name" : "computeMangledNames"
+    "qualifiedname" : "dart._js_names.computeMangledNames"
+    "comment" : "<p><code>jsMangledNames</code> is a JavaScript object literal.  The keys are the mangled names, and the values are the \"reflective\" names.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.Map"
+    "parameters" : 
+      "jsMangledNames" : 
+        "name" : "jsMangledNames"
+        "qualifiedname" : "dart._js_names.computeMangledNames#jsMangledNames"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "isGlobal" : 
+        "name" : "isGlobal"
+        "qualifiedname" : "dart._js_names.computeMangledNames#isGlobal"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.bool"
+        "value" : "null"
+  "preserveNames" : 
+    "name" : "preserveNames"
+    "qualifiedname" : "dart._js_names.preserveNames"
+    "comment" : "<p>No-op method that is called to inform the compiler that unmangled named must be preserved.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+"classes" : 

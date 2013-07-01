@@ -1,0 +1,2925 @@
+"name" : "_isolate_helper"
+"comment" : ""
+"variables" : 
+  "globalPostMessageDefined" : 
+    "name" : "globalPostMessageDefined"
+    "qualifiedname" : "_isolate_helper.globalPostMessageDefined"
+    "comment" : ""
+    "final" : "false"
+    "static" : "false"
+    "type" : "dart.core.bool"
+  "globalWorker" : 
+    "name" : "globalWorker"
+    "qualifiedname" : "_isolate_helper.globalWorker"
+    "comment" : ""
+    "final" : "false"
+    "static" : "false"
+    "type" : "dynamic"
+  "globalWindow" : 
+    "name" : "globalWindow"
+    "qualifiedname" : "_isolate_helper.globalWindow"
+    "comment" : ""
+    "final" : "false"
+    "static" : "false"
+    "type" : "dynamic"
+  "globalThis" : 
+    "name" : "globalThis"
+    "qualifiedname" : "_isolate_helper.globalThis"
+    "comment" : ""
+    "final" : "false"
+    "static" : "false"
+    "type" : "dynamic"
+  "_SPAWNED_SIGNAL" : 
+    "name" : "_SPAWNED_SIGNAL"
+    "qualifiedname" : "_isolate_helper._SPAWNED_SIGNAL"
+    "comment" : ""
+    "final" : "false"
+    "static" : "false"
+    "type" : "dart.core.String"
+  "lazyPort" : 
+    "name" : "lazyPort"
+    "qualifiedname" : "_isolate_helper.lazyPort"
+    "comment" : ""
+    "final" : "false"
+    "static" : "false"
+    "type" : "dart.isolate.ReceivePort"
+"functions" : 
+  "hasTimer" : 
+    "name" : "hasTimer"
+    "qualifiedname" : "_isolate_helper.hasTimer"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.bool"
+    "parameters" : 
+  "_deserializeMessage" : 
+    "name" : "_deserializeMessage"
+    "qualifiedname" : "_isolate_helper._deserializeMessage"
+    "comment" : "<p>Deserialize <code>message</code> (or simulate deserialization).</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "message" : 
+        "name" : "message"
+        "qualifiedname" : "_isolate_helper._deserializeMessage#message"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "_serializeMessage" : 
+    "name" : "_serializeMessage"
+    "qualifiedname" : "_isolate_helper._serializeMessage"
+    "comment" : "<hr /> <p>  Inserted from lib/isolate/dart2js/messages.dart <strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong>** Serialize <code>message</code> (or simulate serialization).</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "message" : 
+        "name" : "message"
+        "qualifiedname" : "_isolate_helper._serializeMessage#message"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "_waitForPendingPorts" : 
+    "name" : "_waitForPendingPorts"
+    "qualifiedname" : "_isolate_helper._waitForPendingPorts"
+    "comment" : "<p>Wait until all ports in a message are resolved.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "message" : 
+        "name" : "message"
+        "qualifiedname" : "_isolate_helper._waitForPendingPorts#message"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "callback" : 
+        "name" : "callback"
+        "qualifiedname" : "_isolate_helper._waitForPendingPorts#callback"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Function"
+        "value" : "null"
+  "_globalState=" : 
+    "name" : "_globalState="
+    "qualifiedname" : "_isolate_helper._globalState="
+    "comment" : ""
+    "type" : "setter"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "val" : 
+        "name" : "val"
+        "qualifiedname" : "_isolate_helper._globalState=#val"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "_isolate_helper._Manager"
+        "value" : "null"
+  "_globalState" : 
+    "name" : "_globalState"
+    "qualifiedname" : "_isolate_helper._globalState"
+    "comment" : "<hr /> <p>  Inserted from lib/isolate/dart2js/isolateimpl.dart</p> <hr /> <p>Concepts used here:</p> <p>\"manager\" - A manager contains one or more isolates, schedules their execution, and performs other plumbing on their behalf.  The isolate present at the creation of the manager is designated as its \"root isolate\". A manager may, for example, be implemented on a web Worker.</p> <p><code>_Manager</code> - State present within a manager (exactly once, as a global).</p> <p><code>_ManagerStub</code> - A handle held within one manager that allows interaction with another manager.  A target manager may be addressed by zero or more <code>_ManagerStub</code>s. TODO(ahe): The <em>ManagerStub concept is broken.  It was an attempt to create a common interface between the native Worker class and </em>MainManagerStub.</p> <p>A native object that is shared across isolates. This object is visible to all isolates running under the same manager (either UI or background web worker).</p> <p>This is code that is intended to 'escape' the isolate boundaries in order to implement the semantics of isolates in JavaScript. Without this we would have been forced to implement more code (including the top-level event loop) in JavaScript itself.</p>"
+    "type" : "getter"
+    "static" : "false"
+    "return" : "_isolate_helper._Manager"
+    "parameters" : 
+  "startRootIsolate" : 
+    "name" : "startRootIsolate"
+    "qualifiedname" : "_isolate_helper.startRootIsolate"
+    "comment" : "<p>Wrapper that takes the dart entry point and runs it within an isolate. The dart2js compiler will inject a call of the form <code>: startRootIsolate(main); :</code> when it determines that this wrapping is needed. For single-isolate applications (e.g. hello world), this call is not emitted.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "void"
+    "parameters" : 
+      "entry" : 
+        "name" : "entry"
+        "qualifiedname" : "_isolate_helper.startRootIsolate#entry"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "_currentIsolate" : 
+    "name" : "_currentIsolate"
+    "qualifiedname" : "_isolate_helper._currentIsolate"
+    "comment" : "<p>Called by the compiler to fetch the current isolate context.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "_isolate_helper._IsolateContext"
+    "parameters" : 
+  "_callInIsolate" : 
+    "name" : "_callInIsolate"
+    "qualifiedname" : "_isolate_helper._callInIsolate"
+    "comment" : "<p>Called by the compiler to support switching between isolates when we get a callback from the DOM.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "isolate" : 
+        "name" : "isolate"
+        "qualifiedname" : "_isolate_helper._callInIsolate#isolate"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "_isolate_helper._IsolateContext"
+        "value" : "null"
+      "function" : 
+        "name" : "function"
+        "qualifiedname" : "_isolate_helper._callInIsolate#function"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Function"
+        "value" : "null"
+"classes" : 
+  "TimerImpl" : 
+    "name" : "TimerImpl"
+    "qualifiedname" : "_isolate_helper.TimerImpl"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.async.Timer"
+    "variables" : 
+      "_once" : 
+        "name" : "_once"
+        "qualifiedname" : "_isolate_helper.TimerImpl._once"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "_inEventLoop" : 
+        "name" : "_inEventLoop"
+        "qualifiedname" : "_isolate_helper.TimerImpl._inEventLoop"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "_handle" : 
+        "name" : "_handle"
+        "qualifiedname" : "_isolate_helper.TimerImpl._handle"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+      "TimerImpl" : 
+        "name" : "TimerImpl"
+        "qualifiedname" : "_isolate_helper.TimerImpl.TimerImpl"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "milliseconds" : 
+            "name" : "milliseconds"
+            "qualifiedname" : "_isolate_helper.TimerImpl.TimerImpl#milliseconds"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "_isolate_helper.TimerImpl.TimerImpl#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "TimerImpl.periodic" : 
+        "name" : "TimerImpl.periodic"
+        "qualifiedname" : "_isolate_helper.TimerImpl.TimerImpl.periodic"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "milliseconds" : 
+            "name" : "milliseconds"
+            "qualifiedname" : "_isolate_helper.TimerImpl.TimerImpl.periodic#milliseconds"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "_isolate_helper.TimerImpl.TimerImpl.periodic#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "cancel" : 
+        "name" : "cancel"
+        "qualifiedname" : "_isolate_helper.TimerImpl.cancel"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+  "_Deserializer" : 
+    "name" : "_Deserializer"
+    "qualifiedname" : "_isolate_helper._Deserializer"
+    "comment" : "<p>Deserializes arrays created with <code>_Serializer</code>.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_deserialized" : 
+        "name" : "_deserialized"
+        "qualifiedname" : "_isolate_helper._Deserializer._deserialized"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.Map"
+    "methods" : 
+      "_Deserializer" : 
+        "name" : "_Deserializer"
+        "qualifiedname" : "_isolate_helper._Deserializer._Deserializer"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "isPrimitive" : 
+        "name" : "isPrimitive"
+        "qualifiedname" : "_isolate_helper._Deserializer.isPrimitive"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer.isPrimitive#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "deserialize" : 
+        "name" : "deserialize"
+        "qualifiedname" : "_isolate_helper._Deserializer.deserialize"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer.deserialize#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_deserializeHelper" : 
+        "name" : "_deserializeHelper"
+        "qualifiedname" : "_isolate_helper._Deserializer._deserializeHelper"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer._deserializeHelper#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_deserializeRef" : 
+        "name" : "_deserializeRef"
+        "qualifiedname" : "_isolate_helper._Deserializer._deserializeRef"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer._deserializeRef#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "_deserializeList" : 
+        "name" : "_deserializeList"
+        "qualifiedname" : "_isolate_helper._Deserializer._deserializeList"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer._deserializeList#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "_deserializeMap" : 
+        "name" : "_deserializeMap"
+        "qualifiedname" : "_isolate_helper._Deserializer._deserializeMap"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer._deserializeMap#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "deserializeSendPort" : 
+        "name" : "deserializeSendPort"
+        "qualifiedname" : "_isolate_helper._Deserializer.deserializeSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer.deserializeSendPort#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "deserializeIsolateSink" : 
+        "name" : "deserializeIsolateSink"
+        "qualifiedname" : "_isolate_helper._Deserializer.deserializeIsolateSink"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer.deserializeIsolateSink#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "deserializeCloseToken" : 
+        "name" : "deserializeCloseToken"
+        "qualifiedname" : "_isolate_helper._Deserializer.deserializeCloseToken"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer.deserializeCloseToken#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "deserializeObject" : 
+        "name" : "deserializeObject"
+        "qualifiedname" : "_isolate_helper._Deserializer.deserializeObject"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Deserializer.deserializeObject#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+  "_Serializer" : 
+    "name" : "_Serializer"
+    "qualifiedname" : "_isolate_helper._Serializer"
+    "comment" : "<p>Visitor that serializes a message as a JSON array.</p>"
+    "superclass" : "_isolate_helper._MessageTraverser"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_nextFreeRefId" : 
+        "name" : "_nextFreeRefId"
+        "qualifiedname" : "_isolate_helper._Serializer._nextFreeRefId"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+      "visitPrimitive" : 
+        "name" : "visitPrimitive"
+        "qualifiedname" : "_isolate_helper._Serializer.visitPrimitive"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Serializer.visitPrimitive#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "visitList" : 
+        "name" : "visitList"
+        "qualifiedname" : "_isolate_helper._Serializer.visitList"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "list" : 
+            "name" : "list"
+            "qualifiedname" : "_isolate_helper._Serializer.visitList#list"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "visitMap" : 
+        "name" : "visitMap"
+        "qualifiedname" : "_isolate_helper._Serializer.visitMap"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "map" : 
+            "name" : "map"
+            "qualifiedname" : "_isolate_helper._Serializer.visitMap#map"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "_serializeList" : 
+        "name" : "_serializeList"
+        "qualifiedname" : "_isolate_helper._Serializer._serializeList"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "list" : 
+            "name" : "list"
+            "qualifiedname" : "_isolate_helper._Serializer._serializeList#list"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+  "_Copier" : 
+    "name" : "_Copier"
+    "qualifiedname" : "_isolate_helper._Copier"
+    "comment" : "<p>A visitor that recursively copies a message.</p>"
+    "superclass" : "_isolate_helper._MessageTraverser"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "visitPrimitive" : 
+        "name" : "visitPrimitive"
+        "qualifiedname" : "_isolate_helper._Copier.visitPrimitive"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._Copier.visitPrimitive#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "visitList" : 
+        "name" : "visitList"
+        "qualifiedname" : "_isolate_helper._Copier.visitList"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+          "list" : 
+            "name" : "list"
+            "qualifiedname" : "_isolate_helper._Copier.visitList#list"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "visitMap" : 
+        "name" : "visitMap"
+        "qualifiedname" : "_isolate_helper._Copier.visitMap"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+          "map" : 
+            "name" : "map"
+            "qualifiedname" : "_isolate_helper._Copier.visitMap#map"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+  "_MessageTraverser" : 
+    "name" : "_MessageTraverser"
+    "qualifiedname" : "_isolate_helper._MessageTraverser"
+    "comment" : "<p>Abstract visitor for dart objects that can be sent as isolate messages.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_visited" : 
+        "name" : "_visited"
+        "qualifiedname" : "_isolate_helper._MessageTraverser._visited"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "_isolate_helper._MessageTraverserVisitedMap"
+    "methods" : 
+      "_MessageTraverser" : 
+        "name" : "_MessageTraverser"
+        "qualifiedname" : "_isolate_helper._MessageTraverser._MessageTraverser"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "traverse" : 
+        "name" : "traverse"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.traverse"
+        "comment" : "<p>Visitor's entry point.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.traverse#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_dispatch" : 
+        "name" : "_dispatch"
+        "qualifiedname" : "_isolate_helper._MessageTraverser._dispatch"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser._dispatch#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "visitPrimitive" : 
+        "name" : "visitPrimitive"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.visitPrimitive"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.visitPrimitive#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "visitList" : 
+        "name" : "visitList"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.visitList"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.visitList#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "visitMap" : 
+        "name" : "visitMap"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.visitMap"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.visitMap#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "visitSendPort" : 
+        "name" : "visitSendPort"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.visitSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.visitSendPort#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "visitSendPortSync" : 
+        "name" : "visitSendPortSync"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.visitSendPortSync"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.visitSendPortSync#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPortSync"
+            "value" : "null"
+      "visitIsolateSink" : 
+        "name" : "visitIsolateSink"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.visitIsolateSink"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.visitIsolateSink#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.IsolateSink"
+            "value" : "null"
+      "visitCloseToken" : 
+        "name" : "visitCloseToken"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.visitCloseToken"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.visitCloseToken#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper.CloseToken"
+            "value" : "null"
+      "visitObject" : 
+        "name" : "visitObject"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.visitObject"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.visitObject#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "isPrimitive" : 
+        "name" : "isPrimitive"
+        "qualifiedname" : "_isolate_helper._MessageTraverser.isPrimitive"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._MessageTraverser.isPrimitive#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "_MessageTraverserVisitedMap" : 
+    "name" : "_MessageTraverserVisitedMap"
+    "qualifiedname" : "_isolate_helper._MessageTraverserVisitedMap"
+    "comment" : "<hr /> <p>  Inserted from lib/isolate/serialization.dart</p> <hr />"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "[]" : 
+        "name" : "[]"
+        "qualifiedname" : "_isolate_helper._MessageTraverserVisitedMap.[]"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "object" : 
+            "name" : "object"
+            "qualifiedname" : "_isolate_helper._MessageTraverserVisitedMap.[]#object"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "[]=" : 
+        "name" : "[]="
+        "qualifiedname" : "_isolate_helper._MessageTraverserVisitedMap.[]="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "object" : 
+            "name" : "object"
+            "qualifiedname" : "_isolate_helper._MessageTraverserVisitedMap.[]=#object"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "info" : 
+            "name" : "info"
+            "qualifiedname" : "_isolate_helper._MessageTraverserVisitedMap.[]=#info"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "reset" : 
+        "name" : "reset"
+        "qualifiedname" : "_isolate_helper._MessageTraverserVisitedMap.reset"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "cleanup" : 
+        "name" : "cleanup"
+        "qualifiedname" : "_isolate_helper._MessageTraverserVisitedMap.cleanup"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+  "TestingOnly" : 
+    "name" : "TestingOnly"
+    "qualifiedname" : "_isolate_helper.TestingOnly"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "copy" : 
+        "name" : "copy"
+        "qualifiedname" : "_isolate_helper.TestingOnly.copy"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper.TestingOnly.copy#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "serialize" : 
+        "name" : "serialize"
+        "qualifiedname" : "_isolate_helper.TestingOnly.serialize"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper.TestingOnly.serialize#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "_JsVisitedMap" : 
+    "name" : "_JsVisitedMap"
+    "qualifiedname" : "_isolate_helper._JsVisitedMap"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "_isolate_helper._MessageTraverserVisitedMap"
+    "variables" : 
+      "tagged" : 
+        "name" : "tagged"
+        "qualifiedname" : "_isolate_helper._JsVisitedMap.tagged"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.List"
+    "methods" : 
+      "[]" : 
+        "name" : "[]"
+        "qualifiedname" : "_isolate_helper._JsVisitedMap.[]"
+        "comment" : "<p>Retrieves any information stored in the native object <code>object</code>.</p>"
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "object" : 
+            "name" : "object"
+            "qualifiedname" : "_isolate_helper._JsVisitedMap.[]#object"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "[]=" : 
+        "name" : "[]="
+        "qualifiedname" : "_isolate_helper._JsVisitedMap.[]="
+        "comment" : "<p>Injects some information into the native <code>object</code>.</p>"
+        "type" : "operator"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "object" : 
+            "name" : "object"
+            "qualifiedname" : "_isolate_helper._JsVisitedMap.[]=#object"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "info" : 
+            "name" : "info"
+            "qualifiedname" : "_isolate_helper._JsVisitedMap.[]=#info"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "reset" : 
+        "name" : "reset"
+        "qualifiedname" : "_isolate_helper._JsVisitedMap.reset"
+        "comment" : "<p>Get ready to rumble.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "cleanup" : 
+        "name" : "cleanup"
+        "qualifiedname" : "_isolate_helper._JsVisitedMap.cleanup"
+        "comment" : "<p>Remove all information injected in the native objects.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "_clearAttachedInfo" : 
+        "name" : "_clearAttachedInfo"
+        "qualifiedname" : "_isolate_helper._JsVisitedMap._clearAttachedInfo"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "o" : 
+            "name" : "o"
+            "qualifiedname" : "_isolate_helper._JsVisitedMap._clearAttachedInfo#o"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_setAttachedInfo" : 
+        "name" : "_setAttachedInfo"
+        "qualifiedname" : "_isolate_helper._JsVisitedMap._setAttachedInfo"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "o" : 
+            "name" : "o"
+            "qualifiedname" : "_isolate_helper._JsVisitedMap._setAttachedInfo#o"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "info" : 
+            "name" : "info"
+            "qualifiedname" : "_isolate_helper._JsVisitedMap._setAttachedInfo#info"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_getAttachedInfo" : 
+        "name" : "_getAttachedInfo"
+        "qualifiedname" : "_isolate_helper._JsVisitedMap._getAttachedInfo"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "o" : 
+            "name" : "o"
+            "qualifiedname" : "_isolate_helper._JsVisitedMap._getAttachedInfo#o"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "_JsDeserializer" : 
+    "name" : "_JsDeserializer"
+    "qualifiedname" : "_isolate_helper._JsDeserializer"
+    "comment" : ""
+    "superclass" : "_isolate_helper._Deserializer"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "deserializeSendPort" : 
+        "name" : "deserializeSendPort"
+        "qualifiedname" : "_isolate_helper._JsDeserializer.deserializeSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "list" : 
+            "name" : "list"
+            "qualifiedname" : "_isolate_helper._JsDeserializer.deserializeSendPort#list"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "deserializeIsolateSink" : 
+        "name" : "deserializeIsolateSink"
+        "qualifiedname" : "_isolate_helper._JsDeserializer.deserializeIsolateSink"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.isolate.IsolateSink"
+        "parameters" : 
+          "list" : 
+            "name" : "list"
+            "qualifiedname" : "_isolate_helper._JsDeserializer.deserializeIsolateSink#list"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "deserializeCloseToken" : 
+        "name" : "deserializeCloseToken"
+        "qualifiedname" : "_isolate_helper._JsDeserializer.deserializeCloseToken"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "_isolate_helper.CloseToken"
+        "parameters" : 
+          "list" : 
+            "name" : "list"
+            "qualifiedname" : "_isolate_helper._JsDeserializer.deserializeCloseToken#list"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+  "_JsCopier" : 
+    "name" : "_JsCopier"
+    "qualifiedname" : "_isolate_helper._JsCopier"
+    "comment" : ""
+    "superclass" : "_isolate_helper._Copier"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "_JsCopier" : 
+        "name" : "_JsCopier"
+        "qualifiedname" : "_isolate_helper._JsCopier._JsCopier"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "visitSendPort" : 
+        "name" : "visitSendPort"
+        "qualifiedname" : "_isolate_helper._JsCopier.visitSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._JsCopier.visitSendPort#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "visitNativeJsSendPort" : 
+        "name" : "visitNativeJsSendPort"
+        "qualifiedname" : "_isolate_helper._JsCopier.visitNativeJsSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "port" : 
+            "name" : "port"
+            "qualifiedname" : "_isolate_helper._JsCopier.visitNativeJsSendPort#port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper._NativeJsSendPort"
+            "value" : "null"
+      "visitWorkerSendPort" : 
+        "name" : "visitWorkerSendPort"
+        "qualifiedname" : "_isolate_helper._JsCopier.visitWorkerSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "port" : 
+            "name" : "port"
+            "qualifiedname" : "_isolate_helper._JsCopier.visitWorkerSendPort#port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper._WorkerSendPort"
+            "value" : "null"
+      "visitBufferingSendPort" : 
+        "name" : "visitBufferingSendPort"
+        "qualifiedname" : "_isolate_helper._JsCopier.visitBufferingSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "port" : 
+            "name" : "port"
+            "qualifiedname" : "_isolate_helper._JsCopier.visitBufferingSendPort#port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper._BufferingSendPort"
+            "value" : "null"
+      "visitIsolateSink" : 
+        "name" : "visitIsolateSink"
+        "qualifiedname" : "_isolate_helper._JsCopier.visitIsolateSink"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.isolate.IsolateSink"
+        "parameters" : 
+          "sink" : 
+            "name" : "sink"
+            "qualifiedname" : "_isolate_helper._JsCopier.visitIsolateSink#sink"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper.JsIsolateSink"
+            "value" : "null"
+      "visitCloseToken" : 
+        "name" : "visitCloseToken"
+        "qualifiedname" : "_isolate_helper._JsCopier.visitCloseToken"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "_isolate_helper.CloseToken"
+        "parameters" : 
+          "token" : 
+            "name" : "token"
+            "qualifiedname" : "_isolate_helper._JsCopier.visitCloseToken#token"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper.CloseToken"
+            "value" : "null"
+  "_JsSerializer" : 
+    "name" : "_JsSerializer"
+    "qualifiedname" : "_isolate_helper._JsSerializer"
+    "comment" : ""
+    "superclass" : "_isolate_helper._Serializer"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "_JsSerializer" : 
+        "name" : "_JsSerializer"
+        "qualifiedname" : "_isolate_helper._JsSerializer._JsSerializer"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "visitSendPort" : 
+        "name" : "visitSendPort"
+        "qualifiedname" : "_isolate_helper._JsSerializer.visitSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._JsSerializer.visitSendPort#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "visitNativeJsSendPort" : 
+        "name" : "visitNativeJsSendPort"
+        "qualifiedname" : "_isolate_helper._JsSerializer.visitNativeJsSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "port" : 
+            "name" : "port"
+            "qualifiedname" : "_isolate_helper._JsSerializer.visitNativeJsSendPort#port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper._NativeJsSendPort"
+            "value" : "null"
+      "visitWorkerSendPort" : 
+        "name" : "visitWorkerSendPort"
+        "qualifiedname" : "_isolate_helper._JsSerializer.visitWorkerSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "port" : 
+            "name" : "port"
+            "qualifiedname" : "_isolate_helper._JsSerializer.visitWorkerSendPort#port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper._WorkerSendPort"
+            "value" : "null"
+      "visitBufferingSendPort" : 
+        "name" : "visitBufferingSendPort"
+        "qualifiedname" : "_isolate_helper._JsSerializer.visitBufferingSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "port" : 
+            "name" : "port"
+            "qualifiedname" : "_isolate_helper._JsSerializer.visitBufferingSendPort#port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper._BufferingSendPort"
+            "value" : "null"
+      "visitIsolateSink" : 
+        "name" : "visitIsolateSink"
+        "qualifiedname" : "_isolate_helper._JsSerializer.visitIsolateSink"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "sink" : 
+            "name" : "sink"
+            "qualifiedname" : "_isolate_helper._JsSerializer.visitIsolateSink#sink"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper.JsIsolateSink"
+            "value" : "null"
+      "visitCloseToken" : 
+        "name" : "visitCloseToken"
+        "qualifiedname" : "_isolate_helper._JsSerializer.visitCloseToken"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "token" : 
+            "name" : "token"
+            "qualifiedname" : "_isolate_helper._JsSerializer.visitCloseToken#token"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper.CloseToken"
+            "value" : "null"
+  "_PendingSendPortFinder" : 
+    "name" : "_PendingSendPortFinder"
+    "qualifiedname" : "_isolate_helper._PendingSendPortFinder"
+    "comment" : "<p>Visitor that finds all unresolved <code>SendPort</code>s in a message.</p>"
+    "superclass" : "_isolate_helper._MessageTraverser"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "ports" : 
+        "name" : "ports"
+        "qualifiedname" : "_isolate_helper._PendingSendPortFinder.ports"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.List"
+    "methods" : 
+      "_PendingSendPortFinder" : 
+        "name" : "_PendingSendPortFinder"
+        "qualifiedname" : "_isolate_helper._PendingSendPortFinder._PendingSendPortFinder"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "visitPrimitive" : 
+        "name" : "visitPrimitive"
+        "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitPrimitive"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "x" : 
+            "name" : "x"
+            "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitPrimitive#x"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "visitList" : 
+        "name" : "visitList"
+        "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitList"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "list" : 
+            "name" : "list"
+            "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitList#list"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "visitMap" : 
+        "name" : "visitMap"
+        "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitMap"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "map" : 
+            "name" : "map"
+            "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitMap#map"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "visitSendPort" : 
+        "name" : "visitSendPort"
+        "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "port" : 
+            "name" : "port"
+            "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitSendPort#port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "visitIsolateSink" : 
+        "name" : "visitIsolateSink"
+        "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitIsolateSink"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "sink" : 
+            "name" : "sink"
+            "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitIsolateSink#sink"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper.JsIsolateSink"
+            "value" : "null"
+      "visitCloseToken" : 
+        "name" : "visitCloseToken"
+        "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitCloseToken"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "token" : 
+            "name" : "token"
+            "qualifiedname" : "_isolate_helper._PendingSendPortFinder.visitCloseToken#token"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper.CloseToken"
+            "value" : "null"
+  "ReceivePortImpl" : 
+    "name" : "ReceivePortImpl"
+    "qualifiedname" : "_isolate_helper.ReceivePortImpl"
+    "comment" : "<p>Implementation of a multi-use <code>ReceivePort</code> on top of JavaScript.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.isolate.ReceivePort"
+    "variables" : 
+      "_id" : 
+        "name" : "_id"
+        "qualifiedname" : "_isolate_helper.ReceivePortImpl._id"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "_callback" : 
+        "name" : "_callback"
+        "qualifiedname" : "_isolate_helper.ReceivePortImpl._callback"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.Function"
+      "_nextFreeId" : 
+        "name" : "_nextFreeId"
+        "qualifiedname" : "_isolate_helper.ReceivePortImpl._nextFreeId"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+    "methods" : 
+      "ReceivePortImpl" : 
+        "name" : "ReceivePortImpl"
+        "qualifiedname" : "_isolate_helper.ReceivePortImpl.ReceivePortImpl"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "receive" : 
+        "name" : "receive"
+        "qualifiedname" : "_isolate_helper.ReceivePortImpl.receive"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "onMessage" : 
+            "name" : "onMessage"
+            "qualifiedname" : "_isolate_helper.ReceivePortImpl.receive#onMessage"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "close" : 
+        "name" : "close"
+        "qualifiedname" : "_isolate_helper.ReceivePortImpl.close"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "toSendPort" : 
+        "name" : "toSendPort"
+        "qualifiedname" : "_isolate_helper.ReceivePortImpl.toSendPort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+  "_BufferingSendPort" : 
+    "name" : "_BufferingSendPort"
+    "qualifiedname" : "_isolate_helper._BufferingSendPort"
+    "comment" : "<p>A port that buffers messages until an underlying port gets resolved.</p>"
+    "superclass" : "_isolate_helper._BaseSendPort"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.isolate.SendPort"
+    "variables" : 
+      "_idCount" : 
+        "name" : "_idCount"
+        "qualifiedname" : "_isolate_helper._BufferingSendPort._idCount"
+        "comment" : "<p>Internal counter to assign unique ids to each port.</p>"
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "_id" : 
+        "name" : "_id"
+        "qualifiedname" : "_isolate_helper._BufferingSendPort._id"
+        "comment" : "<p>For implementing equals and hashcode.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "_port" : 
+        "name" : "_port"
+        "qualifiedname" : "_isolate_helper._BufferingSendPort._port"
+        "comment" : "<p>Underlying port, when resolved.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.isolate.SendPort"
+      "_futurePort" : 
+        "name" : "_futurePort"
+        "qualifiedname" : "_isolate_helper._BufferingSendPort._futurePort"
+        "comment" : "<p>Future.sync the underlying port, so that we can detect when this port can be sent on messages.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.async.Future"
+      "pending" : 
+        "name" : "pending"
+        "qualifiedname" : "_isolate_helper._BufferingSendPort.pending"
+        "comment" : "<p>Pending messages (and reply ports).</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.List"
+    "methods" : 
+      "_BufferingSendPort" : 
+        "name" : "_BufferingSendPort"
+        "qualifiedname" : "_isolate_helper._BufferingSendPort._BufferingSendPort"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "isolateId" : 
+            "name" : "isolateId"
+            "qualifiedname" : "_isolate_helper._BufferingSendPort._BufferingSendPort#isolateId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "_futurePort" : 
+            "name" : "_futurePort"
+            "qualifiedname" : "_isolate_helper._BufferingSendPort._BufferingSendPort#_futurePort"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.async.Future"
+            "value" : "null"
+      "_BufferingSendPort.fromPort" : 
+        "name" : "_BufferingSendPort.fromPort"
+        "qualifiedname" : "_isolate_helper._BufferingSendPort._BufferingSendPort.fromPort"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "isolateId" : 
+            "name" : "isolateId"
+            "qualifiedname" : "_isolate_helper._BufferingSendPort._BufferingSendPort.fromPort#isolateId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "_port" : 
+            "name" : "_port"
+            "qualifiedname" : "_isolate_helper._BufferingSendPort._BufferingSendPort.fromPort#_port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "send" : 
+        "name" : "send"
+        "qualifiedname" : "_isolate_helper._BufferingSendPort.send"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "_isolate_helper._BufferingSendPort.send#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "replyTo" : 
+            "name" : "replyTo"
+            "qualifiedname" : "_isolate_helper._BufferingSendPort.send#replyTo"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "_isolate_helper._BufferingSendPort.=="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_isolate_helper._BufferingSendPort.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_isolate_helper._BufferingSendPort.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+  "_WorkerSendPort" : 
+    "name" : "_WorkerSendPort"
+    "qualifiedname" : "_isolate_helper._WorkerSendPort"
+    "comment" : "<p>A send port that delivers messages via worker.postMessage.</p>"
+    "superclass" : "_isolate_helper._BaseSendPort"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.isolate.SendPort"
+    "variables" : 
+      "_workerId" : 
+        "name" : "_workerId"
+        "qualifiedname" : "_isolate_helper._WorkerSendPort._workerId"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "_receivePortId" : 
+        "name" : "_receivePortId"
+        "qualifiedname" : "_isolate_helper._WorkerSendPort._receivePortId"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+      "_WorkerSendPort" : 
+        "name" : "_WorkerSendPort"
+        "qualifiedname" : "_isolate_helper._WorkerSendPort._WorkerSendPort"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_workerId" : 
+            "name" : "_workerId"
+            "qualifiedname" : "_isolate_helper._WorkerSendPort._WorkerSendPort#_workerId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "isolateId" : 
+            "name" : "isolateId"
+            "qualifiedname" : "_isolate_helper._WorkerSendPort._WorkerSendPort#isolateId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "_receivePortId" : 
+            "name" : "_receivePortId"
+            "qualifiedname" : "_isolate_helper._WorkerSendPort._WorkerSendPort#_receivePortId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "send" : 
+        "name" : "send"
+        "qualifiedname" : "_isolate_helper._WorkerSendPort.send"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "_isolate_helper._WorkerSendPort.send#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "replyTo" : 
+            "name" : "replyTo"
+            "qualifiedname" : "_isolate_helper._WorkerSendPort.send#replyTo"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "true"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "_isolate_helper._WorkerSendPort.=="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_isolate_helper._WorkerSendPort.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_isolate_helper._WorkerSendPort.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+  "_NativeJsSendPort" : 
+    "name" : "_NativeJsSendPort"
+    "qualifiedname" : "_isolate_helper._NativeJsSendPort"
+    "comment" : "<p>A send port that delivers messages in-memory via native JavaScript calls.</p>"
+    "superclass" : "_isolate_helper._BaseSendPort"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.isolate.SendPort"
+    "variables" : 
+      "_receivePort" : 
+        "name" : "_receivePort"
+        "qualifiedname" : "_isolate_helper._NativeJsSendPort._receivePort"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "_isolate_helper.ReceivePortImpl"
+    "methods" : 
+      "_NativeJsSendPort" : 
+        "name" : "_NativeJsSendPort"
+        "qualifiedname" : "_isolate_helper._NativeJsSendPort._NativeJsSendPort"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_receivePort" : 
+            "name" : "_receivePort"
+            "qualifiedname" : "_isolate_helper._NativeJsSendPort._NativeJsSendPort#_receivePort"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper.ReceivePortImpl"
+            "value" : "null"
+          "isolateId" : 
+            "name" : "isolateId"
+            "qualifiedname" : "_isolate_helper._NativeJsSendPort._NativeJsSendPort#isolateId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "send" : 
+        "name" : "send"
+        "qualifiedname" : "_isolate_helper._NativeJsSendPort.send"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "_isolate_helper._NativeJsSendPort.send#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "replyTo" : 
+            "name" : "replyTo"
+            "qualifiedname" : "_isolate_helper._NativeJsSendPort.send#replyTo"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "true"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "_isolate_helper._NativeJsSendPort.=="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_isolate_helper._NativeJsSendPort.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_isolate_helper._NativeJsSendPort.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+  "_BaseSendPort" : 
+    "name" : "_BaseSendPort"
+    "qualifiedname" : "_isolate_helper._BaseSendPort"
+    "comment" : "<hr /> <p>  Inserted from lib/isolate/dart2js/ports.dart <strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong><strong></strong>** Common functionality to all send ports.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.isolate.SendPort"
+    "variables" : 
+      "_isolateId" : 
+        "name" : "_isolateId"
+        "qualifiedname" : "_isolate_helper._BaseSendPort._isolateId"
+        "comment" : "<p>Id for the destination isolate.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+      "_BaseSendPort" : 
+        "name" : "_BaseSendPort"
+        "qualifiedname" : "_isolate_helper._BaseSendPort._BaseSendPort"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_isolateId" : 
+            "name" : "_isolateId"
+            "qualifiedname" : "_isolate_helper._BaseSendPort._BaseSendPort#_isolateId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "_checkReplyTo" : 
+        "name" : "_checkReplyTo"
+        "qualifiedname" : "_isolate_helper._BaseSendPort._checkReplyTo"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "replyTo" : 
+            "name" : "replyTo"
+            "qualifiedname" : "_isolate_helper._BaseSendPort._checkReplyTo#replyTo"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "call" : 
+        "name" : "call"
+        "qualifiedname" : "_isolate_helper._BaseSendPort.call"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "_isolate_helper._BaseSendPort.call#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "send" : 
+        "name" : "send"
+        "qualifiedname" : "_isolate_helper._BaseSendPort.send"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "_isolate_helper._BaseSendPort.send#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "replyTo" : 
+            "name" : "replyTo"
+            "qualifiedname" : "_isolate_helper._BaseSendPort.send#replyTo"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "_isolate_helper._BaseSendPort.=="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_isolate_helper._BaseSendPort.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_isolate_helper._BaseSendPort.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+  "IsolateNatives" : 
+    "name" : "IsolateNatives"
+    "qualifiedname" : "_isolate_helper.IsolateNatives"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "thisScript" : 
+        "name" : "thisScript"
+        "qualifiedname" : "_isolate_helper.IsolateNatives.thisScript"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.String"
+      "workerIds" : 
+        "name" : "workerIds"
+        "qualifiedname" : "_isolate_helper.IsolateNatives.workerIds"
+        "comment" : "<p>Associates an ID with a native worker object.</p>"
+        "final" : "true"
+        "static" : "true"
+        "type" : "dart.core.Expando"
+    "methods" : 
+      "computeThisScript" : 
+        "name" : "computeThisScript"
+        "qualifiedname" : "_isolate_helper.IsolateNatives.computeThisScript"
+        "comment" : "<p>The src url for the script tag that loaded this code. Used to create JavaScript workers.</p>"
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "computeGlobalThis" : 
+        "name" : "computeGlobalThis"
+        "qualifiedname" : "_isolate_helper.IsolateNatives.computeGlobalThis"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dynamic"
+        "parameters" : 
+      "_getEventData" : 
+        "name" : "_getEventData"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._getEventData"
+        "comment" : "<p>Assume that <code>e</code> is a browser message event and extract its message data. We don't import the dom explicitly so, when workers are disabled, this library can also run on top of nodejs.</p>"
+        "type" : "method"
+        "static" : "true"
+        "return" : "dynamic"
+        "parameters" : 
+          "e" : 
+            "name" : "e"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._getEventData#e"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_processWorkerMessage" : 
+        "name" : "_processWorkerMessage"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._processWorkerMessage"
+        "comment" : "<p>Process messages on a worker, either to control the worker instance or to pass messages along to the isolate running in the worker.</p>"
+        "type" : "method"
+        "static" : "true"
+        "return" : "void"
+        "parameters" : 
+          "sender" : 
+            "name" : "sender"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._processWorkerMessage#sender"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "e" : 
+            "name" : "e"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._processWorkerMessage#e"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_log" : 
+        "name" : "_log"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._log"
+        "comment" : "<p>Log a message, forwarding to the main <code>_Manager</code> if appropriate.</p>"
+        "type" : "method"
+        "static" : "true"
+        "return" : "dynamic"
+        "parameters" : 
+          "msg" : 
+            "name" : "msg"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._log#msg"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_consoleLog" : 
+        "name" : "_consoleLog"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._consoleLog"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "void"
+        "parameters" : 
+          "msg" : 
+            "name" : "msg"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._consoleLog#msg"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_getJSConstructorFromName" : 
+        "name" : "_getJSConstructorFromName"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._getJSConstructorFromName"
+        "comment" : "<p>Find a constructor given its name.</p>"
+        "type" : "method"
+        "static" : "true"
+        "return" : "dynamic"
+        "parameters" : 
+          "factoryName" : 
+            "name" : "factoryName"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._getJSConstructorFromName#factoryName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "_getJSFunctionFromName" : 
+        "name" : "_getJSFunctionFromName"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._getJSFunctionFromName"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dynamic"
+        "parameters" : 
+          "functionName" : 
+            "name" : "functionName"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._getJSFunctionFromName#functionName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "_getJSFunctionName" : 
+        "name" : "_getJSFunctionName"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._getJSFunctionName"
+        "comment" : "<p>Get a string name for the function, if possible.  The result for anonymous functions is browser-dependent -- it may be \"\" or \"anonymous\" but you should probably not count on this.</p>"
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "f" : 
+            "name" : "f"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._getJSFunctionName#f"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "_allocate" : 
+        "name" : "_allocate"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._allocate"
+        "comment" : "<p>Create a new JavaScript object instance given its constructor.</p>"
+        "type" : "method"
+        "static" : "true"
+        "return" : "dynamic"
+        "parameters" : 
+          "ctor" : 
+            "name" : "ctor"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._allocate#ctor"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "spawnFunction" : 
+        "name" : "spawnFunction"
+        "qualifiedname" : "_isolate_helper.IsolateNatives.spawnFunction"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "topLevelFunction" : 
+            "name" : "topLevelFunction"
+            "qualifiedname" : "_isolate_helper.IsolateNatives.spawnFunction#topLevelFunction"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "spawnDomFunction" : 
+        "name" : "spawnDomFunction"
+        "qualifiedname" : "_isolate_helper.IsolateNatives.spawnDomFunction"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "topLevelFunction" : 
+            "name" : "topLevelFunction"
+            "qualifiedname" : "_isolate_helper.IsolateNatives.spawnDomFunction#topLevelFunction"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "spawn" : 
+        "name" : "spawn"
+        "qualifiedname" : "_isolate_helper.IsolateNatives.spawn"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dynamic"
+        "parameters" : 
+          "functionName" : 
+            "name" : "functionName"
+            "qualifiedname" : "_isolate_helper.IsolateNatives.spawn#functionName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "uri" : 
+            "name" : "uri"
+            "qualifiedname" : "_isolate_helper.IsolateNatives.spawn#uri"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "isLight" : 
+            "name" : "isLight"
+            "qualifiedname" : "_isolate_helper.IsolateNatives.spawn#isLight"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+      "_startWorker" : 
+        "name" : "_startWorker"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._startWorker"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "functionName" : 
+            "name" : "functionName"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._startWorker#functionName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "uri" : 
+            "name" : "uri"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._startWorker#uri"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "replyPort" : 
+            "name" : "replyPort"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._startWorker#replyPort"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "_startNonWorker" : 
+        "name" : "_startNonWorker"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._startNonWorker"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "functionName" : 
+            "name" : "functionName"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._startNonWorker#functionName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "uri" : 
+            "name" : "uri"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._startNonWorker#uri"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "replyPort" : 
+            "name" : "replyPort"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._startNonWorker#replyPort"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "_startIsolate" : 
+        "name" : "_startIsolate"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._startIsolate"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "void"
+        "parameters" : 
+          "topLevel" : 
+            "name" : "topLevel"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._startIsolate#topLevel"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+          "replyTo" : 
+            "name" : "replyTo"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._startIsolate#replyTo"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "_spawnWorker" : 
+        "name" : "_spawnWorker"
+        "qualifiedname" : "_isolate_helper.IsolateNatives._spawnWorker"
+        "comment" : "<p>Spawns an isolate in a worker. <code>factoryName</code> is the Javascript constructor name for the isolate entry point class.</p>"
+        "type" : "method"
+        "static" : "true"
+        "return" : "void"
+        "parameters" : 
+          "functionName" : 
+            "name" : "functionName"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._spawnWorker#functionName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "uri" : 
+            "name" : "uri"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._spawnWorker#uri"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "replyPort" : 
+            "name" : "replyPort"
+            "qualifiedname" : "_isolate_helper.IsolateNatives._spawnWorker#replyPort"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "_MainManagerStub" : 
+    "name" : "_MainManagerStub"
+    "qualifiedname" : "_isolate_helper._MainManagerStub"
+    "comment" : "<p>A stub for interacting with the main manager.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "postMessage" : 
+        "name" : "postMessage"
+        "qualifiedname" : "_isolate_helper._MainManagerStub.postMessage"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "msg" : 
+            "name" : "msg"
+            "qualifiedname" : "_isolate_helper._MainManagerStub.postMessage#msg"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "_IsolateEvent" : 
+    "name" : "_IsolateEvent"
+    "qualifiedname" : "_isolate_helper._IsolateEvent"
+    "comment" : "<p>An event in the top-level event queue.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "isolate" : 
+        "name" : "isolate"
+        "qualifiedname" : "_isolate_helper._IsolateEvent.isolate"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "_isolate_helper._IsolateContext"
+      "fn" : 
+        "name" : "fn"
+        "qualifiedname" : "_isolate_helper._IsolateEvent.fn"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.Function"
+      "message" : 
+        "name" : "message"
+        "qualifiedname" : "_isolate_helper._IsolateEvent.message"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+      "_IsolateEvent" : 
+        "name" : "_IsolateEvent"
+        "qualifiedname" : "_isolate_helper._IsolateEvent._IsolateEvent"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "isolate" : 
+            "name" : "isolate"
+            "qualifiedname" : "_isolate_helper._IsolateEvent._IsolateEvent#isolate"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_isolate_helper._IsolateContext"
+            "value" : "null"
+          "fn" : 
+            "name" : "fn"
+            "qualifiedname" : "_isolate_helper._IsolateEvent._IsolateEvent#fn"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "_isolate_helper._IsolateEvent._IsolateEvent#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "process" : 
+        "name" : "process"
+        "qualifiedname" : "_isolate_helper._IsolateEvent.process"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+  "_EventLoop" : 
+    "name" : "_EventLoop"
+    "qualifiedname" : "_isolate_helper._EventLoop"
+    "comment" : "<p>Represent the event loop on a javascript thread (DOM or worker).</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "events" : 
+        "name" : "events"
+        "qualifiedname" : "_isolate_helper._EventLoop.events"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.collection.Queue"
+      "activeTimerCount" : 
+        "name" : "activeTimerCount"
+        "qualifiedname" : "_isolate_helper._EventLoop.activeTimerCount"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+      "_EventLoop" : 
+        "name" : "_EventLoop"
+        "qualifiedname" : "_isolate_helper._EventLoop._EventLoop"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "enqueue" : 
+        "name" : "enqueue"
+        "qualifiedname" : "_isolate_helper._EventLoop.enqueue"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "isolate" : 
+            "name" : "isolate"
+            "qualifiedname" : "_isolate_helper._EventLoop.enqueue#isolate"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "fn" : 
+            "name" : "fn"
+            "qualifiedname" : "_isolate_helper._EventLoop.enqueue#fn"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "msg" : 
+            "name" : "msg"
+            "qualifiedname" : "_isolate_helper._EventLoop.enqueue#msg"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "dequeue" : 
+        "name" : "dequeue"
+        "qualifiedname" : "_isolate_helper._EventLoop.dequeue"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "_isolate_helper._IsolateEvent"
+        "parameters" : 
+      "checkOpenReceivePortsFromCommandLine" : 
+        "name" : "checkOpenReceivePortsFromCommandLine"
+        "qualifiedname" : "_isolate_helper._EventLoop.checkOpenReceivePortsFromCommandLine"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "runIteration" : 
+        "name" : "runIteration"
+        "qualifiedname" : "_isolate_helper._EventLoop.runIteration"
+        "comment" : "<p>Process a single event, if any.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "_runHelper" : 
+        "name" : "_runHelper"
+        "qualifiedname" : "_isolate_helper._EventLoop._runHelper"
+        "comment" : "<p>Runs multiple iterations of the run-loop. If possible, each iteration is run asynchronously.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "run" : 
+        "name" : "run"
+        "qualifiedname" : "_isolate_helper._EventLoop.run"
+        "comment" : "<p>Call <code>_runHelper</code> but ensure that worker exceptions are propragated.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+  "_IsolateContext" : 
+    "name" : "_IsolateContext"
+    "qualifiedname" : "_isolate_helper._IsolateContext"
+    "comment" : "<p>Context information tracked for each isolate.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "_foreign_helper.IsolateContext"
+    "variables" : 
+      "id" : 
+        "name" : "id"
+        "qualifiedname" : "_isolate_helper._IsolateContext.id"
+        "comment" : "<p>Current isolate id.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "ports" : 
+        "name" : "ports"
+        "qualifiedname" : "_isolate_helper._IsolateContext.ports"
+        "comment" : "<p>Registry of receive ports currently active on this isolate.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.Map"
+      "isolateStatics" : 
+        "name" : "isolateStatics"
+        "qualifiedname" : "_isolate_helper._IsolateContext.isolateStatics"
+        "comment" : "<p>Holds isolate globals (statics and top-level properties).</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dynamic"
+    "methods" : 
+      "_IsolateContext" : 
+        "name" : "_IsolateContext"
+        "qualifiedname" : "_isolate_helper._IsolateContext._IsolateContext"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "eval" : 
+        "name" : "eval"
+        "qualifiedname" : "_isolate_helper._IsolateContext.eval"
+        "comment" : "<p>Run <code>code</code> in the context of the isolate represented by <code>this</code>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "code" : 
+            "name" : "code"
+            "qualifiedname" : "_isolate_helper._IsolateContext.eval#code"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "_setGlobals" : 
+        "name" : "_setGlobals"
+        "qualifiedname" : "_isolate_helper._IsolateContext._setGlobals"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "lookup" : 
+        "name" : "lookup"
+        "qualifiedname" : "_isolate_helper._IsolateContext.lookup"
+        "comment" : "<p>Lookup a port registered for this isolate.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.isolate.ReceivePort"
+        "parameters" : 
+          "portId" : 
+            "name" : "portId"
+            "qualifiedname" : "_isolate_helper._IsolateContext.lookup#portId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "register" : 
+        "name" : "register"
+        "qualifiedname" : "_isolate_helper._IsolateContext.register"
+        "comment" : "<p>Register a port on this isolate.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "portId" : 
+            "name" : "portId"
+            "qualifiedname" : "_isolate_helper._IsolateContext.register#portId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "port" : 
+            "name" : "port"
+            "qualifiedname" : "_isolate_helper._IsolateContext.register#port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.ReceivePort"
+            "value" : "null"
+      "unregister" : 
+        "name" : "unregister"
+        "qualifiedname" : "_isolate_helper._IsolateContext.unregister"
+        "comment" : "<p>Unregister a port on this isolate.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "portId" : 
+            "name" : "portId"
+            "qualifiedname" : "_isolate_helper._IsolateContext.unregister#portId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+  "_Manager" : 
+    "name" : "_Manager"
+    "qualifiedname" : "_isolate_helper._Manager"
+    "comment" : "<p>State associated with the current manager. See <code>globalState</code>.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "nextIsolateId" : 
+        "name" : "nextIsolateId"
+        "qualifiedname" : "_isolate_helper._Manager.nextIsolateId"
+        "comment" : "<p>Next available isolate id within this <code>_Manager</code>.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "currentManagerId" : 
+        "name" : "currentManagerId"
+        "qualifiedname" : "_isolate_helper._Manager.currentManagerId"
+        "comment" : "<p>id assigned to this <code>_Manager</code>.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "nextManagerId" : 
+        "name" : "nextManagerId"
+        "qualifiedname" : "_isolate_helper._Manager.nextManagerId"
+        "comment" : "<p>Next available manager id. Only used by the main manager to assign a unique id to each manager created by it.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "currentContext" : 
+        "name" : "currentContext"
+        "qualifiedname" : "_isolate_helper._Manager.currentContext"
+        "comment" : "<p>Context for the currently running <code>Isolate</code>.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "_isolate_helper._IsolateContext"
+      "rootContext" : 
+        "name" : "rootContext"
+        "qualifiedname" : "_isolate_helper._Manager.rootContext"
+        "comment" : "<p>Context for the root <code>Isolate</code> that first run in this <code>_Manager</code>.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "_isolate_helper._IsolateContext"
+      "topEventLoop" : 
+        "name" : "topEventLoop"
+        "qualifiedname" : "_isolate_helper._Manager.topEventLoop"
+        "comment" : "<p>The top-level event loop.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "_isolate_helper._EventLoop"
+      "fromCommandLine" : 
+        "name" : "fromCommandLine"
+        "qualifiedname" : "_isolate_helper._Manager.fromCommandLine"
+        "comment" : "<p>Whether this program is running from the command line.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "isWorker" : 
+        "name" : "isWorker"
+        "qualifiedname" : "_isolate_helper._Manager.isWorker"
+        "comment" : "<p>Whether this <code>_Manager</code> is running as a web worker.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "supportsWorkers" : 
+        "name" : "supportsWorkers"
+        "qualifiedname" : "_isolate_helper._Manager.supportsWorkers"
+        "comment" : "<p>Whether we support spawning web workers.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "isolates" : 
+        "name" : "isolates"
+        "qualifiedname" : "_isolate_helper._Manager.isolates"
+        "comment" : "<p>Registry of isolates. Isolates must be registered if, and only if, receive ports are alive.  Normally no open receive-ports means that the isolate is dead, but DOM callbacks could resurrect it.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.Map"
+      "mainManager" : 
+        "name" : "mainManager"
+        "qualifiedname" : "_isolate_helper._Manager.mainManager"
+        "comment" : "<p>Reference to the main <code>_Manager</code>.  Null in the main <code>_Manager</code> itself.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "_isolate_helper._MainManagerStub"
+      "managers" : 
+        "name" : "managers"
+        "qualifiedname" : "_isolate_helper._Manager.managers"
+        "comment" : "<p>Registry of active Web Workers.  Only used in the main <code>_Manager</code>.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.Map"
+      "entry" : 
+        "name" : "entry"
+        "qualifiedname" : "_isolate_helper._Manager.entry"
+        "comment" : "<p>The entry point given by <code>startRootIsolate</code>.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.Function"
+    "methods" : 
+      "useWorkers" : 
+        "name" : "useWorkers"
+        "qualifiedname" : "_isolate_helper._Manager.useWorkers"
+        "comment" : "<p>Whether to use web workers when implementing isolates. Set to false for debugging/testing.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "needSerialization" : 
+        "name" : "needSerialization"
+        "qualifiedname" : "_isolate_helper._Manager.needSerialization"
+        "comment" : "<p>Whether to use the web-worker JSON-based message serialization protocol. By default this is only used with web workers. For debugging, you can force using this protocol by changing this field value to <code>true</code>.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "_Manager" : 
+        "name" : "_Manager"
+        "qualifiedname" : "_isolate_helper._Manager._Manager"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "entry" : 
+            "name" : "entry"
+            "qualifiedname" : "_isolate_helper._Manager._Manager#entry"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "_nativeDetectEnvironment" : 
+        "name" : "_nativeDetectEnvironment"
+        "qualifiedname" : "_isolate_helper._Manager._nativeDetectEnvironment"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "_nativeInitWorkerMessageHandler" : 
+        "name" : "_nativeInitWorkerMessageHandler"
+        "qualifiedname" : "_isolate_helper._Manager._nativeInitWorkerMessageHandler"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "maybeCloseWorker" : 
+        "name" : "maybeCloseWorker"
+        "qualifiedname" : "_isolate_helper._Manager.maybeCloseWorker"
+        "comment" : "<p>Close the worker running this code if all isolates are done and there is no active timer.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+  "JsIsolateSink" : 
+    "name" : "JsIsolateSink"
+    "qualifiedname" : "_isolate_helper.JsIsolateSink"
+    "comment" : ""
+    "superclass" : "dart.async.EventSink"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.isolate.IsolateSink"
+    "variables" : 
+      "_isClosed" : 
+        "name" : "_isClosed"
+        "qualifiedname" : "_isolate_helper.JsIsolateSink._isClosed"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "_port" : 
+        "name" : "_port"
+        "qualifiedname" : "_isolate_helper.JsIsolateSink._port"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.isolate.SendPort"
+    "methods" : 
+      "JsIsolateSink.fromPort" : 
+        "name" : "JsIsolateSink.fromPort"
+        "qualifiedname" : "_isolate_helper.JsIsolateSink.JsIsolateSink.fromPort"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_port" : 
+            "name" : "_port"
+            "qualifiedname" : "_isolate_helper.JsIsolateSink.JsIsolateSink.fromPort#_port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "add" : 
+        "name" : "add"
+        "qualifiedname" : "_isolate_helper.JsIsolateSink.add"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "_isolate_helper.JsIsolateSink.add#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "addError" : 
+        "name" : "addError"
+        "qualifiedname" : "_isolate_helper.JsIsolateSink.addError"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "errorEvent" : 
+            "name" : "errorEvent"
+            "qualifiedname" : "_isolate_helper.JsIsolateSink.addError#errorEvent"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "close" : 
+        "name" : "close"
+        "qualifiedname" : "_isolate_helper.JsIsolateSink.close"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "_isolate_helper.JsIsolateSink.=="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_isolate_helper.JsIsolateSink.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_isolate_helper.JsIsolateSink.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+  "CloseToken" : 
+    "name" : "CloseToken"
+    "qualifiedname" : "_isolate_helper.CloseToken"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "CloseToken" : 
+        "name" : "CloseToken"
+        "qualifiedname" : "_isolate_helper.CloseToken.CloseToken"
+        "comment" : "<p>This token is sent from <code>IsolateSink</code>s to <code>IsolateStream</code>s to ask them to close themselves.</p>"
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 

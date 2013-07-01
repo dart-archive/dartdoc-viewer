@@ -1,0 +1,1416 @@
+"name" : "dart.mirrors"
+"comment" : "<p>The mirrors library provides basic reflection support for Dart. Reflection here is limited to introspection and dynamic evaluation.</p> <p>Introspection is that subset of reflection by which a running program can examine its own structure. For example, a function that prints out the names of all the members of an arbitrary object.</p> <p>Dynamic evaluation refers the ability to evaluate code that has not been literally specified at compile time, such as calling a method whose name is provided as an argument (because it is looked up in a database, or provided interactively by the user).</p> <p>How to Interpret the Dartdoc specifications below</p> <p>As a rule, the names of Dart declarations are represented using instances of class <code>Symbol</code>. Whenever we speak of an object <em>s</em> of class <code>Symbol</code> denoting a name, we mean the string that was used to construct <em>s</em>.</p> <p>We will also frequently abuse notation and write Dart pseudo-code such as <code>:o.x(a):</code>, where we have defined o and a to be objects; what is actually meant in these cases is <code>:o'.x(a'):</code> where <em>o'</em> and <em>a'</em> are Dart variables bound to <em>o</em> and <em>a</em> respectively. Furthermore, <em>o'</em> and <em>a'</em> are assumed to be fresh variables (meaning that they are distinct from any other variables in the program).</p> <p>An object is serializable across isolates if and only if it is an instance of either num, bool, String, a list of objects that are serializable across isolates or a map whose keys and values are all serializable across isolates.</p>"
+"variables" : 
+"functions" : 
+  "reflectClass" : 
+    "name" : "reflectClass"
+    "qualifiedname" : "dart.mirrors.reflectClass"
+    "comment" : "<p>Returns a <code>ClassMirror</code> for the class represented by a Dart Type object.</p> <p>This only works with objects local to the current isolate.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.mirrors.ClassMirror"
+    "parameters" : 
+      "key" : 
+        "name" : "key"
+        "qualifiedname" : "dart.mirrors.reflectClass#key"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Type"
+        "value" : "null"
+  "reflect" : 
+    "name" : "reflect"
+    "qualifiedname" : "dart.mirrors.reflect"
+    "comment" : "<p>Returns an <code>InstanceMirror</code> for some Dart language object.</p> <p>This only works with objects local to the current isolate.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.mirrors.InstanceMirror"
+    "parameters" : 
+      "reflectee" : 
+        "name" : "reflectee"
+        "qualifiedname" : "dart.mirrors.reflect#reflectee"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Object"
+        "value" : "null"
+  "mirrorSystemOf" : 
+    "name" : "mirrorSystemOf"
+    "qualifiedname" : "dart.mirrors.mirrorSystemOf"
+    "comment" : "<p>Creates a <code>MirrorSystem</code> for the isolate which is listening on the <code>SendPort</code>.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.async.Future"
+    "parameters" : 
+      "port" : 
+        "name" : "port"
+        "qualifiedname" : "dart.mirrors.mirrorSystemOf#port"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.isolate.SendPort"
+        "value" : "null"
+  "currentMirrorSystem" : 
+    "name" : "currentMirrorSystem"
+    "qualifiedname" : "dart.mirrors.currentMirrorSystem"
+    "comment" : "<p>Returns a <code>MirrorSystem</code> for the current isolate.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.mirrors.MirrorSystem"
+    "parameters" : 
+"classes" : 
+  "MirrorsUsed" : 
+    "name" : "MirrorsUsed"
+    "qualifiedname" : "dart.mirrors.MirrorsUsed"
+    "comment" : "<p>EXPERIMENTAL API: Description of how \"dart:mirrors\" is used.</p> <p>When used as metadata on an import of \"dart:mirrors\" in library <em>L</em>, this class describes how \"dart:mirrors\" is used by library <em>L</em> unless overridden. See <code>override</code>.</p> <p>The following text is non-normative:</p> <p>In some scenarios, for example, when minifying Dart code, or when generating JavaScript code from a Dart program, the size and performance of the output can suffer from use of reflection.  In those cases, telling the compiler what is used, can have a significant impact.</p> <p>Example usage:</p> <p>[: @MirrorsUsed(symbols: 'foo', override: '*') import 'dart:mirrors';</p> <p>class Foo {   noSuchMethod(Invocation invocation) {</p> <pre><code>print(Mirrors.getName(invocation.memberName)); </code></pre> <p>  } }</p> <p>main() {   new Foo().foo(); // Prints \"foo\".   new Foo().bar(); // Might print an arbitrary (mangled) name, \"bar\". } :]</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "symbols" : 
+        "name" : "symbols"
+        "qualifiedname" : "dart.mirrors.MirrorsUsed.symbols"
+        "comment" : "<p>The list of strings passed to new <code>Symbol</code>, and symbols that might be passed to <code>MirrorSystem.getName</code>.</p> <p>Combined with the names of <code>reflectiveTarget</code>, <code>metaTargets</code> and their members, this forms the complete list of strings passed to new <code>Symbol</code>, and symbols that might be passed to <code>MirrorSystem.getName</code> by the library to which this metadata applies.</p> <p>The following text is non-normative:</p> <p>Specifying this option turns off the following warnings emitted by dart2js:</p><ul><li>Using \"MirrorSystem.getName\" may result in larger output.</li><li>Using \"new #{name}\" may result in larger output.</li></ul> <p>Use symbols = \"*\" to turn off the warnings mentioned above.</p> <p>For example, if using <code>noSuchMethod</code> to interact with a database, extract all the possible column names and include them in this list.  Similarly, if using <code>noSuchMethod</code> to interact with another language (JavaScript, for example) extract all the identifiers from API used and include them in this list.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+      "targets" : 
+        "name" : "targets"
+        "qualifiedname" : "dart.mirrors.MirrorsUsed.targets"
+        "comment" : "<p>A list of reflective targets.</p> <p>Combined with <code>metaTargets</code>, this provides the complete list of reflective targets used by the library to which this metadata applies.</p> <p>The following text is non-normative:</p> <p>For now, there is no formal description of what a reflective target is. Informally, it is a list of things that are expected to have fully functional mirrors.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+      "metaTargets" : 
+        "name" : "metaTargets"
+        "qualifiedname" : "dart.mirrors.MirrorsUsed.metaTargets"
+        "comment" : "<p>A list of classes that when used as metadata indicates a reflective target.</p> <p>See <code>targets</code>.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+      "override" : 
+        "name" : "override"
+        "qualifiedname" : "dart.mirrors.MirrorsUsed.override"
+        "comment" : "<p>A list of library names or \"*\".</p> <p>When used as metadata on an import of \"dart:mirrors\", this metadata does not apply to the library in which the annotation is used, but instead applies to the other libraries (all libraries if \"*\" is used).</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+    "methods" : 
+      "MirrorsUsed" : 
+        "name" : "MirrorsUsed"
+        "qualifiedname" : "dart.mirrors.MirrorsUsed.MirrorsUsed"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "symbols" : 
+            "name" : "symbols"
+            "qualifiedname" : "dart.mirrors.MirrorsUsed.MirrorsUsed#symbols"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "targets" : 
+            "name" : "targets"
+            "qualifiedname" : "dart.mirrors.MirrorsUsed.MirrorsUsed#targets"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "metaTargets" : 
+            "name" : "metaTargets"
+            "qualifiedname" : "dart.mirrors.MirrorsUsed.MirrorsUsed#metaTargets"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "override" : 
+            "name" : "override"
+            "qualifiedname" : "dart.mirrors.MirrorsUsed.MirrorsUsed#override"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "Comment" : 
+    "name" : "Comment"
+    "qualifiedname" : "dart.mirrors.Comment"
+    "comment" : "<p>Class used for encoding comments as metadata annotations.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "text" : 
+        "name" : "text"
+        "qualifiedname" : "dart.mirrors.Comment.text"
+        "comment" : "<p>The comment text as written in the source text.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+      "trimmedText" : 
+        "name" : "trimmedText"
+        "qualifiedname" : "dart.mirrors.Comment.trimmedText"
+        "comment" : "<p>The comment text without the start, end, and padding text.</p> <p>For example, if <code>text</code> is [: /** Comment text. */ :] then the <code>trimmedText</code> is <code>: Comment text. :</code>.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+      "isDocComment" : 
+        "name" : "isDocComment"
+        "qualifiedname" : "dart.mirrors.Comment.isDocComment"
+        "comment" : "<p>Is <code>:true:</code> if this comment is a documentation comment.</p> <p>That is, that the comment is either enclosed in [: /** ... */ :] or starts with <code>: /// :</code>.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.bool"
+    "methods" : 
+      "Comment" : 
+        "name" : "Comment"
+        "qualifiedname" : "dart.mirrors.Comment.Comment"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "text" : 
+            "name" : "text"
+            "qualifiedname" : "dart.mirrors.Comment.Comment#text"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "trimmedText" : 
+            "name" : "trimmedText"
+            "qualifiedname" : "dart.mirrors.Comment.Comment#trimmedText"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "isDocComment" : 
+            "name" : "isDocComment"
+            "qualifiedname" : "dart.mirrors.Comment.Comment#isDocComment"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+  "MirrorException" : 
+    "name" : "MirrorException"
+    "qualifiedname" : "dart.mirrors.MirrorException"
+    "comment" : "<p>A <code>MirrorException</code> is used to indicate errors within the mirrors framework.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.core.Exception"
+    "variables" : 
+      "_message" : 
+        "name" : "_message"
+        "qualifiedname" : "dart.mirrors.MirrorException._message"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+      "MirrorException" : 
+        "name" : "MirrorException"
+        "qualifiedname" : "dart.mirrors.MirrorException.MirrorException"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_message" : 
+            "name" : "_message"
+            "qualifiedname" : "dart.mirrors.MirrorException.MirrorException#_message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "dart.mirrors.MirrorException.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "MirroredCompilationError" : 
+    "name" : "MirroredCompilationError"
+    "qualifiedname" : "dart.mirrors.MirroredCompilationError"
+    "comment" : "<p>When a compile-time error occurs during the mirrored execution of code, a <code>MirroredCompilationError</code> is thrown.</p> <p>This exception includes the compile-time error message that would have been displayed to the user, if the function had not been invoked via mirror.</p>"
+    "superclass" : "dart.mirrors.MirroredError"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "message" : 
+        "name" : "message"
+        "qualifiedname" : "dart.mirrors.MirroredCompilationError.message"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+      "MirroredCompilationError" : 
+        "name" : "MirroredCompilationError"
+        "qualifiedname" : "dart.mirrors.MirroredCompilationError.MirroredCompilationError"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "dart.mirrors.MirroredCompilationError.MirroredCompilationError#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "dart.mirrors.MirroredCompilationError.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "MirroredUncaughtExceptionError" : 
+    "name" : "MirroredUncaughtExceptionError"
+    "qualifiedname" : "dart.mirrors.MirroredUncaughtExceptionError"
+    "comment" : "<p>When an uncaught exception occurs during the mirrored execution of code, a <code>MirroredUncaughtExceptionError</code> is thrown.</p> <p>This exception contains a mirror on the original exception object. It also contains an object which can be used to recover the stacktrace.</p>"
+    "superclass" : "dart.mirrors.MirroredError"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "exception_mirror" : 
+        "name" : "exception_mirror"
+        "qualifiedname" : "dart.mirrors.MirroredUncaughtExceptionError.exception_mirror"
+        "comment" : "<p>A mirror on the exception object.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.mirrors.InstanceMirror"
+      "exception_string" : 
+        "name" : "exception_string"
+        "qualifiedname" : "dart.mirrors.MirroredUncaughtExceptionError.exception_string"
+        "comment" : "<p>The result of toString() for the exception object.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+      "stacktrace" : 
+        "name" : "stacktrace"
+        "qualifiedname" : "dart.mirrors.MirroredUncaughtExceptionError.stacktrace"
+        "comment" : "<p>A stacktrace object for the uncaught exception.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.Object"
+    "methods" : 
+      "MirroredUncaughtExceptionError" : 
+        "name" : "MirroredUncaughtExceptionError"
+        "qualifiedname" : "dart.mirrors.MirroredUncaughtExceptionError.MirroredUncaughtExceptionError"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "exception_mirror" : 
+            "name" : "exception_mirror"
+            "qualifiedname" : "dart.mirrors.MirroredUncaughtExceptionError.MirroredUncaughtExceptionError#exception_mirror"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.mirrors.InstanceMirror"
+            "value" : "null"
+          "exception_string" : 
+            "name" : "exception_string"
+            "qualifiedname" : "dart.mirrors.MirroredUncaughtExceptionError.MirroredUncaughtExceptionError#exception_string"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "stacktrace" : 
+            "name" : "stacktrace"
+            "qualifiedname" : "dart.mirrors.MirroredUncaughtExceptionError.MirroredUncaughtExceptionError#stacktrace"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "dart.mirrors.MirroredUncaughtExceptionError.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "MirroredError" : 
+    "name" : "MirroredError"
+    "qualifiedname" : "dart.mirrors.MirroredError"
+    "comment" : "<p>When an error occurs during the mirrored execution of code, a <code>MirroredError</code> is thrown.</p> <p>In general, there are three main classes of failure that can happen during mirrored execution of code in some isolate:</p><ul><li> <p>An exception is thrown but not caught.  This is caught by the   mirrors framework and a <code>MirroredUncaughtExceptionError</code> is   created and thrown.</p></li><li> <p>A compile-time error occurs, such as a syntax error.  This is   suppressed by the mirrors framework and a   <code>MirroredCompilationError</code> is created and thrown.</p></li><li> <p>A truly fatal error occurs, causing the isolate to be exited.  If   the reflector and reflectee share the same isolate, then they   will both suffer.  If the reflector and reflectee are in distinct   isolates, then we hope to provide some information about the   isolate death, but this has yet to be implemented.</p></li></ul> <p>TODO(turnidge): Specify the behavior for remote fatal errors.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.core.Exception"
+    "variables" : 
+    "methods" : 
+  "SourceLocation" : 
+    "name" : "SourceLocation"
+    "qualifiedname" : "dart.mirrors.SourceLocation"
+    "comment" : "<p>A <code>SourceLocation</code> describes the span of an entity in Dart source code.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "ParameterMirror" : 
+    "name" : "ParameterMirror"
+    "qualifiedname" : "dart.mirrors.ParameterMirror"
+    "comment" : "<p>A <code>ParameterMirror</code> reflects a Dart formal parameter declaration.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.VariableMirror"
+    "variables" : 
+    "methods" : 
+      "type" : 
+        "name" : "type"
+        "qualifiedname" : "dart.mirrors.ParameterMirror.type"
+        "comment" : "<p>A mirror on the type of this parameter.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "isOptional" : 
+        "name" : "isOptional"
+        "qualifiedname" : "dart.mirrors.ParameterMirror.isOptional"
+        "comment" : "<p>Is this parameter optional?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isNamed" : 
+        "name" : "isNamed"
+        "qualifiedname" : "dart.mirrors.ParameterMirror.isNamed"
+        "comment" : "<p>Is this parameter named?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "hasDefaultValue" : 
+        "name" : "hasDefaultValue"
+        "qualifiedname" : "dart.mirrors.ParameterMirror.hasDefaultValue"
+        "comment" : "<p>Does this parameter have a default value?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "defaultValue" : 
+        "name" : "defaultValue"
+        "qualifiedname" : "dart.mirrors.ParameterMirror.defaultValue"
+        "comment" : "<p>A mirror on the default value for this parameter, if it exists.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "VariableMirror" : 
+    "name" : "VariableMirror"
+    "qualifiedname" : "dart.mirrors.VariableMirror"
+    "comment" : "<p>A <code>VariableMirror</code> reflects a Dart language variable declaration.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.DeclarationMirror"
+    "variables" : 
+    "methods" : 
+      "type" : 
+        "name" : "type"
+        "qualifiedname" : "dart.mirrors.VariableMirror.type"
+        "comment" : "<p>A mirror on the type of the reflectee.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "isStatic" : 
+        "name" : "isStatic"
+        "qualifiedname" : "dart.mirrors.VariableMirror.isStatic"
+        "comment" : "<p>Is the reflectee a static variable?</p> <p>For the purposes of the mirror library, top-level variables are implicitly declared static.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isFinal" : 
+        "name" : "isFinal"
+        "qualifiedname" : "dart.mirrors.VariableMirror.isFinal"
+        "comment" : "<p>Is the reflectee a final variable?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+  "MethodMirror" : 
+    "name" : "MethodMirror"
+    "qualifiedname" : "dart.mirrors.MethodMirror"
+    "comment" : "<p>A <code>MethodMirror</code> reflects a Dart language function, method, constructor, getter, or setter.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.DeclarationMirror"
+    "variables" : 
+    "methods" : 
+      "returnType" : 
+        "name" : "returnType"
+        "qualifiedname" : "dart.mirrors.MethodMirror.returnType"
+        "comment" : "<p>A mirror on the return type for the reflectee.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "parameters" : 
+        "name" : "parameters"
+        "qualifiedname" : "dart.mirrors.MethodMirror.parameters"
+        "comment" : "<p>A list of mirrors on the parameters for the reflectee.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "isStatic" : 
+        "name" : "isStatic"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isStatic"
+        "comment" : "<p>Is the reflectee static?</p> <p>For the purposes of the mirrors library, a top-level function is considered static.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isAbstract" : 
+        "name" : "isAbstract"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isAbstract"
+        "comment" : "<p>Is the reflectee abstract?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isRegularMethod" : 
+        "name" : "isRegularMethod"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isRegularMethod"
+        "comment" : "<p>Is the reflectee a regular function or method?</p> <p>A function or method is regular if it is not a getter, setter, or constructor.  Note that operators, by this definition, are regular methods.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isOperator" : 
+        "name" : "isOperator"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isOperator"
+        "comment" : "<p>Is the reflectee an operator?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isGetter" : 
+        "name" : "isGetter"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isGetter"
+        "comment" : "<p>Is the reflectee a getter?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isSetter" : 
+        "name" : "isSetter"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isSetter"
+        "comment" : "<p>Is the reflectee a setter?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isConstructor" : 
+        "name" : "isConstructor"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isConstructor"
+        "comment" : "<p>Is the reflectee a constructor?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "constructorName" : 
+        "name" : "constructorName"
+        "qualifiedname" : "dart.mirrors.MethodMirror.constructorName"
+        "comment" : "<p>The constructor name for named constructors and factory methods.</p> <p>For unnamed constructors, this is the empty string.  For non-constructors, this is the empty string.</p> <p>For example, <code>:'bar':</code> is the constructor name for constructor <code>:Foo.bar:</code> of type <code>:Foo:</code>.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Symbol"
+        "parameters" : 
+      "isConstConstructor" : 
+        "name" : "isConstConstructor"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isConstConstructor"
+        "comment" : "<p>Is the reflectee a const constructor?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isGenerativeConstructor" : 
+        "name" : "isGenerativeConstructor"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isGenerativeConstructor"
+        "comment" : "<p>Is the reflectee a generative constructor?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isRedirectingConstructor" : 
+        "name" : "isRedirectingConstructor"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isRedirectingConstructor"
+        "comment" : "<p>Is the reflectee a redirecting constructor?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isFactoryConstructor" : 
+        "name" : "isFactoryConstructor"
+        "qualifiedname" : "dart.mirrors.MethodMirror.isFactoryConstructor"
+        "comment" : "<p>Is the reflectee a factory constructor?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+  "TypedefMirror" : 
+    "name" : "TypedefMirror"
+    "qualifiedname" : "dart.mirrors.TypedefMirror"
+    "comment" : "<p>A <code>TypedefMirror</code> represents a typedef in a Dart language program.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.ClassMirror"
+    "variables" : 
+    "methods" : 
+      "value" : 
+        "name" : "value"
+        "qualifiedname" : "dart.mirrors.TypedefMirror.value"
+        "comment" : "<p>The defining type for this typedef.</p> <p>For instance <code>:void f(int):</code> is the value for <code>:typedef void f(int):</code>.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+  "TypeVariableMirror" : 
+    "name" : "TypeVariableMirror"
+    "qualifiedname" : "dart.mirrors.TypeVariableMirror"
+    "comment" : "<p>A <code>TypeVariableMirror</code> represents a type parameter of a generic type.</p>"
+    "superclass" : "dart.mirrors.TypeMirror"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "upperBound" : 
+        "name" : "upperBound"
+        "qualifiedname" : "dart.mirrors.TypeVariableMirror.upperBound"
+        "comment" : "<p>A mirror on the type that is the upper bound of this type variable.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+  "FunctionTypeMirror" : 
+    "name" : "FunctionTypeMirror"
+    "qualifiedname" : "dart.mirrors.FunctionTypeMirror"
+    "comment" : "<p>A <code>FunctionTypeMirror</code> represents the type of a function in the Dart language.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.ClassMirror"
+    "variables" : 
+    "methods" : 
+      "returnType" : 
+        "name" : "returnType"
+        "qualifiedname" : "dart.mirrors.FunctionTypeMirror.returnType"
+        "comment" : "<p>The return type of the reflectee.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "parameters" : 
+        "name" : "parameters"
+        "qualifiedname" : "dart.mirrors.FunctionTypeMirror.parameters"
+        "comment" : "<p>A list of the parameter types of the reflectee.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "callMethod" : 
+        "name" : "callMethod"
+        "qualifiedname" : "dart.mirrors.FunctionTypeMirror.callMethod"
+        "comment" : "<p>A mirror on the <code>:call:</code> method for the reflectee.</p> <p>TODO(turnidge): What is this and what is it for?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.MethodMirror"
+        "parameters" : 
+  "ClassMirror" : 
+    "name" : "ClassMirror"
+    "qualifiedname" : "dart.mirrors.ClassMirror"
+    "comment" : "<p>A <code>ClassMirror</code> reflects a Dart language class.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.ObjectMirror"
+      - "dart.mirrors.TypeMirror"
+    "variables" : 
+    "methods" : 
+      "superclass" : 
+        "name" : "superclass"
+        "qualifiedname" : "dart.mirrors.ClassMirror.superclass"
+        "comment" : "<p>A mirror on the superclass on the reflectee.</p> <p>If this type is <code>:Object:</code> or a typedef, the superClass will be null.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.ClassMirror"
+        "parameters" : 
+      "superinterfaces" : 
+        "name" : "superinterfaces"
+        "qualifiedname" : "dart.mirrors.ClassMirror.superinterfaces"
+        "comment" : "<p>A list of mirrors on the superinterfaces of the reflectee.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "members" : 
+        "name" : "members"
+        "qualifiedname" : "dart.mirrors.ClassMirror.members"
+        "comment" : "<p>An immutable map from from names to mirrors for all members of this type.</p> <p>The members of a type are its methods, fields, getters, and setters.  Note that constructors and type variables are not considered to be members of a type.</p> <p>This does not include inherited members.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "methods" : 
+        "name" : "methods"
+        "qualifiedname" : "dart.mirrors.ClassMirror.methods"
+        "comment" : "<p>An immutable map from names to mirrors for all method, declarations for this type.  This does not include getters and setters.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "getters" : 
+        "name" : "getters"
+        "qualifiedname" : "dart.mirrors.ClassMirror.getters"
+        "comment" : "<p>An immutable map from names to mirrors for all getter declarations for this type.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "setters" : 
+        "name" : "setters"
+        "qualifiedname" : "dart.mirrors.ClassMirror.setters"
+        "comment" : "<p>An immutable map from names to mirrors for all setter declarations for this type.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "variables" : 
+        "name" : "variables"
+        "qualifiedname" : "dart.mirrors.ClassMirror.variables"
+        "comment" : "<p>An immutable map from names to mirrors for all variable declarations for this type.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "constructors" : 
+        "name" : "constructors"
+        "qualifiedname" : "dart.mirrors.ClassMirror.constructors"
+        "comment" : "<p>An immutable map from names to mirrors for all constructor declarations for this type.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "typeVariables" : 
+        "name" : "typeVariables"
+        "qualifiedname" : "dart.mirrors.ClassMirror.typeVariables"
+        "comment" : "<p>An immutable map from names to mirrors for all type variables for this type.</p> <p>This map preserves the order of declaration of the type variables.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "typeArguments" : 
+        "name" : "typeArguments"
+        "qualifiedname" : "dart.mirrors.ClassMirror.typeArguments"
+        "comment" : "<p>An immutable map from names to mirrors for all type arguments for this type.</p> <p>This map preserves the order of declaration of the type variables.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "isOriginalDeclaration" : 
+        "name" : "isOriginalDeclaration"
+        "qualifiedname" : "dart.mirrors.ClassMirror.isOriginalDeclaration"
+        "comment" : "<p>Is this the original declaration of this type?</p> <p>For most classes, they are their own original declaration.  For generic classes, however, there is a distinction between the original class declaration, which has unbound type variables, and the instantiations of generic classes, which have bound type variables.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "originalDeclaration" : 
+        "name" : "originalDeclaration"
+        "qualifiedname" : "dart.mirrors.ClassMirror.originalDeclaration"
+        "comment" : "<p>A mirror on the original declaration of this type.</p> <p>For most classes, they are their own original declaration.  For generic classes, however, there is a distinction between the original class declaration, which has unbound type variables, and the instantiations of generic classes, which have bound type variables.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.ClassMirror"
+        "parameters" : 
+      "newInstance" : 
+        "name" : "newInstance"
+        "qualifiedname" : "dart.mirrors.ClassMirror.newInstance"
+        "comment" : "<p>Invokes the named constructor and returns a mirror on the result.</p> <p>Let <em>c</em> be the class reflected by this mirror let <em>a1, ..., an</em> be the elements of <code>positionalArguments</code> let <em>k1, ..., km</em> be the identifiers denoted by the elements of <code>namedArguments.keys</code> and let <em>v1, ..., vm</em> be the elements of <code>namedArguments.values</code>. If <code>constructorName</code> was created from the empty string Then this method will execute the instance creation expression <em>new c(a1, ..., an, k1: v1, ..., km: vm)</em> in a scope that has access to the private members of <em>c</em>. Otherwise, let <em>f</em> be the simple name of the constructor denoted by <code>constructorName</code> Then this method will execute the instance creation expression  <em>new c.f(a1, ..., an, k1: v1, ..., km: vm)</em> in a scope that has access to the private members of <em>c</em>. In either case: If the expression evaluates to a result <em>r</em>, this method returns the result of calling <a href=\"*r*\">reflect</a>. If evaluating the expression throws an exception <em>e</em> (that it does not catch) the the result is a <code>MirrorError</code> wrapping <em>e</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "constructorName" : 
+            "name" : "constructorName"
+            "qualifiedname" : "dart.mirrors.ClassMirror.newInstance#constructorName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart.mirrors.ClassMirror.newInstance#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart.mirrors.ClassMirror.newInstance#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "newInstanceAsync" : 
+        "name" : "newInstanceAsync"
+        "qualifiedname" : "dart.mirrors.ClassMirror.newInstanceAsync"
+        "comment" : "<p>Invokes the named function and returns a mirror on the result. The arguments must be instances of <code>InstanceMirror</code>, or of a type that is serializable across isolates (currently <code>num</code>, <code>String</code>, or <code>bool</code>).</p> <p>Let <em>c</em> be the class reflected by this mirror, let <em>a1, ..., an</em> be the elements of <code>positionalArguments</code> let <em>k1, ..., km</em> be the identifiers denoted by the elements of <code>namedArguments.keys</code> and let <em>v1, ..., vm</em> be the elements of <code>namedArguments.values</code>. For each <em>ai</em>, if <em>ai</em> is an instance of <code>InstanceMirror</code>, let <em>pi</em> be the object reflected by <em>ai</em>; otherwise let <em>pi = ai,  i in 1 ...n</em>. Likewise, for each <em>vj</em>, if <em>vj</em> is an instance of <code>InstanceMirror</code>, let <em>qj</em> be the object reflected by <em>vj</em>; otherwise let <em>qj = vj,  j in 1 ...m</em>. If any of the <em>pi, qj</em> is not an instance of <code>InstanceMirror</code> and is not serializable across isolates, an exception is thrown. If <code>constructorName</code> was created from the empty string Then this method will execute the instance creation expression <em>new c(a1, ..., an, k1: v1, ..., km: vm)</em> in a scope that has access to the private members of <em>c</em>. Otherwise, let <em>f</em> be the simple name of the constructor denoted by <code>constructorName</code> Then this method will execute the instance creation expression  <em>new c.f(a1, ..., an, k1: v1, ..., km: vm)</em> in a scope that has access to the private members of <em>c</em>. In either case: The method returns a future <em>k</em>. If the invocation returns a result <em>r</em>, <em>k</em> will be completed with the result of calling <a href=\"*r*\">reflect</a>. If the invocation throws an exception <em>e</em> (that it does not catch) then <em>k</em> is completed with a <code>MirrorError</code> wrapping <em>e</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "constructorName" : 
+            "name" : "constructorName"
+            "qualifiedname" : "dart.mirrors.ClassMirror.newInstanceAsync#constructorName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart.mirrors.ClassMirror.newInstanceAsync#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart.mirrors.ClassMirror.newInstanceAsync#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "isClass" : 
+        "name" : "isClass"
+        "qualifiedname" : "dart.mirrors.ClassMirror.isClass"
+        "comment" : "<p>Does this mirror represent a class?</p> <p>TODO(turnidge): This functions goes away after the class/interface changes.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "defaultFactory" : 
+        "name" : "defaultFactory"
+        "qualifiedname" : "dart.mirrors.ClassMirror.defaultFactory"
+        "comment" : "<p>A mirror on the default factory class or null if there is none.</p> <p>TODO(turnidge): This functions goes away after the class/interface changes.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.ClassMirror"
+        "parameters" : 
+  "TypeMirror" : 
+    "name" : "TypeMirror"
+    "qualifiedname" : "dart.mirrors.TypeMirror"
+    "comment" : "<p>A <code>TypeMirror</code> reflects a Dart language class, typedef, or type variable.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.DeclarationMirror"
+    "variables" : 
+    "methods" : 
+  "LibraryMirror" : 
+    "name" : "LibraryMirror"
+    "qualifiedname" : "dart.mirrors.LibraryMirror"
+    "comment" : "<p>A <code>LibraryMirror</code> reflects a Dart language library, providing access to the variables, functions, and classes of the library.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.ObjectMirror"
+      - "dart.mirrors.DeclarationMirror"
+    "variables" : 
+    "methods" : 
+      "uri" : 
+        "name" : "uri"
+        "qualifiedname" : "dart.mirrors.LibraryMirror.uri"
+        "comment" : "<p>The absolute uri of the library.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Uri"
+        "parameters" : 
+      "members" : 
+        "name" : "members"
+        "qualifiedname" : "dart.mirrors.LibraryMirror.members"
+        "comment" : "<p>An immutable map from from names to mirrors for all members in this library.</p> <p>The members of a library are its top-level classes, functions, variables, getters, and setters.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "classes" : 
+        "name" : "classes"
+        "qualifiedname" : "dart.mirrors.LibraryMirror.classes"
+        "comment" : "<p>An immutable map from names to mirrors for all class declarations in this library.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "functions" : 
+        "name" : "functions"
+        "qualifiedname" : "dart.mirrors.LibraryMirror.functions"
+        "comment" : "<p>An immutable map from names to mirrors for all function, getter, and setter declarations in this library.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "getters" : 
+        "name" : "getters"
+        "qualifiedname" : "dart.mirrors.LibraryMirror.getters"
+        "comment" : "<p>An immutable map from names to mirrors for all getter declarations in this library.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "setters" : 
+        "name" : "setters"
+        "qualifiedname" : "dart.mirrors.LibraryMirror.setters"
+        "comment" : "<p>An immutable map from names to mirrors for all setter declarations in this library.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "variables" : 
+        "name" : "variables"
+        "qualifiedname" : "dart.mirrors.LibraryMirror.variables"
+        "comment" : "<p>An immutable map from names to mirrors for all variable declarations in this library.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+  "ClosureMirror" : 
+    "name" : "ClosureMirror"
+    "qualifiedname" : "dart.mirrors.ClosureMirror"
+    "comment" : "<p>A <code>ClosureMirror</code> reflects a closure.</p> <p>A <code>ClosureMirror</code> provides access to its captured variables and provides the ability to execute its reflectee.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.InstanceMirror"
+    "variables" : 
+    "methods" : 
+      "function" : 
+        "name" : "function"
+        "qualifiedname" : "dart.mirrors.ClosureMirror.function"
+        "comment" : "<p>A mirror on the function associated with this closure.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.MethodMirror"
+        "parameters" : 
+      "source" : 
+        "name" : "source"
+        "qualifiedname" : "dart.mirrors.ClosureMirror.source"
+        "comment" : "<p>The source code for this closure, if available.  Otherwise null.</p> <p>TODO(turnidge): Would this just be available in function?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "apply" : 
+        "name" : "apply"
+        "qualifiedname" : "dart.mirrors.ClosureMirror.apply"
+        "comment" : "<p>Executes the closure and returns a mirror on the result. Let <em>f</em> be the closure reflected by this mirror, let <em>a1, ..., an</em> be the elements of <code>positionalArguments</code> let <em>k1, ..., km</em> be the identifiers denoted by the elements of <code>namedArguments.keys</code> and let <em>v1, ..., vm</em> be the elements of <code>namedArguments.values</code>. Then this method will perform the method invocation  <em>f(a1, ..., an, k1: v1, ..., km: vm)</em> If the invocation returns a result <em>r</em>, this method returns the result of calling <a href=\"*r*\">reflect</a>. If the invocation throws an exception <em>e</em> (that it does not catch) the the result is a <code>MirrorError</code> wrapping <em>e</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart.mirrors.ClosureMirror.apply#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart.mirrors.ClosureMirror.apply#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "applyAsync" : 
+        "name" : "applyAsync"
+        "qualifiedname" : "dart.mirrors.ClosureMirror.applyAsync"
+        "comment" : "<p>Executes the closure and returns a mirror on the result.</p> <p>Let <em>f</em> be the closure reflected by this mirror, let <em>a1, ..., an</em> be the elements of <code>positionalArguments</code> let <em>k1, ..., km</em> be the identifiers denoted by the elements of <code>namedArguments.keys</code> and let <em>v1, ..., vm</em> be the elements of <code>namedArguments.values</code>. For each <em>ai</em>, if <em>ai</em> is an instance of <code>InstanceMirror</code>, let <em>pi</em> be the object reflected by <em>ai</em>; otherwise let <em>pi = ai,  i in 1 ...n</em>. Likewise, for each <em>vj</em>, if <em>vj</em> is an instance of <code>InstanceMirror</code>, let <em>qj</em> be the object reflected by <em>vj</em>; otherwise let <em>qj = vj,  j in 1 ...m</em>. If any of the <em>pi, qj</em> is not an instance of <code>InstanceMirror</code> and is not serializable across isolates, an exception is thrown. Then this method will perform the function invocation  <em>f(p1, ..., pn, k1: q1, ..., km: qm)</em> The method returns a future <em>k</em>. If the invocation returns a result <em>r</em>, <em>k</em> will be completed with the result of calling <a href=\"*r*\">reflect</a>. If the invocation throws an exception <em>e</em> (that it does not catch) then <em>k</em> is completed with a <code>MirrorError</code> wrapping <em>e</em>.</p> <p>The arguments must be instances of <code>InstanceMirror</code>, or of a type that is serializable across isolates (currently <code>num</code>, <code>String</code>, or <code>bool</code>).</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart.mirrors.ClosureMirror.applyAsync#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart.mirrors.ClosureMirror.applyAsync#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "findInContext" : 
+        "name" : "findInContext"
+        "qualifiedname" : "dart.mirrors.ClosureMirror.findInContext"
+        "comment" : "<p>Looks up the value of a name in the scope of the closure. The result is a mirror on that value.</p> <p>Let <em>s</em> be the contents of the string used to construct the symbol <code>name</code>.</p> <p>If the expression <em>s</em> occurs within the source code of the reflectee, and that any such occurrence refers to a declaration outside the reflectee, then let <em>v</em> be the result of evaluating the expression <em>s</em> at such an occurrence. If <em>s = this</em>, and the reflectee was defined within the instance scope of an object <em>o</em>, then let <em>v</em> be <em>o</em>.</p> <p>The returned value is the result of invoking the method <code>reflect</code> on <em>v</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "name" : 
+            "name" : "name"
+            "qualifiedname" : "dart.mirrors.ClosureMirror.findInContext#name"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+  "InstanceMirror" : 
+    "name" : "InstanceMirror"
+    "qualifiedname" : "dart.mirrors.InstanceMirror"
+    "comment" : "<p>An <code>InstanceMirror</code> reflects an instance of a Dart language object.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.ObjectMirror"
+    "variables" : 
+    "methods" : 
+      "type" : 
+        "name" : "type"
+        "qualifiedname" : "dart.mirrors.InstanceMirror.type"
+        "comment" : "<p>A mirror on the type of the reflectee.</p> <p>Returns a mirror on the actual class of the reflectee. The class of the reflectee may differ from the object returned by invoking <code>runtimeType</code> on the reflectee.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.ClassMirror"
+        "parameters" : 
+      "hasReflectee" : 
+        "name" : "hasReflectee"
+        "qualifiedname" : "dart.mirrors.InstanceMirror.hasReflectee"
+        "comment" : "<p>Does <code>reflectee</code> contain the instance reflected by this mirror? This will always be true in the local case (reflecting instances in the same isolate), but only true in the remote case if this mirror reflects a simple value.</p> <p>A value is simple if one of the following holds:  - the value is null  - the value is of type <code>num</code>  - the value is of type <code>bool</code>  - the value is of type <code>String</code></p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "reflectee" : 
+        "name" : "reflectee"
+        "qualifiedname" : "dart.mirrors.InstanceMirror.reflectee"
+        "comment" : "<p>If the <code>InstanceMirror</code> reflects an instance it is meaningful to have a local reference to, we provide access to the actual instance here.</p> <p>If you access <code>reflectee</code> when <code>hasReflectee</code> is false, an exception is thrown.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "delegate" : 
+        "name" : "delegate"
+        "qualifiedname" : "dart.mirrors.InstanceMirror.delegate"
+        "comment" : "<p>Perform <code>invocation</code> on <code>reflectee</code>. Equivalent to</p> <p>this.invoke(invocation.memberName,</p> <pre><code>        invocation.positionalArguments,         invocation.namedArguments); </code></pre>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "invocation" : 
+            "name" : "invocation"
+            "qualifiedname" : "dart.mirrors.InstanceMirror.delegate#invocation"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Invocation"
+            "value" : "null"
+  "ObjectMirror" : 
+    "name" : "ObjectMirror"
+    "qualifiedname" : "dart.mirrors.ObjectMirror"
+    "comment" : "<p>An <code>ObjectMirror</code> is a common superinterface of <code>InstanceMirror</code>, <code>ClassMirror</code>, and <code>LibraryMirror</code> that represents their shared functionality.</p> <p>For the purposes of the mirrors library, these types are all object-like, in that they support method invocation and field access.  Real Dart objects are represented by the <code>InstanceMirror</code> type.</p> <p>See <code>InstanceMirror</code>, <code>ClassMirror</code>, and <code>LibraryMirror</code>.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.Mirror"
+    "variables" : 
+    "methods" : 
+      "invoke" : 
+        "name" : "invoke"
+        "qualifiedname" : "dart.mirrors.ObjectMirror.invoke"
+        "comment" : "<p>Invokes the named function and returns a mirror on the result.</p> <p>Let <em>o</em> be the object reflected by this mirror, let <em>f</em> be the simple name of the member denoted by <code>memberName</code>, let <em>a1, ..., an</em> be the elements of <code>positionalArguments</code> let <em>k1, ..., km</em> be the identifiers denoted by the elements of <code>namedArguments.keys</code> and let <em>v1, ..., vm</em> be the elements of <code>namedArguments.values</code>. Then this method will perform the method invocation  <em>o.f(a1, ..., an, k1: v1, ..., km: vm)</em> in a scope that has access to the private members of <em>o</em> (if <em>o</em> is a class or library) or the private members of the class of <em>o</em> (otherwise). If the invocation returns a result <em>r</em>, this method returns the result of calling <a href=\"*r*\">reflect</a>. If the invocation throws an exception <em>e</em> (that it does not catch) the the result is a <code>MirrorError</code> wrapping <em>e</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "memberName" : 
+            "name" : "memberName"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.invoke#memberName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.invoke#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.invoke#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "getField" : 
+        "name" : "getField"
+        "qualifiedname" : "dart.mirrors.ObjectMirror.getField"
+        "comment" : "<p>Invokes a getter and returns a mirror on the result. The getter can be the implicit getter for a field or a user-defined getter method.</p> <p>Let <em>o</em> be the object reflected by this mirror, let <em>f</em> be the simple name of the getter denoted by <code>fieldName</code>, Then this method will perform the getter invocation  <em>o.f</em> in a scope that has access to the private members of <em>o</em> (if <em>o</em> is a class or library) or the private members of the class of <em>o</em> (otherwise). If the invocation returns a result <em>r</em>, this method returns the result of calling <a href=\"*r*\">reflect</a>. If the invocation throws an exception <em>e</em> (that it does not catch) the the result is a <code>MirrorError</code> wrapping <em>e</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.getField#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+      "setField" : 
+        "name" : "setField"
+        "qualifiedname" : "dart.mirrors.ObjectMirror.setField"
+        "comment" : "<p>Invokes a setter and returns a mirror on the result. The setter may be either the implicit setter for a non-final field or a user-defined setter method.</p> <p>Let <em>o</em> be the object reflected by this mirror, let <em>f</em> be the simple name of the getter denoted by <code>fieldName</code>, and let <em>a</em> be the object bound to <code>value</code>. Then this method will perform the setter invocation <em>o.f = a</em> in a scope that has access to the private members of <em>o</em> (if <em>o</em> is a class or library) or the private members of the class of <em>o</em> (otherwise). If the invocation returns a result <em>r</em>, this method returns the result of calling <a href=\"[value]\">reflect</a>. If the invocation throws an exception <em>e</em> (that it does not catch) the the result is a <code>MirrorError</code> wrapping <em>e</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.setField#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "value" : 
+            "name" : "value"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.setField#value"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "invokeAsync" : 
+        "name" : "invokeAsync"
+        "qualifiedname" : "dart.mirrors.ObjectMirror.invokeAsync"
+        "comment" : "<p>Invokes the named function and returns a mirror on the result. The arguments must be instances of <code>InstanceMirror</code>, or of a type that is serializable across isolates (currently <code>num</code>, <code>String</code>, or <code>bool</code>).</p> <p>Let <em>o</em> be the object reflected by this mirror, let <em>f</em> be the simple name of the member denoted by <code>memberName</code>, let <em>a1, ..., an</em> be the elements of <code>positionalArguments</code> let <em>k1, ..., km</em> be the identifiers denoted by the elements of <code>namedArguments.keys</code> and let <em>v1, ..., vm</em> be the elements of <code>namedArguments.values</code>. For each <em>ai</em>, if <em>ai</em> is an instance of <code>InstanceMirror</code>, let <em>pi</em> be the object reflected by <em>ai</em>; otherwise let <em>pi = ai,  i in 1 ...n</em>. Likewise, for each <em>vj</em>, if <em>vj</em> is an instance of <code>InstanceMirror</code>, let <em>qj</em> be the object reflected by <em>vj</em>; otherwise let <em>qj = vj,  j in 1 ...m</em>. If any of the <em>pi, qj</em> is not an instance of <code>InstanceMirror</code> and is not serializable across isolates, an exception is thrown. Then this method will perform the method invocation  <em>o.f(p1, ..., pn, k1: q1, ..., km: qm)</em> in a scope that has access to the private members of <em>o</em> (if <em>o</em> is a class or library) or the private members of the class of <em>o</em>(otherwise). The method returns a future <em>k</em>. If the invocation returns a result <em>r</em>, <em>k</em> will be completed with the result of calling <a href=\"*r*\">reflect</a>. If the invocation throws an exception <em>e</em> (that it does not catch) then <em>k</em> is completed with a <code>MirrorError</code> wrapping <em>e</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "memberName" : 
+            "name" : "memberName"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.invokeAsync#memberName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.invokeAsync#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.invokeAsync#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "getFieldAsync" : 
+        "name" : "getFieldAsync"
+        "qualifiedname" : "dart.mirrors.ObjectMirror.getFieldAsync"
+        "comment" : "<p>Invokes a getter and returns a mirror on the result. The getter can be the implicit getter for a field or a user-defined getter method.</p> <p>Let <em>o</em> be the object reflected by this mirror, let <em>f</em> be the simple name of the getter denoted by <code>fieldName</code>, Then this method will perform the getter invocation  <em>o.f</em> in a scope that has access to the private members of <em>o</em> (if <em>o</em> is a class or library) or the private members of the class of <em>o</em>(otherwise). The method returns a future <em>k</em>. If the invocation returns a result <em>r</em>, <em>k</em> will be completed with the result of calling <a href=\"*r*\">reflect</a>. If the invocation throws an exception <em>e</em> (that it does not catch) then <em>k</em> is completed with a <code>MirrorError</code> wrapping <em>e</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.getFieldAsync#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+      "setFieldAsync" : 
+        "name" : "setFieldAsync"
+        "qualifiedname" : "dart.mirrors.ObjectMirror.setFieldAsync"
+        "comment" : "<p>Invokes a setter and returns a mirror on the result. The setter may be either the implicit setter for a non-final field or a user-defined setter method. The second argument must be an instance of <code>InstanceMirror</code>, or of a type that is serializable across isolates (currently <code>num</code>, <code>String</code>, or <code>bool</code>).</p> <p>Let <em>o</em> be the object reflected by this mirror, let <em>f</em> be the simple name of the getter denoted by <code>fieldName</code>, and let a be the object bound to <code>value</code>. If <em>a</em> is an instance of <code>InstanceMirror</code>  let <em>p</em> be the object reflected by <em>a</em>, otherwise let <em>p =a</em>. If <em>p</em> is not an instance of <code>InstanceMirror</code>, <em>p</em> must be serializable across isolates or an exception is thrown. Then this method will perform the setter invocation  <em>o.f = a</em> in a scope that has access to the private members of <em>o</em> (if <em>o</em> is a class or library) or the private members of the class of <em>o</em>(otherwise). The method returns a future <em>k</em>. If the invocation returns a result <em>r</em>, <em>k</em> will be completed with the result of calling <a href=\"*r*\">reflect</a>. If the invocation throws an exception <em>e</em> (that it does not catch) then <em>k</em> is completed with a [MirrorError} wrapping <em>e</em>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.setFieldAsync#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "value" : 
+            "name" : "value"
+            "qualifiedname" : "dart.mirrors.ObjectMirror.setFieldAsync#value"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+  "DeclarationMirror" : 
+    "name" : "DeclarationMirror"
+    "qualifiedname" : "dart.mirrors.DeclarationMirror"
+    "comment" : "<p>A <code>DeclarationMirror</code> reflects some entity declared in a Dart program.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.Mirror"
+    "variables" : 
+    "methods" : 
+      "simpleName" : 
+        "name" : "simpleName"
+        "qualifiedname" : "dart.mirrors.DeclarationMirror.simpleName"
+        "comment" : "<p>The simple name for this Dart language entity.</p> <p>The simple name is in most cases the the identifier name of the entity, such as 'method' for a method <code>:void method() {...}:</code> or 'mylibrary' for a <code>:#library('mylibrary');:</code> declaration.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Symbol"
+        "parameters" : 
+      "qualifiedName" : 
+        "name" : "qualifiedName"
+        "qualifiedname" : "dart.mirrors.DeclarationMirror.qualifiedName"
+        "comment" : "<p>The fully-qualified name for this Dart language entity.</p> <p>This name is qualified by the name of the owner. For instance, the qualified name of a method 'method' in class 'Class' in library 'library' is 'library.Class.method'.</p> <p>Returns a <code>Symbol</code> constructed from a string representing the fully qualified name of the reflectee. Let <em>o</em> be the <code>owner</code> of this mirror, let <em>r</em> be the reflectee of this mirror, let <em>p</em> be the fully qualified name of the reflectee of <em>o</em>, and let <em>s</em> be the simple name of <em>r</em> computed by <code>simpleName</code>. The fully qualified name of <em>r</em> is the concatenation of <em>p</em>, '.', and <em>s</em>.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Symbol"
+        "parameters" : 
+      "owner" : 
+        "name" : "owner"
+        "qualifiedname" : "dart.mirrors.DeclarationMirror.owner"
+        "comment" : "<p>A mirror on the owner of this function.  This is the declaration immediately surrounding the reflectee.</p> <p>For a library, the owner is <code>:null:</code>. For a class, typedef or top level function or variable, the owner is the enclosing library. For a method, instance variable or a static variable, the owner is the immediately enclosing class. For a parameter, local variable or local function the owner is the immediately enclosing function.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.DeclarationMirror"
+        "parameters" : 
+      "isPrivate" : 
+        "name" : "isPrivate"
+        "qualifiedname" : "dart.mirrors.DeclarationMirror.isPrivate"
+        "comment" : "<p>Is this declaration private?</p> <p>A declaration is private if and only if it is considered private according to the Dart language specification. Note that for libraries, this will be <code>:false:</code>.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isTopLevel" : 
+        "name" : "isTopLevel"
+        "qualifiedname" : "dart.mirrors.DeclarationMirror.isTopLevel"
+        "comment" : "<p>Is this declaration top-level?</p> <p>This is defined to be equivalent to:    [:mirror.owner != null && mirror.owner is LibraryMirror:]</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "location" : 
+        "name" : "location"
+        "qualifiedname" : "dart.mirrors.DeclarationMirror.location"
+        "comment" : "<p>The source location of this Dart language entity.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.SourceLocation"
+        "parameters" : 
+      "metadata" : 
+        "name" : "metadata"
+        "qualifiedname" : "dart.mirrors.DeclarationMirror.metadata"
+        "comment" : "<p>A list of the metadata associated with this declaration.</p> <p>Let <em>D</em> be the declaration this mirror reflects. If <em>D</em> is decorated with annotations <em>A1, ..., An</em> where <em>n > 0</em>, then for each annotation <em>Ai</em> associated  with <em>D, 1 &lt;= i &lt;= n</em>, let <em>ci</em> be the constant object  specified by <em>Ai</em>. Then this method returns a list whose  members are instance mirrors on <em>c1, ..., cn</em>. If no annotations are associated with <em>D</em>, then  an empty list is returned.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+  "IsolateMirror" : 
+    "name" : "IsolateMirror"
+    "qualifiedname" : "dart.mirrors.IsolateMirror"
+    "comment" : "<p>An <code>IsolateMirror</code> reflects an isolate.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.Mirror"
+    "variables" : 
+    "methods" : 
+      "debugName" : 
+        "name" : "debugName"
+        "qualifiedname" : "dart.mirrors.IsolateMirror.debugName"
+        "comment" : "<p>A unique name used to refer to an isolate in debugging messages.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "isCurrent" : 
+        "name" : "isCurrent"
+        "qualifiedname" : "dart.mirrors.IsolateMirror.isCurrent"
+        "comment" : "<p>Does this mirror reflect the currently running isolate?</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "rootLibrary" : 
+        "name" : "rootLibrary"
+        "qualifiedname" : "dart.mirrors.IsolateMirror.rootLibrary"
+        "comment" : "<p>A mirror on the root library for this isolate.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.LibraryMirror"
+        "parameters" : 
+  "Mirror" : 
+    "name" : "Mirror"
+    "qualifiedname" : "dart.mirrors.Mirror"
+    "comment" : "<p>A <code>Mirror</code> reflects some Dart language entity.</p> <p>Every <code>Mirror</code> originates from some <code>MirrorSystem</code>.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "mirrors" : 
+        "name" : "mirrors"
+        "qualifiedname" : "dart.mirrors.Mirror.mirrors"
+        "comment" : "<p>The <code>MirrorSystem</code> that contains this mirror.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.MirrorSystem"
+        "parameters" : 
+  "MirrorSystem" : 
+    "name" : "MirrorSystem"
+    "qualifiedname" : "dart.mirrors.MirrorSystem"
+    "comment" : "<p>A <code>MirrorSystem</code> is the main interface used to reflect on a set of associated libraries.</p> <p>At runtime each running isolate has a distinct <code>MirrorSystem</code>.</p> <p>It is also possible to have a <code>MirrorSystem</code> which represents a set of libraries which are not running -- perhaps at compile-time.  In this case, all available reflective functionality would be supported, but runtime functionality (such as invoking a function or inspecting the contents of a variable) would fail dynamically.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "libraries" : 
+        "name" : "libraries"
+        "qualifiedname" : "dart.mirrors.MirrorSystem.libraries"
+        "comment" : "<p>An immutable map from from library names to mirrors for all libraries known to this mirror system.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "findLibrary" : 
+        "name" : "findLibrary"
+        "qualifiedname" : "dart.mirrors.MirrorSystem.findLibrary"
+        "comment" : "<p>Returns an iterable of all libraries in the mirror system whose library name is <code>libraryName</code>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "libraryName" : 
+            "name" : "libraryName"
+            "qualifiedname" : "dart.mirrors.MirrorSystem.findLibrary#libraryName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+      "isolate" : 
+        "name" : "isolate"
+        "qualifiedname" : "dart.mirrors.MirrorSystem.isolate"
+        "comment" : "<p>A mirror on the isolate associated with this <code>MirrorSystem</code>. This may be null if this mirror system is not running.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.IsolateMirror"
+        "parameters" : 
+      "dynamicType" : 
+        "name" : "dynamicType"
+        "qualifiedname" : "dart.mirrors.MirrorSystem.dynamicType"
+        "comment" : "<p>A mirror on the <code>:dynamic:</code> type.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "voidType" : 
+        "name" : "voidType"
+        "qualifiedname" : "dart.mirrors.MirrorSystem.voidType"
+        "comment" : "<p>A mirror on the <code>:void:</code> type.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "getName" : 
+        "name" : "getName"
+        "qualifiedname" : "dart.mirrors.MirrorSystem.getName"
+        "comment" : "<p>Returns the name of <code>symbol</code>.</p> <p>The following text is non-normative:</p> <p>Using this method may result in larger output.  If possible, use <code>MirrorsUsed</code> to specify which symbols must be retained in clear text.</p>"
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "symbol" : 
+            "name" : "symbol"
+            "qualifiedname" : "dart.mirrors.MirrorSystem.getName#symbol"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"

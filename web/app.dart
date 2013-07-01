@@ -15,9 +15,12 @@ import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 
+// The page pathname at first load for navigation.
+String origin;
+
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the YAML file being read in. 
-const sourcePath = '../../test/yaml/large_test.yaml';
+const sourcePath = '../../docs/library_list.txt';
 
 // Function to set the title of the current page. 
 String get title => currentPage == null ? '' : currentPage.decoratedName;
@@ -42,14 +45,37 @@ changePageWithoutState(Item page) {
   }
 }
 
-/**
- * Pushes state onto the history before updating the [currentPage].
+/// Replaces a [PlaceHolder] with a [Library] in [homePage]'s content.
+Library updateContent(String data, PlaceHolder page) {
+  var lib = loadData(data);
+  var index = homePage.content.indexOf(page);
+  homePage.content.remove(page);
+  homePage.content.insert(index, lib);
+  buildHierarchy(lib, homePage);
+  return lib;
+}
+
+/**                                                                                                                                                                                                          
+ * Pushes state onto the history before updating the [currentPage].                                                                                                                                          
  */
 changePage(Item page) {
-  if (page != null && currentPage != page) {
+  if (page is PlaceHolder) {
+    var data = page.loadLibrary();
+    data.then((response) {
+      var lib = updateContent(response, page);
+      changePage(lib);
+    });
+  } else if (page != null && currentPage != page) {
     var state = page.path;
-    var title = state.substring(0, state.length - 1);
-    window.history.pushState(state, title, '/#$state');
+    var title = 'Dart API Reference';
+    var url = origin;
+    if (state != '') {
+      var title = state.substring(0, state.length - 1);
+      url = '$origin#$state';
+    } else {
+      url = '${origin}index.html';
+    }
+    window.history.pushState(state, title, url);
   }
   changePageWithoutState(page);
 }
@@ -64,30 +90,12 @@ List<Item> getBreadcrumbs(String path) {
   var regex = new RegExp(r'(_?([a-zA-Z0-9]+)=?)/');
   var matches = regex.allMatches(path);
   var currentPath = '';
+  breadcrumbs.add(homePage);
   matches.forEach((match) {
     currentPath = '$currentPath${match.group(0)}';
     breadcrumbs.add(pageIndex[currentPath]);
   });
   return breadcrumbs;
-}
-
-/**
- * Runs through the member structure and creates path information and
- * populates the [pageIndex] map for proper linking.
- */
-void buildHierarchy(Container page, Item previous) {
-  if (page is Item) {
-    page.path = previous.path == null ?
-        '${page.name}/' : '${previous.path}${page.name}/';
-    pageIndex[page.path] = page;
-    page.content.forEach((subChild) {
-      buildHierarchy(subChild, page);
-    });
-  } else if (page is Category) {
-    page.content.forEach((subChild) {
-      buildHierarchy(subChild, previous);
-    });
-  }
 }
 
 /// Adds the correct interfaces to [postDescriptor].
@@ -98,7 +106,7 @@ void _updateInheritance(Element postDescriptor) {
     paragraph.appendText("Implements: ");
   }
   interfaces.forEach((element) {
-    _addType(element, paragraph);
+    paragraph.append(_getType(element));
     if (element != interfaces.last) {
       paragraph.appendText(", ");
     } else {
@@ -106,7 +114,7 @@ void _updateInheritance(Element postDescriptor) {
     }
   }); 
   paragraph.appendText("Extends: ");
-  _addType(currentPage.superClass, paragraph);
+  paragraph.append(_getType(currentPage.superClass));
   postDescriptor.children.add(paragraph);
 }
 
@@ -116,25 +124,40 @@ void _addType(LinkableType type, Element destination) {
     destination.appendText(type.simpleType);
   } else {
     var link = new Element.html("<a>${type.simpleType}</a>")
-      ..onClick.listen((_) => changePage(type.location));
+      ..onClick.listen((_) => handleLink(type));
     destination.append(link);
   }
 }
 
-/// Generates an HTML [Element] given a [LinkableType].
-Element _getTypeElement(LinkableType type) {
-  if (type.location == null) {
-    return new Element.html('<p>${type.simpleType}</p>');
+/// Generates an HTML [Element] given a [LinkableType].                                                                                                                                                    
+Element _getType(LinkableType type) {
+  var link = new Element.html("<a>${type.simpleType}</a>")
+  ..onClick.listen((_) => handleLink(type));
+  return link;
+}
+
+/// Handles lazy loading of libraries from links not on the homepage.                                                                                                                                        
+void handleLink(LinkableType type) {
+  if (type.location != null) {
+    changePage(type.location);
   } else {
-    var link = new Element.html('<a>${type.simpleType}</a>')
-      ..onClick.listen((_) => changePage(type.location));
-    return link; 
+    homePage.content.forEach((element) {
+      if (element is PlaceHolder) {
+        var betterName = libraryNames[element.name];
+        if (type.type.startsWith(betterName)) {
+          element.loadLibrary().then((response) {
+            updateContent(response, element);
+            changePage(type.location);
+          });
+        }
+      }
+    });
   }
 }
 
 /// Adds a single parameter to [postData].
 void _addParameter(Parameter parameter, Element postData) {
-  _addType(parameter.type, postData);
+  postData.append(_getType(parameter.type));
   postData.appendText(' ${parameter.decoratedName}');
 }
 
@@ -184,30 +207,31 @@ void update() {
   preDescriptor.children.clear();
   postDescriptor.children.clear();
   if (currentPage is Method) {
-    preDescriptor.children.add(_getTypeElement(currentPage.type));
+    preDescriptor.children.add(_getType(currentPage.type));
     _updateParameters(postDescriptor);
   } else if (currentPage is Class) {
     _updateInheritance(postDescriptor);
   }
 }
 
-// Builds hierarchy, sets up listener for browser navigation, and loads initial
-// values for viewing and linking.
+// Builds hierarchy, sets up listener for browser navigation, and loads initial                                                                                                                              
+// values for viewing and linking.                                                                                                                                                                           
 main() {
-  var sourceYaml = getYamlFile(sourcePath);
-  sourceYaml.then((response) {
-    currentPage = loadData(response);
+  // TODO(tmandel): Take this out of read_yaml.dart                                                                                                                                                          
+  var manifest = retrieveFile(sourcePath);
+  origin = window.location.pathname;
+  origin = origin.replaceAll('index.html', '');
+  manifest.then((response) {
+    currentPage = new Home(response);
     homePage = currentPage;
-    buildHierarchy(homePage, homePage);
-    update();
   });
-  
-  // Handles browser navigation.
+
+  // Handles browser navigation.                                                                                                                                                                             
   window.onPopState.listen((event) {
     if (event.state != null) {
-      if (event.state != '') {
+      if (event.state != "") {
         changePageWithoutState(pageIndex[event.state]);
-      } 
+      }
     } else {
       changePageWithoutState(homePage);
     }

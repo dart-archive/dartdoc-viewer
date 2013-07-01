@@ -1,0 +1,151 @@
+"name" : "metadata"
+"comment" : ""
+"variables" : 
+"functions" : 
+"classes" : 
+  "Unstable" : 
+    "name" : "Unstable"
+    "qualifiedname" : "metadata.Unstable"
+    "comment" : "<p>Annotation that indicates that an API is not expected to change but has not undergone enough testing to be considered stable.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "DocsEditable" : 
+    "name" : "DocsEditable"
+    "qualifiedname" : "metadata.DocsEditable"
+    "comment" : "<p>Metadata that specifies that that member is editable through generated files.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "DomName" : 
+    "name" : "DomName"
+    "qualifiedname" : "metadata.DomName"
+    "comment" : "<p>Annotation that specifies that a member is editable through generate files.</p> <p>This is used for API generation.</p> <p><code>name</code> should be formatted as <code>interface.member</code>.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "name" : 
+        "name" : "name"
+        "qualifiedname" : "metadata.DomName.name"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+      "DomName" : 
+        "name" : "DomName"
+        "qualifiedname" : "metadata.DomName.DomName"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "name" : 
+            "name" : "name"
+            "qualifiedname" : "metadata.DomName.DomName#name"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+  "Experimental" : 
+    "name" : "Experimental"
+    "qualifiedname" : "metadata.Experimental"
+    "comment" : "<p>An annotation used to mark an API as being experimental.</p> <p>An API is considered to be experimental if it is still going through the process of stabilizing and is subject to change or removal.</p> <p>See also:</p><ul><li><a href=\"http://en.wikipedia.org/wiki/W3C_recommendation\">W3C recommendation</a></li></ul>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "SupportedBrowser" : 
+    "name" : "SupportedBrowser"
+    "qualifiedname" : "metadata.SupportedBrowser"
+    "comment" : "<p>An annotation used to mark a feature as only being supported by a subset of the browsers that Dart supports by default.</p> <p>If an API is not annotated with <code>SupportedBrowser</code> then it is assumed to work on all browsers Dart supports.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "CHROME" : 
+        "name" : "CHROME"
+        "qualifiedname" : "metadata.SupportedBrowser.CHROME"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.String"
+      "FIREFOX" : 
+        "name" : "FIREFOX"
+        "qualifiedname" : "metadata.SupportedBrowser.FIREFOX"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.String"
+      "IE" : 
+        "name" : "IE"
+        "qualifiedname" : "metadata.SupportedBrowser.IE"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.String"
+      "OPERA" : 
+        "name" : "OPERA"
+        "qualifiedname" : "metadata.SupportedBrowser.OPERA"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.String"
+      "SAFARI" : 
+        "name" : "SAFARI"
+        "qualifiedname" : "metadata.SupportedBrowser.SAFARI"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.String"
+      "browserName" : 
+        "name" : "browserName"
+        "qualifiedname" : "metadata.SupportedBrowser.browserName"
+        "comment" : "<p>The name of the browser.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+      "minimumVersion" : 
+        "name" : "minimumVersion"
+        "qualifiedname" : "metadata.SupportedBrowser.minimumVersion"
+        "comment" : "<p>The minimum version of the browser that supports the feature, or null if supported on all versions.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+      "SupportedBrowser" : 
+        "name" : "SupportedBrowser"
+        "qualifiedname" : "metadata.SupportedBrowser.SupportedBrowser"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "browserName" : 
+            "name" : "browserName"
+            "qualifiedname" : "metadata.SupportedBrowser.SupportedBrowser#browserName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "minimumVersion" : 
+            "name" : "minimumVersion"
+            "qualifiedname" : "metadata.SupportedBrowser.SupportedBrowser#minimumVersion"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"

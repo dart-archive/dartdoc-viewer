@@ -1,0 +1,1668 @@
+"name" : "dart._js_mirrors"
+"comment" : ""
+"variables" : 
+  "classMirrors" : 
+    "name" : "classMirrors"
+    "qualifiedname" : "dart._js_mirrors.classMirrors"
+    "comment" : ""
+    "final" : "true"
+    "static" : "false"
+    "type" : "dart.core.Expando"
+  "currentJsMirrorSystem" : 
+    "name" : "currentJsMirrorSystem"
+    "qualifiedname" : "dart._js_mirrors.currentJsMirrorSystem"
+    "comment" : ""
+    "final" : "true"
+    "static" : "false"
+    "type" : "dart._js_mirrors.JsMirrorSystem"
+"functions" : 
+  "extractMetadata" : 
+    "name" : "extractMetadata"
+    "qualifiedname" : "dart._js_mirrors.extractMetadata"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.List"
+    "parameters" : 
+      "victim" : 
+        "name" : "victim"
+        "qualifiedname" : "dart._js_mirrors.extractMetadata#victim"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "computeQualifiedName" : 
+    "name" : "computeQualifiedName"
+    "qualifiedname" : "dart._js_mirrors.computeQualifiedName"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.Symbol"
+    "parameters" : 
+      "owner" : 
+        "name" : "owner"
+        "qualifiedname" : "dart._js_mirrors.computeQualifiedName#owner"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.mirrors.DeclarationMirror"
+        "value" : "null"
+      "simpleName" : 
+        "name" : "simpleName"
+        "qualifiedname" : "dart._js_mirrors.computeQualifiedName#simpleName"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Symbol"
+        "value" : "null"
+  "reflectClassByName" : 
+    "name" : "reflectClassByName"
+    "qualifiedname" : "dart._js_mirrors.reflectClassByName"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.mirrors.ClassMirror"
+    "parameters" : 
+      "symbol" : 
+        "name" : "symbol"
+        "qualifiedname" : "dart._js_mirrors.reflectClassByName#symbol"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Symbol"
+        "value" : "null"
+      "mangledName" : 
+        "name" : "mangledName"
+        "qualifiedname" : "dart._js_mirrors.reflectClassByName#mangledName"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.String"
+        "value" : "null"
+  "reflectClassByMangledName" : 
+    "name" : "reflectClassByMangledName"
+    "qualifiedname" : "dart._js_mirrors.reflectClassByMangledName"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.mirrors.ClassMirror"
+    "parameters" : 
+      "mangledName" : 
+        "name" : "mangledName"
+        "qualifiedname" : "dart._js_mirrors.reflectClassByMangledName#mangledName"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.String"
+        "value" : "null"
+  "reflectType" : 
+    "name" : "reflectType"
+    "qualifiedname" : "dart._js_mirrors.reflectType"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.mirrors.ClassMirror"
+    "parameters" : 
+      "key" : 
+        "name" : "key"
+        "qualifiedname" : "dart._js_mirrors.reflectType#key"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Type"
+        "value" : "null"
+  "reflect" : 
+    "name" : "reflect"
+    "qualifiedname" : "dart._js_mirrors.reflect"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.mirrors.InstanceMirror"
+    "parameters" : 
+      "reflectee" : 
+        "name" : "reflectee"
+        "qualifiedname" : "dart._js_mirrors.reflect#reflectee"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Object"
+        "value" : "null"
+  "s" : 
+    "name" : "s"
+    "qualifiedname" : "dart._js_mirrors.s"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.Symbol"
+    "parameters" : 
+      "name" : 
+        "name" : "name"
+        "qualifiedname" : "dart._js_mirrors.s#name"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.String"
+        "value" : "null"
+  "n" : 
+    "name" : "n"
+    "qualifiedname" : "dart._js_mirrors.n"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.String"
+    "parameters" : 
+      "symbol" : 
+        "name" : "symbol"
+        "qualifiedname" : "dart._js_mirrors.n#symbol"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Symbol"
+        "value" : "null"
+  "getName" : 
+    "name" : "getName"
+    "qualifiedname" : "dart._js_mirrors.getName"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.String"
+    "parameters" : 
+      "symbol" : 
+        "name" : "symbol"
+        "qualifiedname" : "dart._js_mirrors.getName#symbol"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Symbol"
+        "value" : "null"
+  "preserveMetadata" : 
+    "name" : "preserveMetadata"
+    "qualifiedname" : "dart._js_mirrors.preserveMetadata"
+    "comment" : "<p>No-op method that is called to inform the compiler that metadata must be preserved at runtime.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+  "disableTreeShaking" : 
+    "name" : "disableTreeShaking"
+    "qualifiedname" : "dart._js_mirrors.disableTreeShaking"
+    "comment" : "<p>No-op method that is called to inform the compiler that tree-shaking needs to be disabled.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+"classes" : 
+  "JsMethodMirror" : 
+    "name" : "JsMethodMirror"
+    "qualifiedname" : "dart._js_mirrors.JsMethodMirror"
+    "comment" : ""
+    "superclass" : "dart._js_mirrors.JsDeclarationMirror"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.MethodMirror"
+    "variables" : 
+      "_jsFunction" : 
+        "name" : "_jsFunction"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror._jsFunction"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+      "_parameterCount" : 
+        "name" : "_parameterCount"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror._parameterCount"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "isGetter" : 
+        "name" : "isGetter"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.isGetter"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "isSetter" : 
+        "name" : "isSetter"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.isSetter"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "isStatic" : 
+        "name" : "isStatic"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.isStatic"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "isConstructor" : 
+        "name" : "isConstructor"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.isConstructor"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "_owner" : 
+        "name" : "_owner"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror._owner"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.mirrors.DeclarationMirror"
+      "_metadata" : 
+        "name" : "_metadata"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror._metadata"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.List"
+    "methods" : 
+      "JsMethodMirror" : 
+        "name" : "JsMethodMirror"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "simpleName" : 
+            "name" : "simpleName"
+            "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror#simpleName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "_jsFunction" : 
+            "name" : "_jsFunction"
+            "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror#_jsFunction"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "_parameterCount" : 
+            "name" : "_parameterCount"
+            "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror#_parameterCount"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "isGetter" : 
+            "name" : "isGetter"
+            "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror#isGetter"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+          "isSetter" : 
+            "name" : "isSetter"
+            "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror#isSetter"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+          "isStatic" : 
+            "name" : "isStatic"
+            "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror#isStatic"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+          "isConstructor" : 
+            "name" : "isConstructor"
+            "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror#isConstructor"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+      "JsMethodMirror.fromUnmangledName" : 
+        "name" : "JsMethodMirror.fromUnmangledName"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror.fromUnmangledName"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dart._js_mirrors.JsMethodMirror"
+        "parameters" : 
+          "name" : 
+            "name" : "name"
+            "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror.fromUnmangledName#name"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "jsFunction" : 
+            "name" : "jsFunction"
+            "qualifiedname" : "dart._js_mirrors.JsMethodMirror.JsMethodMirror.fromUnmangledName#jsFunction"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_prettyName" : 
+        "name" : "_prettyName"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror._prettyName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "parameters" : 
+        "name" : "parameters"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.parameters"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "owner" : 
+        "name" : "owner"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.owner"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.DeclarationMirror"
+        "parameters" : 
+      "qualifiedName" : 
+        "name" : "qualifiedName"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.qualifiedName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Symbol"
+        "parameters" : 
+      "returnType" : 
+        "name" : "returnType"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.returnType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "metadata" : 
+        "name" : "metadata"
+        "qualifiedname" : "dart._js_mirrors.JsMethodMirror.metadata"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+  "JsClosureMirror" : 
+    "name" : "JsClosureMirror"
+    "qualifiedname" : "dart._js_mirrors.JsClosureMirror"
+    "comment" : ""
+    "superclass" : "dart._js_mirrors.JsInstanceMirror"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.ClosureMirror"
+    "variables" : 
+    "methods" : 
+      "JsClosureMirror" : 
+        "name" : "JsClosureMirror"
+        "qualifiedname" : "dart._js_mirrors.JsClosureMirror.JsClosureMirror"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "reflectee" : 
+            "name" : "reflectee"
+            "qualifiedname" : "dart._js_mirrors.JsClosureMirror.JsClosureMirror#reflectee"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "function" : 
+        "name" : "function"
+        "qualifiedname" : "dart._js_mirrors.JsClosureMirror.function"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.MethodMirror"
+        "parameters" : 
+      "apply" : 
+        "name" : "apply"
+        "qualifiedname" : "dart._js_mirrors.JsClosureMirror.apply"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart._js_mirrors.JsClosureMirror.apply#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart._js_mirrors.JsClosureMirror.apply#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "applyAsync" : 
+        "name" : "applyAsync"
+        "qualifiedname" : "dart._js_mirrors.JsClosureMirror.applyAsync"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart._js_mirrors.JsClosureMirror.applyAsync#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart._js_mirrors.JsClosureMirror.applyAsync#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "dart._js_mirrors.JsClosureMirror.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "JsVariableMirror" : 
+    "name" : "JsVariableMirror"
+    "qualifiedname" : "dart._js_mirrors.JsVariableMirror"
+    "comment" : ""
+    "superclass" : "dart._js_mirrors.JsDeclarationMirror"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.VariableMirror"
+    "variables" : 
+      "_jsName" : 
+        "name" : "_jsName"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror._jsName"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+      "isFinal" : 
+        "name" : "isFinal"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror.isFinal"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "isStatic" : 
+        "name" : "isStatic"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror.isStatic"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "_metadataFunction" : 
+        "name" : "_metadataFunction"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror._metadataFunction"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+      "_owner" : 
+        "name" : "_owner"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror._owner"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.mirrors.DeclarationMirror"
+      "_metadata" : 
+        "name" : "_metadata"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror._metadata"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.List"
+    "methods" : 
+      "JsVariableMirror" : 
+        "name" : "JsVariableMirror"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror.JsVariableMirror"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "simpleName" : 
+            "name" : "simpleName"
+            "qualifiedname" : "dart._js_mirrors.JsVariableMirror.JsVariableMirror#simpleName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "_jsName" : 
+            "name" : "_jsName"
+            "qualifiedname" : "dart._js_mirrors.JsVariableMirror.JsVariableMirror#_jsName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "isFinal" : 
+            "name" : "isFinal"
+            "qualifiedname" : "dart._js_mirrors.JsVariableMirror.JsVariableMirror#isFinal"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+          "isStatic" : 
+            "name" : "isStatic"
+            "qualifiedname" : "dart._js_mirrors.JsVariableMirror.JsVariableMirror#isStatic"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+          "_metadataFunction" : 
+            "name" : "_metadataFunction"
+            "qualifiedname" : "dart._js_mirrors.JsVariableMirror.JsVariableMirror#_metadataFunction"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "JsVariableMirror.from" : 
+        "name" : "JsVariableMirror.from"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror.JsVariableMirror.from"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dart._js_mirrors.JsVariableMirror"
+        "parameters" : 
+          "descriptor" : 
+            "name" : "descriptor"
+            "qualifiedname" : "dart._js_mirrors.JsVariableMirror.JsVariableMirror.from#descriptor"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "metadataFunction" : 
+            "name" : "metadataFunction"
+            "qualifiedname" : "dart._js_mirrors.JsVariableMirror.JsVariableMirror.from#metadataFunction"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "_prettyName" : 
+        "name" : "_prettyName"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror._prettyName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "type" : 
+        "name" : "type"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror.type"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "owner" : 
+        "name" : "owner"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror.owner"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.DeclarationMirror"
+        "parameters" : 
+      "qualifiedName" : 
+        "name" : "qualifiedName"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror.qualifiedName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Symbol"
+        "parameters" : 
+      "metadata" : 
+        "name" : "metadata"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror.metadata"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "fieldCode" : 
+        "name" : "fieldCode"
+        "qualifiedname" : "dart._js_mirrors.JsVariableMirror.fieldCode"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "code" : 
+            "name" : "code"
+            "qualifiedname" : "dart._js_mirrors.JsVariableMirror.fieldCode#code"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+  "JsClassMirror" : 
+    "name" : "JsClassMirror"
+    "qualifiedname" : "dart._js_mirrors.JsClassMirror"
+    "comment" : ""
+    "superclass" : "dart._js_mirrors.JsTypeMirror_JsObjectMirror"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.ClassMirror"
+    "variables" : 
+      "_jsConstructorOrInterceptor" : 
+        "name" : "_jsConstructorOrInterceptor"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._jsConstructorOrInterceptor"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+      "_fields" : 
+        "name" : "_fields"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._fields"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+      "_fieldsMetadata" : 
+        "name" : "_fieldsMetadata"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._fieldsMetadata"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.List"
+      "_metadata" : 
+        "name" : "_metadata"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._metadata"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.List"
+      "_superclass" : 
+        "name" : "_superclass"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._superclass"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart._js_mirrors.JsClassMirror"
+      "_cachedMethods" : 
+        "name" : "_cachedMethods"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._cachedMethods"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.List"
+      "_owner" : 
+        "name" : "_owner"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._owner"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart._js_mirrors.JsLibraryMirror"
+    "methods" : 
+      "JsClassMirror" : 
+        "name" : "JsClassMirror"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.JsClassMirror"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "simpleName" : 
+            "name" : "simpleName"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.JsClassMirror#simpleName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "_jsConstructorOrInterceptor" : 
+            "name" : "_jsConstructorOrInterceptor"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.JsClassMirror#_jsConstructorOrInterceptor"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "_fields" : 
+            "name" : "_fields"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.JsClassMirror#_fields"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "_fieldsMetadata" : 
+            "name" : "_fieldsMetadata"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.JsClassMirror#_fieldsMetadata"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "_prettyName" : 
+        "name" : "_prettyName"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._prettyName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "qualifiedName" : 
+        "name" : "qualifiedName"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.qualifiedName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Symbol"
+        "parameters" : 
+      "_jsConstructor" : 
+        "name" : "_jsConstructor"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._jsConstructor"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "constructors" : 
+        "name" : "constructors"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.constructors"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "_methods" : 
+        "name" : "_methods"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror._methods"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "methods" : 
+        "name" : "methods"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.methods"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "getters" : 
+        "name" : "getters"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.getters"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "setters" : 
+        "name" : "setters"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.setters"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "variables" : 
+        "name" : "variables"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.variables"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "members" : 
+        "name" : "members"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.members"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "setField" : 
+        "name" : "setField"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.setField"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.setField#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "arg" : 
+            "name" : "arg"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.setField#arg"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "getField" : 
+        "name" : "getField"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.getField"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.getField#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+      "newInstance" : 
+        "name" : "newInstance"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.newInstance"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "constructorName" : 
+            "name" : "constructorName"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.newInstance#constructorName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.newInstance#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.newInstance#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "newInstanceAsync" : 
+        "name" : "newInstanceAsync"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.newInstanceAsync"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "constructorName" : 
+            "name" : "constructorName"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.newInstanceAsync#constructorName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.newInstanceAsync#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart._js_mirrors.JsClassMirror.newInstanceAsync#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "owner" : 
+        "name" : "owner"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.owner"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.DeclarationMirror"
+        "parameters" : 
+      "metadata" : 
+        "name" : "metadata"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.metadata"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "superclass" : 
+        "name" : "superclass"
+        "qualifiedname" : "dart._js_mirrors.JsClassMirror.superclass"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.ClassMirror"
+        "parameters" : 
+  "JsInstanceMirror" : 
+    "name" : "JsInstanceMirror"
+    "qualifiedname" : "dart._js_mirrors.JsInstanceMirror"
+    "comment" : ""
+    "superclass" : "dart._js_mirrors.JsObjectMirror"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.InstanceMirror"
+    "variables" : 
+      "reflectee" : 
+        "name" : "reflectee"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.reflectee"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+    "methods" : 
+      "JsInstanceMirror" : 
+        "name" : "JsInstanceMirror"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.JsInstanceMirror"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "reflectee" : 
+            "name" : "reflectee"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.JsInstanceMirror#reflectee"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "hasReflectee" : 
+        "name" : "hasReflectee"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.hasReflectee"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "type" : 
+        "name" : "type"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.type"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.ClassMirror"
+        "parameters" : 
+      "invokeAsync" : 
+        "name" : "invokeAsync"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.invokeAsync"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "memberName" : 
+            "name" : "memberName"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.invokeAsync#memberName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.invokeAsync#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.invokeAsync#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "invoke" : 
+        "name" : "invoke"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.invoke"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "memberName" : 
+            "name" : "memberName"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.invoke#memberName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "positionalArguments" : 
+            "name" : "positionalArguments"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.invoke#positionalArguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "namedArguments" : 
+            "name" : "namedArguments"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.invoke#namedArguments"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "_invoke" : 
+        "name" : "_invoke"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror._invoke"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "name" : 
+            "name" : "name"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror._invoke#name"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "type" : 
+            "name" : "type"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror._invoke#type"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "mangledName" : 
+            "name" : "mangledName"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror._invoke#mangledName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "arguments" : 
+            "name" : "arguments"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror._invoke#arguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "setField" : 
+        "name" : "setField"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.setField"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.setField#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "arg" : 
+            "name" : "arg"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.setField#arg"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "getField" : 
+        "name" : "getField"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.getField"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.getField#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+      "delegate" : 
+        "name" : "delegate"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.delegate"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "invocation" : 
+            "name" : "invocation"
+            "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.delegate#invocation"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Invocation"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "dart._js_mirrors.JsInstanceMirror.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "JsObjectMirror" : 
+    "name" : "JsObjectMirror"
+    "qualifiedname" : "dart._js_mirrors.JsObjectMirror"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.ObjectMirror"
+    "variables" : 
+    "methods" : 
+      "setFieldAsync" : 
+        "name" : "setFieldAsync"
+        "qualifiedname" : "dart._js_mirrors.JsObjectMirror.setFieldAsync"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart._js_mirrors.JsObjectMirror.setFieldAsync#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "value" : 
+            "name" : "value"
+            "qualifiedname" : "dart._js_mirrors.JsObjectMirror.setFieldAsync#value"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "getFieldAsync" : 
+        "name" : "getFieldAsync"
+        "qualifiedname" : "dart._js_mirrors.JsObjectMirror.getFieldAsync"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart._js_mirrors.JsObjectMirror.getFieldAsync#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+  "JsLibraryMirror" : 
+    "name" : "JsLibraryMirror"
+    "qualifiedname" : "dart._js_mirrors.JsLibraryMirror"
+    "comment" : ""
+    "superclass" : "dart._js_mirrors.JsDeclarationMirror_JsObjectMirror"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.LibraryMirror"
+    "variables" : 
+      "uri" : 
+        "name" : "uri"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.uri"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.Uri"
+      "_classes" : 
+        "name" : "_classes"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror._classes"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.List"
+      "_functions" : 
+        "name" : "_functions"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror._functions"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.List"
+      "_metadata" : 
+        "name" : "_metadata"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror._metadata"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.List"
+      "_cachedFunctionMirrors" : 
+        "name" : "_cachedFunctionMirrors"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror._cachedFunctionMirrors"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.List"
+    "methods" : 
+      "JsLibraryMirror" : 
+        "name" : "JsLibraryMirror"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.JsLibraryMirror"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "simpleName" : 
+            "name" : "simpleName"
+            "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.JsLibraryMirror#simpleName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "uri" : 
+            "name" : "uri"
+            "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.JsLibraryMirror#uri"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Uri"
+            "value" : "null"
+          "_classes" : 
+            "name" : "_classes"
+            "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.JsLibraryMirror#_classes"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "_functions" : 
+            "name" : "_functions"
+            "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.JsLibraryMirror#_functions"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "_metadata" : 
+            "name" : "_metadata"
+            "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.JsLibraryMirror#_metadata"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "_prettyName" : 
+        "name" : "_prettyName"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror._prettyName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "qualifiedName" : 
+        "name" : "qualifiedName"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.qualifiedName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Symbol"
+        "parameters" : 
+      "classes" : 
+        "name" : "classes"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.classes"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "setField" : 
+        "name" : "setField"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.setField"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.setField#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+          "arg" : 
+            "name" : "arg"
+            "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.setField#arg"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "getField" : 
+        "name" : "getField"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.getField"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.mirrors.InstanceMirror"
+        "parameters" : 
+          "fieldName" : 
+            "name" : "fieldName"
+            "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.getField#fieldName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+      "_functionMirrors" : 
+        "name" : "_functionMirrors"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror._functionMirrors"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "functions" : 
+        "name" : "functions"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.functions"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "getters" : 
+        "name" : "getters"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.getters"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "setters" : 
+        "name" : "setters"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.setters"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "variables" : 
+        "name" : "variables"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.variables"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "members" : 
+        "name" : "members"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.members"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "metadata" : 
+        "name" : "metadata"
+        "qualifiedname" : "dart._js_mirrors.JsLibraryMirror.metadata"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+  "JsTypeMirror" : 
+    "name" : "JsTypeMirror"
+    "qualifiedname" : "dart._js_mirrors.JsTypeMirror"
+    "comment" : ""
+    "superclass" : "dart._js_mirrors.JsDeclarationMirror"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.TypeMirror"
+    "variables" : 
+    "methods" : 
+      "JsTypeMirror" : 
+        "name" : "JsTypeMirror"
+        "qualifiedname" : "dart._js_mirrors.JsTypeMirror.JsTypeMirror"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "simpleName" : 
+            "name" : "simpleName"
+            "qualifiedname" : "dart._js_mirrors.JsTypeMirror.JsTypeMirror#simpleName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+      "_prettyName" : 
+        "name" : "_prettyName"
+        "qualifiedname" : "dart._js_mirrors.JsTypeMirror._prettyName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "JsDeclarationMirror" : 
+    "name" : "JsDeclarationMirror"
+    "qualifiedname" : "dart._js_mirrors.JsDeclarationMirror"
+    "comment" : ""
+    "superclass" : "dart._js_mirrors.JsMirror"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.DeclarationMirror"
+    "variables" : 
+      "simpleName" : 
+        "name" : "simpleName"
+        "qualifiedname" : "dart._js_mirrors.JsDeclarationMirror.simpleName"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.Symbol"
+    "methods" : 
+      "JsDeclarationMirror" : 
+        "name" : "JsDeclarationMirror"
+        "qualifiedname" : "dart._js_mirrors.JsDeclarationMirror.JsDeclarationMirror"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "simpleName" : 
+            "name" : "simpleName"
+            "qualifiedname" : "dart._js_mirrors.JsDeclarationMirror.JsDeclarationMirror#simpleName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+      "isPrivate" : 
+        "name" : "isPrivate"
+        "qualifiedname" : "dart._js_mirrors.JsDeclarationMirror.isPrivate"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isTopLevel" : 
+        "name" : "isTopLevel"
+        "qualifiedname" : "dart._js_mirrors.JsDeclarationMirror.isTopLevel"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "dart._js_mirrors.JsDeclarationMirror.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "JsMirror" : 
+    "name" : "JsMirror"
+    "qualifiedname" : "dart._js_mirrors.JsMirror"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "JsMirror" : 
+        "name" : "JsMirror"
+        "qualifiedname" : "dart._js_mirrors.JsMirror.JsMirror"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "_prettyName" : 
+        "name" : "_prettyName"
+        "qualifiedname" : "dart._js_mirrors.JsMirror._prettyName"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "dart._js_mirrors.JsMirror.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "JsMirrorSystem" : 
+    "name" : "JsMirrorSystem"
+    "qualifiedname" : "dart._js_mirrors.JsMirrorSystem"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.mirrors.MirrorSystem"
+    "variables" : 
+      "_dynamicType" : 
+        "name" : "_dynamicType"
+        "qualifiedname" : "dart._js_mirrors.JsMirrorSystem._dynamicType"
+        "comment" : ""
+        "final" : "true"
+        "static" : "true"
+        "type" : "dart.mirrors.TypeMirror"
+      "_voidType" : 
+        "name" : "_voidType"
+        "qualifiedname" : "dart._js_mirrors.JsMirrorSystem._voidType"
+        "comment" : ""
+        "final" : "true"
+        "static" : "true"
+        "type" : "dart.mirrors.TypeMirror"
+      "librariesByName" : 
+        "name" : "librariesByName"
+        "qualifiedname" : "dart._js_mirrors.JsMirrorSystem.librariesByName"
+        "comment" : ""
+        "final" : "true"
+        "static" : "true"
+        "type" : "dart.core.Map"
+    "methods" : 
+      "dynamicType" : 
+        "name" : "dynamicType"
+        "qualifiedname" : "dart._js_mirrors.JsMirrorSystem.dynamicType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "voidType" : 
+        "name" : "voidType"
+        "qualifiedname" : "dart._js_mirrors.JsMirrorSystem.voidType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.mirrors.TypeMirror"
+        "parameters" : 
+      "libraries" : 
+        "name" : "libraries"
+        "qualifiedname" : "dart._js_mirrors.JsMirrorSystem.libraries"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "findLibrary" : 
+        "name" : "findLibrary"
+        "qualifiedname" : "dart._js_mirrors.JsMirrorSystem.findLibrary"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "libraryName" : 
+            "name" : "libraryName"
+            "qualifiedname" : "dart._js_mirrors.JsMirrorSystem.findLibrary#libraryName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Symbol"
+            "value" : "null"
+      "computeLibrariesByName" : 
+        "name" : "computeLibrariesByName"
+        "qualifiedname" : "dart._js_mirrors.JsMirrorSystem.computeLibrariesByName"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.core.Map"
+        "parameters" : 

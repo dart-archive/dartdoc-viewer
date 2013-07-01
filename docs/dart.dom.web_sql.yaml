@@ -1,0 +1,581 @@
+"name" : "dart.dom.web_sql"
+"comment" : "<p>An API for storing data in the browser that can be queried with SQL.</p> <p><strong>Caution:</strong> this specification is no longer actively maintained by the Web Applications Working Group and may be removed at any time. See <a href=\"http://www.w3.org/TR/webdatabase/\">the W3C Web SQL Database specification</a> for more information.</p> <p>The <code>dart:indexed_db</code> APIs is a recommended alternatives.</p>"
+"variables" : 
+"functions" : 
+"classes" : 
+  "_SQLTransactionSync" : 
+    "name" : "_SQLTransactionSync"
+    "qualifiedname" : "dart.dom.web_sql._SQLTransactionSync"
+    "comment" : ""
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "SqlTransaction" : 
+    "name" : "SqlTransaction"
+    "qualifiedname" : "dart.dom.web_sql.SqlTransaction"
+    "comment" : ""
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "executeSql" : 
+        "name" : "executeSql"
+        "qualifiedname" : "dart.dom.web_sql.SqlTransaction.executeSql"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "sqlStatement" : 
+            "name" : "sqlStatement"
+            "qualifiedname" : "dart.dom.web_sql.SqlTransaction.executeSql#sqlStatement"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "arguments" : 
+            "name" : "arguments"
+            "qualifiedname" : "dart.dom.web_sql.SqlTransaction.executeSql#arguments"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "dart.dom.web_sql.SqlTransaction.executeSql#callback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.web_sql.SqlStatementCallback"
+            "value" : "null"
+          "errorCallback" : 
+            "name" : "errorCallback"
+            "qualifiedname" : "dart.dom.web_sql.SqlTransaction.executeSql#errorCallback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.web_sql.SqlStatementErrorCallback"
+            "value" : "null"
+  "SqlResultSetRowList" : 
+    "name" : "SqlResultSetRowList"
+    "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList"
+    "comment" : ""
+    "superclass" : "dart.dom.web_sql.Interceptor_ListMixin_ImmutableListMixin"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.core.List"
+      - "_js_helper.JavaScriptIndexingBehavior"
+    "variables" : 
+    "methods" : 
+      "length" : 
+        "name" : "length"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.length"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "[]" : 
+        "name" : "[]"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.[]"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.[]#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "[]=" : 
+        "name" : "[]="
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.[]="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.[]=#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "value" : 
+            "name" : "value"
+            "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.[]=#value"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Map"
+            "value" : "null"
+      "length=" : 
+        "name" : "length="
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.length="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "value" : 
+            "name" : "value"
+            "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.length=#value"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "first" : 
+        "name" : "first"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.first"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "last" : 
+        "name" : "last"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.last"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "single" : 
+        "name" : "single"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.single"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+      "elementAt" : 
+        "name" : "elementAt"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.elementAt"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.elementAt#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "item" : 
+        "name" : "item"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.item"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList.item#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "_item_1" : 
+        "name" : "_item_1"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList._item_1"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "dart.dom.web_sql.SqlResultSetRowList._item_1#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "SqlResultSet" : 
+    "name" : "SqlResultSet"
+    "qualifiedname" : "dart.dom.web_sql.SqlResultSet"
+    "comment" : ""
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "insertId" : 
+        "name" : "insertId"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSet.insertId"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "rows" : 
+        "name" : "rows"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSet.rows"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.dom.web_sql.SqlResultSetRowList"
+      "rowsAffected" : 
+        "name" : "rowsAffected"
+        "qualifiedname" : "dart.dom.web_sql.SqlResultSet.rowsAffected"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+  "SqlException" : 
+    "name" : "SqlException"
+    "qualifiedname" : "dart.dom.web_sql.SqlException"
+    "comment" : ""
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "CONSTRAINT_ERR" : 
+        "name" : "CONSTRAINT_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.CONSTRAINT_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "DATABASE_ERR" : 
+        "name" : "DATABASE_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.DATABASE_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "QUOTA_ERR" : 
+        "name" : "QUOTA_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.QUOTA_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "SYNTAX_ERR" : 
+        "name" : "SYNTAX_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.SYNTAX_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "TIMEOUT_ERR" : 
+        "name" : "TIMEOUT_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.TIMEOUT_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "TOO_LARGE_ERR" : 
+        "name" : "TOO_LARGE_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.TOO_LARGE_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "UNKNOWN_ERR" : 
+        "name" : "UNKNOWN_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.UNKNOWN_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "VERSION_ERR" : 
+        "name" : "VERSION_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.VERSION_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "code" : 
+        "name" : "code"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.code"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "message" : 
+        "name" : "message"
+        "qualifiedname" : "dart.dom.web_sql.SqlException.message"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+  "SqlError" : 
+    "name" : "SqlError"
+    "qualifiedname" : "dart.dom.web_sql.SqlError"
+    "comment" : ""
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "CONSTRAINT_ERR" : 
+        "name" : "CONSTRAINT_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.CONSTRAINT_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "DATABASE_ERR" : 
+        "name" : "DATABASE_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.DATABASE_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "QUOTA_ERR" : 
+        "name" : "QUOTA_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.QUOTA_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "SYNTAX_ERR" : 
+        "name" : "SYNTAX_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.SYNTAX_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "TIMEOUT_ERR" : 
+        "name" : "TIMEOUT_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.TIMEOUT_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "TOO_LARGE_ERR" : 
+        "name" : "TOO_LARGE_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.TOO_LARGE_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "UNKNOWN_ERR" : 
+        "name" : "UNKNOWN_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.UNKNOWN_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "VERSION_ERR" : 
+        "name" : "VERSION_ERR"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.VERSION_ERR"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dart.core.int"
+      "code" : 
+        "name" : "code"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.code"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "message" : 
+        "name" : "message"
+        "qualifiedname" : "dart.dom.web_sql.SqlError.message"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+  "SqlDatabase" : 
+    "name" : "SqlDatabase"
+    "qualifiedname" : "dart.dom.web_sql.SqlDatabase"
+    "comment" : ""
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "version" : 
+        "name" : "version"
+        "qualifiedname" : "dart.dom.web_sql.SqlDatabase.version"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+      "supported" : 
+        "name" : "supported"
+        "qualifiedname" : "dart.dom.web_sql.SqlDatabase.supported"
+        "comment" : "<p>Checks if this type is supported on the current platform.</p>"
+        "type" : "getter"
+        "static" : "true"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "changeVersion" : 
+        "name" : "changeVersion"
+        "qualifiedname" : "dart.dom.web_sql.SqlDatabase.changeVersion"
+        "comment" : "<p>Atomically update the database version to <code>newVersion</code>, asynchronously running <code>callback</code> on the <code>SqlTransaction</code> representing this <code>changeVersion</code> transaction.</p> <p>If <code>callback</code> runs successfully, then <code>successCallback</code> is called. Otherwise, <code>errorCallback</code> is called.</p> <p><code>oldVersion</code> should match the database's current <code>version</code> exactly.</p><ul><li><a href=\"http://www.w3.org/TR/webdatabase/#dom-database-changeversion\">Database.changeVersion</a> from W3C.</li></ul>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "oldVersion" : 
+            "name" : "oldVersion"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.changeVersion#oldVersion"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "newVersion" : 
+            "name" : "newVersion"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.changeVersion#newVersion"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.changeVersion#callback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.web_sql.SqlTransactionCallback"
+            "value" : "null"
+          "errorCallback" : 
+            "name" : "errorCallback"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.changeVersion#errorCallback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.web_sql.SqlTransactionErrorCallback"
+            "value" : "null"
+          "successCallback" : 
+            "name" : "successCallback"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.changeVersion#successCallback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.html.VoidCallback"
+            "value" : "null"
+      "readTransaction" : 
+        "name" : "readTransaction"
+        "qualifiedname" : "dart.dom.web_sql.SqlDatabase.readTransaction"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.readTransaction#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.web_sql.SqlTransactionCallback"
+            "value" : "null"
+          "errorCallback" : 
+            "name" : "errorCallback"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.readTransaction#errorCallback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.web_sql.SqlTransactionErrorCallback"
+            "value" : "null"
+          "successCallback" : 
+            "name" : "successCallback"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.readTransaction#successCallback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.html.VoidCallback"
+            "value" : "null"
+      "transaction" : 
+        "name" : "transaction"
+        "qualifiedname" : "dart.dom.web_sql.SqlDatabase.transaction"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.transaction#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.web_sql.SqlTransactionCallback"
+            "value" : "null"
+          "errorCallback" : 
+            "name" : "errorCallback"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.transaction#errorCallback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.web_sql.SqlTransactionErrorCallback"
+            "value" : "null"
+          "successCallback" : 
+            "name" : "successCallback"
+            "qualifiedname" : "dart.dom.web_sql.SqlDatabase.transaction#successCallback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.html.VoidCallback"
+            "value" : "null"
+  "SqlTransactionErrorCallback" : 
+    "name" : "SqlTransactionErrorCallback"
+    "qualifiedname" : "dart.dom.web_sql.SqlTransactionErrorCallback"
+    "comment" : ""
+    "superclass" : ""
+    "abstract" : "false"
+    "typedef" : "true"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "SqlTransactionCallback" : 
+    "name" : "SqlTransactionCallback"
+    "qualifiedname" : "dart.dom.web_sql.SqlTransactionCallback"
+    "comment" : ""
+    "superclass" : ""
+    "abstract" : "false"
+    "typedef" : "true"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "SqlStatementErrorCallback" : 
+    "name" : "SqlStatementErrorCallback"
+    "qualifiedname" : "dart.dom.web_sql.SqlStatementErrorCallback"
+    "comment" : ""
+    "superclass" : ""
+    "abstract" : "false"
+    "typedef" : "true"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "SqlStatementCallback" : 
+    "name" : "SqlStatementCallback"
+    "qualifiedname" : "dart.dom.web_sql.SqlStatementCallback"
+    "comment" : ""
+    "superclass" : ""
+    "abstract" : "false"
+    "typedef" : "true"
+    "implements" : 
+    "variables" : 
+    "methods" : 

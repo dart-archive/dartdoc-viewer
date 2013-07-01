@@ -1,0 +1,2733 @@
+"name" : "chrome"
+"comment" : "<p>Native wrappers for the Chrome Packaged App APIs.  These functions allow direct access to the Packaged App APIs, allowing Chrome Packaged Apps to be written using Dart.  For more information on these APIs, see the <a href=\"http://developer.chrome.com/extensions/api_index.html\">Chrome APIs Documentation</a></p>"
+"variables" : 
+  "chrome" : 
+    "name" : "chrome"
+    "qualifiedname" : "chrome.chrome"
+    "comment" : ""
+    "final" : "true"
+    "static" : "false"
+    "type" : "chrome.API_Chrome"
+"functions" : 
+  "convertArgument" : 
+    "name" : "convertArgument"
+    "qualifiedname" : "chrome.convertArgument"
+    "comment" : "<p>Converts the given argument Object to js-friendly format, recursively.</p> <p>Flattens out all Chrome objects into their corresponding ._toMap() definitions, then converts them to JS objects.</p> <p>Returns the new argument.</p> <p>Cannot be used for functions.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.Object"
+    "parameters" : 
+      "argument" : 
+        "name" : "argument"
+        "qualifiedname" : "chrome.convertArgument#argument"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "_convertListArgument" : 
+    "name" : "_convertListArgument"
+    "qualifiedname" : "chrome._convertListArgument"
+    "comment" : "<p>Converts the given list-type argument to js-friendly format, recursively. Returns the new List object.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.List"
+    "parameters" : 
+      "argument" : 
+        "name" : "argument"
+        "qualifiedname" : "chrome._convertListArgument#argument"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.List"
+        "value" : "null"
+  "_convertMapArgument" : 
+    "name" : "_convertMapArgument"
+    "qualifiedname" : "chrome._convertMapArgument"
+    "comment" : "<p>Useful functions for converting arguments.</p> <p>Converts the given map-type argument to js-friendly format, recursively. Returns the new Map object.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.Object"
+    "parameters" : 
+      "argument" : 
+        "name" : "argument"
+        "qualifiedname" : "chrome._convertMapArgument#argument"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Map"
+        "value" : "null"
+"classes" : 
+  "API_app_runtime" : 
+    "name" : "API_app_runtime"
+    "qualifiedname" : "chrome.API_app_runtime"
+    "comment" : "<p>Functions</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_jsObject" : 
+        "name" : "_jsObject"
+        "qualifiedname" : "chrome.API_app_runtime._jsObject"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.Object"
+      "onLaunched" : 
+        "name" : "onLaunched"
+        "qualifiedname" : "chrome.API_app_runtime.onLaunched"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.Event_app_runtime_onLaunched"
+      "onRestarted" : 
+        "name" : "onRestarted"
+        "qualifiedname" : "chrome.API_app_runtime.onRestarted"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.Event_app_runtime_onRestarted"
+    "methods" : 
+      "postIntentResponse" : 
+        "name" : "postIntentResponse"
+        "qualifiedname" : "chrome.API_app_runtime.postIntentResponse"
+        "comment" : "<p>postIntentResponse is an internal method to responds to an intent previously sent to a packaged app. This is identified by intentId, and should only be invoked at most once per intentId.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "intentResponse" : 
+            "name" : "intentResponse"
+            "qualifiedname" : "chrome.API_app_runtime.postIntentResponse#intentResponse"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "chrome.AppRuntimeIntentResponse"
+            "value" : "null"
+      "API_app_runtime" : 
+        "name" : "API_app_runtime"
+        "qualifiedname" : "chrome.API_app_runtime.API_app_runtime"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.API_app_runtime.API_app_runtime#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+  "Event_app_runtime_onRestarted" : 
+    "name" : "Event_app_runtime_onRestarted"
+    "qualifiedname" : "chrome.Event_app_runtime_onRestarted"
+    "comment" : "<p>Fired at Chrome startup to apps that were running when Chrome last shut down.</p>"
+    "superclass" : "chrome.Event"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "addListener" : 
+        "name" : "addListener"
+        "qualifiedname" : "chrome.Event_app_runtime_onRestarted.addListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_runtime_onRestarted.addListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "removeListener" : 
+        "name" : "removeListener"
+        "qualifiedname" : "chrome.Event_app_runtime_onRestarted.removeListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_runtime_onRestarted.removeListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "hasListener" : 
+        "name" : "hasListener"
+        "qualifiedname" : "chrome.Event_app_runtime_onRestarted.hasListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_runtime_onRestarted.hasListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "Event_app_runtime_onRestarted" : 
+        "name" : "Event_app_runtime_onRestarted"
+        "qualifiedname" : "chrome.Event_app_runtime_onRestarted.Event_app_runtime_onRestarted"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "jsObject" : 
+            "name" : "jsObject"
+            "qualifiedname" : "chrome.Event_app_runtime_onRestarted.Event_app_runtime_onRestarted#jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "Event_app_runtime_onLaunched" : 
+    "name" : "Event_app_runtime_onLaunched"
+    "qualifiedname" : "chrome.Event_app_runtime_onLaunched"
+    "comment" : "<p>Events  Fired when an app is launched from the launcher or in response to a web intent.</p>"
+    "superclass" : "chrome.Event"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "addListener" : 
+        "name" : "addListener"
+        "qualifiedname" : "chrome.Event_app_runtime_onLaunched.addListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_runtime_onLaunched.addListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "removeListener" : 
+        "name" : "removeListener"
+        "qualifiedname" : "chrome.Event_app_runtime_onLaunched.removeListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_runtime_onLaunched.removeListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "hasListener" : 
+        "name" : "hasListener"
+        "qualifiedname" : "chrome.Event_app_runtime_onLaunched.hasListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_runtime_onLaunched.hasListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "Event_app_runtime_onLaunched" : 
+        "name" : "Event_app_runtime_onLaunched"
+        "qualifiedname" : "chrome.Event_app_runtime_onLaunched.Event_app_runtime_onLaunched"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "jsObject" : 
+            "name" : "jsObject"
+            "qualifiedname" : "chrome.Event_app_runtime_onLaunched.Event_app_runtime_onLaunched#jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "AppRuntimeIntentResponse" : 
+    "name" : "AppRuntimeIntentResponse"
+    "qualifiedname" : "chrome.AppRuntimeIntentResponse"
+    "comment" : ""
+    "superclass" : "chrome.ChromeObject"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "AppRuntimeIntentResponse" : 
+        "name" : "AppRuntimeIntentResponse"
+        "qualifiedname" : "chrome.AppRuntimeIntentResponse.AppRuntimeIntentResponse"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "intentId" : 
+            "name" : "intentId"
+            "qualifiedname" : "chrome.AppRuntimeIntentResponse.AppRuntimeIntentResponse#intentId"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "success" : 
+            "name" : "success"
+            "qualifiedname" : "chrome.AppRuntimeIntentResponse.AppRuntimeIntentResponse#success"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+          "data" : 
+            "name" : "data"
+            "qualifiedname" : "chrome.AppRuntimeIntentResponse.AppRuntimeIntentResponse#data"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "AppRuntimeIntentResponse._proxy" : 
+        "name" : "AppRuntimeIntentResponse._proxy"
+        "qualifiedname" : "chrome.AppRuntimeIntentResponse.AppRuntimeIntentResponse._proxy"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.AppRuntimeIntentResponse.AppRuntimeIntentResponse._proxy#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "intentId" : 
+        "name" : "intentId"
+        "qualifiedname" : "chrome.AppRuntimeIntentResponse.intentId"
+        "comment" : "<p>Identifies the intent.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "intentId=" : 
+        "name" : "intentId="
+        "qualifiedname" : "chrome.AppRuntimeIntentResponse.intentId="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "intentId" : 
+            "name" : "intentId"
+            "qualifiedname" : "chrome.AppRuntimeIntentResponse.intentId=#intentId"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "success" : 
+        "name" : "success"
+        "qualifiedname" : "chrome.AppRuntimeIntentResponse.success"
+        "comment" : "<p>Was this intent successful? (i.e., postSuccess vs postFailure).</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "success=" : 
+        "name" : "success="
+        "qualifiedname" : "chrome.AppRuntimeIntentResponse.success="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "success" : 
+            "name" : "success"
+            "qualifiedname" : "chrome.AppRuntimeIntentResponse.success=#success"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+      "data" : 
+        "name" : "data"
+        "qualifiedname" : "chrome.AppRuntimeIntentResponse.data"
+        "comment" : "<p>Data associated with the intent response.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Object"
+        "parameters" : 
+      "data=" : 
+        "name" : "data="
+        "qualifiedname" : "chrome.AppRuntimeIntentResponse.data="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "data" : 
+            "name" : "data"
+            "qualifiedname" : "chrome.AppRuntimeIntentResponse.data=#data"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+  "AppRuntimeLaunchData" : 
+    "name" : "AppRuntimeLaunchData"
+    "qualifiedname" : "chrome.AppRuntimeLaunchData"
+    "comment" : ""
+    "superclass" : "chrome.ChromeObject"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "AppRuntimeLaunchData" : 
+        "name" : "AppRuntimeLaunchData"
+        "qualifiedname" : "chrome.AppRuntimeLaunchData.AppRuntimeLaunchData"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "intent" : 
+            "name" : "intent"
+            "qualifiedname" : "chrome.AppRuntimeLaunchData.AppRuntimeLaunchData#intent"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "chrome.AppRuntimeIntent"
+            "value" : "null"
+          "id" : 
+            "name" : "id"
+            "qualifiedname" : "chrome.AppRuntimeLaunchData.AppRuntimeLaunchData#id"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "items" : 
+            "name" : "items"
+            "qualifiedname" : "chrome.AppRuntimeLaunchData.AppRuntimeLaunchData#items"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "AppRuntimeLaunchData._proxy" : 
+        "name" : "AppRuntimeLaunchData._proxy"
+        "qualifiedname" : "chrome.AppRuntimeLaunchData.AppRuntimeLaunchData._proxy"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.AppRuntimeLaunchData.AppRuntimeLaunchData._proxy#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "intent" : 
+        "name" : "intent"
+        "qualifiedname" : "chrome.AppRuntimeLaunchData.intent"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "chrome.AppRuntimeIntent"
+        "parameters" : 
+      "intent=" : 
+        "name" : "intent="
+        "qualifiedname" : "chrome.AppRuntimeLaunchData.intent="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "intent" : 
+            "name" : "intent"
+            "qualifiedname" : "chrome.AppRuntimeLaunchData.intent=#intent"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "chrome.AppRuntimeIntent"
+            "value" : "null"
+      "id" : 
+        "name" : "id"
+        "qualifiedname" : "chrome.AppRuntimeLaunchData.id"
+        "comment" : "<p>The id of the file handler that the app is being invoked with.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "id=" : 
+        "name" : "id="
+        "qualifiedname" : "chrome.AppRuntimeLaunchData.id="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "id" : 
+            "name" : "id"
+            "qualifiedname" : "chrome.AppRuntimeLaunchData.id=#id"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "items" : 
+        "name" : "items"
+        "qualifiedname" : "chrome.AppRuntimeLaunchData.items"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "items=" : 
+        "name" : "items="
+        "qualifiedname" : "chrome.AppRuntimeLaunchData.items="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "items" : 
+            "name" : "items"
+            "qualifiedname" : "chrome.AppRuntimeLaunchData.items=#items"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+  "AppRuntimeLaunchItem" : 
+    "name" : "AppRuntimeLaunchItem"
+    "qualifiedname" : "chrome.AppRuntimeLaunchItem"
+    "comment" : ""
+    "superclass" : "chrome.ChromeObject"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "AppRuntimeLaunchItem" : 
+        "name" : "AppRuntimeLaunchItem"
+        "qualifiedname" : "chrome.AppRuntimeLaunchItem.AppRuntimeLaunchItem"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "entry" : 
+            "name" : "entry"
+            "qualifiedname" : "chrome.AppRuntimeLaunchItem.AppRuntimeLaunchItem#entry"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.dom.html.FileEntry"
+            "value" : "null"
+          "type" : 
+            "name" : "type"
+            "qualifiedname" : "chrome.AppRuntimeLaunchItem.AppRuntimeLaunchItem#type"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "AppRuntimeLaunchItem._proxy" : 
+        "name" : "AppRuntimeLaunchItem._proxy"
+        "qualifiedname" : "chrome.AppRuntimeLaunchItem.AppRuntimeLaunchItem._proxy"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.AppRuntimeLaunchItem.AppRuntimeLaunchItem._proxy#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "entry" : 
+        "name" : "entry"
+        "qualifiedname" : "chrome.AppRuntimeLaunchItem.entry"
+        "comment" : "<p>FileEntry for the file.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.dom.html.FileEntry"
+        "parameters" : 
+      "entry=" : 
+        "name" : "entry="
+        "qualifiedname" : "chrome.AppRuntimeLaunchItem.entry="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "entry" : 
+            "name" : "entry"
+            "qualifiedname" : "chrome.AppRuntimeLaunchItem.entry=#entry"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.dom.html.FileEntry"
+            "value" : "null"
+      "type" : 
+        "name" : "type"
+        "qualifiedname" : "chrome.AppRuntimeLaunchItem.type"
+        "comment" : "<p>The MIME type of the file.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "type=" : 
+        "name" : "type="
+        "qualifiedname" : "chrome.AppRuntimeLaunchItem.type="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "type" : 
+            "name" : "type"
+            "qualifiedname" : "chrome.AppRuntimeLaunchItem.type=#type"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+  "AppRuntimeIntent" : 
+    "name" : "AppRuntimeIntent"
+    "qualifiedname" : "chrome.AppRuntimeIntent"
+    "comment" : "<p>Types</p>"
+    "superclass" : "chrome.ChromeObject"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "AppRuntimeIntent._proxy" : 
+        "name" : "AppRuntimeIntent._proxy"
+        "qualifiedname" : "chrome.AppRuntimeIntent.AppRuntimeIntent._proxy"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.AppRuntimeIntent.AppRuntimeIntent._proxy#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "action" : 
+        "name" : "action"
+        "qualifiedname" : "chrome.AppRuntimeIntent.action"
+        "comment" : "<p>The WebIntent being invoked.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "action=" : 
+        "name" : "action="
+        "qualifiedname" : "chrome.AppRuntimeIntent.action="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "action" : 
+            "name" : "action"
+            "qualifiedname" : "chrome.AppRuntimeIntent.action=#action"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "type" : 
+        "name" : "type"
+        "qualifiedname" : "chrome.AppRuntimeIntent.type"
+        "comment" : "<p>The MIME type of the data.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "type=" : 
+        "name" : "type="
+        "qualifiedname" : "chrome.AppRuntimeIntent.type="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "type" : 
+            "name" : "type"
+            "qualifiedname" : "chrome.AppRuntimeIntent.type=#type"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "data" : 
+        "name" : "data"
+        "qualifiedname" : "chrome.AppRuntimeIntent.data"
+        "comment" : "<p>Data associated with the intent.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Object"
+        "parameters" : 
+      "data=" : 
+        "name" : "data="
+        "qualifiedname" : "chrome.AppRuntimeIntent.data="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "data" : 
+            "name" : "data"
+            "qualifiedname" : "chrome.AppRuntimeIntent.data=#data"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "postResult" : 
+        "name" : "postResult"
+        "qualifiedname" : "chrome.AppRuntimeIntent.postResult"
+        "comment" : "<p>Callback to be compatible with WebIntents.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "postFailure" : 
+        "name" : "postFailure"
+        "qualifiedname" : "chrome.AppRuntimeIntent.postFailure"
+        "comment" : "<p>Callback to be compatible with WebIntents.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+  "API_app_window" : 
+    "name" : "API_app_window"
+    "qualifiedname" : "chrome.API_app_window"
+    "comment" : "<p>Functions</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_jsObject" : 
+        "name" : "_jsObject"
+        "qualifiedname" : "chrome.API_app_window._jsObject"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.Object"
+      "onBoundsChanged" : 
+        "name" : "onBoundsChanged"
+        "qualifiedname" : "chrome.API_app_window.onBoundsChanged"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.Event_app_window_onBoundsChanged"
+      "onClosed" : 
+        "name" : "onClosed"
+        "qualifiedname" : "chrome.API_app_window.onClosed"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.Event_app_window_onClosed"
+      "onMaximized" : 
+        "name" : "onMaximized"
+        "qualifiedname" : "chrome.API_app_window.onMaximized"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.Event_app_window_onMaximized"
+      "onMinimized" : 
+        "name" : "onMinimized"
+        "qualifiedname" : "chrome.API_app_window.onMinimized"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.Event_app_window_onMinimized"
+      "onRestored" : 
+        "name" : "onRestored"
+        "qualifiedname" : "chrome.API_app_window.onRestored"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.Event_app_window_onRestored"
+    "methods" : 
+      "create" : 
+        "name" : "create"
+        "qualifiedname" : "chrome.API_app_window.create"
+        "comment" : "<p>The size and position of a window can be specified in a number of different ways. The most simple option is not specifying anything at all, in which case a default size and platform dependent position will be used.&lt;br/>&lt;br/> Another option is to use the top/left and width/height properties, which will always put the window at the specified coordinates with the specified size.&lt;br/>&lt;br/> Yet another option is to give the window a (unique) id. This id is then used to remember the size and position of the window whenever it is moved or resized. This size and position is then used instead of the specified bounds on subsequent opening of a window with the same id. If you need to open a window with an id at a location other than the remembered default, you can create it hidden, move it to the desired location, then show it.&lt;br/>&lt;br/> You can also combine these various options, explicitly specifying for example the size while having the position be remembered or other combinations like that. Size and position are dealt with seperately, but individual coordinates are not. So if you specify a top (or left) coordinate, you should also specify a left (or top) coordinate, and similar for size.&lt;br/>&lt;br/> If you specify both a regular and a default value for the same option the regular value is the only one that takes effect.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "url" : 
+            "name" : "url"
+            "qualifiedname" : "chrome.API_app_window.create#url"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "options" : 
+            "name" : "options"
+            "qualifiedname" : "chrome.API_app_window.create#options"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "chrome.AppWindowCreateWindowOptions"
+            "value" : "null"
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.API_app_window.create#callback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "current" : 
+        "name" : "current"
+        "qualifiedname" : "chrome.API_app_window.current"
+        "comment" : "<p>Returns an $ref:AppWindow object for the current script context (ie JavaScript 'window' object). This can also be called on a handle to a script context for another page, for example: otherWindow.chrome.app.window.current().</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "chrome.AppWindowAppWindow"
+        "parameters" : 
+      "initializeAppWindow" : 
+        "name" : "initializeAppWindow"
+        "qualifiedname" : "chrome.API_app_window.initializeAppWindow"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "state" : 
+            "name" : "state"
+            "qualifiedname" : "chrome.API_app_window.initializeAppWindow#state"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "API_app_window" : 
+        "name" : "API_app_window"
+        "qualifiedname" : "chrome.API_app_window.API_app_window"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.API_app_window.API_app_window#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+  "Event_app_window_onRestored" : 
+    "name" : "Event_app_window_onRestored"
+    "qualifiedname" : "chrome.Event_app_window_onRestored"
+    "comment" : "<p>Fired when the window is restored from being minimized or maximized.</p>"
+    "superclass" : "chrome.Event"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "addListener" : 
+        "name" : "addListener"
+        "qualifiedname" : "chrome.Event_app_window_onRestored.addListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onRestored.addListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "removeListener" : 
+        "name" : "removeListener"
+        "qualifiedname" : "chrome.Event_app_window_onRestored.removeListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onRestored.removeListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "hasListener" : 
+        "name" : "hasListener"
+        "qualifiedname" : "chrome.Event_app_window_onRestored.hasListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onRestored.hasListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "Event_app_window_onRestored" : 
+        "name" : "Event_app_window_onRestored"
+        "qualifiedname" : "chrome.Event_app_window_onRestored.Event_app_window_onRestored"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "jsObject" : 
+            "name" : "jsObject"
+            "qualifiedname" : "chrome.Event_app_window_onRestored.Event_app_window_onRestored#jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "Event_app_window_onMinimized" : 
+    "name" : "Event_app_window_onMinimized"
+    "qualifiedname" : "chrome.Event_app_window_onMinimized"
+    "comment" : "<p>Fired when the window is minimized.</p>"
+    "superclass" : "chrome.Event"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "addListener" : 
+        "name" : "addListener"
+        "qualifiedname" : "chrome.Event_app_window_onMinimized.addListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onMinimized.addListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "removeListener" : 
+        "name" : "removeListener"
+        "qualifiedname" : "chrome.Event_app_window_onMinimized.removeListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onMinimized.removeListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "hasListener" : 
+        "name" : "hasListener"
+        "qualifiedname" : "chrome.Event_app_window_onMinimized.hasListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onMinimized.hasListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "Event_app_window_onMinimized" : 
+        "name" : "Event_app_window_onMinimized"
+        "qualifiedname" : "chrome.Event_app_window_onMinimized.Event_app_window_onMinimized"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "jsObject" : 
+            "name" : "jsObject"
+            "qualifiedname" : "chrome.Event_app_window_onMinimized.Event_app_window_onMinimized#jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "Event_app_window_onMaximized" : 
+    "name" : "Event_app_window_onMaximized"
+    "qualifiedname" : "chrome.Event_app_window_onMaximized"
+    "comment" : "<p>Fired when the window is maximized.</p>"
+    "superclass" : "chrome.Event"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "addListener" : 
+        "name" : "addListener"
+        "qualifiedname" : "chrome.Event_app_window_onMaximized.addListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onMaximized.addListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "removeListener" : 
+        "name" : "removeListener"
+        "qualifiedname" : "chrome.Event_app_window_onMaximized.removeListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onMaximized.removeListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "hasListener" : 
+        "name" : "hasListener"
+        "qualifiedname" : "chrome.Event_app_window_onMaximized.hasListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onMaximized.hasListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "Event_app_window_onMaximized" : 
+        "name" : "Event_app_window_onMaximized"
+        "qualifiedname" : "chrome.Event_app_window_onMaximized.Event_app_window_onMaximized"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "jsObject" : 
+            "name" : "jsObject"
+            "qualifiedname" : "chrome.Event_app_window_onMaximized.Event_app_window_onMaximized#jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "Event_app_window_onClosed" : 
+    "name" : "Event_app_window_onClosed"
+    "qualifiedname" : "chrome.Event_app_window_onClosed"
+    "comment" : "<p>Fired when the window is closed.</p>"
+    "superclass" : "chrome.Event"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "addListener" : 
+        "name" : "addListener"
+        "qualifiedname" : "chrome.Event_app_window_onClosed.addListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onClosed.addListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "removeListener" : 
+        "name" : "removeListener"
+        "qualifiedname" : "chrome.Event_app_window_onClosed.removeListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onClosed.removeListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "hasListener" : 
+        "name" : "hasListener"
+        "qualifiedname" : "chrome.Event_app_window_onClosed.hasListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onClosed.hasListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "Event_app_window_onClosed" : 
+        "name" : "Event_app_window_onClosed"
+        "qualifiedname" : "chrome.Event_app_window_onClosed.Event_app_window_onClosed"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "jsObject" : 
+            "name" : "jsObject"
+            "qualifiedname" : "chrome.Event_app_window_onClosed.Event_app_window_onClosed#jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "Event_app_window_onBoundsChanged" : 
+    "name" : "Event_app_window_onBoundsChanged"
+    "qualifiedname" : "chrome.Event_app_window_onBoundsChanged"
+    "comment" : "<p>Events  Fired when the window is resized.</p>"
+    "superclass" : "chrome.Event"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "addListener" : 
+        "name" : "addListener"
+        "qualifiedname" : "chrome.Event_app_window_onBoundsChanged.addListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onBoundsChanged.addListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "removeListener" : 
+        "name" : "removeListener"
+        "qualifiedname" : "chrome.Event_app_window_onBoundsChanged.removeListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onBoundsChanged.removeListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "hasListener" : 
+        "name" : "hasListener"
+        "qualifiedname" : "chrome.Event_app_window_onBoundsChanged.hasListener"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event_app_window_onBoundsChanged.hasListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "Event_app_window_onBoundsChanged" : 
+        "name" : "Event_app_window_onBoundsChanged"
+        "qualifiedname" : "chrome.Event_app_window_onBoundsChanged.Event_app_window_onBoundsChanged"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "jsObject" : 
+            "name" : "jsObject"
+            "qualifiedname" : "chrome.Event_app_window_onBoundsChanged.Event_app_window_onBoundsChanged#jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "AppWindowAppWindow" : 
+    "name" : "AppWindowAppWindow"
+    "qualifiedname" : "chrome.AppWindowAppWindow"
+    "comment" : ""
+    "superclass" : "chrome.ChromeObject"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "AppWindowAppWindow._proxy" : 
+        "name" : "AppWindowAppWindow._proxy"
+        "qualifiedname" : "chrome.AppWindowAppWindow.AppWindowAppWindow._proxy"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.AppWindowAppWindow.AppWindowAppWindow._proxy#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "contentWindow" : 
+        "name" : "contentWindow"
+        "qualifiedname" : "chrome.AppWindowAppWindow.contentWindow"
+        "comment" : "<p>The JavaScript 'window' object for the created child.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.dom.html.WindowBase"
+        "parameters" : 
+      "focus" : 
+        "name" : "focus"
+        "qualifiedname" : "chrome.AppWindowAppWindow.focus"
+        "comment" : "<p>Focus the window.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "minimize" : 
+        "name" : "minimize"
+        "qualifiedname" : "chrome.AppWindowAppWindow.minimize"
+        "comment" : "<p>Minimize the window.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "isMinimized" : 
+        "name" : "isMinimized"
+        "qualifiedname" : "chrome.AppWindowAppWindow.isMinimized"
+        "comment" : "<p>Is the window minimized?</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "maximize" : 
+        "name" : "maximize"
+        "qualifiedname" : "chrome.AppWindowAppWindow.maximize"
+        "comment" : "<p>Maximize the window.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "isMaximized" : 
+        "name" : "isMaximized"
+        "qualifiedname" : "chrome.AppWindowAppWindow.isMaximized"
+        "comment" : "<p>Is the window maximized?</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "restore" : 
+        "name" : "restore"
+        "qualifiedname" : "chrome.AppWindowAppWindow.restore"
+        "comment" : "<p>Restore the window.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "moveTo" : 
+        "name" : "moveTo"
+        "qualifiedname" : "chrome.AppWindowAppWindow.moveTo"
+        "comment" : "<p>Move the window to the position (|left|, |top|).</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "left" : 
+            "name" : "left"
+            "qualifiedname" : "chrome.AppWindowAppWindow.moveTo#left"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "top" : 
+            "name" : "top"
+            "qualifiedname" : "chrome.AppWindowAppWindow.moveTo#top"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "resizeTo" : 
+        "name" : "resizeTo"
+        "qualifiedname" : "chrome.AppWindowAppWindow.resizeTo"
+        "comment" : "<p>Resize the window to |width|x|height| pixels in size.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "width" : 
+            "name" : "width"
+            "qualifiedname" : "chrome.AppWindowAppWindow.resizeTo#width"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "height" : 
+            "name" : "height"
+            "qualifiedname" : "chrome.AppWindowAppWindow.resizeTo#height"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "drawAttention" : 
+        "name" : "drawAttention"
+        "qualifiedname" : "chrome.AppWindowAppWindow.drawAttention"
+        "comment" : "<p>Draw attention to the window.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "clearAttention" : 
+        "name" : "clearAttention"
+        "qualifiedname" : "chrome.AppWindowAppWindow.clearAttention"
+        "comment" : "<p>Clear attention to the window.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "close" : 
+        "name" : "close"
+        "qualifiedname" : "chrome.AppWindowAppWindow.close"
+        "comment" : "<p>Close the window.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "show" : 
+        "name" : "show"
+        "qualifiedname" : "chrome.AppWindowAppWindow.show"
+        "comment" : "<p>Show the window. Does nothing if the window is already visible.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "hide" : 
+        "name" : "hide"
+        "qualifiedname" : "chrome.AppWindowAppWindow.hide"
+        "comment" : "<p>Hide the window. Does nothing if the window is already hidden.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "getBounds" : 
+        "name" : "getBounds"
+        "qualifiedname" : "chrome.AppWindowAppWindow.getBounds"
+        "comment" : "<p>Get the window's bounds as a $ref:Bounds object.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "chrome.AppWindowBounds"
+        "parameters" : 
+      "setBounds" : 
+        "name" : "setBounds"
+        "qualifiedname" : "chrome.AppWindowAppWindow.setBounds"
+        "comment" : "<p>Set the window's bounds.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "bounds" : 
+            "name" : "bounds"
+            "qualifiedname" : "chrome.AppWindowAppWindow.setBounds#bounds"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "chrome.AppWindowBounds"
+            "value" : "null"
+      "setIcon" : 
+        "name" : "setIcon"
+        "qualifiedname" : "chrome.AppWindowAppWindow.setIcon"
+        "comment" : "<p>Set the app icon for the window (experimental). Currently this is only being implemented on Ash. TODO(stevenjb): Investigate implementing this on Windows and OSX.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "icon_url" : 
+            "name" : "icon_url"
+            "qualifiedname" : "chrome.AppWindowAppWindow.setIcon#icon_url"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+  "AppWindowBounds" : 
+    "name" : "AppWindowBounds"
+    "qualifiedname" : "chrome.AppWindowBounds"
+    "comment" : ""
+    "superclass" : "chrome.ChromeObject"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "AppWindowBounds" : 
+        "name" : "AppWindowBounds"
+        "qualifiedname" : "chrome.AppWindowBounds.AppWindowBounds"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "left" : 
+            "name" : "left"
+            "qualifiedname" : "chrome.AppWindowBounds.AppWindowBounds#left"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "top" : 
+            "name" : "top"
+            "qualifiedname" : "chrome.AppWindowBounds.AppWindowBounds#top"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "width" : 
+            "name" : "width"
+            "qualifiedname" : "chrome.AppWindowBounds.AppWindowBounds#width"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "height" : 
+            "name" : "height"
+            "qualifiedname" : "chrome.AppWindowBounds.AppWindowBounds#height"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "AppWindowBounds._proxy" : 
+        "name" : "AppWindowBounds._proxy"
+        "qualifiedname" : "chrome.AppWindowBounds.AppWindowBounds._proxy"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.AppWindowBounds.AppWindowBounds._proxy#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "left" : 
+        "name" : "left"
+        "qualifiedname" : "chrome.AppWindowBounds.left"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "left=" : 
+        "name" : "left="
+        "qualifiedname" : "chrome.AppWindowBounds.left="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "left" : 
+            "name" : "left"
+            "qualifiedname" : "chrome.AppWindowBounds.left=#left"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "top" : 
+        "name" : "top"
+        "qualifiedname" : "chrome.AppWindowBounds.top"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "top=" : 
+        "name" : "top="
+        "qualifiedname" : "chrome.AppWindowBounds.top="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "top" : 
+            "name" : "top"
+            "qualifiedname" : "chrome.AppWindowBounds.top=#top"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "width" : 
+        "name" : "width"
+        "qualifiedname" : "chrome.AppWindowBounds.width"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "width=" : 
+        "name" : "width="
+        "qualifiedname" : "chrome.AppWindowBounds.width="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "width" : 
+            "name" : "width"
+            "qualifiedname" : "chrome.AppWindowBounds.width=#width"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "height" : 
+        "name" : "height"
+        "qualifiedname" : "chrome.AppWindowBounds.height"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "height=" : 
+        "name" : "height="
+        "qualifiedname" : "chrome.AppWindowBounds.height="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "height" : 
+            "name" : "height"
+            "qualifiedname" : "chrome.AppWindowBounds.height=#height"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+  "AppWindowCreateWindowOptions" : 
+    "name" : "AppWindowCreateWindowOptions"
+    "qualifiedname" : "chrome.AppWindowCreateWindowOptions"
+    "comment" : "<p>Types</p>"
+    "superclass" : "chrome.ChromeObject"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "AppWindowCreateWindowOptions" : 
+        "name" : "AppWindowCreateWindowOptions"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "id" : 
+            "name" : "id"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#id"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "defaultWidth" : 
+            "name" : "defaultWidth"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#defaultWidth"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "defaultHeight" : 
+            "name" : "defaultHeight"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#defaultHeight"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "defaultLeft" : 
+            "name" : "defaultLeft"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#defaultLeft"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "defaultTop" : 
+            "name" : "defaultTop"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#defaultTop"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "width" : 
+            "name" : "width"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#width"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "height" : 
+            "name" : "height"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#height"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "left" : 
+            "name" : "left"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#left"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "top" : 
+            "name" : "top"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#top"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "minWidth" : 
+            "name" : "minWidth"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#minWidth"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "minHeight" : 
+            "name" : "minHeight"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#minHeight"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "maxWidth" : 
+            "name" : "maxWidth"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#maxWidth"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "maxHeight" : 
+            "name" : "maxHeight"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#maxHeight"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "type" : 
+            "name" : "type"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#type"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "frame" : 
+            "name" : "frame"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#frame"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "bounds" : 
+            "name" : "bounds"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#bounds"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "chrome.AppWindowBounds"
+            "value" : "null"
+          "transparentBackground" : 
+            "name" : "transparentBackground"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#transparentBackground"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+          "hidden" : 
+            "name" : "hidden"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#hidden"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+          "singleton" : 
+            "name" : "singleton"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions#singleton"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+      "AppWindowCreateWindowOptions._proxy" : 
+        "name" : "AppWindowCreateWindowOptions._proxy"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions._proxy"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.AppWindowCreateWindowOptions._proxy#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "id" : 
+        "name" : "id"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.id"
+        "comment" : "<p>Id to identify the window. This will be used to remember the size and position of the window and restore that geometry when a window with the same id (and no explicit size or position) is later opened.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "id=" : 
+        "name" : "id="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.id="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "id" : 
+            "name" : "id"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.id=#id"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "defaultWidth" : 
+        "name" : "defaultWidth"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultWidth"
+        "comment" : "<p>Default width of the window. (Deprecated; regular bounds act like this now.)</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "defaultWidth=" : 
+        "name" : "defaultWidth="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultWidth="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "defaultWidth" : 
+            "name" : "defaultWidth"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultWidth=#defaultWidth"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "defaultHeight" : 
+        "name" : "defaultHeight"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultHeight"
+        "comment" : "<p>Default height of the window. (Deprecated; regular bounds act like this now.)</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "defaultHeight=" : 
+        "name" : "defaultHeight="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultHeight="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "defaultHeight" : 
+            "name" : "defaultHeight"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultHeight=#defaultHeight"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "defaultLeft" : 
+        "name" : "defaultLeft"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultLeft"
+        "comment" : "<p>Default X coordinate of the window. (Deprecated; regular bounds act like this now.)</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "defaultLeft=" : 
+        "name" : "defaultLeft="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultLeft="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "defaultLeft" : 
+            "name" : "defaultLeft"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultLeft=#defaultLeft"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "defaultTop" : 
+        "name" : "defaultTop"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultTop"
+        "comment" : "<p>Default Y coordinate of the window. (Deprecated; regular bounds act like this now.)</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "defaultTop=" : 
+        "name" : "defaultTop="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultTop="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "defaultTop" : 
+            "name" : "defaultTop"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.defaultTop=#defaultTop"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "width" : 
+        "name" : "width"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.width"
+        "comment" : "<p>Width of the window. (Deprecated; use 'bounds'.)</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "width=" : 
+        "name" : "width="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.width="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "width" : 
+            "name" : "width"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.width=#width"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "height" : 
+        "name" : "height"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.height"
+        "comment" : "<p>Height of the window. (Deprecated; use 'bounds'.)</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "height=" : 
+        "name" : "height="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.height="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "height" : 
+            "name" : "height"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.height=#height"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "left" : 
+        "name" : "left"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.left"
+        "comment" : "<p>X coordinate of the window. (Deprecated; use 'bounds'.)</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "left=" : 
+        "name" : "left="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.left="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "left" : 
+            "name" : "left"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.left=#left"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "top" : 
+        "name" : "top"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.top"
+        "comment" : "<p>Y coordinate of the window. (Deprecated; use 'bounds'.)</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "top=" : 
+        "name" : "top="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.top="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "top" : 
+            "name" : "top"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.top=#top"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "minWidth" : 
+        "name" : "minWidth"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.minWidth"
+        "comment" : "<p>Minimum width of the window.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "minWidth=" : 
+        "name" : "minWidth="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.minWidth="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "minWidth" : 
+            "name" : "minWidth"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.minWidth=#minWidth"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "minHeight" : 
+        "name" : "minHeight"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.minHeight"
+        "comment" : "<p>Minimum height of the window.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "minHeight=" : 
+        "name" : "minHeight="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.minHeight="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "minHeight" : 
+            "name" : "minHeight"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.minHeight=#minHeight"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "maxWidth" : 
+        "name" : "maxWidth"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.maxWidth"
+        "comment" : "<p>Maximum width of the window.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "maxWidth=" : 
+        "name" : "maxWidth="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.maxWidth="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "maxWidth" : 
+            "name" : "maxWidth"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.maxWidth=#maxWidth"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "maxHeight" : 
+        "name" : "maxHeight"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.maxHeight"
+        "comment" : "<p>Maximum height of the window.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "maxHeight=" : 
+        "name" : "maxHeight="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.maxHeight="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "maxHeight" : 
+            "name" : "maxHeight"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.maxHeight=#maxHeight"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "type" : 
+        "name" : "type"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.type"
+        "comment" : "<p>Window type:  'shell' - the default window type  'panel' - a panel, managed by the OS (Currently experimental, Ash only)</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "type=" : 
+        "name" : "type="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.type="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "type" : 
+            "name" : "type"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.type=#type"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "frame" : 
+        "name" : "frame"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.frame"
+        "comment" : "<p>Frame type: 'none' or 'chrome' (defaults to 'chrome').</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "frame=" : 
+        "name" : "frame="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.frame="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "frame" : 
+            "name" : "frame"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.frame=#frame"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "bounds" : 
+        "name" : "bounds"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.bounds"
+        "comment" : "<p>Size of the content in the window (excluding the titlebar). If specified in addition to any of the left/top/width/height parameters, this field takes precedence. If a frameBounds is specified, the frameBounds take precedence.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "chrome.AppWindowBounds"
+        "parameters" : 
+      "bounds=" : 
+        "name" : "bounds="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.bounds="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "bounds" : 
+            "name" : "bounds"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.bounds=#bounds"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "chrome.AppWindowBounds"
+            "value" : "null"
+      "transparentBackground" : 
+        "name" : "transparentBackground"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.transparentBackground"
+        "comment" : "<p>Enable window background transparency. Only supported in ash. Requires experimental API permission.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "transparentBackground=" : 
+        "name" : "transparentBackground="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.transparentBackground="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "transparentBackground" : 
+            "name" : "transparentBackground"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.transparentBackground=#transparentBackground"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+      "hidden" : 
+        "name" : "hidden"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.hidden"
+        "comment" : "<p>If true, the window will be created in a hidden state. Call show() on the window to show it once it has been created. Defaults to false.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "hidden=" : 
+        "name" : "hidden="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.hidden="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "hidden" : 
+            "name" : "hidden"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.hidden=#hidden"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+      "singleton" : 
+        "name" : "singleton"
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.singleton"
+        "comment" : "<p>By default if you specify an id for the window, the window will only be created if another window with the same id doesn't already exist. If a window with the same id already exists that window is activated instead. If you do want to create multiple windows with the same id, you can set this property to false.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "singleton=" : 
+        "name" : "singleton="
+        "qualifiedname" : "chrome.AppWindowCreateWindowOptions.singleton="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "singleton" : 
+            "name" : "singleton"
+            "qualifiedname" : "chrome.AppWindowCreateWindowOptions.singleton=#singleton"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+  "API_Chrome" : 
+    "name" : "API_Chrome"
+    "qualifiedname" : "chrome.API_Chrome"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_jsObject" : 
+        "name" : "_jsObject"
+        "qualifiedname" : "chrome.API_Chrome._jsObject"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.Object"
+      "app" : 
+        "name" : "app"
+        "qualifiedname" : "chrome.API_Chrome.app"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.API_ChromeApp"
+    "methods" : 
+      "API_Chrome" : 
+        "name" : "API_Chrome"
+        "qualifiedname" : "chrome.API_Chrome.API_Chrome"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+  "API_ChromeApp" : 
+    "name" : "API_ChromeApp"
+    "qualifiedname" : "chrome.API_ChromeApp"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_jsObject" : 
+        "name" : "_jsObject"
+        "qualifiedname" : "chrome.API_ChromeApp._jsObject"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.Object"
+      "window" : 
+        "name" : "window"
+        "qualifiedname" : "chrome.API_ChromeApp.window"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.API_app_window"
+      "runtime" : 
+        "name" : "runtime"
+        "qualifiedname" : "chrome.API_ChromeApp.runtime"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "chrome.API_app_runtime"
+    "methods" : 
+      "API_ChromeApp" : 
+        "name" : "API_ChromeApp"
+        "qualifiedname" : "chrome.API_ChromeApp.API_ChromeApp"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.API_ChromeApp.API_ChromeApp#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+  "Event" : 
+    "name" : "Event"
+    "qualifiedname" : "chrome.Event"
+    "comment" : "<p>The Event class.</p> <p>Chrome Event classes extend this interface.</p> <p>e.g.</p> <p> // chrome.app.runtime.onLaunched  class Event<em>ChromeAppRuntimeOnLaunched extends Event {    // constructor, passing the arity of the callback    Event</em>ChromeAppRuntimeOnLaunched(jsObject) :</p> <pre><code>super._(jsObject, 1); </code></pre> <p>   // methods, strengthening the Function parameter specificity    void addListener(void callback(LaunchData launchData))</p> <pre><code>   =&gt; super.addListener(callback); </code></pre> <p>   void removeListener(void callback(LaunchData launchData))</p> <pre><code>   =&gt; super.removeListener(callback); </code></pre> <p>   bool hasListener(void callback(LaunchData launchData))</p> <pre><code>   =&gt; super.hasListener(callback); </code></pre> <p> }</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_jsObject" : 
+        "name" : "_jsObject"
+        "qualifiedname" : "chrome.Event._jsObject"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.Object"
+      "_callbackArity" : 
+        "name" : "_callbackArity"
+        "qualifiedname" : "chrome.Event._callbackArity"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+      "Event._" : 
+        "name" : "Event._"
+        "qualifiedname" : "chrome.Event.Event._"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.Event.Event._#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+          "_callbackArity" : 
+            "name" : "_callbackArity"
+            "qualifiedname" : "chrome.Event.Event._#_callbackArity"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "addListener" : 
+        "name" : "addListener"
+        "qualifiedname" : "chrome.Event.addListener"
+        "comment" : "<p>Registers an event listener &lt;em>callback&lt;/em> to an event.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event.addListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "removeListener" : 
+        "name" : "removeListener"
+        "qualifiedname" : "chrome.Event.removeListener"
+        "comment" : "<p>Deregisters an event listener &lt;em>callback&lt;/em> from an event.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event.removeListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "hasListener" : 
+        "name" : "hasListener"
+        "qualifiedname" : "chrome.Event.hasListener"
+        "comment" : "<p>Returns True if &lt;em>callback&lt;/em> is registered to the event.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event.hasListener#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "hasListeners" : 
+        "name" : "hasListeners"
+        "qualifiedname" : "chrome.Event.hasListeners"
+        "comment" : "<p>Returns true if any event listeners are registered to the event.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "addRules" : 
+        "name" : "addRules"
+        "qualifiedname" : "chrome.Event.addRules"
+        "comment" : "<p>Registers rules to handle events.  <code>eventName</code> is the name of the event this function affects and <code>rules</code> are the rules to be registered. These do not replace previously registered rules. <code>callback</code> is called with registered rules.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "eventName" : 
+            "name" : "eventName"
+            "qualifiedname" : "chrome.Event.addRules#eventName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "rules" : 
+            "name" : "rules"
+            "qualifiedname" : "chrome.Event.addRules#rules"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event.addRules#callback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "getRules" : 
+        "name" : "getRules"
+        "qualifiedname" : "chrome.Event.getRules"
+        "comment" : "<p>Returns currently registered rules.  <code>eventName</code> is the name of the event this function affects and, if an array is passed as <code>ruleIdentifiers</code>, only rules with identifiers contained in this array are returned. <code>callback</code> is called with registered rules.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "eventName" : 
+            "name" : "eventName"
+            "qualifiedname" : "chrome.Event.getRules#eventName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "ruleIdentifiers" : 
+            "name" : "ruleIdentifiers"
+            "qualifiedname" : "chrome.Event.getRules#ruleIdentifiers"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event.getRules#callback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "removeRules" : 
+        "name" : "removeRules"
+        "qualifiedname" : "chrome.Event.removeRules"
+        "comment" : "<p>Unregisters currently registered rules.  <code>eventName</code> is the name of the event this function affects and, if an array is passed as <code>ruleIdentifiers</code>, only rules with identifiers contained in this array are unregistered. <code>callback</code> is called when the rules are unregistered.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "eventName" : 
+            "name" : "eventName"
+            "qualifiedname" : "chrome.Event.removeRules#eventName"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "ruleIdentifiers" : 
+            "name" : "ruleIdentifiers"
+            "qualifiedname" : "chrome.Event.removeRules#ruleIdentifiers"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "chrome.Event.removeRules#callback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+  "Rule" : 
+    "name" : "Rule"
+    "qualifiedname" : "chrome.Rule"
+    "comment" : "<p>Description of a declarative rule for handling events.</p>"
+    "superclass" : "chrome.ChromeObject"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "Rule" : 
+        "name" : "Rule"
+        "qualifiedname" : "chrome.Rule.Rule"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "id" : 
+            "name" : "id"
+            "qualifiedname" : "chrome.Rule.Rule#id"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "conditions" : 
+            "name" : "conditions"
+            "qualifiedname" : "chrome.Rule.Rule#conditions"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "actions" : 
+            "name" : "actions"
+            "qualifiedname" : "chrome.Rule.Rule#actions"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+          "priority" : 
+            "name" : "priority"
+            "qualifiedname" : "chrome.Rule.Rule#priority"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "Rule._proxy" : 
+        "name" : "Rule._proxy"
+        "qualifiedname" : "chrome.Rule.Rule._proxy"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.Rule.Rule._proxy#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "id" : 
+        "name" : "id"
+        "qualifiedname" : "chrome.Rule.id"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "id=" : 
+        "name" : "id="
+        "qualifiedname" : "chrome.Rule.id="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "id" : 
+            "name" : "id"
+            "qualifiedname" : "chrome.Rule.id=#id"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "conditions" : 
+        "name" : "conditions"
+        "qualifiedname" : "chrome.Rule.conditions"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "conditions=" : 
+        "name" : "conditions="
+        "qualifiedname" : "chrome.Rule.conditions="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "conditions" : 
+            "name" : "conditions"
+            "qualifiedname" : "chrome.Rule.conditions=#conditions"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "actions" : 
+        "name" : "actions"
+        "qualifiedname" : "chrome.Rule.actions"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "actions=" : 
+        "name" : "actions="
+        "qualifiedname" : "chrome.Rule.actions="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "actions" : 
+            "name" : "actions"
+            "qualifiedname" : "chrome.Rule.actions=#actions"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.List"
+            "value" : "null"
+      "priority" : 
+        "name" : "priority"
+        "qualifiedname" : "chrome.Rule.priority"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "priority=" : 
+        "name" : "priority="
+        "qualifiedname" : "chrome.Rule.priority="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "priority" : 
+            "name" : "priority"
+            "qualifiedname" : "chrome.Rule.priority=#priority"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+  "ChromeObject" : 
+    "name" : "ChromeObject"
+    "qualifiedname" : "chrome.ChromeObject"
+    "comment" : "<p>A set of utilities for use with the Chrome Extension APIs.</p> <p>Allows for easy access to required JS objects.</p> <p>A dart object, that is convertible to JS. Used for creating objects in dart, then passing them to JS.</p> <p>Objects that are passable to JS need to implement this interface.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_jsObject" : 
+        "name" : "_jsObject"
+        "qualifiedname" : "chrome.ChromeObject._jsObject"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.Object"
+    "methods" : 
+      "ChromeObject" : 
+        "name" : "ChromeObject"
+        "qualifiedname" : "chrome.ChromeObject.ChromeObject"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "ChromeObject._proxy" : 
+        "name" : "ChromeObject._proxy"
+        "qualifiedname" : "chrome.ChromeObject.ChromeObject._proxy"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_jsObject" : 
+            "name" : "_jsObject"
+            "qualifiedname" : "chrome.ChromeObject.ChromeObject._proxy#_jsObject"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"

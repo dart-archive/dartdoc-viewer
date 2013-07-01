@@ -1,0 +1,679 @@
+"name" : "dart.isolate"
+"comment" : ""
+"variables" : 
+  "stream" : 
+    "name" : "stream"
+    "qualifiedname" : "dart.isolate.stream"
+    "comment" : "<p>The initial <code>IsolateStream</code> available by default for this isolate. This <code>IsolateStream</code> is created automatically and it is commonly used to establish the first communication between isolates (see <code>streamSpawnFunction</code> and <code>streamSpawnUri</code>).</p>"
+    "final" : "true"
+    "static" : "false"
+    "type" : "dart.isolate.IsolateStream"
+"functions" : 
+  "streamSpawnFunction" : 
+    "name" : "streamSpawnFunction"
+    "qualifiedname" : "dart.isolate.streamSpawnFunction"
+    "comment" : "<p>Creates and spawns an isolate that shares the same code as the current isolate, but that starts from <code>topLevelFunction</code>. The <code>topLevelFunction</code> argument must be a static top-level function or a static method that takes no arguments.</p> <p>When any isolate starts (even the main script of the application), a default <code>IsolateStream</code> is created for it. This sink is available from the top-level getter <code>stream</code> defined in this library.</p> <p><code>spawnFunction</code> returns an <code>IsolateSink</code> feeding into the child isolate's default stream.</p> <p>The optional <code>unhandledExceptionCallback</code> argument is invoked whenever an exception inside the isolate is unhandled. It can be seen as a big <code>try/catch</code> around everything that is executed inside the isolate. The callback should return <code>true</code> when it was able to handled the exception.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.isolate.IsolateSink"
+    "parameters" : 
+      "topLevelFunction" : 
+        "name" : "topLevelFunction"
+        "qualifiedname" : "dart.isolate.streamSpawnFunction#topLevelFunction"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Function"
+        "value" : "null"
+      "unhandledExceptionCallback" : 
+        "name" : "unhandledExceptionCallback"
+        "qualifiedname" : "dart.isolate.streamSpawnFunction#unhandledExceptionCallback"
+        "optional" : "true"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Function"
+        "value" : "null"
+  "_isCloseToken" : 
+    "name" : "_isCloseToken"
+    "qualifiedname" : "dart.isolate._isCloseToken"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.bool"
+    "parameters" : 
+      "object" : 
+        "name" : "object"
+        "qualifiedname" : "dart.isolate._isCloseToken#object"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "spawnUri" : 
+    "name" : "spawnUri"
+    "qualifiedname" : "dart.isolate.spawnUri"
+    "comment" : "<p>Creates and spawns an isolate whose code is available at <code>uri</code>.  Like with <code>spawnFunction</code>, the child isolate will have a default <code>ReceivePort</code>, and a this function returns a <code>SendPort</code> derived from it.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.isolate.SendPort"
+    "parameters" : 
+      "uri" : 
+        "name" : "uri"
+        "qualifiedname" : "dart.isolate.spawnUri#uri"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.String"
+        "value" : "null"
+  "spawnFunction" : 
+    "name" : "spawnFunction"
+    "qualifiedname" : "dart.isolate.spawnFunction"
+    "comment" : "<p>Creates and spawns an isolate that shares the same code as the current isolate, but that starts from <code>topLevelFunction</code>. The <code>topLevelFunction</code> argument must be a static top-level function or a static method that takes no arguments. It is illegal to pass a function closure.</p> <p>When any isolate starts (even the main script of the application), a default <code>ReceivePort</code> is created for it. This port is available from the top-level getter <code>port</code> defined in this library.</p> <p><code>spawnFunction</code> returns a <code>SendPort</code> derived from the child isolate's default port.</p> <p>The optional <code>unhandledExceptionCallback</code> argument is invoked whenever an exception inside the isolate is unhandled. It can be seen as a big <code>try/catch</code> around everything that is executed inside the isolate. The callback should return <code>true</code> when it was able to handled the exception.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.isolate.SendPort"
+    "parameters" : 
+      "topLevelFunction" : 
+        "name" : "topLevelFunction"
+        "qualifiedname" : "dart.isolate.spawnFunction#topLevelFunction"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Function"
+        "value" : "null"
+      "unhandledExceptionCallback" : 
+        "name" : "unhandledExceptionCallback"
+        "qualifiedname" : "dart.isolate.spawnFunction#unhandledExceptionCallback"
+        "optional" : "true"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Function"
+        "value" : "null"
+  "port" : 
+    "name" : "port"
+    "qualifiedname" : "dart.isolate.port"
+    "comment" : "<p>The initial <code>ReceivePort</code> available by default for this isolate. This <code>ReceivePort</code> is created automatically and it is commonly used to establish the first communication between isolates (see <code>spawnFunction</code> and <code>spawnUri</code>).</p>"
+    "type" : "getter"
+    "static" : "false"
+    "return" : "dart.isolate.ReceivePort"
+    "parameters" : 
+"classes" : 
+  "IsolateSink" : 
+    "name" : "IsolateSink"
+    "qualifiedname" : "dart.isolate.IsolateSink"
+    "comment" : "<p><code>IsolateSink</code>s represent the feed for <code>IsolateStream</code>s. Any message written to <code>this</code> is delivered to its respective <code>IsolateStream</code>. <code>IsolateSink</code>s are created by <code>MessageBox</code>es.</p> <p><code>IsolateSink</code>s can be transmitted to other isolates.</p>"
+    "superclass" : "dart.async.EventSink"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "add" : 
+        "name" : "add"
+        "qualifiedname" : "dart.isolate.IsolateSink.add"
+        "comment" : "<p>Sends an asynchronous <code>message</code> to the linked <code>IsolateStream</code>. The message is copied to the receiving isolate.</p> <p>The content of <code>message</code> can be: primitive values (null, num, bool, double, String), instances of <code>IsolateSink</code>s, and lists and maps whose elements are any of these. List and maps are also allowed to be cyclic.</p> <p>In the special circumstances when two isolates share the same code and are running in the same process (e.g. isolates created via <code>spawnFunction</code>), it is also possible to send object instances (which would be copied in the process). This is currently only supported by the dartvm.  For now, the dart2js compiler only supports the restricted messages described above.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "dart.isolate.IsolateSink.add#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "addError" : 
+        "name" : "addError"
+        "qualifiedname" : "dart.isolate.IsolateSink.addError"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "errorEvent" : 
+            "name" : "errorEvent"
+            "qualifiedname" : "dart.isolate.IsolateSink.addError#errorEvent"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "close" : 
+        "name" : "close"
+        "qualifiedname" : "dart.isolate.IsolateSink.close"
+        "comment" : "<p>Closing multiple times is allowed.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "dart.isolate.IsolateSink.=="
+        "comment" : "<p>Tests whether <code>other</code> is an <code>IsolateSink</code> feeding into the same <code>IsolateStream</code> as this one.</p>"
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "dart.isolate.IsolateSink.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "IsolateStream" : 
+    "name" : "IsolateStream"
+    "qualifiedname" : "dart.isolate.IsolateStream"
+    "comment" : "<p><code>IsolateStream</code>s, together with <code>IsolateSink</code>s, are the only means of communication between isolates. Each IsolateStream has a corresponding <code>IsolateSink</code>. Any message written into that sink will be delivered to the stream and then dispatched to the stream's subscribers.</p>"
+    "superclass" : "dart.async.Stream"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_isClosed" : 
+        "name" : "_isClosed"
+        "qualifiedname" : "dart.isolate.IsolateStream._isClosed"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.bool"
+      "_port" : 
+        "name" : "_port"
+        "qualifiedname" : "dart.isolate.IsolateStream._port"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.isolate.ReceivePort"
+      "_controller" : 
+        "name" : "_controller"
+        "qualifiedname" : "dart.isolate.IsolateStream._controller"
+        "comment" : ""
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.async.StreamController"
+    "methods" : 
+      "IsolateStream._fromOriginalReceivePort" : 
+        "name" : "IsolateStream._fromOriginalReceivePort"
+        "qualifiedname" : "dart.isolate.IsolateStream.IsolateStream._fromOriginalReceivePort"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_port" : 
+            "name" : "_port"
+            "qualifiedname" : "dart.isolate.IsolateStream.IsolateStream._fromOriginalReceivePort#_port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.ReceivePort"
+            "value" : "null"
+      "IsolateStream._fromOriginalReceivePortOneShot" : 
+        "name" : "IsolateStream._fromOriginalReceivePortOneShot"
+        "qualifiedname" : "dart.isolate.IsolateStream.IsolateStream._fromOriginalReceivePortOneShot"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_port" : 
+            "name" : "_port"
+            "qualifiedname" : "dart.isolate.IsolateStream.IsolateStream._fromOriginalReceivePortOneShot#_port"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.ReceivePort"
+            "value" : "null"
+      "_add" : 
+        "name" : "_add"
+        "qualifiedname" : "dart.isolate.IsolateStream._add"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "dart.isolate.IsolateStream._add#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "close" : 
+        "name" : "close"
+        "qualifiedname" : "dart.isolate.IsolateStream.close"
+        "comment" : "<p>Close the stream from the receiving end.</p> <p>Closing an already closed port has no effect.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "listen" : 
+        "name" : "listen"
+        "qualifiedname" : "dart.isolate.IsolateStream.listen"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.StreamSubscription"
+        "parameters" : 
+          "onData" : 
+            "name" : "onData"
+            "qualifiedname" : "dart.isolate.IsolateStream.listen#onData"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+          "onError" : 
+            "name" : "onError"
+            "qualifiedname" : "dart.isolate.IsolateStream.listen#onError"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+          "onDone" : 
+            "name" : "onDone"
+            "qualifiedname" : "dart.isolate.IsolateStream.listen#onDone"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+          "cancelOnError" : 
+            "name" : "cancelOnError"
+            "qualifiedname" : "dart.isolate.IsolateStream.listen#cancelOnError"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.bool"
+            "value" : "null"
+  "MessageBox" : 
+    "name" : "MessageBox"
+    "qualifiedname" : "dart.isolate.MessageBox"
+    "comment" : "<p>A <code>MessageBox</code> creates an <code>IsolateStream</code>, <code>stream</code>, and an <code>IsolateSink</code>, <code>sink</code>.</p> <p>Any message that is written into the <code>sink</code> (independent of the isolate) is sent to the <code>stream</code> where its subscribers can react to the messages.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "stream" : 
+        "name" : "stream"
+        "qualifiedname" : "dart.isolate.MessageBox.stream"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.isolate.IsolateStream"
+      "sink" : 
+        "name" : "sink"
+        "qualifiedname" : "dart.isolate.MessageBox.sink"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.isolate.IsolateSink"
+    "methods" : 
+      "MessageBox.oneShot" : 
+        "name" : "MessageBox.oneShot"
+        "qualifiedname" : "dart.isolate.MessageBox.MessageBox.oneShot"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "MessageBox" : 
+        "name" : "MessageBox"
+        "qualifiedname" : "dart.isolate.MessageBox.MessageBox"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+  "IsolateUnhandledException" : 
+    "name" : "IsolateUnhandledException"
+    "qualifiedname" : "dart.isolate.IsolateUnhandledException"
+    "comment" : "<p>Wraps unhandled exceptions thrown during isolate execution. It is used to show both the error message and the stack trace for unhandled exceptions.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.core.Exception"
+    "variables" : 
+      "message" : 
+        "name" : "message"
+        "qualifiedname" : "dart.isolate.IsolateUnhandledException.message"
+        "comment" : "<p>Message being handled when exception occurred.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+      "source" : 
+        "name" : "source"
+        "qualifiedname" : "dart.isolate.IsolateUnhandledException.source"
+        "comment" : "<p>Wrapped exception.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dynamic"
+      "stackTrace" : 
+        "name" : "stackTrace"
+        "qualifiedname" : "dart.isolate.IsolateUnhandledException.stackTrace"
+        "comment" : "<p>Trace for the wrapped exception.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.Object"
+    "methods" : 
+      "IsolateUnhandledException" : 
+        "name" : "IsolateUnhandledException"
+        "qualifiedname" : "dart.isolate.IsolateUnhandledException.IsolateUnhandledException"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "dart.isolate.IsolateUnhandledException.IsolateUnhandledException#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "source" : 
+            "name" : "source"
+            "qualifiedname" : "dart.isolate.IsolateUnhandledException.IsolateUnhandledException#source"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "stackTrace" : 
+            "name" : "stackTrace"
+            "qualifiedname" : "dart.isolate.IsolateUnhandledException.IsolateUnhandledException#stackTrace"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "dart.isolate.IsolateUnhandledException.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+  "_Isolate" : 
+    "name" : "_Isolate"
+    "qualifiedname" : "dart.isolate._Isolate"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "port" : 
+        "name" : "port"
+        "qualifiedname" : "dart.isolate._Isolate.port"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "true"
+        "return" : "dart.isolate.ReceivePort"
+        "parameters" : 
+      "spawnFunction" : 
+        "name" : "spawnFunction"
+        "qualifiedname" : "dart.isolate._Isolate.spawnFunction"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "topLevelFunction" : 
+            "name" : "topLevelFunction"
+            "qualifiedname" : "dart.isolate._Isolate.spawnFunction#topLevelFunction"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+          "unhandledExceptionCallback" : 
+            "name" : "unhandledExceptionCallback"
+            "qualifiedname" : "dart.isolate._Isolate.spawnFunction#unhandledExceptionCallback"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "spawnUri" : 
+        "name" : "spawnUri"
+        "qualifiedname" : "dart.isolate._Isolate.spawnUri"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+          "uri" : 
+            "name" : "uri"
+            "qualifiedname" : "dart.isolate._Isolate.spawnUri#uri"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+  "SendPortSync" : 
+    "name" : "SendPortSync"
+    "qualifiedname" : "dart.isolate.SendPortSync"
+    "comment" : "<p><code>SendPortSync</code>s are created from <code>ReceivePortSync</code>s. Any message sent through a <code>SendPortSync</code> is delivered to its respective <code>ReceivePortSync</code>. There might be many <code>SendPortSync</code>s for the same <code>ReceivePortSync</code>.</p> <p><code>SendPortSync</code>s can be transmitted to other isolates.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "callSync" : 
+        "name" : "callSync"
+        "qualifiedname" : "dart.isolate.SendPortSync.callSync"
+        "comment" : "<p>Sends a synchronous message to this send port and returns the result.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "dart.isolate.SendPortSync.callSync#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "dart.isolate.SendPortSync.=="
+        "comment" : "<p>Tests whether <code>other</code> is a <code>SendPortSync</code> pointing to the same <code>ReceivePortSync</code> as this one.</p>"
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "dart.isolate.SendPortSync.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "dart.isolate.SendPortSync.hashCode"
+        "comment" : "<p>Returns an immutable hash code for this send port that is consistent with the == operator.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+  "ReceivePort" : 
+    "name" : "ReceivePort"
+    "qualifiedname" : "dart.isolate.ReceivePort"
+    "comment" : "<p><code>ReceivePort</code>s, together with <code>SendPort</code>s, are the only means of communication between isolates. <code>ReceivePort</code>s have a <code>:toSendPort:</code> method which returns a <code>SendPort</code>. Any message that is sent through this <code>SendPort</code> is delivered to the <code>ReceivePort</code> it has been created from. There, they are dispatched to the callback that has been registered on the receive port.</p> <p>A <code>ReceivePort</code> may have many <code>SendPort</code>s.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "ReceivePort" : 
+        "name" : "ReceivePort"
+        "qualifiedname" : "dart.isolate.ReceivePort.ReceivePort"
+        "comment" : "<p>Opens a long-lived port for receiving messages. The returned port must be explicitly closed through <code>ReceivePort.close</code>.</p>"
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dart.isolate.ReceivePort"
+        "parameters" : 
+      "receive" : 
+        "name" : "receive"
+        "qualifiedname" : "dart.isolate.ReceivePort.receive"
+        "comment" : "<p>Sets up a callback function for receiving pending or future messages on this receive port.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "callback" : 
+            "name" : "callback"
+            "qualifiedname" : "dart.isolate.ReceivePort.receive#callback"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "close" : 
+        "name" : "close"
+        "qualifiedname" : "dart.isolate.ReceivePort.close"
+        "comment" : "<p>Closes this receive port immediately. Pending messages will not be processed and it is impossible to re-open the port. Single-shot reply ports, such as those created through <code>SendPort.call</code>, are automatically closed when the reply has been received. Multiple invocations of <code>close</code> are allowed but ignored.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "toSendPort" : 
+        "name" : "toSendPort"
+        "qualifiedname" : "dart.isolate.ReceivePort.toSendPort"
+        "comment" : "<p>Creates a new send port that sends to this receive port. It is legal to create several <code>SendPort</code>s from the same <code>ReceivePort</code>.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.isolate.SendPort"
+        "parameters" : 
+  "SendPort" : 
+    "name" : "SendPort"
+    "qualifiedname" : "dart.isolate.SendPort"
+    "comment" : "<p><code>SendPort</code>s are created from <code>ReceivePort</code>s. Any message sent through a <code>SendPort</code> is delivered to its respective <code>ReceivePort</code>. There might be many <code>SendPort</code>s for the same <code>ReceivePort</code>.</p> <p><code>SendPort</code>s can be transmitted to other isolates.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "send" : 
+        "name" : "send"
+        "qualifiedname" : "dart.isolate.SendPort.send"
+        "comment" : "<p>Sends an asynchronous <code>message</code> to this send port. The message is copied to the receiving isolate. If specified, the <code>replyTo</code> port will be provided to the receiver to facilitate exchanging sequences of messages.</p> <p>The content of <code>message</code> can be: primitive values (null, num, bool, double, String), instances of <code>SendPort</code>, and lists and maps whose elements are any of these. List and maps are also allowed to be cyclic.</p> <p>In the special circumstances when two isolates share the same code and are running in the same process (e.g. isolates created via <code>spawnFunction</code>), it is also possible to send object instances (which would be copied in the process). This is currently only supported by the dartvm.  For now, the dart2js compiler only supports the restricted messages described above.</p> <p>Deprecation note: it is no longer valid to transmit a <code>ReceivePort</code> in a message. Previously they were translated to the corresponding send port before being transmitted.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "dart.isolate.SendPort.send#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "replyTo" : 
+            "name" : "replyTo"
+            "qualifiedname" : "dart.isolate.SendPort.send#replyTo"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.isolate.SendPort"
+            "value" : "null"
+      "call" : 
+        "name" : "call"
+        "qualifiedname" : "dart.isolate.SendPort.call"
+        "comment" : "<p>Sends a message to this send port and returns a <code>Future</code> of the reply. Basically, this internally creates a new receive port, sends a message to this send port with replyTo set to such receive port, and, when a reply is received, it closes the receive port and completes the returned future.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.async.Future"
+        "parameters" : 
+          "message" : 
+            "name" : "message"
+            "qualifiedname" : "dart.isolate.SendPort.call#message"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "dart.isolate.SendPort.=="
+        "comment" : "<p>Tests whether <code>other</code> is a <code>SendPort</code> pointing to the same <code>ReceivePort</code> as this one.</p>"
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "dart.isolate.SendPort.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "dart.isolate.SendPort.hashCode"
+        "comment" : "<p>Returns an immutable hash code for this send port that is consistent with the == operator.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+  "IsolateSpawnException" : 
+    "name" : "IsolateSpawnException"
+    "qualifiedname" : "dart.isolate.IsolateSpawnException"
+    "comment" : ""
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.core.Exception"
+    "variables" : 
+      "_s" : 
+        "name" : "_s"
+        "qualifiedname" : "dart.isolate.IsolateSpawnException._s"
+        "comment" : ""
+        "final" : "true"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+      "IsolateSpawnException" : 
+        "name" : "IsolateSpawnException"
+        "qualifiedname" : "dart.isolate.IsolateSpawnException.IsolateSpawnException"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_s" : 
+            "name" : "_s"
+            "qualifiedname" : "dart.isolate.IsolateSpawnException.IsolateSpawnException#_s"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "dart.isolate.IsolateSpawnException.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 

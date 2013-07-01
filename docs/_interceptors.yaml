@@ -1,0 +1,2715 @@
+"name" : "_interceptors"
+"comment" : ""
+"variables" : 
+  "interceptedNames" : 
+    "name" : "interceptedNames"
+    "qualifiedname" : "_interceptors.interceptedNames"
+    "comment" : "<p>If <code>JSInvocationMirror._invokeOn</code> is being used, this variable contains a JavaScript array with the names of methods that are intercepted.</p>"
+    "final" : "false"
+    "static" : "false"
+    "type" : "dynamic"
+  "dispatchPropertyName" : 
+    "name" : "dispatchPropertyName"
+    "qualifiedname" : "_interceptors.dispatchPropertyName"
+    "comment" : "<p>The name of the property used on native classes and <code>Object.prototype</code> to get the interceptor for a native class instance.  The value is initialized on isolate startup to ensure no two Dart programs in the same page use the same property.</p>"
+    "final" : "false"
+    "static" : "false"
+    "type" : "dynamic"
+"functions" : 
+  "initializeDispatchPropertyCSP" : 
+    "name" : "initializeDispatchPropertyCSP"
+    "qualifiedname" : "_interceptors.initializeDispatchPropertyCSP"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "void"
+    "parameters" : 
+      "setGetDispatchPropertyFn" : 
+        "name" : "setGetDispatchPropertyFn"
+        "qualifiedname" : "_interceptors.initializeDispatchPropertyCSP#setGetDispatchPropertyFn"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "getterFunctions" : 
+        "name" : "getterFunctions"
+        "qualifiedname" : "_interceptors.initializeDispatchPropertyCSP#getterFunctions"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "jsObjectInterceptor" : 
+        "name" : "jsObjectInterceptor"
+        "qualifiedname" : "_interceptors.initializeDispatchPropertyCSP#jsObjectInterceptor"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "initializeDispatchProperty" : 
+    "name" : "initializeDispatchProperty"
+    "qualifiedname" : "_interceptors.initializeDispatchProperty"
+    "comment" : "<p>Initializes the <code>getDispatchProperty</code> function and <code>dispatchPropertyName</code> variable.  Each isolate running in a web page needs a different <code>dispatchPropertyName</code>, so if a given dispatch property name is in use by some other program loaded into the web page, another name is chosen.</p> <p>The non-CSP version is called like this:</p> <pre><code>initializeDispatchProperty(     function(x){$.getDispatchProperty=x},     '_f4$Dxv7S',     $.Interceptor); </code></pre> <p>The <code>getDispatchProperty</code> function is generated from the chosen name of the property.</p> <p>The CSP version can't create functions via <code>new Function(...)</code>, so it is given a fixed set of functions to choose from.  If all the property names in the fixed set of functions are in use, it falls back on the definition of <code>getDispatchProperty</code> above.</p> <pre><code>initializeDispatchPropertyCSP(     function(x){$.getDispatchProperty=x},     [function(a){return a._f4$Dxv7S},      function(a){return a._Q2zpL9iY}],     $.Interceptor); </code></pre>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "void"
+    "parameters" : 
+      "setGetDispatchPropertyFn" : 
+        "name" : "setGetDispatchPropertyFn"
+        "qualifiedname" : "_interceptors.initializeDispatchProperty#setGetDispatchPropertyFn"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "rootProperty" : 
+        "name" : "rootProperty"
+        "qualifiedname" : "_interceptors.initializeDispatchProperty#rootProperty"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "jsObjectInterceptor" : 
+        "name" : "jsObjectInterceptor"
+        "qualifiedname" : "_interceptors.initializeDispatchProperty#jsObjectInterceptor"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "getNativeInterceptor" : 
+    "name" : "getNativeInterceptor"
+    "qualifiedname" : "_interceptors.getNativeInterceptor"
+    "comment" : "<p>Returns the interceptor for a native class instance. Used by <code>getInterceptor</code>.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "object" : 
+        "name" : "object"
+        "qualifiedname" : "_interceptors.getNativeInterceptor#object"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "dispatchRecordIndexability" : 
+    "name" : "dispatchRecordIndexability"
+    "qualifiedname" : "_interceptors.dispatchRecordIndexability"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "record" : 
+        "name" : "record"
+        "qualifiedname" : "_interceptors.dispatchRecordIndexability#record"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "dispatchRecordExtension" : 
+    "name" : "dispatchRecordExtension"
+    "qualifiedname" : "_interceptors.dispatchRecordExtension"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "record" : 
+        "name" : "record"
+        "qualifiedname" : "_interceptors.dispatchRecordExtension#record"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "dispatchRecordProto" : 
+    "name" : "dispatchRecordProto"
+    "qualifiedname" : "_interceptors.dispatchRecordProto"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "record" : 
+        "name" : "record"
+        "qualifiedname" : "_interceptors.dispatchRecordProto#record"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "dispatchRecordInterceptor" : 
+    "name" : "dispatchRecordInterceptor"
+    "qualifiedname" : "_interceptors.dispatchRecordInterceptor"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "record" : 
+        "name" : "record"
+        "qualifiedname" : "_interceptors.dispatchRecordInterceptor#record"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "makeDispatchRecord" : 
+    "name" : "makeDispatchRecord"
+    "qualifiedname" : "_interceptors.makeDispatchRecord"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "interceptor" : 
+        "name" : "interceptor"
+        "qualifiedname" : "_interceptors.makeDispatchRecord#interceptor"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "proto" : 
+        "name" : "proto"
+        "qualifiedname" : "_interceptors.makeDispatchRecord#proto"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "extension" : 
+        "name" : "extension"
+        "qualifiedname" : "_interceptors.makeDispatchRecord#extension"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "indexability" : 
+        "name" : "indexability"
+        "qualifiedname" : "_interceptors.makeDispatchRecord#indexability"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "setDispatchProperty" : 
+    "name" : "setDispatchProperty"
+    "qualifiedname" : "_interceptors.setDispatchProperty"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "object" : 
+        "name" : "object"
+        "qualifiedname" : "_interceptors.setDispatchProperty#object"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+      "value" : 
+        "name" : "value"
+        "qualifiedname" : "_interceptors.setDispatchProperty#value"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "getDispatchProperty" : 
+    "name" : "getDispatchProperty"
+    "qualifiedname" : "_interceptors.getDispatchProperty"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "object" : 
+        "name" : "object"
+        "qualifiedname" : "_interceptors.getDispatchProperty#object"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "getInterceptor" : 
+    "name" : "getInterceptor"
+    "qualifiedname" : "_interceptors.getInterceptor"
+    "comment" : "<p>Get the interceptor for <code>object</code>. Called by the compiler when it needs to emit a call to an intercepted method, that is a method that is defined in an interceptor class.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "object" : 
+        "name" : "object"
+        "qualifiedname" : "_interceptors.getInterceptor#object"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dynamic"
+        "value" : "null"
+  "_symbolMapToStringMap" : 
+    "name" : "_symbolMapToStringMap"
+    "qualifiedname" : "_interceptors._symbolMapToStringMap"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dynamic"
+    "parameters" : 
+      "map" : 
+        "name" : "map"
+        "qualifiedname" : "_interceptors._symbolMapToStringMap#map"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Map"
+        "value" : "null"
+  "_symbolToString" : 
+    "name" : "_symbolToString"
+    "qualifiedname" : "_interceptors._symbolToString"
+    "comment" : ""
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.String"
+    "parameters" : 
+      "symbol" : 
+        "name" : "symbol"
+        "qualifiedname" : "_interceptors._symbolToString#symbol"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.Symbol"
+        "value" : "null"
+"classes" : 
+  "_CodeUnits" : 
+    "name" : "_CodeUnits"
+    "qualifiedname" : "_interceptors._CodeUnits"
+    "comment" : "<p>An <code>Iterable</code> of the UTF-16 code units of a <code>String</code> in index order.</p>"
+    "superclass" : "dart._collection.dev.UnmodifiableListBase"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "_string" : 
+        "name" : "_string"
+        "qualifiedname" : "_interceptors._CodeUnits._string"
+        "comment" : "<p>The string that this is the code units of.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.String"
+    "methods" : 
+      "_CodeUnits" : 
+        "name" : "_CodeUnits"
+        "qualifiedname" : "_interceptors._CodeUnits._CodeUnits"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "_string" : 
+            "name" : "_string"
+            "qualifiedname" : "_interceptors._CodeUnits._CodeUnits#_string"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "length" : 
+        "name" : "length"
+        "qualifiedname" : "_interceptors._CodeUnits.length"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "[]" : 
+        "name" : "[]"
+        "qualifiedname" : "_interceptors._CodeUnits.[]"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "i" : 
+            "name" : "i"
+            "qualifiedname" : "_interceptors._CodeUnits.[]#i"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+  "JSString" : 
+    "name" : "JSString"
+    "qualifiedname" : "_interceptors.JSString"
+    "comment" : "<p>The interceptor class for <code>String</code>. The compiler recognizes this class as an interceptor, and changes references to <code>:this:</code> to actually use the receiver of the method, which is generated as an extra argument added to each member.</p>"
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "_interceptors.JSIndexable"
+      - "dart.core.String"
+    "variables" : 
+    "methods" : 
+      "JSString" : 
+        "name" : "JSString"
+        "qualifiedname" : "_interceptors.JSString.JSString"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "codeUnitAt" : 
+        "name" : "codeUnitAt"
+        "qualifiedname" : "_interceptors.JSString.codeUnitAt"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSString.codeUnitAt#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "allMatches" : 
+        "name" : "allMatches"
+        "qualifiedname" : "_interceptors.JSString.allMatches"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "str" : 
+            "name" : "str"
+            "qualifiedname" : "_interceptors.JSString.allMatches#str"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "matchAsPrefix" : 
+        "name" : "matchAsPrefix"
+        "qualifiedname" : "_interceptors.JSString.matchAsPrefix"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Match"
+        "parameters" : 
+          "string" : 
+            "name" : "string"
+            "qualifiedname" : "_interceptors.JSString.matchAsPrefix#string"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSString.matchAsPrefix#start"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "true"
+            "type" : "dart.core.int"
+            "value" : "0"
+      "+" : 
+        "name" : "+"
+        "qualifiedname" : "_interceptors.JSString.+"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSString.+#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "concat" : 
+        "name" : "concat"
+        "qualifiedname" : "_interceptors.JSString.concat"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSString.concat#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "endsWith" : 
+        "name" : "endsWith"
+        "qualifiedname" : "_interceptors.JSString.endsWith"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSString.endsWith#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "replaceAll" : 
+        "name" : "replaceAll"
+        "qualifiedname" : "_interceptors.JSString.replaceAll"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "from" : 
+            "name" : "from"
+            "qualifiedname" : "_interceptors.JSString.replaceAll#from"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Pattern"
+            "value" : "null"
+          "to" : 
+            "name" : "to"
+            "qualifiedname" : "_interceptors.JSString.replaceAll#to"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "replaceAllMapped" : 
+        "name" : "replaceAllMapped"
+        "qualifiedname" : "_interceptors.JSString.replaceAllMapped"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "from" : 
+            "name" : "from"
+            "qualifiedname" : "_interceptors.JSString.replaceAllMapped#from"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Pattern"
+            "value" : "null"
+          "convert" : 
+            "name" : "convert"
+            "qualifiedname" : "_interceptors.JSString.replaceAllMapped#convert"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "splitMapJoin" : 
+        "name" : "splitMapJoin"
+        "qualifiedname" : "_interceptors.JSString.splitMapJoin"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "from" : 
+            "name" : "from"
+            "qualifiedname" : "_interceptors.JSString.splitMapJoin#from"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Pattern"
+            "value" : "null"
+          "onMatch" : 
+            "name" : "onMatch"
+            "qualifiedname" : "_interceptors.JSString.splitMapJoin#onMatch"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+          "onNonMatch" : 
+            "name" : "onNonMatch"
+            "qualifiedname" : "_interceptors.JSString.splitMapJoin#onNonMatch"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "replaceFirst" : 
+        "name" : "replaceFirst"
+        "qualifiedname" : "_interceptors.JSString.replaceFirst"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "from" : 
+            "name" : "from"
+            "qualifiedname" : "_interceptors.JSString.replaceFirst#from"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Pattern"
+            "value" : "null"
+          "to" : 
+            "name" : "to"
+            "qualifiedname" : "_interceptors.JSString.replaceFirst#to"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "split" : 
+        "name" : "split"
+        "qualifiedname" : "_interceptors.JSString.split"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+          "pattern" : 
+            "name" : "pattern"
+            "qualifiedname" : "_interceptors.JSString.split#pattern"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Pattern"
+            "value" : "null"
+      "startsWith" : 
+        "name" : "startsWith"
+        "qualifiedname" : "_interceptors.JSString.startsWith"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "pattern" : 
+            "name" : "pattern"
+            "qualifiedname" : "_interceptors.JSString.startsWith#pattern"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Pattern"
+            "value" : "null"
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSString.startsWith#index"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "true"
+            "type" : "dart.core.int"
+            "value" : "0"
+      "substring" : 
+        "name" : "substring"
+        "qualifiedname" : "_interceptors.JSString.substring"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "startIndex" : 
+            "name" : "startIndex"
+            "qualifiedname" : "_interceptors.JSString.substring#startIndex"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "endIndex" : 
+            "name" : "endIndex"
+            "qualifiedname" : "_interceptors.JSString.substring#endIndex"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "toLowerCase" : 
+        "name" : "toLowerCase"
+        "qualifiedname" : "_interceptors.JSString.toLowerCase"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "toUpperCase" : 
+        "name" : "toUpperCase"
+        "qualifiedname" : "_interceptors.JSString.toUpperCase"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "_isWhitespace" : 
+        "name" : "_isWhitespace"
+        "qualifiedname" : "_interceptors.JSString._isWhitespace"
+        "comment" : ""
+        "type" : "method"
+        "static" : "true"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "codeUnit" : 
+            "name" : "codeUnit"
+            "qualifiedname" : "_interceptors.JSString._isWhitespace#codeUnit"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "trim" : 
+        "name" : "trim"
+        "qualifiedname" : "_interceptors.JSString.trim"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "codeUnits" : 
+        "name" : "codeUnits"
+        "qualifiedname" : "_interceptors.JSString.codeUnits"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+      "runes" : 
+        "name" : "runes"
+        "qualifiedname" : "_interceptors.JSString.runes"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Runes"
+        "parameters" : 
+      "indexOf" : 
+        "name" : "indexOf"
+        "qualifiedname" : "_interceptors.JSString.indexOf"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "pattern" : 
+            "name" : "pattern"
+            "qualifiedname" : "_interceptors.JSString.indexOf#pattern"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Pattern"
+            "value" : "null"
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSString.indexOf#start"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "true"
+            "type" : "dart.core.int"
+            "value" : "0"
+      "lastIndexOf" : 
+        "name" : "lastIndexOf"
+        "qualifiedname" : "_interceptors.JSString.lastIndexOf"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "pattern" : 
+            "name" : "pattern"
+            "qualifiedname" : "_interceptors.JSString.lastIndexOf#pattern"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Pattern"
+            "value" : "null"
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSString.lastIndexOf#start"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "contains" : 
+        "name" : "contains"
+        "qualifiedname" : "_interceptors.JSString.contains"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSString.contains#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Pattern"
+            "value" : "null"
+          "startIndex" : 
+            "name" : "startIndex"
+            "qualifiedname" : "_interceptors.JSString.contains#startIndex"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "true"
+            "type" : "dart.core.int"
+            "value" : "0"
+      "isEmpty" : 
+        "name" : "isEmpty"
+        "qualifiedname" : "_interceptors.JSString.isEmpty"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isNotEmpty" : 
+        "name" : "isNotEmpty"
+        "qualifiedname" : "_interceptors.JSString.isNotEmpty"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "compareTo" : 
+        "name" : "compareTo"
+        "qualifiedname" : "_interceptors.JSString.compareTo"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSString.compareTo#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "_interceptors.JSString.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_interceptors.JSString.hashCode"
+        "comment" : "<p>This is the <a href=\"http://en.wikipedia.org/wiki/Jenkins_hash_function\">Jenkins hash function</a> but using masking to keep values in SMI range.</p>"
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "runtimeType" : 
+        "name" : "runtimeType"
+        "qualifiedname" : "_interceptors.JSString.runtimeType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Type"
+        "parameters" : 
+      "length" : 
+        "name" : "length"
+        "qualifiedname" : "_interceptors.JSString.length"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "[]" : 
+        "name" : "[]"
+        "qualifiedname" : "_interceptors.JSString.[]"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSString.[]#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+  "JSDouble" : 
+    "name" : "JSDouble"
+    "qualifiedname" : "_interceptors.JSDouble"
+    "comment" : ""
+    "superclass" : "_interceptors.JSNumber"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.core.double"
+    "variables" : 
+    "methods" : 
+      "JSDouble" : 
+        "name" : "JSDouble"
+        "qualifiedname" : "_interceptors.JSDouble.JSDouble"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "runtimeType" : 
+        "name" : "runtimeType"
+        "qualifiedname" : "_interceptors.JSDouble.runtimeType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Type"
+        "parameters" : 
+  "JSInt" : 
+    "name" : "JSInt"
+    "qualifiedname" : "_interceptors.JSInt"
+    "comment" : "<p>The interceptor class for <code>int</code>s.</p> <p>This class implements double since in JavaScript all numbers are doubles, so while we want to treat <code>2.0</code> as an integer for some operations, its interceptor should answer <code>true</code> to <code>is double</code>.</p>"
+    "superclass" : "_interceptors.JSNumber"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.core.double"
+      - "dart.core.int"
+    "variables" : 
+    "methods" : 
+      "JSInt" : 
+        "name" : "JSInt"
+        "qualifiedname" : "_interceptors.JSInt.JSInt"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "isEven" : 
+        "name" : "isEven"
+        "qualifiedname" : "_interceptors.JSInt.isEven"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isOdd" : 
+        "name" : "isOdd"
+        "qualifiedname" : "_interceptors.JSInt.isOdd"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "runtimeType" : 
+        "name" : "runtimeType"
+        "qualifiedname" : "_interceptors.JSInt.runtimeType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Type"
+        "parameters" : 
+      "~" : 
+        "name" : "~"
+        "qualifiedname" : "_interceptors.JSInt.~"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+  "JSNumber" : 
+    "name" : "JSNumber"
+    "qualifiedname" : "_interceptors.JSNumber"
+    "comment" : "<p>The super interceptor class for <code>JSInt</code> and <code>JSDouble</code>. The compiler recognizes this class as an interceptor, and changes references to <code>:this:</code> to actually use the receiver of the method, which is generated as an extra argument added to each member.</p> <p>Note that none of the methods here delegate to a method defined on JSInt or JSDouble.  This is exploited in <code>tryComputeConstantInterceptor</code>.</p>"
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.core.num"
+    "variables" : 
+    "methods" : 
+      "JSNumber" : 
+        "name" : "JSNumber"
+        "qualifiedname" : "_interceptors.JSNumber.JSNumber"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "compareTo" : 
+        "name" : "compareTo"
+        "qualifiedname" : "_interceptors.JSNumber.compareTo"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "b" : 
+            "name" : "b"
+            "qualifiedname" : "_interceptors.JSNumber.compareTo#b"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "isNegative" : 
+        "name" : "isNegative"
+        "qualifiedname" : "_interceptors.JSNumber.isNegative"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isNaN" : 
+        "name" : "isNaN"
+        "qualifiedname" : "_interceptors.JSNumber.isNaN"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isInfinite" : 
+        "name" : "isInfinite"
+        "qualifiedname" : "_interceptors.JSNumber.isInfinite"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "remainder" : 
+        "name" : "remainder"
+        "qualifiedname" : "_interceptors.JSNumber.remainder"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "b" : 
+            "name" : "b"
+            "qualifiedname" : "_interceptors.JSNumber.remainder#b"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "abs" : 
+        "name" : "abs"
+        "qualifiedname" : "_interceptors.JSNumber.abs"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+      "toInt" : 
+        "name" : "toInt"
+        "qualifiedname" : "_interceptors.JSNumber.toInt"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "truncate" : 
+        "name" : "truncate"
+        "qualifiedname" : "_interceptors.JSNumber.truncate"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "ceil" : 
+        "name" : "ceil"
+        "qualifiedname" : "_interceptors.JSNumber.ceil"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "floor" : 
+        "name" : "floor"
+        "qualifiedname" : "_interceptors.JSNumber.floor"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "round" : 
+        "name" : "round"
+        "qualifiedname" : "_interceptors.JSNumber.round"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "ceilToDouble" : 
+        "name" : "ceilToDouble"
+        "qualifiedname" : "_interceptors.JSNumber.ceilToDouble"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.double"
+        "parameters" : 
+      "floorToDouble" : 
+        "name" : "floorToDouble"
+        "qualifiedname" : "_interceptors.JSNumber.floorToDouble"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.double"
+        "parameters" : 
+      "roundToDouble" : 
+        "name" : "roundToDouble"
+        "qualifiedname" : "_interceptors.JSNumber.roundToDouble"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.double"
+        "parameters" : 
+      "truncateToDouble" : 
+        "name" : "truncateToDouble"
+        "qualifiedname" : "_interceptors.JSNumber.truncateToDouble"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.double"
+        "parameters" : 
+      "clamp" : 
+        "name" : "clamp"
+        "qualifiedname" : "_interceptors.JSNumber.clamp"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "lowerLimit" : 
+            "name" : "lowerLimit"
+            "qualifiedname" : "_interceptors.JSNumber.clamp#lowerLimit"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "upperLimit" : 
+            "name" : "upperLimit"
+            "qualifiedname" : "_interceptors.JSNumber.clamp#upperLimit"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "toDouble" : 
+        "name" : "toDouble"
+        "qualifiedname" : "_interceptors.JSNumber.toDouble"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "toStringAsFixed" : 
+        "name" : "toStringAsFixed"
+        "qualifiedname" : "_interceptors.JSNumber.toStringAsFixed"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "fractionDigits" : 
+            "name" : "fractionDigits"
+            "qualifiedname" : "_interceptors.JSNumber.toStringAsFixed#fractionDigits"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "toStringAsExponential" : 
+        "name" : "toStringAsExponential"
+        "qualifiedname" : "_interceptors.JSNumber.toStringAsExponential"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "fractionDigits" : 
+            "name" : "fractionDigits"
+            "qualifiedname" : "_interceptors.JSNumber.toStringAsExponential#fractionDigits"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "toStringAsPrecision" : 
+        "name" : "toStringAsPrecision"
+        "qualifiedname" : "_interceptors.JSNumber.toStringAsPrecision"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "precision" : 
+            "name" : "precision"
+            "qualifiedname" : "_interceptors.JSNumber.toStringAsPrecision#precision"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "toRadixString" : 
+        "name" : "toRadixString"
+        "qualifiedname" : "_interceptors.JSNumber.toRadixString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "radix" : 
+            "name" : "radix"
+            "qualifiedname" : "_interceptors.JSNumber.toRadixString#radix"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "_interceptors.JSNumber.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_interceptors.JSNumber.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "unary-" : 
+        "name" : "unary-"
+        "qualifiedname" : "_interceptors.JSNumber.unary-"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+      "+" : 
+        "name" : "+"
+        "qualifiedname" : "_interceptors.JSNumber.+"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.+#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "-" : 
+        "name" : "-"
+        "qualifiedname" : "_interceptors.JSNumber.-"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.-#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "/" : 
+        "name" : "/"
+        "qualifiedname" : "_interceptors.JSNumber./"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber./#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "*" : 
+        "name" : "*"
+        "qualifiedname" : "_interceptors.JSNumber.*"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.*#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "%" : 
+        "name" : "%"
+        "qualifiedname" : "_interceptors.JSNumber.%"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.%#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "~/" : 
+        "name" : "~/"
+        "qualifiedname" : "_interceptors.JSNumber.~/"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.~/#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "<<" : 
+        "name" : "<<"
+        "qualifiedname" : "_interceptors.JSNumber.<<"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.<<#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      ">>" : 
+        "name" : ">>"
+        "qualifiedname" : "_interceptors.JSNumber.>>"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.>>#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "&" : 
+        "name" : "&"
+        "qualifiedname" : "_interceptors.JSNumber.&"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.&#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "|" : 
+        "name" : "|"
+        "qualifiedname" : "_interceptors.JSNumber.|"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.|#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "^" : 
+        "name" : "^"
+        "qualifiedname" : "_interceptors.JSNumber.^"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.num"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.^#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "<" : 
+        "name" : "<"
+        "qualifiedname" : "_interceptors.JSNumber.<"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.<#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      ">" : 
+        "name" : ">"
+        "qualifiedname" : "_interceptors.JSNumber.>"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.>#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      "<=" : 
+        "name" : "<="
+        "qualifiedname" : "_interceptors.JSNumber.<="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.<=#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+      ">=" : 
+        "name" : ">="
+        "qualifiedname" : "_interceptors.JSNumber.>="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNumber.>=#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.num"
+            "value" : "null"
+  "JSExtendableArray" : 
+    "name" : "JSExtendableArray"
+    "qualifiedname" : "_interceptors.JSExtendableArray"
+    "comment" : ""
+    "superclass" : "_interceptors.JSMutableArray"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "JSFixedArray" : 
+    "name" : "JSFixedArray"
+    "qualifiedname" : "_interceptors.JSFixedArray"
+    "comment" : ""
+    "superclass" : "_interceptors.JSMutableArray"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+  "JSMutableArray" : 
+    "name" : "JSMutableArray"
+    "qualifiedname" : "_interceptors.JSMutableArray"
+    "comment" : "<p>Dummy subclasses that allow the backend to track more precise information about arrays through their type.</p>"
+    "superclass" : "_interceptors.JSArray"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "_interceptors.JSMutableIndexable"
+    "variables" : 
+    "methods" : 
+  "JSArray" : 
+    "name" : "JSArray"
+    "qualifiedname" : "_interceptors.JSArray"
+    "comment" : "<p>The interceptor class for <code>List</code>. The compiler recognizes this class as an interceptor, and changes references to <code>:this:</code> to actually use the receiver of the method, which is generated as an extra argument added to each member.</p>"
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "_interceptors.JSIndexable"
+      - "dart.core.List"
+    "variables" : 
+    "methods" : 
+      "JSArray" : 
+        "name" : "JSArray"
+        "qualifiedname" : "_interceptors.JSArray.JSArray"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "checkMutable" : 
+        "name" : "checkMutable"
+        "qualifiedname" : "_interceptors.JSArray.checkMutable"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "reason" : 
+            "name" : "reason"
+            "qualifiedname" : "_interceptors.JSArray.checkMutable#reason"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "checkGrowable" : 
+        "name" : "checkGrowable"
+        "qualifiedname" : "_interceptors.JSArray.checkGrowable"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "reason" : 
+            "name" : "reason"
+            "qualifiedname" : "_interceptors.JSArray.checkGrowable#reason"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "add" : 
+        "name" : "add"
+        "qualifiedname" : "_interceptors.JSArray.add"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "value" : 
+            "name" : "value"
+            "qualifiedname" : "_interceptors.JSArray.add#value"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_interceptors.JSArray.E"
+            "value" : "null"
+      "removeAt" : 
+        "name" : "removeAt"
+        "qualifiedname" : "_interceptors.JSArray.removeAt"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "_interceptors.JSArray.E"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSArray.removeAt#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "insert" : 
+        "name" : "insert"
+        "qualifiedname" : "_interceptors.JSArray.insert"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSArray.insert#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "value" : 
+            "name" : "value"
+            "qualifiedname" : "_interceptors.JSArray.insert#value"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_interceptors.JSArray.E"
+            "value" : "null"
+      "insertAll" : 
+        "name" : "insertAll"
+        "qualifiedname" : "_interceptors.JSArray.insertAll"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSArray.insertAll#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "iterable" : 
+            "name" : "iterable"
+            "qualifiedname" : "_interceptors.JSArray.insertAll#iterable"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Iterable"
+            "value" : "null"
+      "setAll" : 
+        "name" : "setAll"
+        "qualifiedname" : "_interceptors.JSArray.setAll"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSArray.setAll#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "iterable" : 
+            "name" : "iterable"
+            "qualifiedname" : "_interceptors.JSArray.setAll#iterable"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Iterable"
+            "value" : "null"
+      "removeLast" : 
+        "name" : "removeLast"
+        "qualifiedname" : "_interceptors.JSArray.removeLast"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "_interceptors.JSArray.E"
+        "parameters" : 
+      "remove" : 
+        "name" : "remove"
+        "qualifiedname" : "_interceptors.JSArray.remove"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "element" : 
+            "name" : "element"
+            "qualifiedname" : "_interceptors.JSArray.remove#element"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "removeWhere" : 
+        "name" : "removeWhere"
+        "qualifiedname" : "_interceptors.JSArray.removeWhere"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "test" : 
+            "name" : "test"
+            "qualifiedname" : "_interceptors.JSArray.removeWhere#test"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "retainWhere" : 
+        "name" : "retainWhere"
+        "qualifiedname" : "_interceptors.JSArray.retainWhere"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "test" : 
+            "name" : "test"
+            "qualifiedname" : "_interceptors.JSArray.retainWhere#test"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "where" : 
+        "name" : "where"
+        "qualifiedname" : "_interceptors.JSArray.where"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "f" : 
+            "name" : "f"
+            "qualifiedname" : "_interceptors.JSArray.where#f"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "expand" : 
+        "name" : "expand"
+        "qualifiedname" : "_interceptors.JSArray.expand"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "f" : 
+            "name" : "f"
+            "qualifiedname" : "_interceptors.JSArray.expand#f"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "addAll" : 
+        "name" : "addAll"
+        "qualifiedname" : "_interceptors.JSArray.addAll"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "collection" : 
+            "name" : "collection"
+            "qualifiedname" : "_interceptors.JSArray.addAll#collection"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Iterable"
+            "value" : "null"
+      "clear" : 
+        "name" : "clear"
+        "qualifiedname" : "_interceptors.JSArray.clear"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "forEach" : 
+        "name" : "forEach"
+        "qualifiedname" : "_interceptors.JSArray.forEach"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "f" : 
+            "name" : "f"
+            "qualifiedname" : "_interceptors.JSArray.forEach#f"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "map" : 
+        "name" : "map"
+        "qualifiedname" : "_interceptors.JSArray.map"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "f" : 
+            "name" : "f"
+            "qualifiedname" : "_interceptors.JSArray.map#f"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "join" : 
+        "name" : "join"
+        "qualifiedname" : "_interceptors.JSArray.join"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "separator" : 
+            "name" : "separator"
+            "qualifiedname" : "_interceptors.JSArray.join#separator"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "true"
+            "type" : "dart.core.String"
+            "value" : "\"\""
+      "take" : 
+        "name" : "take"
+        "qualifiedname" : "_interceptors.JSArray.take"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "n" : 
+            "name" : "n"
+            "qualifiedname" : "_interceptors.JSArray.take#n"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "takeWhile" : 
+        "name" : "takeWhile"
+        "qualifiedname" : "_interceptors.JSArray.takeWhile"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "test" : 
+            "name" : "test"
+            "qualifiedname" : "_interceptors.JSArray.takeWhile#test"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "skip" : 
+        "name" : "skip"
+        "qualifiedname" : "_interceptors.JSArray.skip"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "n" : 
+            "name" : "n"
+            "qualifiedname" : "_interceptors.JSArray.skip#n"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "skipWhile" : 
+        "name" : "skipWhile"
+        "qualifiedname" : "_interceptors.JSArray.skipWhile"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "test" : 
+            "name" : "test"
+            "qualifiedname" : "_interceptors.JSArray.skipWhile#test"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "reduce" : 
+        "name" : "reduce"
+        "qualifiedname" : "_interceptors.JSArray.reduce"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "_interceptors.JSArray.E"
+        "parameters" : 
+          "combine" : 
+            "name" : "combine"
+            "qualifiedname" : "_interceptors.JSArray.reduce#combine"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "fold" : 
+        "name" : "fold"
+        "qualifiedname" : "_interceptors.JSArray.fold"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "initialValue" : 
+            "name" : "initialValue"
+            "qualifiedname" : "_interceptors.JSArray.fold#initialValue"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+          "combine" : 
+            "name" : "combine"
+            "qualifiedname" : "_interceptors.JSArray.fold#combine"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "firstWhere" : 
+        "name" : "firstWhere"
+        "qualifiedname" : "_interceptors.JSArray.firstWhere"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "test" : 
+            "name" : "test"
+            "qualifiedname" : "_interceptors.JSArray.firstWhere#test"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+          "orElse" : 
+            "name" : "orElse"
+            "qualifiedname" : "_interceptors.JSArray.firstWhere#orElse"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "lastWhere" : 
+        "name" : "lastWhere"
+        "qualifiedname" : "_interceptors.JSArray.lastWhere"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "test" : 
+            "name" : "test"
+            "qualifiedname" : "_interceptors.JSArray.lastWhere#test"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+          "orElse" : 
+            "name" : "orElse"
+            "qualifiedname" : "_interceptors.JSArray.lastWhere#orElse"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "singleWhere" : 
+        "name" : "singleWhere"
+        "qualifiedname" : "_interceptors.JSArray.singleWhere"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "_interceptors.JSArray.E"
+        "parameters" : 
+          "test" : 
+            "name" : "test"
+            "qualifiedname" : "_interceptors.JSArray.singleWhere#test"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "elementAt" : 
+        "name" : "elementAt"
+        "qualifiedname" : "_interceptors.JSArray.elementAt"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "_interceptors.JSArray.E"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSArray.elementAt#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "sublist" : 
+        "name" : "sublist"
+        "qualifiedname" : "_interceptors.JSArray.sublist"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSArray.sublist#start"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "end" : 
+            "name" : "end"
+            "qualifiedname" : "_interceptors.JSArray.sublist#end"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "getRange" : 
+        "name" : "getRange"
+        "qualifiedname" : "_interceptors.JSArray.getRange"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSArray.getRange#start"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "end" : 
+            "name" : "end"
+            "qualifiedname" : "_interceptors.JSArray.getRange#end"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "first" : 
+        "name" : "first"
+        "qualifiedname" : "_interceptors.JSArray.first"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "_interceptors.JSArray.E"
+        "parameters" : 
+      "last" : 
+        "name" : "last"
+        "qualifiedname" : "_interceptors.JSArray.last"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "_interceptors.JSArray.E"
+        "parameters" : 
+      "single" : 
+        "name" : "single"
+        "qualifiedname" : "_interceptors.JSArray.single"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "_interceptors.JSArray.E"
+        "parameters" : 
+      "removeRange" : 
+        "name" : "removeRange"
+        "qualifiedname" : "_interceptors.JSArray.removeRange"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSArray.removeRange#start"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "end" : 
+            "name" : "end"
+            "qualifiedname" : "_interceptors.JSArray.removeRange#end"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "setRange" : 
+        "name" : "setRange"
+        "qualifiedname" : "_interceptors.JSArray.setRange"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSArray.setRange#start"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "end" : 
+            "name" : "end"
+            "qualifiedname" : "_interceptors.JSArray.setRange#end"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "iterable" : 
+            "name" : "iterable"
+            "qualifiedname" : "_interceptors.JSArray.setRange#iterable"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Iterable"
+            "value" : "null"
+          "skipCount" : 
+            "name" : "skipCount"
+            "qualifiedname" : "_interceptors.JSArray.setRange#skipCount"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "true"
+            "type" : "dart.core.int"
+            "value" : "0"
+      "fillRange" : 
+        "name" : "fillRange"
+        "qualifiedname" : "_interceptors.JSArray.fillRange"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSArray.fillRange#start"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "end" : 
+            "name" : "end"
+            "qualifiedname" : "_interceptors.JSArray.fillRange#end"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "fillValue" : 
+            "name" : "fillValue"
+            "qualifiedname" : "_interceptors.JSArray.fillRange#fillValue"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_interceptors.JSArray.E"
+            "value" : "null"
+      "replaceRange" : 
+        "name" : "replaceRange"
+        "qualifiedname" : "_interceptors.JSArray.replaceRange"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSArray.replaceRange#start"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "end" : 
+            "name" : "end"
+            "qualifiedname" : "_interceptors.JSArray.replaceRange#end"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "iterable" : 
+            "name" : "iterable"
+            "qualifiedname" : "_interceptors.JSArray.replaceRange#iterable"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Iterable"
+            "value" : "null"
+      "any" : 
+        "name" : "any"
+        "qualifiedname" : "_interceptors.JSArray.any"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "f" : 
+            "name" : "f"
+            "qualifiedname" : "_interceptors.JSArray.any#f"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "every" : 
+        "name" : "every"
+        "qualifiedname" : "_interceptors.JSArray.every"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "f" : 
+            "name" : "f"
+            "qualifiedname" : "_interceptors.JSArray.every#f"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "reversed" : 
+        "name" : "reversed"
+        "qualifiedname" : "_interceptors.JSArray.reversed"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Iterable"
+        "parameters" : 
+      "sort" : 
+        "name" : "sort"
+        "qualifiedname" : "_interceptors.JSArray.sort"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "compare" : 
+            "name" : "compare"
+            "qualifiedname" : "_interceptors.JSArray.sort#compare"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Function"
+            "value" : "null"
+      "indexOf" : 
+        "name" : "indexOf"
+        "qualifiedname" : "_interceptors.JSArray.indexOf"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "element" : 
+            "name" : "element"
+            "qualifiedname" : "_interceptors.JSArray.indexOf#element"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSArray.indexOf#start"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "true"
+            "type" : "dart.core.int"
+            "value" : "0"
+      "lastIndexOf" : 
+        "name" : "lastIndexOf"
+        "qualifiedname" : "_interceptors.JSArray.lastIndexOf"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+          "element" : 
+            "name" : "element"
+            "qualifiedname" : "_interceptors.JSArray.lastIndexOf#element"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+          "start" : 
+            "name" : "start"
+            "qualifiedname" : "_interceptors.JSArray.lastIndexOf#start"
+            "optional" : "true"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "contains" : 
+        "name" : "contains"
+        "qualifiedname" : "_interceptors.JSArray.contains"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSArray.contains#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Object"
+            "value" : "null"
+      "isEmpty" : 
+        "name" : "isEmpty"
+        "qualifiedname" : "_interceptors.JSArray.isEmpty"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "isNotEmpty" : 
+        "name" : "isNotEmpty"
+        "qualifiedname" : "_interceptors.JSArray.isNotEmpty"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "_interceptors.JSArray.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "toList" : 
+        "name" : "toList"
+        "qualifiedname" : "_interceptors.JSArray.toList"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.List"
+        "parameters" : 
+          "growable" : 
+            "name" : "growable"
+            "qualifiedname" : "_interceptors.JSArray.toList#growable"
+            "optional" : "true"
+            "named" : "true"
+            "default" : "true"
+            "type" : "dart.core.bool"
+            "value" : "true"
+      "toSet" : 
+        "name" : "toSet"
+        "qualifiedname" : "_interceptors.JSArray.toSet"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Set"
+        "parameters" : 
+      "iterator" : 
+        "name" : "iterator"
+        "qualifiedname" : "_interceptors.JSArray.iterator"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Iterator"
+        "parameters" : 
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_interceptors.JSArray.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "length" : 
+        "name" : "length"
+        "qualifiedname" : "_interceptors.JSArray.length"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "length=" : 
+        "name" : "length="
+        "qualifiedname" : "_interceptors.JSArray.length="
+        "comment" : ""
+        "type" : "setter"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "newLength" : 
+            "name" : "newLength"
+            "qualifiedname" : "_interceptors.JSArray.length=#newLength"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "[]" : 
+        "name" : "[]"
+        "qualifiedname" : "_interceptors.JSArray.[]"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "_interceptors.JSArray.E"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSArray.[]#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+      "[]=" : 
+        "name" : "[]="
+        "qualifiedname" : "_interceptors.JSArray.[]="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSArray.[]=#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "value" : 
+            "name" : "value"
+            "qualifiedname" : "_interceptors.JSArray.[]=#value"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "_interceptors.JSArray.E"
+            "value" : "null"
+      "asMap" : 
+        "name" : "asMap"
+        "qualifiedname" : "_interceptors.JSArray.asMap"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.Map"
+        "parameters" : 
+  "JSMutableIndexable" : 
+    "name" : "JSMutableIndexable"
+    "qualifiedname" : "_interceptors.JSMutableIndexable"
+    "comment" : "<p>The supertype for JSMutableArray and JavaScriptIndexingBehavior. Used by the backend to have a type mask that contains the objects we can use the JS []= operator on.</p>"
+    "superclass" : "_interceptors.JSIndexable"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "[]=" : 
+        "name" : "[]="
+        "qualifiedname" : "_interceptors.JSMutableIndexable.[]="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSMutableIndexable.[]=#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "value" : 
+            "name" : "value"
+            "qualifiedname" : "_interceptors.JSMutableIndexable.[]=#value"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+  "JSIndexable" : 
+    "name" : "JSIndexable"
+    "qualifiedname" : "_interceptors.JSIndexable"
+    "comment" : "<p>The supertype for JSString and JSArray. Used by the backend as to have a type mask that contains the objects that we can use the native JS [] operator and length on.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "length" : 
+        "name" : "length"
+        "qualifiedname" : "_interceptors.JSIndexable.length"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "[]" : 
+        "name" : "[]"
+        "qualifiedname" : "_interceptors.JSIndexable.[]"
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "index" : 
+            "name" : "index"
+            "qualifiedname" : "_interceptors.JSIndexable.[]#index"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+  "JSUnknown" : 
+    "name" : "JSUnknown"
+    "qualifiedname" : "_interceptors.JSUnknown"
+    "comment" : ""
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "JSUnknown" : 
+        "name" : "JSUnknown"
+        "qualifiedname" : "_interceptors.JSUnknown.JSUnknown"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "_interceptors.JSUnknown.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_interceptors.JSUnknown.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "runtimeType" : 
+        "name" : "runtimeType"
+        "qualifiedname" : "_interceptors.JSUnknown.runtimeType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Type"
+        "parameters" : 
+  "JSNull" : 
+    "name" : "JSNull"
+    "qualifiedname" : "_interceptors.JSNull"
+    "comment" : "<p>The interceptor class for <code>Null</code>.</p> <p>This class defines implementations for <em>all</em> methods on <code>Object</code> since the the methods on Object assume the receiver is non-null.  This means that JSNull will always be in the interceptor set for methods defined on Object.</p>"
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "_js_helper.Null"
+    "variables" : 
+    "methods" : 
+      "JSNull" : 
+        "name" : "JSNull"
+        "qualifiedname" : "_interceptors.JSNull.JSNull"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "_interceptors.JSNull.=="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.JSNull.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "_interceptors.JSNull.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_interceptors.JSNull.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "runtimeType" : 
+        "name" : "runtimeType"
+        "qualifiedname" : "_interceptors.JSNull.runtimeType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Type"
+        "parameters" : 
+  "JSBool" : 
+    "name" : "JSBool"
+    "qualifiedname" : "_interceptors.JSBool"
+    "comment" : "<p>The interceptor class for <code>bool</code>.</p>"
+    "superclass" : "_interceptors.Interceptor"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+      - "dart.core.bool"
+    "variables" : 
+    "methods" : 
+      "JSBool" : 
+        "name" : "JSBool"
+        "qualifiedname" : "_interceptors.JSBool.JSBool"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "_interceptors.JSBool.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_interceptors.JSBool.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "runtimeType" : 
+        "name" : "runtimeType"
+        "qualifiedname" : "_interceptors.JSBool.runtimeType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Type"
+        "parameters" : 
+  "Interceptor" : 
+    "name" : "Interceptor"
+    "qualifiedname" : "_interceptors.Interceptor"
+    "comment" : "<p>The base interceptor class.</p> <p>The code <code>r.foo(a)</code> is compiled to <code>getInterceptor(r).foo$1(r, a)</code>.  The value returned by <code>getInterceptor</code> holds the methods separately from the state of the instance.  The compiler converts the methods on an interceptor to take the Dart <code>this</code> argument as an explicit <code>receiver</code> argument.  The JavaScript <code>this</code> parameter is bound to the interceptor.</p> <p>In order to have uniform call sites, if a method is defined on an interceptor, methods of that name on plain unintercepted classes also use the interceptor calling convention.  The plain classes are <em>self-interceptors</em>, and for them, <code>getInterceptor(r)</code> returns <code>r</code>.  Methods on plain unintercepted classes have a redundant <code>receiver</code> argument and should ignore it in favour of <code>this</code>.</p> <p>In the case of mixins, a method may be placed on both an intercepted class and an unintercepted class.  In this case, the method must use the <code>receiver</code> parameter.</p> <p>There are various optimizations of the general call pattern.</p> <p>When the interceptor can be statically determined, it can be used directly:</p> <pre><code>CONSTANT_INTERCEPTOR.foo$1(r, a) </code></pre> <p>If there are only a few classes, <code>getInterceptor</code> can be specialized with a more efficient dispatch:</p> <pre><code>getInterceptor$specialized(r).foo$1(r, a) </code></pre> <p>If it can be determined that the receiver is an unintercepted class, it can be called directly:</p> <pre><code>r.foo$1(r, a) </code></pre> <p>If, further, it is known that the call site cannot call a foo that is mixed-in to a native class, then it is known that the explicit receiver is ignored, and space-saving dummy value can be passed instead:</p> <pre><code>r.foo$1(0, a) </code></pre> <p>This class defines implementations of <em>all</em> methods on <code>Object</code> so no interceptor inherits an implementation from <code>Object</code>.  This enables the implementations on Object to ignore the explicit receiver argument, which allows dummy receiver optimization.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "true"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+    "methods" : 
+      "Interceptor" : 
+        "name" : "Interceptor"
+        "qualifiedname" : "_interceptors.Interceptor.Interceptor"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "==" : 
+        "name" : "=="
+        "qualifiedname" : "_interceptors.Interceptor.=="
+        "comment" : ""
+        "type" : "operator"
+        "static" : "false"
+        "return" : "dart.core.bool"
+        "parameters" : 
+          "other" : 
+            "name" : "other"
+            "qualifiedname" : "_interceptors.Interceptor.==#other"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dynamic"
+            "value" : "null"
+      "hashCode" : 
+        "name" : "hashCode"
+        "qualifiedname" : "_interceptors.Interceptor.hashCode"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.int"
+        "parameters" : 
+      "toString" : 
+        "name" : "toString"
+        "qualifiedname" : "_interceptors.Interceptor.toString"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "noSuchMethod" : 
+        "name" : "noSuchMethod"
+        "qualifiedname" : "_interceptors.Interceptor.noSuchMethod"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "invocation" : 
+            "name" : "invocation"
+            "qualifiedname" : "_interceptors.Interceptor.noSuchMethod#invocation"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.Invocation"
+            "value" : "null"
+      "runtimeType" : 
+        "name" : "runtimeType"
+        "qualifiedname" : "_interceptors.Interceptor.runtimeType"
+        "comment" : ""
+        "type" : "getter"
+        "static" : "false"
+        "return" : "dart.core.Type"
+        "parameters" : 

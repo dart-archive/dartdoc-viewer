@@ -1,0 +1,240 @@
+"name" : "args.src.usage"
+"comment" : ""
+"variables" : 
+"functions" : 
+  "padRight" : 
+    "name" : "padRight"
+    "qualifiedname" : "args.src.usage.padRight"
+    "comment" : "<p>Pads <code>source</code> to <code>length</code> by adding spaces at the end.</p>"
+    "type" : "method"
+    "static" : "false"
+    "return" : "dart.core.String"
+    "parameters" : 
+      "source" : 
+        "name" : "source"
+        "qualifiedname" : "args.src.usage.padRight#source"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.String"
+        "value" : "null"
+      "length" : 
+        "name" : "length"
+        "qualifiedname" : "args.src.usage.padRight#length"
+        "optional" : "false"
+        "named" : "false"
+        "default" : "false"
+        "type" : "dart.core.int"
+        "value" : "null"
+"classes" : 
+  "Usage" : 
+    "name" : "Usage"
+    "qualifiedname" : "args.src.usage.Usage"
+    "comment" : "<p>Takes an <code>ArgParser</code> and generates a string of usage (i.e. help) text for itsdefined options. Internally, it works like a tabular printer. The output isdivided into three horizontal columns, like so:</p><pre><code>-h, --help  Prints the usage information|  |        |                                 |</code></pre><p>It builds the usage text up one column at a time and handles padding withspaces and wrapping to the next line to keep the cells correctly lined up.</p>"
+    "superclass" : "dart.core.Object"
+    "abstract" : "false"
+    "typedef" : "false"
+    "implements" : 
+    "variables" : 
+      "NUM_COLUMNS" : 
+        "name" : "NUM_COLUMNS"
+        "qualifiedname" : "args.src.usage.Usage.NUM_COLUMNS"
+        "comment" : ""
+        "final" : "false"
+        "static" : "true"
+        "type" : "dynamic"
+      "args" : 
+        "name" : "args"
+        "qualifiedname" : "args.src.usage.Usage.args"
+        "comment" : "<p>The parser this is generating usage for.</p>"
+        "final" : "true"
+        "static" : "false"
+        "type" : "args.ArgParser"
+      "buffer" : 
+        "name" : "buffer"
+        "qualifiedname" : "args.src.usage.Usage.buffer"
+        "comment" : "<p>The working buffer for the generated usage text.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.StringBuffer"
+      "currentColumn" : 
+        "name" : "currentColumn"
+        "qualifiedname" : "args.src.usage.Usage.currentColumn"
+        "comment" : "<p>The column that the \"cursor\" is currently on. If the next call to<code>write()</code> is not for this column, it will correctly handle advancing tothe next column (and possibly the next row).</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "columnWidths" : 
+        "name" : "columnWidths"
+        "qualifiedname" : "args.src.usage.Usage.columnWidths"
+        "comment" : "<p>The width in characters of each column.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.List"
+      "numHelpLines" : 
+        "name" : "numHelpLines"
+        "qualifiedname" : "args.src.usage.Usage.numHelpLines"
+        "comment" : "<p>The number of sequential lines of text that have been written to the lastcolumn (which shows help info). We track this so that help text that spansmultiple lines can be padded with a blank line after it for separation.Meanwhile, sequential options with single-line help will be compacted nextto each other.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+      "newlinesNeeded" : 
+        "name" : "newlinesNeeded"
+        "qualifiedname" : "args.src.usage.Usage.newlinesNeeded"
+        "comment" : "<p>How many newlines need to be rendered before the next bit of text can bewritten. We do this lazily so that the last bit of usage doesn't havedangling newlines. We only write newlines right <em>before</em> we write somereal content.</p>"
+        "final" : "false"
+        "static" : "false"
+        "type" : "dart.core.int"
+    "methods" : 
+      "Usage" : 
+        "name" : "Usage"
+        "qualifiedname" : "args.src.usage.Usage.Usage"
+        "comment" : ""
+        "type" : "constructor"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "args" : 
+            "name" : "args"
+            "qualifiedname" : "args.src.usage.Usage.Usage#args"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "args.ArgParser"
+            "value" : "null"
+      "generate" : 
+        "name" : "generate"
+        "qualifiedname" : "args.src.usage.Usage.generate"
+        "comment" : "<p>Generates a string displaying usage information for the defined options.This is basically the help text shown on the command line.</p>"
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+      "getAbbreviation" : 
+        "name" : "getAbbreviation"
+        "qualifiedname" : "args.src.usage.Usage.getAbbreviation"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "option" : 
+            "name" : "option"
+            "qualifiedname" : "args.src.usage.Usage.getAbbreviation#option"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "args.Option"
+            "value" : "null"
+      "getLongOption" : 
+        "name" : "getLongOption"
+        "qualifiedname" : "args.src.usage.Usage.getLongOption"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "option" : 
+            "name" : "option"
+            "qualifiedname" : "args.src.usage.Usage.getLongOption#option"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "args.Option"
+            "value" : "null"
+      "getAllowedTitle" : 
+        "name" : "getAllowedTitle"
+        "qualifiedname" : "args.src.usage.Usage.getAllowedTitle"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dart.core.String"
+        "parameters" : 
+          "allowed" : 
+            "name" : "allowed"
+            "qualifiedname" : "args.src.usage.Usage.getAllowedTitle#allowed"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "calculateColumnWidths" : 
+        "name" : "calculateColumnWidths"
+        "qualifiedname" : "args.src.usage.Usage.calculateColumnWidths"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "void"
+        "parameters" : 
+      "newline" : 
+        "name" : "newline"
+        "qualifiedname" : "args.src.usage.Usage.newline"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+      "write" : 
+        "name" : "write"
+        "qualifiedname" : "args.src.usage.Usage.write"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "column" : 
+            "name" : "column"
+            "qualifiedname" : "args.src.usage.Usage.write#column"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "text" : 
+            "name" : "text"
+            "qualifiedname" : "args.src.usage.Usage.write#text"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "writeLine" : 
+        "name" : "writeLine"
+        "qualifiedname" : "args.src.usage.Usage.writeLine"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "column" : 
+            "name" : "column"
+            "qualifiedname" : "args.src.usage.Usage.writeLine#column"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.int"
+            "value" : "null"
+          "text" : 
+            "name" : "text"
+            "qualifiedname" : "args.src.usage.Usage.writeLine#text"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "dart.core.String"
+            "value" : "null"
+      "buildAllowedList" : 
+        "name" : "buildAllowedList"
+        "qualifiedname" : "args.src.usage.Usage.buildAllowedList"
+        "comment" : ""
+        "type" : "method"
+        "static" : "false"
+        "return" : "dynamic"
+        "parameters" : 
+          "option" : 
+            "name" : "option"
+            "qualifiedname" : "args.src.usage.Usage.buildAllowedList#option"
+            "optional" : "false"
+            "named" : "false"
+            "default" : "false"
+            "type" : "args.Option"
+            "value" : "null"
