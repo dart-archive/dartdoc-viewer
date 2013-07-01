@@ -12,8 +12,6 @@ import 'package:unittest/html_enhanced_config.dart';
 import 'package:unittest/unittest.dart';
 import 'package:yaml/yaml.dart';
 
-import '../web/app.dart' as app;
-
 // Since YAML is sensitive to whitespace, these are declared in the top-level
 // for readability and to avoid possible parsing errors.
 String empty = '';
@@ -271,7 +269,7 @@ void main() {
   test('dependencies_test', () {
     var currentMap = loadYaml(dependencies);
     var library = new Library(currentMap);
-    app.buildHierarchy(library, library);
+    buildHierarchy(library, library);
     
     var variables, classes, functions;
     library.content.forEach((category) {

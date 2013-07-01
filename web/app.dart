@@ -118,17 +118,6 @@ void _updateInheritance(Element postDescriptor) {
   postDescriptor.children.add(paragraph);
 }
 
-/// Appends a new link or a string to an existing [Element].                                                                                                                                               
-void _addType(LinkableType type, Element destination) {
-  if (type.location == null) {
-    destination.appendText(type.simpleType);
-  } else {
-    var link = new Element.html("<a>${type.simpleType}</a>")
-      ..onClick.listen((_) => handleLink(type));
-    destination.append(link);
-  }
-}
-
 /// Generates an HTML [Element] given a [LinkableType].                                                                                                                                                    
 Element _getType(LinkableType type) {
   var link = new Element.html("<a>${type.simpleType}</a>")
