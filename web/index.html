@@ -8,7 +8,7 @@
 
 <script type="application/dart" src="app.dart"></script>
 <script src="packages/browser/dart.js"></script>
-  
+
 <nav class="breadcrumbs">
   <template instantiate="if currentPage != null && currentPage.path != null">
     <template iterate="item in getBreadcrumbs(currentPage.path)">
@@ -17,7 +17,7 @@
     </template>
   </template>
 </nav>
-  
+
 <main>
 
   <!-- TODO(tmandel): Use a better tag than div for descriptors -->
@@ -25,12 +25,17 @@
   <h1>{{title}}</h1>
   <div class="descriptor"></div>
   <section class="description"></section>
-  
+
   <template instantiate="if currentPage != null">
-    <template iterate="category in currentPage.content">
-      <dartdoc-category category="{{category}}" class="category">
-      </dartdoc-category>
+    <template iterate="item in currentPage.content">
+      <template if="item is Item">
+        <dartdoc-item item="{{item}}"></dartdoc-item>
+      </template>
+      <template if="item is Category">
+        <dartdoc-category category="{{item}}" class="category">
+        </dartdoc-category>
+      </template>
     </template>
   </template>
-  
+
 </main>
