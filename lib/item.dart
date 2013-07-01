@@ -27,7 +27,7 @@ class Container {
 class CompositeContainer extends Container {
   List<Container> content = [];
   
-  String get pathName => name.replaceAll('.', '_');
+  String get pathName => name.replaceAll('.', '%');
 }
 
 // Wraps a comment in span element to make it a single HTML Element.
@@ -99,7 +99,7 @@ class Home extends Item {
     pageIndex[''] = this;
     libraries.forEach((library) {
       var libraryName = library.replaceAll('.yaml', '');
-      libraryNames[libraryName] = libraryName.replaceAll('.', '_');
+      libraryNames[libraryName] = libraryName.replaceAll('.', '%');
       content.add(new PlaceHolder(libraryName, library));
     });
   }

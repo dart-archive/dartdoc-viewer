@@ -11,5 +11,5 @@ Map<String, Item> pageIndex = toObservable({});
 
 // Since library names can contain '.' characters, they must be mapped to
 // a new form for linking purposes. This maps original library names to names
-// with underscores replacing the '.' characters for consistency.
+// with '%' characters replacing the '.' characters for consistency.
 Map<String, String> libraryNames = {};

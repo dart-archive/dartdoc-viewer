@@ -85,12 +85,11 @@ changePage(Item page) {
  * path to a particular [Item] object.
  */
 List<Item> getBreadcrumbs(String path) {
-  var breadcrumbs = [];
   // Matches alphanumeric variable/method names ending with a '/'.  
-  var regex = new RegExp(r'(_?([a-zA-Z0-9_]+)=?)/');
+  var regex = new RegExp(r'(_?([a-zA-Z0-9_%]+)=?)/');
   var matches = regex.allMatches(path);
   var currentPath = '';
-  breadcrumbs.add(homePage);
+  var breadcrumbs = [homePage];
   matches.forEach((match) {
     currentPath = '$currentPath${match.group(0)}';
     breadcrumbs.add(pageIndex[currentPath]);
