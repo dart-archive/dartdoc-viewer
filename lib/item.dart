@@ -6,6 +6,10 @@ import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 
+// TODO(tmandel): Load all libraries after the page has loaded instead of
+// when they are needed to reduce latency.
+
+// TODO(tmandel): Don't hardcode in a path if it can be avoided.
 const docsPath = '../../docs/';
 
 /**
@@ -63,29 +67,38 @@ abstract class Item extends CompositeContainer {
   String get decoratedName => this.name;
 }
 
+/**
+ * An [Item] with no content. This is used to facilitate lazy loading.
+ */
 class PlaceHolder extends Item {
   
+  /// The path to the file with the real data relative to [docsPath].
   String location;
   
   PlaceHolder(String name, this.location) {
     this.name = name;
   }
   
-  dynamic loadLibrary() {
-    // TODO(tmandel): Shouldn't be a relative path.
+  /// Loads the library's data and returns a [Future] for external handling.
+  Future loadLibrary() {
+    // TODO(tmandel): Shouldn't be a relative path if possible.
     return retrieveFile('$docsPath$location');
   }
 }
 
+/**
+ * An [Item] containing all of the [Library] and [PlaceHolder] objects.
+ */
 class Home extends Item {
-  // TODO(tmandel): Better way to do this?
-  Home(String allLibraries) {
+  
+  /// The constructor parses the [allLibraries] input and constructs
+  /// [PlaceHolder] objects to display before loading libraries.
+  Home(List libraries) {
     this.name = 'Dart API Reference';
     this.path = '';
     pageIndex[''] = this;
-    var libraries = allLibraries.split('\n');
     libraries.forEach((library) {
-      var libraryName = library.substring(0, library.length - 5);
+      var libraryName = library.replaceAll('.yaml', '');
       libraryNames[libraryName] = libraryName.replaceAll('.', '_');
       content.add(new PlaceHolder(libraryName, library));
     });
@@ -256,10 +269,16 @@ class Variable extends Container {
  */
 class LinkableType {
 
+  /// The resolved qualified name of the type this [LinkableType] represents.
   String type;
-
+  
+  /**
+   * The constructor resolves the library name by finding the correct library
+   * from [libraryNames] and changing [type] to match.
+   */
   LinkableType(String type) {
     var current = '';
+    this.type = type;
     List elements = type.split('.');
     elements.forEach((element) {
       current = current == '' ? element : '$current.$element';
@@ -267,15 +286,12 @@ class LinkableType {
         this.type = type.replaceFirst(current, libraryNames[current]);
       }
     });
-    if (this.type == null) {
-      this.type = type;
-    }
   }
 
   /// The simple name for this type.                                                                                                                                                                         
   String get simpleType => this.type.split('.').last;
 
-  /// The [Item] describing this type.                                                                                                                                                                       
+  /// The [Item] describing this type if it has been loaded, otherwise null.                                                                                                                                                                       
   Item get location {
     var result;
     var member = '${type.replaceAll('.', '/')}/';

@@ -4,7 +4,7 @@
  * 
  * The Yaml file outputted by the docgen tool will be read in to 
  * generate [Page] and [Category] and [CompositeContainer]. 
- * Pages, Categories and CategoryItems are used to format and layout the page. 
+ * Pages, Categories and CategoryItems are used to format and layout the page.
  */
 // TODO(janicejl): Add a link to the dart docgen landing page in future. 
 library dartdoc_viewer;
@@ -46,7 +46,7 @@ changePageWithoutState(Item page) {
 }
 
 /// Replaces a [PlaceHolder] with a [Library] in [homePage]'s content.
-Library updateContent(String data, PlaceHolder page) {
+Library _updateContent(String data, PlaceHolder page) {
   var lib = loadData(data);
   var index = homePage.content.indexOf(page);
   homePage.content.remove(page);
@@ -62,7 +62,7 @@ changePage(Item page) {
   if (page is PlaceHolder) {
     var data = page.loadLibrary();
     data.then((response) {
-      var lib = updateContent(response, page);
+      var lib = _updateContent(response, page);
       changePage(lib);
     });
   } else if (page != null && currentPage != page) {
@@ -118,14 +118,16 @@ void _updateInheritance(Element postDescriptor) {
   postDescriptor.children.add(paragraph);
 }
 
-/// Generates an HTML [Element] given a [LinkableType].                                                                                                                                                    
+/// Generates an HTML [Element] given a [LinkableType].
+// TODO(tmandel): Add a CSS class or use a different tag if the link isn't
+// resolved so that it isn't displayed with the same CSS as a working link.
 Element _getType(LinkableType type) {
   var link = new Element.html("<a>${type.simpleType}</a>")
-  ..onClick.listen((_) => handleLink(type));
+    ..onClick.listen((_) => handleLink(type));
   return link;
 }
 
-/// Handles lazy loading of libraries from links not on the homepage.                                                                                                                                        
+/// Handles lazy loading of libraries from links not on the homepage.                                                                                                                                      
 void handleLink(LinkableType type) {
   if (type.location != null) {
     changePage(type.location);
@@ -135,7 +137,7 @@ void handleLink(LinkableType type) {
         var betterName = libraryNames[element.name];
         if (type.type.startsWith(betterName)) {
           element.loadLibrary().then((response) {
-            updateContent(response, element);
+            _updateContent(response, element);
             changePage(type.location);
           });
         }
@@ -190,6 +192,7 @@ void _updateComment() {
  */
 void update() {
   _updateComment();
+  // TODO(tmandel): Use custom elements to avoid this querying.
   var descriptors = queryAll('.descriptor');
   var preDescriptor = descriptors[0];
   var postDescriptor = descriptors[1];
@@ -203,15 +206,14 @@ void update() {
   }
 }
 
-// Builds hierarchy, sets up listener for browser navigation, and loads initial                                                                                                                              
-// values for viewing and linking.                                                                                                                                                                           
+// Builds homepage and sets up listener for browser navigation.                                                                                                                                                                           
 main() {
-  // TODO(tmandel): Take this out of read_yaml.dart                                                                                                                                                          
+  // Remove 'index.html' suffix for easier navigation.
+  origin = window.location.pathname.replaceAll('index.html', '');
   var manifest = retrieveFile(sourcePath);
-  origin = window.location.pathname;
-  origin = origin.replaceAll('index.html', '');
   manifest.then((response) {
-    currentPage = new Home(response);
+    var libraries = response.split('\n');
+    currentPage = new Home(libraries);
     homePage = currentPage;
   });
 
