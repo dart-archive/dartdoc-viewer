@@ -264,7 +264,7 @@ class Variable extends Container {
   }
 }
 
-/**                                                                                                                                                                                                          
+/**
  * A Dart type that should link to other [Item]s.                                                                                                                                                            
  */
 class LinkableType {
@@ -292,13 +292,5 @@ class LinkableType {
   String get simpleType => this.type.split('.').last;
 
   /// The [Item] describing this type if it has been loaded, otherwise null.                                                                                                                                                                       
-  Item get location {
-    var result;
-    var member = '${type.replaceAll('.', '/')}/';
-    var possible = pageIndex[member];
-    if (possible != null) {
-      result = possible;
-    }
-    return result;
-  }
+  Item get location => pageIndex['${type.replaceAll('.', '/')}/'];
 }

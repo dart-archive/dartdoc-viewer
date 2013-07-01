@@ -55,7 +55,7 @@ Library _updateContent(String data, PlaceHolder page) {
   return lib;
 }
 
-/**                                                                                                                                                                                                          
+/**
  * Pushes state onto the history before updating the [currentPage].                                                                                                                                          
  */
 changePage(Item page) {
@@ -217,10 +217,10 @@ main() {
     homePage = currentPage;
   });
 
-  // Handles browser navigation.                                                                                                                                                                             
+  // Handles browser navigation.
   window.onPopState.listen((event) {
     if (event.state != null) {
-      if (event.state != "") {
+      if (event.state != '') {
         changePageWithoutState(pageIndex[event.state]);
       }
     } else {
