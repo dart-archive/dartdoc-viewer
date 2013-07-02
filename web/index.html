@@ -10,10 +10,10 @@
 <script src="packages/browser/dart.js"></script>
 
 <nav class="breadcrumbs">
-  <template instantiate="if currentPage != null && currentPage.path != null">
-    <template iterate="item in getBreadcrumbs(currentPage.path)">
+  <template instantiate="if viewer.currentPage != null && viewer.currentPage.path != null">
+    <template iterate="item in viewer.getBreadcrumbs(viewer.currentPage.path)">
       <!-- TODO(tmandel): Use a better tag for these links -->
-      <a on-click="changePage(item)">{{item.name}}</a>
+      <a on-click="viewer.changePage(item)">{{item.name}}</a>
     </template>
   </template>
 </nav>
@@ -22,12 +22,12 @@
 
   <!-- TODO(tmandel): Use a better tag than div for descriptors -->
   <div class="descriptor"></div>
-  <h1>{{title}}</h1>
+  <h1>{{viewer.title}}</h1>
   <div class="descriptor"></div>
   <section class="description"></section>
 
-  <template instantiate="if currentPage != null">
-    <template iterate="item in currentPage.content">
+  <template instantiate="if viewer.currentPage != null">
+    <template iterate="item in viewer.currentPage.content">
       <template if="item is Item">
         <dartdoc-item item="{{item}}"></dartdoc-item>
       </template>

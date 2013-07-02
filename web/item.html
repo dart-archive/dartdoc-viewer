@@ -2,7 +2,7 @@
 <element name="dartdoc-item" constructor="ItemElement" extends="article"  
     apply-author-styles>
   <template>
-    <h1 on-click="app.changePage(item)">{{title}}</h1> 
+    <h1 on-click="app.viewer.changePage(item)">{{title}}</h1> 
   </template>
   <script type="application/dart">
     import 'package:web_ui/web_ui.dart';
