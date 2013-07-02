@@ -10,10 +10,12 @@
 <script src="packages/browser/dart.js"></script>
 
 <nav class="breadcrumbs">
-  <template instantiate="if viewer.currentPage != null && viewer.currentPage.path != null">
-    <template iterate="item in viewer.getBreadcrumbs(viewer.currentPage.path)">
-      <!-- TODO(tmandel): Use a better tag for these links -->
-      <a on-click="viewer.changePage(item)">{{item.name}}</a>
+  <template if="viewer.currentPage != null">
+    <template instantiate="if viewer.currentPage.path != null">
+      <template iterate="item in viewer.getBreadcrumbs()">
+        <!-- TODO(tmandel): Use a better tag for these links -->
+        <a on-click="viewer.changePage(item)">{{item.name}}</a>
+      </template>
     </template>
   </template>
 </nav>

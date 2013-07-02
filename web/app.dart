@@ -99,10 +99,10 @@ class Viewer {
    * Creates a list of [Item] objects from the [path] describing the
    * path to a particular [Item] object.
    */
-  List<Item> getBreadcrumbs(String path) {
+  List<Item> getBreadcrumbs() {
     // Matches alphanumeric variable/method names ending with a '/'.  
     var regex = new RegExp(r'(_?([a-zA-Z0-9_%]+)=?)/');
-    var matches = regex.allMatches(path);
+    var matches = regex.allMatches(currentPage.path);
     var currentPath = '';
     var breadcrumbs = [homePage];
     matches.forEach((match) {
