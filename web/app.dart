@@ -26,6 +26,9 @@ final Viewer viewer = new Viewer();
  * The Dartdoc Viewer application state.
  */
 class Viewer {
+  
+  // Singleton instance of the Viewer class.
+  static final Viewer _viewer = new Viewer._internal();
 
   // The page pathname at first load for navigation.
   String origin;
@@ -36,7 +39,13 @@ class Viewer {
   /// The current page being shown.
   @observable Item currentPage;
   
-  Viewer() {
+  /// Returns a reference to the singleton instance of the Viewer class.
+  factory Viewer() {
+    return _viewer;
+  }
+  
+  // Private constructor for singleton instantiation.
+  Viewer._internal() {
     origin = window.location.pathname.replaceAll('index.html', '');
     var manifest = retrieveFileContents(sourcePath);
     manifest.then((response) {
