@@ -209,7 +209,7 @@ void update() {
 main() {
   // Remove 'index.html' suffix for easier navigation.
   origin = window.location.pathname.replaceAll('index.html', '');
-  var manifest = retrieveFile(sourcePath);
+  var manifest = retrieveFileContents(sourcePath);
   manifest.then((response) {
     var libraries = response.split('\n');
     currentPage = new Home(libraries);

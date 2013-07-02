@@ -161,7 +161,7 @@ void main() {
     
   test('read_empty', () {
     // Check that read_yaml reads the right data.
-    retrieveFile('yaml/empty.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/empty.yaml').then(expectAsync1((data) {
       expect(data, equals(empty));
       // Test that reading in an empty file doesn't throw an exception.
       expect(() => loadData(data), returnsNormally);
@@ -170,7 +170,7 @@ void main() {
   
   test('parameter_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFile('yaml/parameter.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/parameter.yaml').then(expectAsync1((data) {
       expect(data, equals(parameter));
     }));
     
@@ -182,7 +182,7 @@ void main() {
   
   test('variable_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFile('yaml/variable.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/variable.yaml').then(expectAsync1((data) {
       expect(data, equals(variable));
     }));
   
@@ -194,7 +194,7 @@ void main() {
   
   test('clazz_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFile('yaml/class.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/class.yaml').then(expectAsync1((data) {
       expect(data, equals(clazz));
     }));
     
@@ -221,7 +221,7 @@ void main() {
   
   test('method_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFile('yaml/method.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/method.yaml').then(expectAsync1((data) {
       expect(data, equals(method));
     }));
   
@@ -237,7 +237,7 @@ void main() {
   
   test('library_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFile('yaml/library.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/library.yaml').then(expectAsync1((data) {
       expect(data, equals(library));
     }));
   

@@ -6,9 +6,6 @@ import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 
-// TODO(tmandel): Load all libraries after the page has loaded instead of
-// when they are needed to reduce latency.
-
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
 const docsPath = '../../docs/';
 
@@ -82,7 +79,7 @@ class PlaceHolder extends Item {
   /// Loads the library's data and returns a [Future] for external handling.
   Future loadLibrary() {
     // TODO(tmandel): Shouldn't be a relative path if possible.
-    return retrieveFile('$docsPath$location');
+    return retrieveFileContents('$docsPath$location');
   }
 }
 
@@ -265,7 +262,7 @@ class Variable extends Container {
 }
 
 /**
- * A Dart type that should link to other [Item]s.                                                                                                                                                            
+ * A Dart type that should link to other [Item]s.
  */
 class LinkableType {
 
