@@ -285,9 +285,9 @@ class LinkableType {
     });
   }
 
-  /// The simple name for this type.                                                                                                                                                                         
+  /// The simple name for this type.
   String get simpleType => this.type.split('.').last;
 
-  /// The [Item] describing this type if it has been loaded, otherwise null.                                                                                                                                                                       
+  /// The [Item] describing this type if it has been loaded, otherwise null.
   Item get location => pageIndex['${type.replaceAll('.', '/')}/'];
 }

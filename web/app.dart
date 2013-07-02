@@ -25,9 +25,6 @@ const sourcePath = '../../docs/library_list.txt';
 // Function to set the title of the current page. 
 String get title => currentPage == null ? '' : currentPage.decoratedName;
 
-// The correct comment for the current page.
-String get comment => currentPage != null ? currentPage.comment : '';
-
 // The homepage from which every [Item] can be reached.
 @observable Item homePage;
 
@@ -56,7 +53,7 @@ Library _updateContent(String data, PlaceHolder page) {
 }
 
 /**
- * Pushes state onto the history before updating the [currentPage].                                                                                                                                          
+ * Pushes state onto the history before updating the [currentPage].
  */
 changePage(Item page) {
   if (page is PlaceHolder) {
@@ -126,7 +123,7 @@ Element _getType(LinkableType type) {
   return link;
 }
 
-/// Handles lazy loading of libraries from links not on the homepage.                                                                                                                                      
+/// Handles lazy loading of libraries from links not on the homepage.
 void handleLink(LinkableType type) {
   if (type.location != null) {
     changePage(type.location);
@@ -205,7 +202,7 @@ void update() {
   }
 }
 
-// Builds homepage and sets up listener for browser navigation.                                                                                                                                                                           
+// Builds homepage and sets up listener for browser navigation.
 main() {
   // Remove 'index.html' suffix for easier navigation.
   origin = window.location.pathname.replaceAll('index.html', '');

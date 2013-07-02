@@ -6,7 +6,7 @@ import 'package:yaml/yaml.dart';
 import 'package:dartdoc_viewer/item.dart';
 
 /**
- *  Retrieves a file at the given [path]. 
+ * Retrieves a file at the given [path].
  */
 Future<String> retrieveFileContents(String path) {
   return HttpRequest.getString(path);
