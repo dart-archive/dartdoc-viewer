@@ -15,7 +15,7 @@ const docsPath = '../../docs/';
 @observable 
 class Container {
   String name;
-  String comment = '';
+  String comment = '<span></span>';
 }
 
 /**

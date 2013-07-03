@@ -5,6 +5,8 @@
 <element name="dartdoc-page" constructor="PageElement" extends="article"
     apply-author-styles>
   <template>
+    
+    <!-- Return Type -->
     <template instantiate="if page.currentPage is Method">
       <a on-click="page.handleLink(page.currentPage.type)">
         {{page.currentPage.type.simpleType}}
@@ -16,6 +18,7 @@
     <!-- Parameters -->
     <template instantiate="if page.currentPage is Method">
       <p>(
+        <!-- TODO(tmandel): Possibly make a custom element for this -->
         <template iterate="parameter in required">
           <a on-click="page.handleLink(parameter.type)">
             {{parameter.type.simpleType}}
@@ -63,8 +66,10 @@
       </p>
     </template>
 
+    <!-- Comment -->
     <section class="description">{{insert()}}</section>
 
+    <!-- Contents -->
     <template instantiate="if page.currentPage != null">
       <template iterate="item in page.currentPage.content">
         <template if="item is Item">
@@ -88,15 +93,17 @@
      * An HTML representation of a page
      */
     class PageElement extends WebComponent {
-      
+      // Instance of the viewer being displayed.
       app.Viewer page = app.viewer;
       
-      List<LinkableType> get optional => 
-        page.currentPage.parameters.where((item) => item.isOptional).toList();
-        
+      // Required parameters.
       List<LinkableType> get required => 
         page.currentPage.parameters.where((item) => !item.isOptional).toList();
       
+      // Optional parameters.
+      List<LinkableType> get optional => 
+        page.currentPage.parameters.where((item) => item.isOptional).toList();
+        
       List<LinkableType> get interfaces => page.currentPage.implements;
       
       LinkableType get superClass => page.currentPage.superClass;
