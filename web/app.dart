@@ -61,7 +61,6 @@ class Viewer {
   changePageWithoutState(Item page) {
     if (page != null) {
       currentPage = page;
-      update();
     }
   }
   
@@ -118,35 +117,6 @@ class Viewer {
     return breadcrumbs;
   }
   
-  /// Adds the correct interfaces to [postDescriptor].
-  void _updateInheritance(Element postDescriptor) {
-    var interfaces = currentPage.implements;
-    var paragraph = new ParagraphElement();
-    if (!interfaces.isEmpty) {
-      paragraph.appendText("Implements: ");
-    }
-    interfaces.forEach((element) {
-      paragraph.append(_getType(element));
-      if (element != interfaces.last) {
-        paragraph.appendText(", ");
-      } else {
-        paragraph.appendHtml("<br/>");
-      }
-    }); 
-    paragraph.appendText("Extends: ");
-    paragraph.append(_getType(currentPage.superClass));
-    postDescriptor.children.add(paragraph);
-  }
-  
-  /// Generates an HTML [Element] given a [LinkableType].
-  // TODO(tmandel): Add a CSS class or use a different tag if the link isn't
-  // resolved so that it isn't displayed with the same CSS as a working link.
-  Element _getType(LinkableType type) {
-    var link = new Element.html("<a>${type.simpleType}</a>")
-      ..onClick.listen((_) => handleLink(type));
-    return link;
-  }
-  
   /// Handles lazy loading of libraries from links not on the homepage.
   void handleLink(LinkableType type) {
     if (type.location != null) {
@@ -163,66 +133,6 @@ class Viewer {
           }
         }
       });
-    }
-  }
-  
-  /// Adds a single parameter to [postData].
-  void _addParameter(Parameter parameter, Element postData) {
-    postData.append(_getType(parameter.type));
-    postData.appendText(' ${parameter.decoratedName}');
-  }
-  
-  /// Adds the correct parameters to [postDescriptor].
-  void _updateParameters(Element postDescriptor) {
-    var required = currentPage.parameters.where((item) => !item.isOptional);
-    var optional = currentPage.parameters.where((item) => item.isOptional);
-    var postData = new ParagraphElement()
-      ..appendText('(');
-    required.forEach((parameter) {
-      _addParameter(parameter, postData);
-      if (parameter != required.last || !optional.isEmpty) {
-        postData.appendText(', ');
-      }
-    });
-    if (!optional.isEmpty) {
-      optional.first.isNamed ? 
-          postData.appendText('{') : postData.appendText('[');
-      optional.forEach((parameter) {
-        _addParameter(parameter, postData);
-        if (parameter != optional.last) postData.appendText(', ');
-      });
-      optional.first.isNamed ? 
-          postData.appendText('}') : postData.appendText(']');
-    }
-    postData.appendText(')');
-    postDescriptor.children.add(postData);
-  }
-  
-  /// Adds the correct comment to [description].
-  void _updateComment() {
-    var description = query('.description');
-    description.children.clear();
-    if (currentPage.comment != null && currentPage.comment != '') {
-      description.children.add(new Element.html(currentPage.comment));
-    }
-  }
-  
-  /**
-   * Update the comment and descriptor tags to match the current page.
-   */
-  void update() {
-    _updateComment();
-    // TODO(tmandel): Use custom elements to avoid this querying.
-    var descriptors = queryAll('.descriptor');
-    var preDescriptor = descriptors[0];
-    var postDescriptor = descriptors[1];
-    preDescriptor.children.clear();
-    postDescriptor.children.clear();
-    if (currentPage is Method) {
-      preDescriptor.children.add(_getType(currentPage.type));
-      _updateParameters(postDescriptor);
-    } else if (currentPage is Class) {
-      _updateInheritance(postDescriptor);
     }
   }
 }
