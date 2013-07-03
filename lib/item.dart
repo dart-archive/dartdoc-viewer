@@ -61,18 +61,18 @@ abstract class Item extends CompositeContainer {
   @observable String path;
   
   /// [Item]'s name with its properties properly appended. 
-  String get decoratedName => this.name;
+  String get decoratedName => name;
 }
 
 /**
  * An [Item] with no content. This is used to facilitate lazy loading.
  */
-class PlaceHolder extends Item {
+class Placeholder extends Item {
   
   /// The path to the file with the real data relative to [docsPath].
   String location;
   
-  PlaceHolder(String name, this.location) {
+  Placeholder(String name, this.location) {
     this.name = name;
   }
   
@@ -84,21 +84,21 @@ class PlaceHolder extends Item {
 }
 
 /**
- * An [Item] containing all of the [Library] and [PlaceHolder] objects.
+ * An [Item] containing all of the [Library] and [Placeholder] objects.
  */
 class Home extends Item {
   
   /// The constructor parses the [allLibraries] input and constructs
-  /// [PlaceHolder] objects to display before loading libraries.
+  /// [Placeholder] objects to display before loading libraries.
   Home(List libraries) {
     this.name = 'Dart API Reference';
     this.path = '';
     pageIndex[''] = this;
-    libraries.forEach((library) {
+    for (String library in libraries) {
       var libraryName = library.replaceAll('.yaml', '');
       libraryNames[libraryName] = libraryName.replaceAll('.', '%');
-      content.add(new PlaceHolder(libraryName, library));
-    });
+      content.add(new Placeholder(libraryName, library));
+    };
   }
 }
 

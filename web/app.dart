@@ -20,15 +20,12 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 const sourcePath = '../../docs/library_list.txt';
 
 /// The [Viewer] object being displayed.
-final Viewer viewer = new Viewer();
+final Viewer viewer = new Viewer._();
 
 /**
  * The Dartdoc Viewer application state.
  */
 class Viewer {
-  
-  // Singleton instance of the Viewer class.
-  static final Viewer _viewer = new Viewer._internal();
 
   // The page pathname at first load for navigation.
   String origin;
@@ -38,14 +35,13 @@ class Viewer {
   
   /// The current page being shown.
   @observable Item currentPage;
-  
-  /// Returns a reference to the singleton instance of the Viewer class.
-  factory Viewer() {
-    return _viewer;
-  }
-  
+
   // Private constructor for singleton instantiation.
-  Viewer._internal() {
+  Viewer._() {
+    // Upon startup, the url ends with index.html. To allow for HTTP requests
+    // from any view, a proper path to the origin is needed, so removing 
+    // index.html from the initial url gives a base path for HTTP requests.
+    // TODO(tmandel): Find a way to remove 'origin' variable.
     origin = window.location.pathname.replaceAll('index.html', '');
     var manifest = retrieveFileContents(sourcePath);
     manifest.then((response) {
@@ -69,8 +65,8 @@ class Viewer {
     }
   }
   
-  /// Replaces a [PlaceHolder] with a [Library] in [homePage]'s content.
-  Library _updateContent(String data, PlaceHolder page) {
+  /// Replaces a [Placeholder] with a [Library] in [homePage]'s content.
+  Library _updateContent(String data, Placeholder page) {
     var lib = loadData(data);
     var index = homePage.content.indexOf(page);
     homePage.content.remove(page);
@@ -83,7 +79,7 @@ class Viewer {
    * Pushes state onto the history before updating the [currentPage].
    */
   changePage(Item page) {
-    if (page is PlaceHolder) {
+    if (page is Placeholder) {
       var data = page.loadLibrary();
       data.then((response) {
         var lib = _updateContent(response, page);
@@ -99,6 +95,7 @@ class Viewer {
       } else {
         url = '${origin}index.html';
       }
+      // TODO(tmandel): Use package:route for history and URLs.
       window.history.pushState(state, title, url);
     }
     changePageWithoutState(page);
@@ -156,7 +153,7 @@ class Viewer {
       changePage(type.location);
     } else {
       homePage.content.forEach((element) {
-        if (element is PlaceHolder) {
+        if (element is Placeholder) {
           var betterName = libraryNames[element.name];
           if (type.type.startsWith(betterName)) {
             element.loadLibrary().then((response) {
