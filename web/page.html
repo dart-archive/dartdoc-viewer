@@ -5,7 +5,6 @@
 <element name="dartdoc-page" constructor="PageElement" extends="article"
     apply-author-styles>
   <template>
-    
     <!-- Return Type -->
     <template instantiate="if page.currentPage is Method">
       <a on-click="page.handleLink(page.currentPage.type)">
@@ -67,7 +66,7 @@
     </template>
 
     <!-- Comment -->
-    <section class="description">{{insert()}}</section>
+    <section class="description">{{addComment()}}</section>
 
     <!-- Contents -->
     <template instantiate="if page.currentPage != null">
@@ -110,12 +109,13 @@
       
       String get title => page.currentPage.name;
       
-      insert() {
+      /// Updates the display with the correct comment.
+      addComment() {
         if (page.currentPage.comment != '' && 
             page.currentPage.comment != null) {
-          Element el = getShadowRoot('dartdoc-page').query('.description');
-          el.children.clear();
-          el.children.add(new Element.html(page.currentPage.comment));
+          var comment = getShadowRoot('dartdoc-page').query('.description');
+          comment.children.clear();
+          comment.children.add(new Element.html(page.currentPage.comment));
         }
       }
     }

@@ -65,7 +65,7 @@ class Viewer {
   }
   
   /// Replaces a [Placeholder] with a [Library] in [homePage]'s content.
-  Library _updateContent(String data, Placeholder page) {
+  Library _updateHomepage(String data, Placeholder page) {
     var lib = loadData(data);
     var index = homePage.content.indexOf(page);
     homePage.content.remove(page);
@@ -81,7 +81,7 @@ class Viewer {
     if (page is Placeholder) {
       var data = page.loadLibrary();
       data.then((response) {
-        var lib = _updateContent(response, page);
+        var lib = _updateHomepage(response, page);
         changePage(lib);
       });
     } else if (page != null && currentPage != page) {
@@ -127,7 +127,7 @@ class Viewer {
           var betterName = libraryNames[element.name];
           if (type.type.startsWith(betterName)) {
             element.loadLibrary().then((response) {
-              _updateContent(response, element);
+              _updateHomepage(response, element);
               changePage(type.location);
             });
           }
