@@ -5,6 +5,7 @@
 <element name="dartdoc-page" constructor="PageElement" extends="article"
     apply-author-styles>
   <template>
+    
     <!-- Return Type -->
     <template instantiate="if page.currentPage is Method">
       <a on-click="page.handleLink(page.currentPage.type)">
@@ -17,6 +18,7 @@
     <!-- Parameters -->
     <template instantiate="if page.currentPage is Method">
       <p>(
+      
         <!-- TODO(tmandel): Possibly make a custom element for this -->
         <template iterate="parameter in required">
           <a on-click="page.handleLink(parameter.type)">
@@ -26,8 +28,10 @@
             ,&nbsp;
           </template>
         </template>
+        
         <template if="!optional.isEmpty">
           {{optional.first.isNamed ? '{' : '['}}
+          
           <template iterate="parameter in optional">
             <a on-click="page.handleLink(parameter.type)">
               {{parameter.type.simpleType}}
@@ -36,16 +40,19 @@
               ,&nbsp;
             </template>
           </template>
+          
           {{optional.first.isNamed ? '}' : ']'}}
         </template>
+        
       )</p>
     </template>
     
     <!-- Inheritance -->
     <template instantiate="if page.currentPage is Class">
       <p>
+        
         <template if="!interfaces.isEmpty">
-          Implements:&nbsp;
+          Implements:&nbsp;  
           <template iterate="item in interfaces">
             <a on-click="page.handleLink(item)">
               {{item.simpleType}}
@@ -57,11 +64,13 @@
               <br/>
             </template>
           </template>
+          
         </template>
         Extends:&nbsp;
         <a on-click="page.handleLink(superClass)">
           {{superClass.simpleType}}
         </a>
+        
       </p>
     </template>
 
@@ -91,7 +100,10 @@
     /**
      * An HTML representation of a page
      */
-    class PageElement extends WebComponent {
+    class PageElement extends WebComponent {      
+      // All instance variables here contain immutable data, so they do not 
+      // need to be @observable since the data never changes.
+      
       // Instance of the viewer being displayed.
       app.Viewer page = app.viewer;
       
