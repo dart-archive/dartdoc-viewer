@@ -52,7 +52,7 @@
       <p>
         
         <template if="!interfaces.isEmpty">
-          Implements:&nbsp;  
+          Implements:&nbsp;
           <template iterate="item in interfaces">
             <a on-click="page.handleLink(item)">
               {{item.simpleType}}
@@ -93,14 +93,16 @@
   
   <script type="application/dart">
     import 'dart:html';
-    import 'package:web_ui/web_ui.dart';
+    
     import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
     import 'app.dart' as app;
     
     /**
      * An HTML representation of a page
      */
-    class PageElement extends WebComponent {      
+    class PageElement extends WebComponent {
       // All instance variables here contain immutable data, so they do not 
       // need to be @observable since the data never changes.
       
