@@ -1,6 +1,11 @@
-
-docs
 packages
 pubspec.lock
 .project
+tags
+out
+docs
+.DS_Store
+*.pyc
 .buildlog
+client/docs/
+client/web/out
