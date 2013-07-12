@@ -1,8 +1,9 @@
-#!/usr/bin/env python
-
 # Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
 # for details. All rights reserved. Use of this source code is governed by a
 # BSD-style license that can be found in the LICENSE file.
+
+# This script is used to redirect HTTP requests to retrieve the correct
+# files from Google Cloud Storage.
 
 import logging
 import urllib2
@@ -23,38 +24,38 @@ ONE_HOUR = 60 * 60
 ONE_DAY = ONE_HOUR * 24
 ONE_WEEK = ONE_DAY * 7
 
-""" Used for handling HTTP requests on the dev server and on App Engine. """
 class RequestHandler(blobstore_handlers.BlobstoreDownloadHandler):
+  """ Used for handling HTTP requests on the dev server and on App Engine. """
 
-  # Cloud Storage doesn't work on the dev server, so requests are 
-  # handled differently depending on the origin.
-  """ Retrieves the file from Cloud Storage. """
   def get(self):
+    """ Retrieves the file from Cloud Storage. """
+    # Cloud Storage doesn't work on the dev server, so requests are 
+    # handled differently depending on the origin.
     if os.environ['SERVER_SOFTWARE'].startswith('Development'):
-      self.get_local()
+      self.GetLocal()
     else:
-      self.get_google_storage()
+      self.GetGoogleStorage()
 
-  # Used for local, dev server HTTP requests.
-  def get_local(self):
+  def GetLocal(self):
+    """ Used for local, dev server HTTP requests. """
     version = urllib2.urlopen(LOCAL_VERSION).read()
-    path = LOCAL_PATH + version + self.request.path[5:]
+    path = LOCAL_PATH + version + self.request.path[len('docs/'):]
     result = urllib2.urlopen(path).read()
-    self.handle_cache_age(path)
+    self.HandleCacheAge(path)
     self.response.out.write(result)
 
-  # Used for App Engine HTTP requests.
-  def get_google_storage(self):
+  def GetGoogleStorage(self):
+    """ Used for App Engine HTTP requests. """
     version_key = blobstore.create_gs_key(GS_VERSION)
     blob_reader = blobstore.BlobReader(version_key)
     version = blob_reader.read()
-    path = GS_PATH + version + self.request.path[5:]
+    path = GS_PATH + version + self.request.path[len('docs/'):]
     gs_key = blobstore.create_gs_key(path)
-    self.handle_cache_age(path)
+    self.HandleCacheAge(path)
     self.send_blob(gs_key)
 
-  # Assigns a document a length of time it will live in the cache.
-  def handle_cache_age(self, path):
+  def HandleCacheAge(self, path):
+    """ Assigns a document a length of time it will live in the cache. """
     age = None
     if re.search(r'(png|jpg)$', path):
       age = ONE_DAY
