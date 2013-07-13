@@ -1,5 +1,10 @@
+# Packages can be loaded by running pub install.
 packages
+
+# Dart Editor config file.
 .project
+
+# Project build data.
 .buildlog
 
 # The out/ folder can be recreated by running build.dart.
