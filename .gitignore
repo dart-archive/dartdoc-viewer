@@ -1,11 +1,14 @@
 packages
-pubspec.lock
 .project
-tags
-out
-docs
-.DS_Store
-*.pyc
 .buildlog
-client/docs/
+
+# The out/ folder can be recreated by running build.dart.
+out
 client/web/out
+
+# YAML input files can be generated with the docgen package in the Dart repo.
+docs
+client/docs/
+
+# Compiled python bytecode can be recreated by rerunning the scripts.
+*.pyc
