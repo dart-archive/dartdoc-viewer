@@ -13,7 +13,7 @@ client/web/out
 
 # YAML input files can be generated with the docgen package in the Dart repo.
 docs
-client/docs/
+client/docs
 
 # Compiled python bytecode can be recreated by rerunning the scripts.
 *.pyc
