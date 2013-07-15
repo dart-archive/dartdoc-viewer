@@ -2,12 +2,10 @@ library category_item;
 
 import 'dart:async';
 import 'dart:html';
-import 'package:web_ui/web_ui.dart';
+
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
-
-// TODO(tmandel): Don't hardcode in a path if it can be avoided.
-const docsPath = '../../docs/';
+import 'package:web_ui/web_ui.dart';
 
 /**
  * Anything that holds values and can be displayed.
@@ -18,15 +16,6 @@ class Container {
   String comment = '<span></span>';
 }
 
-/**
- * A [Container] that holds other containers.
- */
-class CompositeContainer extends Container {
-  List<Container> content = [];
-  
-  String get pathName => name.replaceAll('.', '%');
-}
-
 // Wraps a comment in span element to make it a single HTML Element.
 String _wrapComment(String comment) {
   if (comment == null) comment = '';
@@ -34,9 +23,13 @@ String _wrapComment(String comment) {
 }
 
 /**
- * A [CompositeContainer] that contains other [Container]s to be displayed.
+ * A [Container] that contains other [Container]s to be displayed.
  */
-class Category extends CompositeContainer {
+// TODO(tmandel): Category should have content, but Item shouldn't.
+class Category extends Container {
+  
+  List<Container> content = [];
+  
   Category.forClasses(Map yaml) {
     this.name = 'Classes';
     yaml.keys.forEach((key) => content.add(new Class(yaml[key])));
@@ -56,10 +49,7 @@ class Category extends CompositeContainer {
 /**
  * A [CompositeContainer] synonymous with a page.
  */
-abstract class Item extends CompositeContainer {
-  /// A string representing the path to this [Item] from the homepage.
-  @observable String path;
-  
+abstract class Item extends Container {
   /// [Item]'s name with its properties properly appended. 
   String get decoratedName => name;
 }
@@ -75,12 +65,6 @@ class Placeholder extends Item {
   Placeholder(String name, this.location) {
     this.name = name;
   }
-  
-  /// Loads the library's data and returns a [Future] for external handling.
-  Future loadLibrary() {
-    // TODO(tmandel): Shouldn't be a relative path if possible.
-    return retrieveFileContents('$docsPath$location');
-  }
 }
 
 /**
@@ -88,36 +72,43 @@ class Placeholder extends Item {
  */
 class Home extends Item {
   
+  List<Item> libraries;
+  
+  String docsPath = '../../docs/';
+  
   /// The constructor parses the [allLibraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
   Home(List libraries) {
     this.name = 'Dart API Reference';
-    this.path = '';
-    pageIndex[''] = this;
+    this.libraries = [];
     for (String library in libraries) {
       var libraryName = library.replaceAll('.yaml', '');
-      libraryNames[libraryName] = libraryName.replaceAll('.', '%');
-      content.add(new Placeholder(libraryName, library));
+      libraryNames[libraryName] = libraryName.replaceAll('.', '-');
+      this.libraries.add(new Placeholder(libraryName, library));
     };
   }
-}
-
-/**
- * Runs through the member structure and creates path information and
- * populates the [pageIndex] map for proper linking.
- */
-void buildHierarchy(Container page, Item previous) {
-  if (page is Item) {
-    page.path = previous.path == null ?
-        '${page.pathName}/' : '${previous.path}${page.pathName}/';
-    pageIndex[page.path] = page;
-    page.content.forEach((subChild) {
-      buildHierarchy(subChild, page);
+  
+  /// Loads the library's data and returns a [Future] for external handling.
+  Future loadLibrary(Placeholder place) {
+    var data = retrieveFileContents('$docsPath${place.location}');
+    return data.then((response) {
+      var lib = loadData(response);
+      var index = libraries.indexOf(place);
+      libraries.remove(place);
+      libraries.insert(index, lib);
+      return lib;
     });
-  } else if (page is Category) {
-    page.content.forEach((subChild) {
-      buildHierarchy(subChild, previous);
-    });
+  }
+  
+  bool contains(String library) => libraryNames.values.contains(library);
+  
+  // TODO(tmandel): Stop looping through 'libraries' so much.
+  Item getMember(String library) {
+    for (var lib in libraries) {
+      if (libraryNames[lib.name] == library) {
+        return lib;
+      }
+    }
   }
 }
 
@@ -126,17 +117,21 @@ void buildHierarchy(Container page, Item previous) {
  */
 class Library extends Item {
   
+  Category classes;
+  Category variables;
+  Category functions;
+  
   Library(Map yaml) {
     this.name = yaml['name'];
     this.comment = _wrapComment(yaml['comment']);
     if (yaml['classes'] != null) {
-      content.add(new Category.forClasses(yaml['classes']));
+      classes = new Category.forClasses(yaml['classes']);
     }
     if (yaml['variables'] != null) {
-      content.add(new Category.forVariables(yaml['variables']));
+      variables = new Category.forVariables(yaml['variables']);
     }
     if (yaml['functions'] != null) {
-      content.add(new Category.forFunctions(yaml['functions'], 'Functions'));
+      functions = new Category.forFunctions(yaml['functions'], 'Functions');
     }
   }
   
@@ -148,6 +143,9 @@ class Library extends Item {
  */
 class Class extends Item {
   
+  Category methods;
+  Category variables;
+  
   LinkableType superClass;
   bool isAbstract;
   bool isTypedef;
@@ -157,10 +155,10 @@ class Class extends Item {
     this.name = yaml['name'];
     this.comment = _wrapComment(yaml['comment']);
     if (yaml['variables'] != null) {
-      content.add(new Category.forVariables(yaml['variables']));
+      variables = new Category.forVariables(yaml['variables']);
     }
     if (yaml['methods'] != null) {
-      content.add(new Category.forFunctions(yaml['methods'], 'Methods'));
+      methods = new Category.forFunctions(yaml['methods'], 'Methods');
     }
     this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = yaml['abstract'] == 'true';
@@ -264,6 +262,7 @@ class Variable extends Container {
 /**
  * A Dart type that should link to other [Item]s.
  */
+// TODO(tmandel): Deal with this garbage.
 class LinkableType {
 
   /// The resolved qualified name of the type this [LinkableType] represents.
@@ -274,20 +273,22 @@ class LinkableType {
    * from [libraryNames] and changing [type] to match.
    */
   LinkableType(String type) {
-    var current = '';
+    var current = type;
     this.type = type;
-    List elements = type.split('.');
-    elements.forEach((element) {
-      current = current == '' ? element : '$current.$element';
+    while (current != '') {
       if (libraryNames[current] != null) {
         this.type = type.replaceFirst(current, libraryNames[current]);
+        break;
+      } else {
+        var index = current.lastIndexOf('.');
+        current = index != -1 ? current.substring(0, index) : '';
       }
-    });
+    }
   }
 
   /// The simple name for this type.
   String get simpleType => this.type.split('.').last;
 
   /// The [Item] describing this type if it has been loaded, otherwise null.
-  Item get location => pageIndex['${type.replaceAll('.', '/')}/'];
+  List<String> get location => type.split('.');
 }
