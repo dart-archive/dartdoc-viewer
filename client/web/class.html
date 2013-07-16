@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+<link rel="import" href="category.html">
+
+<element name="dartdoc-class" constructor="ClassElement" extends="article"
+    apply-author-styles>
+  <template>
+    
+    <h1>{{clazz.decoratedName}}</h1>  
+      
+      <p>
+        <template if="!interfaces.isEmpty">
+          Implements:&nbsp;
+          <template iterate="item in interfaces">
+            <a on-click="viewer.handleLink(item)">
+              {{item.simpleType}}
+            </a>
+            <template if="item != interfaces.last">
+              ,&nbsp;
+            </template>
+            <template instantiate="if item == interfaces.last">
+              <br/>
+            </template>
+          </template>
+        
+        </template>
+        Extends:&nbsp;
+        <a on-click="viewer.handleLink(superClass)">
+          {{superClass.simpleType}}
+        </a>
+      </p>
+    
+    <!-- Comment -->
+    <section class="description">{{addComment()}}</section>
+    
+    <template instantiate="if variables != null">
+      <dartdoc-category category="{{variables}}"></dartdoc-category>
+    </template>
+    <template instantiate="if methods != null">
+      <dartdoc-category category="{{methods}}"></dartdoc-category>
+    </template>
+    
+  </template>
+  
+  <script type="application/dart">
+    import 'dart:html';
+    
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
+    import 'app.dart';
+    
+    class ClassElement extends WebComponent {
+      Class clazz;
+      
+      Category get variables => clazz.variables;
+      
+      Category get methods => clazz.functions;
+      
+      List<LinkableType> get interfaces => clazz.implements;
+      
+      LinkableType get superClass => clazz.superClass;
+      
+      /// Updates the display with the correct comment.
+      addComment() {
+        if (clazz.comment != '' && 
+            clazz.comment != null) {
+          var comment = getShadowRoot('dartdoc-class').query('.description');
+          comment.children.clear();
+          comment.children.add(new Element.html(clazz.comment));
+        }
+      }
+      
+    }
+  </script>
+</element>

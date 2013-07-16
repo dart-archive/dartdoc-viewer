@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+<link rel="import" href="category.html">
+
+<element name="dartdoc-method" constructor="MethodElement" extends="article"
+    apply-author-styles>
+  <template>
+    
+    <!-- Return Type -->
+    <a on-click="viewer.handleLink(method.type)">
+      {{method.type.simpleType}}
+    </a>
+    
+    <h1>{{method.decoratedName}}</h1>  
+    
+    <!-- Parameters -->
+    <p>(
+      
+      <!-- TODO(tmandel): Possibly make a custom element for this -->
+      <template iterate="parameter in required">
+        <a on-click="viewer.handleLink(parameter.type)">
+          {{parameter.type.simpleType}}
+        </a>{{parameter.decoratedName}}
+        <template if="parameter != required.last || !optional.isEmpty">
+          ,&nbsp;
+        </template>
+      </template>
+      
+      <template if="!optional.isEmpty">
+        {{optional.first.isNamed ? '{' : '['}}
+        
+        <template iterate="parameter in optional">
+          <a on-click="viewer.handleLink(parameter.type)">
+            {{parameter.type.simpleType}}
+          </a>{{parameter.decoratedName}}
+          <template if="parameter != optional.last">
+            ,&nbsp;
+          </template>
+        </template>
+          
+        {{optional.first.isNamed ? '}' : ']'}}
+      </template>
+        
+    )</p>
+    
+    <!-- Comment -->
+    <section class="description">{{addComment()}}</section>
+    
+  </template>
+  
+  <script type="application/dart">
+    import 'dart:html';
+    
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
+    import 'app.dart';
+    
+    class MethodElement extends WebComponent {
+      Method method;
+      
+      // Required parameters.
+      List<LinkableType> get required => 
+        method.parameters.where((item) => !item.isOptional).toList();
+      
+      // Optional parameters.
+      List<LinkableType> get optional => 
+        method.parameters.where((item) => item.isOptional).toList();
+      
+      /// Updates the display with the correct comment.
+      addComment() {
+        if (method.comment != '' && 
+            method.comment != null) {
+          var comment = getShadowRoot('dartdoc-method').query('.description');
+          comment.children.clear();
+          comment.children.add(new Element.html(method.comment));
+        }
+      }
+    }
+  </script>
+</element>

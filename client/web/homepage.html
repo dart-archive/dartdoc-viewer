@@ -27,6 +27,8 @@
     class HomeElement extends WebComponent {
       Home home;
       
+      List<Container> get libraries => home.libraries;
+      
       /// Updates the display with the correct comment.
       addComment() {
         if (home.comment != '' && 
@@ -36,8 +38,6 @@
           comment.children.add(new Element.html(home.comment));
         }
       }
-      
-      List<Container> get libraries => home.libraries;
     }
   </script>
 </element>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+<link rel="import" href="category.html">
+
+<element name="dartdoc-library" constructor="LibraryElement" extends="article"
+    apply-author-styles>
+  <template>
+    
+    <h1>{{library.decoratedName}}</h1>  
+    
+    <!-- Comment -->
+    <section class="description">{{addComment()}}</section>
+    
+    <template if="variables != null">
+      <dartdoc-category category="{{variables}}"></dartdoc-category>
+    </template>
+    <template if="functions != null">
+      <dartdoc-category category="{{functions}}"></dartdoc-category>
+    </template>
+    <template if="clazzes != null">
+      <dartdoc-category category="{{clazzes}}"></dartdoc-category>
+    </template>
+    
+  </template>
+  
+  <script type="application/dart">
+    import 'dart:html';
+    
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
+    import 'app.dart';
+    
+    class LibraryElement extends WebComponent {
+      Library library;
+      
+      Category get variables => library.variables;
+      
+      Category get functions => library.functions;
+      
+      Category get clazzes => library.classes;
+      
+      /// Updates the display with the correct comment.
+      addComment() {
+        if (library.comment != '' && 
+            library.comment != null) {
+          var comment = getShadowRoot('dartdoc-library').query('.description');
+          comment.children.clear();
+          comment.children.add(new Element.html(library.comment));
+        }
+      }
+    }
+  </script>
+</element>
