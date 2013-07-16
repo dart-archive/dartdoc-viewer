@@ -168,22 +168,32 @@ class Viewer {
 void startHistory() {
   window.onPopState.listen((event) {
     var hash = window.location.hash.replaceFirst('#', '');
-    print(hash); 
+    if (hash != '') {
+      var location = hash.split('/');
+      if (viewer == null) {
+        viewer = new Viewer._(location);
+      } else {
+        location[0] = libraryNames[location[0]];
+        viewer.handleLink(location);
+      }
+    } else {
+      viewer = new Viewer._(null);
+    }
   });
 }
 
 // Handles browser navigation.
 main() {
   
-  startHistory();
+  //startHistory();
   
-  window.onPopState.listen((event) {
-    if (event.state != null) {
-      if (event.state != '') {
-        viewer.changePageWithoutState(pageIndex[event.state]);
-      }
-    } else {
-      viewer.changePageWithoutState(viewer.homePage);
-    }
-  });
+//  window.onPopState.listen((event) {
+//    if (event.state != null) {
+//      if (event.state != '') {
+//        viewer.changePageWithoutState(pageIndex[event.state]);
+//      }
+//    } else {
+//      viewer.changePageWithoutState(viewer.homePage);
+//    }
+//  });
 }

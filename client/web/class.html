@@ -12,7 +12,7 @@
         <template if="!interfaces.isEmpty">
           Implements:&nbsp;
           <template iterate="item in interfaces">
-            <a on-click="viewer.handleLink(item)">
+            <a on-click="viewer.handleLink(item.location)">
               {{item.simpleType}}
             </a>
             <template if="item != interfaces.last">
@@ -25,7 +25,7 @@
         
         </template>
         Extends:&nbsp;
-        <a on-click="viewer.handleLink(superClass)">
+        <a on-click="viewer.handleLink(superClass.location)">
           {{superClass.simpleType}}
         </a>
       </p>

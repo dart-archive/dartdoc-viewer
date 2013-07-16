@@ -7,7 +7,7 @@
   <template>
     
     <!-- Return Type -->
-    <a on-click="viewer.handleLink(method.type)">
+    <a on-click="viewer.handleLink(method.type.location)">
       {{method.type.simpleType}}
     </a>
     
@@ -18,7 +18,7 @@
       
       <!-- TODO(tmandel): Possibly make a custom element for this -->
       <template iterate="parameter in required">
-        <a on-click="viewer.handleLink(parameter.type)">
+        <a on-click="viewer.handleLink(parameter.type.location)">
           {{parameter.type.simpleType}}
         </a>{{parameter.decoratedName}}
         <template if="parameter != required.last || !optional.isEmpty">
@@ -30,7 +30,7 @@
         {{optional.first.isNamed ? '{' : '['}}
         
         <template iterate="parameter in optional">
-          <a on-click="viewer.handleLink(parameter.type)">
+          <a on-click="viewer.handleLink(parameter.type.location)">
             {{parameter.type.simpleType}}
           </a>{{parameter.decoratedName}}
           <template if="parameter != optional.last">
