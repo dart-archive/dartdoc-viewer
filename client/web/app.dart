@@ -88,10 +88,12 @@ class Viewer {
   }
   
   void _updatePage(Item page) {
-    currentPage = page;
-    currentLibrary = page.path[0];
-    currentTopLevel = page.path[1];
-    currentMethod = page.path[2];
+    if (page != null) {
+      currentPage = page;
+      currentLibrary = page.path[0];
+      currentTopLevel = page.path[1];
+      currentMethod = page.path[2];
+    }
   }
   
   /**
@@ -99,6 +101,47 @@ class Viewer {
    * path to a particular [Item] object.
    */
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
+  
+  Item _handleTopLevel(Library library, String topLevel) {
+    if (library.classes != null) {
+      for (Class clazz in library.classes.content) {
+        if (clazz.name == topLevel) return clazz;
+      }
+    }
+    if (library.functions != null) {
+      for (Method function in library.functions.content) {
+        if (function.name == topLevel) return function;
+      }
+    }
+    // TODO(tmandel): Handle variables somehow.
+  }
+  
+  Item _handleMethod(Class topLevel, String member) {
+    if (topLevel.functions != null) {
+      for (Method function in topLevel.functions.content) {
+        if (function.name == member) return function;
+      }
+    }
+    // TODO(tmandel): Handle variables somehow.
+  }
+  
+  Item _findChild(Library library, List members) {
+    if (members.length > 1) {
+      var topLevel = _handleTopLevel(library, members[1]);
+      if (topLevel == null) {
+        return library;
+      } else {
+        if (members.length > 2) {
+          var method = _handleMethod(topLevel, members[2]);
+          if (method == null) {
+            return topLevel;
+          } else {
+            return method;
+          }
+        } else return topLevel;
+      }
+    } else return library;
+  }
   
   /// Handles lazy loading of libraries from links not on the homepage.                               
   void handleLink(LinkableType type) {
@@ -109,23 +152,14 @@ class Viewer {
         if (member is Placeholder) {
           homePage.loadLibrary(member).then((response) {
             var library = response;
-            // TODO(tmandel): Deal with the other stuff.                                              
+            if (library != null)
+              _updatePage(_findChild(library, type.location));
           });
+        } else {
+          _updatePage(_findChild(member, type.location));
         }
       }
-    } else {
-      homePage.libraries.forEach((element) {
-        if (element is Placeholder) {
-          var betterName = libraryNames[element.name];
-          if (type.type.startsWith(betterName)) {
-            element.loadLibrary().then((response) {
-              _updateHomepage(response, element);
-              router.go('other', {'path' : type.location.path});
-            });
-          }
-        }
-      });
-    }
+    } 
   }
 }
 
