@@ -42,8 +42,7 @@
       
       /// Updates the display with the correct comment.
       addComment() {
-        if (library.comment != '' && 
-            library.comment != null) {
+        if (library.comment != '' && library.comment != null) {
           var comment = getShadowRoot('dartdoc-library').query('.description');
           comment.children.clear();
           comment.children.add(new Element.html(library.comment));

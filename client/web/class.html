@@ -63,8 +63,7 @@
       
       /// Updates the display with the correct comment.
       addComment() {
-        if (clazz.comment != '' && 
-            clazz.comment != null) {
+        if (clazz.comment != '' && clazz.comment != null) {
           var comment = getShadowRoot('dartdoc-class').query('.description');
           comment.children.clear();
           comment.children.add(new Element.html(clazz.comment));

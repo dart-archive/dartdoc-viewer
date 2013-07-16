@@ -117,6 +117,8 @@ class Viewer {
   }
   
   Item _handleMethod(Class topLevel, String member) {
+    int hashIndex = member.indexOf('#');
+    
     if (topLevel.functions != null) {
       for (Method function in topLevel.functions.content) {
         if (function.name == member) return function;
@@ -144,19 +146,19 @@ class Viewer {
   }
   
   /// Handles lazy loading of libraries from links not on the homepage.                               
-  void handleLink(LinkableType type) {
-    if (type.location != null) {
-      var libraryName = type.location.first;
+  void handleLink(List<String> location) {
+    if (location != null) {
+      var libraryName = location.first;
       var member = homePage.getMember(libraryName);
       if (member != null) {
         if (member is Placeholder) {
           homePage.loadLibrary(member).then((response) {
             var library = response;
             if (library != null)
-              _updatePage(_findChild(library, type.location));
+              _updatePage(_findChild(library, location));
           });
         } else {
-          _updatePage(_findChild(member, type.location));
+          _updatePage(_findChild(member, location));
         }
       }
     } 

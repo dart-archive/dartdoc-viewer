@@ -31,8 +31,7 @@
       
       /// Updates the display with the correct comment.
       addComment() {
-        if (home.comment != '' && 
-            home.comment != null) {
+        if (home.comment != '' && home.comment != null) {
           var comment = getShadowRoot('dartdoc-homepage').query('.description');
           comment.children.clear();
           comment.children.add(new Element.html(home.comment));
