@@ -27,22 +27,20 @@ final Viewer viewer = new Viewer._();
  */
 class Viewer {
 
-  // The page pathname at first load for navigation.
-  String origin;
+  @observable Item currentLibrary;
+  
+  @observable Item currentTopLevel;
+  
+  @observable Item currentMethod;
 
   /// The homepage from which every [Item] can be reached.
-  @observable Item homePage;
+  @observable Home homePage;
   
   /// The current page being shown.
   @observable Item currentPage;
 
   // Private constructor for singleton instantiation.
   Viewer._() {
-    // Upon startup, the url ends with index.html. To allow for HTTP requests
-    // from any view, a proper path to the origin is needed, so removing 
-    // index.html from the initial url gives a base path for HTTP requests.
-    // TODO(tmandel): Find a way to remove 'origin' variable.
-    origin = window.location.pathname.replaceAll('index.html', '');
     var manifest = retrieveFileContents(sourcePath);
     manifest.then((response) {
       var libraries = response.split('\n');
@@ -64,71 +62,65 @@ class Viewer {
     }
   }
   
-  /// Replaces a [Placeholder] with a [Library] in [homePage]'s content.
-  Library _updateHomepage(String data, Placeholder page) {
-    var lib = loadData(data);
-    var index = homePage.content.indexOf(page);
-    homePage.content.remove(page);
-    homePage.content.insert(index, lib);
-    buildHierarchy(lib, homePage);
-    return lib;
-  }
-  
   /**
    * Pushes state onto the history before updating the [currentPage].
    */
   changePage(Item page) {
     if (page is Placeholder) {
-      var data = page.loadLibrary();
+      var data = homePage.loadLibrary(page);
       data.then((response) {
-        var lib = _updateHomepage(response, page);
-        changePage(lib);
+        _updatePage(response);
       });
     } else if (page != null && currentPage != page) {
-      var state = page.path;
-      var title = 'Dart API Reference';
-      var url = origin;
-      if (state != '') {
-        var title = state.substring(0, state.length - 1);
-        url = '$origin#$state';
-      } else {
-        url = '${origin}index.html';
-      }
-      // TODO(tmandel): Use package:route for history and URLs.
-      window.history.pushState(state, title, url);
+      _updatePage(page);
+//      var state = page.path;
+//      var title = 'Dart API Reference';
+//      var url = origin;
+//      if (state != '') {
+//        var title = state.substring(0, state.length - 1);
+//        url = '$origin#$state';
+//      } else {
+//        url = '${origin}index.html';
+//      }
+//      window.history.pushState(state, title, url);
     }
     changePageWithoutState(page);
+  }
+  
+  void _updatePage(Item page) {
+    currentPage = page;
+    currentLibrary = page.path[0];
+    currentTopLevel = page.path[1];
+    currentMethod = page.path[2];
   }
   
   /**
    * Creates a list of [Item] objects from the [path] describing the
    * path to a particular [Item] object.
    */
-  List<Item> getBreadcrumbs() {
-    // Matches alphanumeric variable/method names ending with a '/'.  
-    var regex = new RegExp(r'(_?([a-zA-Z0-9_%]+)=?)/');
-    var matches = regex.allMatches(currentPage.path);
-    var currentPath = '';
-    var breadcrumbs = [homePage];
-    matches.forEach((match) {
-      currentPath = '$currentPath${match.group(0)}';
-      breadcrumbs.add(pageIndex[currentPath]);
-    });
-    return breadcrumbs;
-  }
+  List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
-  /// Handles lazy loading of libraries from links not on the homepage.
+  /// Handles lazy loading of libraries from links not on the homepage.                               
   void handleLink(LinkableType type) {
     if (type.location != null) {
-      changePage(type.location);
+      var libraryName = type.location.first;
+      var member = homePage.getMember(libraryName);
+      if (member != null) {
+        if (member is Placeholder) {
+          homePage.loadLibrary(member).then((response) {
+            var library = response;
+            // TODO(tmandel): Deal with the other stuff.                                              
+          });
+        }
+      }
     } else {
-      homePage.content.forEach((element) {
+      homePage.libraries.forEach((element) {
         if (element is Placeholder) {
           var betterName = libraryNames[element.name];
           if (type.type.startsWith(betterName)) {
             element.loadLibrary().then((response) {
               _updateHomepage(response, element);
-              changePage(type.location);
+              router.go('other', {'path' : type.location.path});
             });
           }
         }
@@ -137,8 +129,18 @@ class Viewer {
   }
 }
 
+void startHistory() {
+  window.onPopState.listen((event) {
+    var hash = window.location.hash.replaceFirst('#', '');
+    print(hash); 
+  });
+}
+
 // Handles browser navigation.
 main() {
+  
+  startHistory();
+  
   window.onPopState.listen((event) {
     if (event.state != null) {
       if (event.state != '') {

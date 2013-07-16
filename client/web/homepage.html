@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+
+<element name="dartdoc-homepage" constructor="HomeElement" extends="article"
+    apply-author-styles>
+  <template>
+    
+    <h1>{{home.decoratedName}}</h1>  
+    
+    <!-- Comment -->
+    <section class="description">{{addComment()}}</section>
+    
+    <template iterate="library in libraries">
+      <dartdoc-item item="{{library}}"></dartdoc-item>
+    </template>
+    
+  </template>
+  
+  <script type="application/dart">
+    import 'dart:html';
+    
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
+    import 'app.dart';
+    
+    class HomeElement extends WebComponent {
+      Home home;
+      
+      /// Updates the display with the correct comment.
+      addComment() {
+        if (home.comment != '' && 
+            home.comment != null) {
+          var comment = getShadowRoot('dartdoc-homepage').query('.description');
+          comment.children.clear();
+          comment.children.add(new Element.html(home.comment));
+        }
+      }
+      
+      List<Container> get libraries => home.libraries;
+    }
+  </script>
+</element>

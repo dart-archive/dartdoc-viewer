@@ -50,6 +50,8 @@ class Category extends Container {
  * A [CompositeContainer] synonymous with a page.
  */
 abstract class Item extends Container {
+  List<Item> path = [];
+  
   /// [Item]'s name with its properties properly appended. 
   String get decoratedName => name;
 }
@@ -79,6 +81,7 @@ class Home extends Item {
   /// The constructor parses the [allLibraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
   Home(List libraries) {
+    this.path = [null, null, null, null];
     this.name = 'Dart API Reference';
     this.libraries = [];
     for (String library in libraries) {
@@ -94,6 +97,7 @@ class Home extends Item {
     return data.then((response) {
       var lib = loadData(response);
       var index = libraries.indexOf(place);
+      buildHierarchy(lib, lib);
       libraries.remove(place);
       libraries.insert(index, lib);
       return lib;
@@ -109,6 +113,30 @@ class Home extends Item {
         return lib;
       }
     }
+  }
+}
+
+void buildHierarchy(Item page, Item previous) {
+  if (page is Item) {
+    page.path
+      ..addAll(previous.path)
+      ..add(page);
+    if (page is Library || page is Class) {
+      if (page.functions != null) {
+        page.functions.content.forEach((method) {
+          buildHierarchy(method, page);
+        });
+      }
+    }
+    if (page is Library) {
+      if (page.classes != null) {
+        page.classes.content.forEach((clazz) {
+          buildHierarchy(clazz, page);
+        });
+      }
+    }
+    // All paths should have four elements for breadcrumbs.
+    while (page.path.length < 4) page.path.add(null);
   }
 }
 
@@ -143,7 +171,7 @@ class Library extends Item {
  */
 class Class extends Item {
   
-  Category methods;
+  Category functions;
   Category variables;
   
   LinkableType superClass;
@@ -158,7 +186,7 @@ class Class extends Item {
       variables = new Category.forVariables(yaml['variables']);
     }
     if (yaml['methods'] != null) {
-      methods = new Category.forFunctions(yaml['methods'], 'Methods');
+      functions = new Category.forFunctions(yaml['methods'], 'Methods');
     }
     this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = yaml['abstract'] == 'true';
@@ -262,7 +290,6 @@ class Variable extends Container {
 /**
  * A Dart type that should link to other [Item]s.
  */
-// TODO(tmandel): Deal with this garbage.
 class LinkableType {
 
   /// The resolved qualified name of the type this [LinkableType] represents.

@@ -12,9 +12,8 @@
 
 <nav class="breadcrumbs">
   <template if="viewer.currentPage != null">
-    <template instantiate="if viewer.currentPage.path != null">
-      <template iterate="item in viewer.getBreadcrumbs()">
-        <!-- TODO(tmandel): Use a better tag for these links -->
+    <template iterate="item in viewer.breadcrumbs">
+      <template instantiate="if item != null">
         <a on-click="viewer.changePage(item)">{{item.name}}</a>
       </template>
     </template>

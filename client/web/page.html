@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <link rel="import" href="item.html">
+<link rel="import" href="homepage.html">
 <link rel="import" href="category.html">
   
 <element name="dartdoc-page" constructor="PageElement" extends="article"
@@ -46,11 +47,39 @@
         
       )</p>
     </template>
-    
-    <!-- Inheritance -->
-    <template instantiate="if page.currentPage is Class">
-      <p>
+  
+    <template if="page.currentPage != null">
+      
+      <!-- Home -->
+      <template instantiate="if page.currentPage is Home">
+        <dartdoc-homepage home="{{page.currentPage}}"></dartdoc-homepage>
+      </template>
+
+      <!-- Library -->
+      <template instantiate="if page.currentPage is Library">
         
+        <!-- Comment -->
+        <section class="description">{{addComment()}}</section>
+        
+        <template if="page.currentPage.variables != null">
+          <dartdoc-category category="{{page.currentPage.variables}}">
+          </dartdoc-category>
+        </template>
+        <template if="page.currentPage.functions != null">
+          <dartdoc-category category="{{page.currentPage.functions}}">
+          </dartdoc-category>
+        </template>
+        <template if="page.currentPage.classes != null">
+          <dartdoc-category category="{{page.currentPage.classes}}">
+          </dartdoc-category>
+        </template>
+      </template>
+      
+      
+      <!-- Class -->
+      <template instantiate="if page.currentPage is Class">
+        <p>
+          
         <template if="!interfaces.isEmpty">
           Implements:&nbsp;
           <template iterate="item in interfaces">
@@ -72,23 +101,10 @@
         </a>
         
       </p>
-    </template>
-
-    <!-- Comment -->
-    <section class="description">{{addComment()}}</section>
-
-    <!-- Contents -->
-    <template instantiate="if page.currentPage != null">
-      <template iterate="item in page.currentPage.content">
-        <template if="item is Item">
-          <dartdoc-item item="{{item}}"></dartdoc-item>
-        </template>
-        <template if="item is Category">
-          <dartdoc-category category="{{item}}" class="category">
-          </dartdoc-category>
-        </template>
       </template>
-    </template> 
+    </template>
+    
+
   </template>
   
   <script type="application/dart">
