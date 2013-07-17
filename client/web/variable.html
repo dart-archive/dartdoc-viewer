@@ -4,8 +4,10 @@
   <template>
     <p class="description">
       {{prefix}}&nbsp; 
-      <a on-click="app.viewer.handleLink(type.location)">{{type.simpleType}}</a>&nbsp;
-      {{name}}
+      <a on-click="app.viewer.handleLink(type.location)">
+        {{type.simpleType}}
+      </a>
+      &nbsp;{{name}}
     </p>
   </template>
   <script type="application/dart">
@@ -26,6 +28,8 @@
       
       String get name => variable.name;
       
+      // Cannot extend MemberElement because the description <p> tag should
+      // not be cleared since it also contains the name and type.
       inserted() {
         if (variable.comment != '' && variable.comment != null) {
           var comment = getShadowRoot('dartdoc-variable').query('.description');

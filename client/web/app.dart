@@ -44,60 +44,54 @@ class Viewer {
       var libraries = response.split('\n');
       currentPage = new Home(libraries);
       homePage = currentPage;
-      return true;
     });
   }
   
   /// The title of the current page.
   String get title => currentPage == null ? '' : currentPage.decoratedName;
   
-  /// Updates the current page.
+  /// Updates [currentPage] to be [page].
   void _updatePage(Item page) {
     if (page != null) {
       currentPage = page;
     }
   }
   
-  /**
-   * Creates a list of [Item] objects from the [path] describing the
-   * path to a particular [Item] object.
-   */
+  /// Creates a list of [Item] objects describing the path to [currentPage].
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
-  Item _handleTopLevel(Library library, String topLevel) {
+  /// Finds a member of a library matching [topLevel].
+  Item _checkTopLevel(Library library, String topLevel) {
     if (library.classes != null) {
       for (Class clazz in library.classes.content) {
         if (clazz.name == topLevel) return clazz;
       }
     }
-    if (library.functions != null) {
-      for (Method function in library.functions.content) {
-        if (function.name == topLevel) return function;
-      }
-    }
-    // TODO(tmandel): Handle variables somehow.
+    _checkFunctions(library, topLevel);
+    // TODO(tmandel): Handle variable linking with '#' characters.
   }
   
-  Item _handleMethod(Class topLevel, String member) {
-    int hashIndex = member.indexOf('#');
-    
-    if (topLevel.functions != null) {
-      for (Method function in topLevel.functions.content) {
+  /// Finds a member of [outer] (that contains a 'functions' category) that
+  /// matches [member].
+  Item _checkFunctions(Item outer, String member) {
+    if (outer.functions != null) {
+      for (Method function in outer.functions.content) {
         if (function.name == member) return function;
       }
     }
-    // TODO(tmandel): Handle variables somehow.
   }
   
+  /// Finds the member of [library] defined by the path in [members].
   Item _findChild(Library library, List members) {
-    members.removeWhere((element) => element == '');
+    // If the url ends with a '/' an extra element needs to be removed.
+    if (members.last == '') members.removeLast();
     if (members.length > 1) {
-      var topLevel = _handleTopLevel(library, members[1]);
+      var topLevel = _checkTopLevel(library, members[1]);
       if (topLevel == null) {
         return library;
       } else {
         if (members.length > 2) {
-          var method = _handleMethod(topLevel, members[2]);
+          var method = _checkFunctions(topLevel, members[2]);
           if (method == null) {
             return topLevel;
           } else {
@@ -108,13 +102,19 @@ class Viewer {
     } else return library;
   }
   
+  /// Finds the correct [Item] described by [location] and pushes state to
+  /// the history api for navigation.
   void handleLink(List<String> location) {
     _handleLinkWithoutState(location).then((response) {
       if (response) _updateState(currentPage);
     });
   }
   
-  /// Handles lazy loading of libraries from links not on the homepage.                               
+  /**
+   * Finds the correct [Item] described by [location] and does not push
+   * state to the history api.
+   * Returns a [Future] to determine if a link was found or not.
+   */
   Future _handleLinkWithoutState(List<String> location) {
     if (location != null) {
       var libraryName = location.first;
@@ -145,6 +145,7 @@ class Viewer {
     return new Future.value(false);
   }
   
+  /// Updates [currentPage] to [page] and pushes state for navigation.
   void changePage(Item page) {
     if (page is Placeholder) {
       homePage.loadLibrary(page).then((response) {
@@ -157,6 +158,7 @@ class Viewer {
     }
   }
   
+  /// Pushes state to history for navigation in the browser.
   void _updateState(Item page) {
     String url = '#home';
     for (var member in page.path) {
@@ -168,8 +170,10 @@ class Viewer {
   }
 }
 
+/// The latest url reached by a popState event.
 String location;
 
+/// Listens for browser navigation and acts accordingly.
 void startHistory() {
   window.onPopState.listen((event) {
     location = window.location.hash.replaceFirst('#', '');
@@ -180,36 +184,15 @@ void startHistory() {
   });
 }
 
-// Handles browser navigation.
+/// Handles browser navigation.
 main() {
   startHistory();
   viewer = new Viewer._();
+  // If a user navigates to a page other than the homepage, the viewer
+  // must first load fully before navigating to the specified page.
   viewer.finished.then((_) {
     if (location != null && location != '') {
       viewer._handleLinkWithoutState(location.split('/'));
     }
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

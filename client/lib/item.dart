@@ -7,6 +7,9 @@ import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:web_ui/web_ui.dart';
 
+// TODO(tmandel): Don't hardcode in a path if it can be avoided.
+const docsPath = '../../docs/';
+
 /**
  * Anything that holds values and can be displayed.
  */
@@ -25,7 +28,6 @@ String _wrapComment(String comment) {
 /**
  * A [Container] that contains other [Container]s to be displayed.
  */
-// TODO(tmandel): Category should have content, but Item shouldn't.
 class Category extends Container {
   
   List<Container> content = [];
@@ -50,6 +52,7 @@ class Category extends Container {
  * A [CompositeContainer] synonymous with a page.
  */
 abstract class Item extends Container {
+  /// A list of [Item]s representing the path to this [Item].
   List<Item> path = [];
   
   /// [Item]'s name with its properties properly appended. 
@@ -74,13 +77,13 @@ class Placeholder extends Item {
  */
 class Home extends Item {
   
+  /// All libraries being viewed from the homepage.
   List<Item> libraries;
-  
-  String docsPath = '../../docs/';
   
   /// The constructor parses the [allLibraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
   Home(List libraries) {
+    // All paths must have three elements for breadcrumbs.
     this.path = [null, null, null];
     this.name = 'Dart API Reference';
     this.libraries = [];
@@ -104,9 +107,12 @@ class Home extends Item {
     });
   }
   
+  /// Checks if [library] is defined in [libraries].
   bool contains(String library) => libraryNames.values.contains(library);
   
-  // TODO(tmandel): Stop looping through 'libraries' so much.
+  /// Returns the [Item] object representing [library].
+  // TODO(tmandel): Stop looping through 'libraries' so much. Possibly use a 
+  // map from library names to their objects.
   Item getMember(String library) {
     for (var lib in libraries) {
       if (libraryNames[lib.name] == library) {
@@ -116,6 +122,8 @@ class Home extends Item {
   }
 }
 
+
+/// Runs through the member structure and creates path information.
 void buildHierarchy(Item page, Item previous) {
   if (page is Item) {
     page.path
