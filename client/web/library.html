@@ -6,96 +6,60 @@
 <element name="dartdoc-library" constructor="LibraryElement" extends="article"
     apply-author-styles>
   <template>
-    <template if="library == null">
+    <template if="item == null">
       Loading...
     </template>
-    <template if="library != null">
-      <template if="toplevelname == null">
-        
-        <h1>{{library.decoratedName}}</h1>  
-      
-        <!-- Comment -->
-        <section class="description">{{addComment()}}</section>
-      
-        <template if="variables != null">
-          <dartdoc-category category="{{variables}}"></dartdoc-category>
-        </template>
-        <template if="functions != null">
-          <dartdoc-category category="{{functions}}"></dartdoc-category>
-        </template>
-        <template if="clazzes != null">
-          <dartdoc-category category="{{clazzes}}"></dartdoc-category>
-        </template>
-        
+    <template if="item != null">
+      <h1>{{item.decoratedName}}</h1>  
+    
+      <!-- Comment -->
+      <section class="description">{{addComment('dartdoc-library')}}</section>
+    
+      <template if="variables != null">
+        <dartdoc-category category="{{variables}}"></dartdoc-category>
       </template>
-      <template if="toplevelname != null">
-        <dartdoc-class 
-          classname="{{toplevelname}}" library="{{library}}">
-        </dartdoc-class>
+      <template if="functions != null">
+        <dartdoc-category category="{{functions}}"></dartdoc-category>
+      </template>
+      <template if="clazzes != null">
+        <dartdoc-category category="{{clazzes}}"></dartdoc-category>
       </template>
     </template>  
   </template>
   
   <script type="application/dart">
     import 'dart:async';
-    import 'dart:html';
     
-    import 'package:dartdoc_viewer/client.dart';
-    import 'package:dartdoc_viewer/data.dart';
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
     
     import 'app.dart';
+    import 'member.dart';
     
-    class LibraryElement extends WebComponent {
-      RouteHandle route;
-      String libname;
-      @observable String toplevelname;
-      @observable Library library;
+    class LibraryElement extends MemberElement {
       
       inserted() {
-        print('library inserted');
-        print(toplevelname == null);
-        var topLevelRoute = route.getRoute('topLevelId');
-        _showLibrary().then((response) { 
-          this.library = response;
-        });
+        _showLibrary();
       }
       
       /// Route handler for libraries.
-      Future _showLibrary() {
-        var libraryName = libname;
-        for (var lib in viewer.homePage.libraries) {
-          if (libraryNames[lib.name] == libraryName) {
-            if (lib is Placeholder) {
-              return viewer.homePage.loadLibrary(lib).then((response) {
-                viewer.currentLibrary = response;
-                viewer.currentPage = response;
-                return response;
-              });
-            } else {
-              viewer.currentLibrary = lib;
-              viewer.currentPage = lib;
-              return new Future.value(lib);
-            }
-          }
+      void _showLibrary() {
+        if (item is Placeholder) {
+          viewer.homePage.loadLibrary(item).then((response) {
+            viewer.currentPage = response;
+            item = response;
+          });
+        } else {
+          viewer.currentPage = item;
         }
       }
       
-      Category get variables => library.variables;
+      Category get variables => item.variables;
       
-      Category get functions => library.functions;
+      Category get functions => item.functions;
       
-      Category get clazzes => library.classes;
+      Category get clazzes => item.classes;
       
-      /// Updates the display with the correct comment.
-      addComment() {
-        if (library.comment != '' && library.comment != null) {
-          var comment = getShadowRoot('dartdoc-library').query('.description');
-          comment.children.clear();
-          comment.children.add(new Element.html(library.comment));
-        }
-      }
     }
   </script>
 </element>

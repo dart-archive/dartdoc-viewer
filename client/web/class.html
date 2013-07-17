@@ -5,23 +5,23 @@
 <element name="dartdoc-class" constructor="ClassElement" extends="article"
     apply-author-styles>
   <template>
-    <template if="clazz == null">
+    <template if="item == null">
       Loading...
     </template>
-    <template if="clazz != null">
-      <h1>{{clazz.decoratedName}}</h1>  
+    <template if="item != null">
+      <h1>{{item.decoratedName}}</h1>  
       
         <p>
           <template if="!interfaces.isEmpty">
             Implements:&nbsp;
-            <template iterate="item in interfaces">
-              <a on-click="viewer.handleLink(item.location)">
-                {{item.simpleType}}
+            <template iterate="interface in interfaces">
+              <a on-click="viewer.handleLink(interface.location)">
+                {{interface.simpleType}}
               </a>
-              <template if="item != interfaces.last">
+              <template if="interface != interfaces.last">
                 ,&nbsp;
               </template>
-              <template instantiate="if item == interfaces.last">
+              <template instantiate="if interface == interfaces.last">
                 <br/>
               </template>
             </template>
@@ -34,7 +34,7 @@
         </p>
     
       <!-- Comment -->
-      <section class="description">{{addComment()}}</section>
+      <section class="description">{{addComment('dartdoc-class')}}</section>
       
       <template instantiate="if variables != null">
         <dartdoc-category category="{{variables}}"></dartdoc-category>
@@ -47,52 +47,21 @@
   </template>
   
   <script type="application/dart">
-    import 'dart:html';
     
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
     
     import 'app.dart';
+    import 'member.dart';
     
-    class ClassElement extends WebComponent {
-      String classname;
-      Library library;
-      @observable Class clazz;
+    class ClassElement extends MemberElement {
+      Category get variables => item.variables;
       
-      inserted() {
-        print('class inserted');
-        _showClass();
-      }
+      Category get methods => item.functions;
       
-      void _showClass() {
-        if (library.classes.content != null) {
-          for (var element in library.classes.content) {
-            if (element.name == classname) { 
-              clazz = element;
-              break;
-            }
-          }        
-        } else {
-          // TODO(tmandel): We have a problem.
-        }
-      }
+      List<LinkableType> get interfaces => item.implements;
       
-      Category get variables => clazz.variables;
-      
-      Category get methods => clazz.functions;
-      
-      List<LinkableType> get interfaces => clazz.implements;
-      
-      LinkableType get superClass => clazz.superClass;
-      
-      /// Updates the display with the correct comment.
-      addComment() {
-        if (clazz.comment != '' && clazz.comment != null) {
-          var comment = getShadowRoot('dartdoc-class').query('.description');
-          comment.children.clear();
-          comment.children.add(new Element.html(clazz.comment));
-        }
-      }
+      LinkableType get superClass => item.superClass;
       
     }
   </script>

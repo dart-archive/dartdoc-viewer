@@ -10,26 +10,27 @@
   <template>
       
     <!-- Home -->
-    <template if="currentRouteName == 'home'">
+    <template if="app.viewer.currentPage is Home">
       <dartdoc-homepage home="{{app.viewer.homePage}}"></dartdoc-homepage>
     </template>
 
     <template if="app.viewer.homePage != null">
       
       <!-- Library -->
-      <template if="currentRouteName == 'library'">
-        <dartdoc-library 
-          route="{{route.getRoute('libraryId')}}" 
-          libname="{{library}}" 
-          toplevelname="{{topLevel}}">
+      <template if="app.viewer.currentPage is Library">
+        <dartdoc-library item="{{app.viewer.currentPage}}">
         </dartdoc-library>
       </template>
         
-      <!-- Method 
-      <template instantiate="if page.currentPage is Method">
-        <dartdoc-method method="{{page.currentPage}}"></dartdoc-method>
+      <!-- Class -->
+      <template if="app.viewer.currentPage is Class">
+        <dartdoc-class item="{{app.viewer.currentPage}}"></dartdoc-class>
+      </template>  
+        
+      <!-- Method -->
+      <template instantiate="if app.viewer.currentPage is Method">
+        <dartdoc-method item="{{app.viewer.currentPage}}"></dartdoc-method>
       </template>
-      -->
      
     </template>
 
@@ -48,34 +49,8 @@
      * An HTML representation of a page
      */
     class PageElement extends WebComponent {
-      RouteHandle route;
-      @observable String library;
-      @observable String topLevel;
-      @observable String method;
-      @observable String currentRouteName;
-      
-      inserted() {
-        var homeRoute = route.getRoute('home');
-        homeRoute.onRoute.listen((_) => currentRouteName = 'home');
-        
-        var libRoute = route.getRoute('libraryId');
-        libRoute.onRoute.listen((RouteEvent e) {
-          library = e.parameters['libraryId'];
-          print(e.parameters['libraryId']);
-          currentRouteName = 'library';
-        });
-        
-        var topLevelRoute = libRoute.getRoute('topLevelId');
-        topLevelRoute.onRoute.listen((RouteEvent e) {
-          topLevel = e.parameters['topLevelId'];
-          print(e.parameters['topLevelId']);
-          currentRouteName = 'library';
-        });
-      }
-      
-      removed() {
-        route.discard();
-      }
+      @observable Home home;
+
     }
   </script>
 </element>

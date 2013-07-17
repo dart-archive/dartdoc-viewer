@@ -81,7 +81,7 @@ class Home extends Item {
   /// The constructor parses the [allLibraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
   Home(List libraries) {
-    this.path = [null, null, null, null];
+    this.path = [null, null, null];
     this.name = 'Dart API Reference';
     this.libraries = [];
     for (String library in libraries) {
@@ -135,8 +135,8 @@ void buildHierarchy(Item page, Item previous) {
         });
       }
     }
-    // All paths should have four elements for breadcrumbs.
-    while (page.path.length < 4) page.path.add(null);
+    // All paths should have three elements for breadcrumbs.
+    while (page.path.length < 3) page.path.add(null);
   }
 }
 

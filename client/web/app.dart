@@ -9,32 +9,27 @@
 // TODO(janicejl): Add a link to the dart docgen landing page in future. 
 library dartdoc_viewer;
 
+import 'dart:async';
 import 'dart:html';
-import 'package:web_ui/web_ui.dart';
-import 'package:dartdoc_viewer/client.dart';
+
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
+import 'package:web_ui/web_ui.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the YAML file being read in. 
 const sourcePath = '../../docs/library_list.txt';
 
 /// The [Viewer] object being displayed.
-final Viewer viewer = new Viewer._();
-
-Router router;
+Viewer viewer;
 
 /**
  * The Dartdoc Viewer application state.
  */
 class Viewer {
-
-  @observable Item currentLibrary;
   
-  @observable Item currentTopLevel;
-  
-  @observable Item currentMethod;
+  Future finished;
 
   /// The homepage from which every [Item] can be reached.
   @observable Home homePage;
@@ -45,10 +40,11 @@ class Viewer {
   // Private constructor for singleton instantiation.
   Viewer._() {
     var manifest = retrieveFileContents(sourcePath);
-    manifest.then((response) {
+    finished = manifest.then((response) {
       var libraries = response.split('\n');
       currentPage = new Home(libraries);
       homePage = currentPage;
+      return true;
     });
   }
   
@@ -56,13 +52,9 @@ class Viewer {
   String get title => currentPage == null ? '' : currentPage.decoratedName;
   
   /// Updates the current page.
-  // TODO(tmandel): Currently this is not used. Could be useful if not private.
   void _updatePage(Item page) {
     if (page != null) {
       currentPage = page;
-      currentLibrary = page.path[0];
-      currentTopLevel = page.path[1];
-      currentMethod = page.path[2];
     }
   }
   
@@ -98,6 +90,7 @@ class Viewer {
   }
   
   Item _findChild(Library library, List members) {
+    members.removeWhere((element) => element == '');
     if (members.length > 1) {
       var topLevel = _handleTopLevel(library, members[1]);
       if (topLevel == null) {
@@ -115,72 +108,108 @@ class Viewer {
     } else return library;
   }
   
+  void handleLink(List<String> location) {
+    _handleLinkWithoutState(location).then((response) {
+      if (response) _updateState(currentPage);
+    });
+  }
+  
   /// Handles lazy loading of libraries from links not on the homepage.                               
-  Item handleLink(List<String> location) {
+  Future _handleLinkWithoutState(List<String> location) {
     if (location != null) {
       var libraryName = location.first;
+      if (libraryName == 'home') {
+        _updatePage(homePage);
+        return new Future.value(true);
+      }
       var member = homePage.getMember(libraryName);
       if (member != null) {
         if (member is Placeholder) {
-          homePage.loadLibrary(member).then((response) {
+          return homePage.loadLibrary(member).then((response) {
             var library = response;
-            if (library != null)
-              return _findChild(library, location);
+            if (library != null) {
+              var child = _findChild(library, location);
+              if (child != null) _updatePage(child);
+              return true;
+            }
           });
         } else {
-          return _findChild(member, location);
+          var child = _findChild(member, location);
+          if (child != null) {
+            _updatePage(child);
+            return new Future.value(true);
+          }
         }
       }
-    } 
+    }
+    return new Future.value(false);
   }
   
-  // TODO(tmandel): This should take in a list of strings and go to the right place.
-  changePage(Item page) {
-    var path = []..addAll(page.path);
-    path.removeWhere((element) => element == null || element == homePage);
-    if (page is Placeholder || path.length == 1) {
-      print('going to a library');
-      router.go('libraryId', { 'libraryId' : page.name });
-    } else if (path.length == 0) {
-      print('going home');
-      router.go('home', {});
-    } else if (path.length == 2) {
-      print('going to a toplevel');
-      router.go('libraryId.topLevelId', { 
-        'libraryId' : path[0].name,
-        'topLevelId' : path[1].name 
+  void changePage(Item page) {
+    if (page is Placeholder) {
+      homePage.loadLibrary(page).then((response) {
+        _updatePage(response);
+        _updateState(response);
       });
-      print(router.url('libraryId.topLevelId', parameters: { 
-        'libraryId' : path[0].name,
-        'topLevelId' : path[1].name 
-      }));
-    } else if (path.length == 3) {
-      print('going to a method');
-      router.go('libraryId.topLevelId.methodId', { 
-        'libraryId' : path[0].name,
-        'topLevelId' : path[1].name,
-        'methodId' : path[2].name
-      });
+    } else {
+      _updatePage(page);
+      _updateState(page);
     }
   }
+  
+  void _updateState(Item page) {
+    String url = '#home';
+    for (var member in page.path) {
+      if (member != null)
+        url = url == '#home' ? '#${libraryNames[member.name]}' : 
+          '$url/${member.name}';
+    }
+    window.history.pushState(url, url.replaceAll('/', '->'), url);
+  }
+}
+
+String location;
+
+void startHistory() {
+  window.onPopState.listen((event) {
+    location = window.location.hash.replaceFirst('#', '');
+    if (viewer.homePage != null) {
+      if (location != '') viewer._handleLinkWithoutState(location.split('/'));
+      else viewer._handleLinkWithoutState(['home']);
+    }
+  });
 }
 
 // Handles browser navigation.
 main() {
-  router = new Router(useFragment: true);
-  router.root
-  // TODO(tmandel): Try not to end with a /.
-    ..addRoute(
-        name: 'home',
-        path: 'home',
-        defaultRoute: true)
-    ..addRoute(
-        name: 'libraryId',
-        path: ':libraryId/',
-        mount: (child) =>
-          child
-            ..addRoute(
-                name: 'topLevelId',
-                path: ':topLevelId/'));
-  router.listen();
+  startHistory();
+  viewer = new Viewer._();
+  viewer.finished.then((_) {
+    if (location != null && location != '') {
+      viewer._handleLinkWithoutState(location.split('/'));
+    }
+  });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

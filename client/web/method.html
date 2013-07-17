@@ -5,76 +5,71 @@
 <element name="dartdoc-method" constructor="MethodElement" extends="article"
     apply-author-styles>
   <template>
-    
-    <!-- Return Type -->
-    <a on-click="viewer.handleLink(method.type.location)">
-      {{method.type.simpleType}}
-    </a>
-    
-    <h1>{{method.decoratedName}}</h1>  
-    
-    <!-- Parameters -->
-    <p>(
+    <template if="item == null">
+      Loading...
+    </template>
+    <template if="item != null">
       
-      <!-- TODO(tmandel): Possibly make a custom element for this -->
-      <template iterate="parameter in required">
-        <a on-click="viewer.handleLink(parameter.type.location)">
-          {{parameter.type.simpleType}}
-        </a>{{parameter.decoratedName}}
-        <template if="parameter != required.last || !optional.isEmpty">
-          ,&nbsp;
-        </template>
-      </template>
+      <!-- Return Type -->
+      <a on-click="viewer.handleLink(item.type.location)">
+        {{item.type.simpleType}}
+      </a>
       
-      <template if="!optional.isEmpty">
-        {{optional.first.isNamed ? '{' : '['}}
+      <h1>{{item.decoratedName}}</h1>  
+      
+      <!-- Parameters -->
+      <p>(
         
-        <template iterate="parameter in optional">
+        <!-- TODO(tmandel): Possibly make a custom element for this -->
+        <template iterate="parameter in required">
           <a on-click="viewer.handleLink(parameter.type.location)">
             {{parameter.type.simpleType}}
           </a>{{parameter.decoratedName}}
-          <template if="parameter != optional.last">
+          <template if="parameter != required.last || !optional.isEmpty">
             ,&nbsp;
           </template>
         </template>
-          
-        {{optional.first.isNamed ? '}' : ']'}}
-      </template>
         
-    )</p>
+        <template if="!optional.isEmpty">
+          {{optional.first.isNamed ? '{' : '['}}
+          
+          <template iterate="parameter in optional">
+            <a on-click="viewer.handleLink(parameter.type.location)">
+              {{parameter.type.simpleType}}
+            </a>{{parameter.decoratedName}}
+            <template if="parameter != optional.last">
+              ,&nbsp;
+            </template>
+          </template>
+            
+          {{optional.first.isNamed ? '}' : ']'}}
+        </template>
+          
+      )</p>
+      
+      <!-- Comment -->
+      <section class="description">{{addComment('dartdoc-method')}}</section>
     
-    <!-- Comment -->
-    <section class="description">{{addComment()}}</section>
-    
+    </template>
   </template>
   
   <script type="application/dart">
-    import 'dart:html';
     
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
     
     import 'app.dart';
+    import 'member.dart';
     
-    class MethodElement extends WebComponent {
-      @observable Method method;
+    class MethodElement extends MemberElement {
       
       // Required parameters.
       List<LinkableType> get required => 
-        method.parameters.where((item) => !item.isOptional).toList();
+        item.parameters.where((parameter) => !parameter.isOptional).toList();
       
       // Optional parameters.
       List<LinkableType> get optional => 
-        method.parameters.where((item) => item.isOptional).toList();
-      
-      /// Updates the display with the correct comment.
-      addComment() {
-        if (method.comment != '' && method.comment != null) {
-          var comment = getShadowRoot('dartdoc-method').query('.description');
-          comment.children.clear();
-          comment.children.add(new Element.html(method.comment));
-        }
-      }
+        item.parameters.where((parameter) => parameter.isOptional).toList();
     }
   </script>
 </element>

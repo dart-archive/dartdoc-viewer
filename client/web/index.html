@@ -21,5 +21,7 @@
     </template>
   </nav>
 
-  <dartdoc-page route="{{router.root.newHandle()}}"></dartdoc-page>
+  <template instantiate="if viewer.homePage != null">
+    <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
+  </template>
 </body>
