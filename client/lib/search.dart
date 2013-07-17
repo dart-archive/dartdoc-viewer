@@ -102,4 +102,3 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
     return scoredResults;
   } 
 }
-
