@@ -11,6 +11,7 @@ library dartdoc_viewer;
 
 import 'dart:html';
 import 'package:web_ui/web_ui.dart';
+import 'package:dartdoc_viewer/client.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
@@ -21,6 +22,8 @@ const sourcePath = '../../docs/library_list.txt';
 
 /// The [Viewer] object being displayed.
 final Viewer viewer = new Viewer._();
+
+Router router;
 
 /**
  * The Dartdoc Viewer application state.
@@ -52,41 +55,8 @@ class Viewer {
   /// The title of the current page.
   String get title => currentPage == null ? '' : currentPage.decoratedName;
   
-  /**
-   * Changes the currentPage to the page of the item clicked
-   * without pushing state onto the history.
-   */
-  changePageWithoutState(Item page) {
-    if (page != null) {
-      currentPage = page;
-    }
-  }
-  
-  /**
-   * Pushes state onto the history before updating the [currentPage].
-   */
-  changePage(Item page) {
-    if (page is Placeholder) {
-      var data = homePage.loadLibrary(page);
-      data.then((response) {
-        _updatePage(response);
-      });
-    } else if (page != null && currentPage != page) {
-      _updatePage(page);
-//      var state = page.path;
-//      var title = 'Dart API Reference';
-//      var url = origin;
-//      if (state != '') {
-//        var title = state.substring(0, state.length - 1);
-//        url = '$origin#$state';
-//      } else {
-//        url = '${origin}index.html';
-//      }
-//      window.history.pushState(state, title, url);
-    }
-    changePageWithoutState(page);
-  }
-  
+  /// Updates the current page.
+  // TODO(tmandel): Currently this is not used. Could be useful if not private.
   void _updatePage(Item page) {
     if (page != null) {
       currentPage = page;
@@ -146,7 +116,7 @@ class Viewer {
   }
   
   /// Handles lazy loading of libraries from links not on the homepage.                               
-  void handleLink(List<String> location) {
+  Item handleLink(List<String> location) {
     if (location != null) {
       var libraryName = location.first;
       var member = homePage.getMember(libraryName);
@@ -155,45 +125,58 @@ class Viewer {
           homePage.loadLibrary(member).then((response) {
             var library = response;
             if (library != null)
-              _updatePage(_findChild(library, location));
+              return _findChild(library, location);
           });
         } else {
-          _updatePage(_findChild(member, location));
+          return _findChild(member, location);
         }
       }
     } 
   }
-}
-
-void startHistory() {
-  window.onPopState.listen((event) {
-    var hash = window.location.hash.replaceFirst('#', '');
-    if (hash != '') {
-      var location = hash.split('/');
-      if (viewer == null) {
-        viewer = new Viewer._(location);
-      } else {
-        location[0] = libraryNames[location[0]];
-        viewer.handleLink(location);
-      }
-    } else {
-      viewer = new Viewer._(null);
+  
+  // TODO(tmandel): This should take in a list of strings and go to the right place.
+  changePage(Item page) {
+    var path = []..addAll(page.path);
+    path.removeWhere((element) => element == null || element == homePage);
+    if (page is Placeholder || path.length == 1) {
+      print('going to a library');
+      router.go('libraryId', { 'libraryId' : page.name });
+    } else if (path.length == 0) {
+      print('going home');
+      router.go('home', {});
+    } else if (path.length == 2) {
+      print('going to a toplevel');
+      router.go('libraryId.topLevelId', { 
+        'libraryId' : path[0].name,
+        'topLevelId' : path[1].name 
+      });
+    } else if (path.length == 3) {
+      print('going to a method');
+      router.go('libraryId.topLevelId.methodId', { 
+        'libraryId' : path[0].name,
+        'topLevelId' : path[1].name,
+        'methodId' : path[2].name
+      });
     }
-  });
+  }
 }
 
 // Handles browser navigation.
 main() {
-  
-  //startHistory();
-  
-//  window.onPopState.listen((event) {
-//    if (event.state != null) {
-//      if (event.state != '') {
-//        viewer.changePageWithoutState(pageIndex[event.state]);
-//      }
-//    } else {
-//      viewer.changePageWithoutState(viewer.homePage);
-//    }
-//  });
+  router = new Router(useFragment: true);
+  router.root
+  // TODO(tmandel): Try not to end with a /.
+    ..addRoute(
+        name: 'home',
+        path: 'home',
+        defaultRoute: true)
+    ..addRoute(
+        name: 'libraryId',
+        path: ':libraryId/',
+        mount: (child) =>
+          child
+            ..addRoute(
+                name: 'topLevelId',
+                path: ':topLevelId/'));
+  router.listen();
 }

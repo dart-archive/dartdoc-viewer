@@ -1,38 +1,96 @@
 <!DOCTYPE html>
 <link rel="import" href="item.html">
+<link rel="import" href="class.html">
 <link rel="import" href="category.html">
 
 <element name="dartdoc-library" constructor="LibraryElement" extends="article"
     apply-author-styles>
   <template>
-    
-    <h1>{{library.decoratedName}}</h1>  
-    
-    <!-- Comment -->
-    <section class="description">{{addComment()}}</section>
-    
-    <template if="variables != null">
-      <dartdoc-category category="{{variables}}"></dartdoc-category>
+    <template if="library == null">
+      Loading...
     </template>
-    <template if="functions != null">
-      <dartdoc-category category="{{functions}}"></dartdoc-category>
-    </template>
-    <template if="clazzes != null">
-      <dartdoc-category category="{{clazzes}}"></dartdoc-category>
-    </template>
-    
+    <template if="library != null">
+      <template if="currentRouteName == 'library'">
+        
+        <h1>{{library.decoratedName}}</h1>  
+        
+        <!-- Comment -->
+        <section class="description">{{addComment()}}</section>
+        
+        <template if="variables != null">
+          <dartdoc-category category="{{variables}}"></dartdoc-category>
+        </template>
+        <template if="functions != null">
+          <dartdoc-category category="{{functions}}"></dartdoc-category>
+        </template>
+        <template if="clazzes != null">
+          <dartdoc-category category="{{clazzes}}"></dartdoc-category>
+        </template>
+        
+      </template>
+      <template if="currentRouteName == 'topLevel'">
+        <dartdoc-class 
+          classname="{{topLevel}}" library="{{library}}">
+        </dartdoc-class>
+      </template>
+    </template>  
   </template>
   
   <script type="application/dart">
+    import 'dart:async';
     import 'dart:html';
     
+    import 'package:dartdoc_viewer/client.dart';
+    import 'package:dartdoc_viewer/data.dart';
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
     
     import 'app.dart';
     
     class LibraryElement extends WebComponent {
+      RouteHandle route;
+      String libname;
+      @observable String topLevel;
+      @observable String currentRouteName = 'library';
       @observable Library library;
+      
+      inserted() {
+      // TODO(tmandel): This should all be in page.html.
+        var topLevelRoute = route.getRoute('topLevelId');
+        _showLibrary().then((response) => this.library = response);
+        topLevelRoute.onRoute.listen((RouteEvent e) {
+          if (library != null) {
+            topLevel = e.parameters['topLevelId'];
+            currentRouteName = 'topLevel';
+          } else {
+            _showLibrary().then((response) {
+              this.library = response;
+              topLevel = e.parameters['topLevelId'];
+              currentRouteName = 'topLevel';
+            });
+          }
+        });
+      }
+      
+      /// Route handler for libraries.
+      Future _showLibrary() {
+        var libraryName = libname;
+        for (var lib in viewer.homePage.libraries) {
+          if (libraryNames[lib.name] == libraryName) {
+            if (lib is Placeholder) {
+              return viewer.homePage.loadLibrary(lib).then((response) {
+                viewer.currentLibrary = response;
+                viewer.currentPage = response;
+                return response;
+              });
+            } else {
+              viewer.currentLibrary = lib;
+              viewer.currentPage = lib;
+              return new Future.value(lib);
+            }
+          }
+        }
+      }
       
       Category get variables => library.variables;
       

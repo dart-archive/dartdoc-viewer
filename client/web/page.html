@@ -8,37 +8,35 @@
 <element name="dartdoc-page" constructor="PageElement" extends="article"
     apply-author-styles>
   <template>
-  
-    <template if="page.currentPage != null">
       
-      <!-- Home -->
-      <template instantiate="if page.currentPage is Home">
-        <dartdoc-homepage home="{{page.currentPage}}"></dartdoc-homepage>
-      </template>
+    <!-- Home -->
+    <template if="currentRouteName == 'home'">
+      <dartdoc-homepage home="{{app.viewer.homePage}}"></dartdoc-homepage>
+    </template>
 
+    <template if="app.viewer.homePage != null">
+      
       <!-- Library -->
-      <template instantiate="if page.currentPage is Library">
-        <dartdoc-library library="{{page.currentPage}}"></dartdoc-library>
+      <template if="currentRouteName == 'library'">
+        <dartdoc-library 
+          route="{{route.getRoute('libraryId')}}" libname="{{library}}">
+        </dartdoc-library>
       </template>
-
-      <!-- Class -->
-      <template instantiate="if page.currentPage is Class">
-        <dartdoc-class clazz="{{page.currentPage}}"></dartdoc-class>
-      </template>
-     
-      <!-- Method -->
+        
+      <!-- Method 
       <template instantiate="if page.currentPage is Method">
         <dartdoc-method method="{{page.currentPage}}"></dartdoc-method>
       </template>
+      -->
      
     </template>
-    
 
   </template>
   
   <script type="application/dart">
     import 'dart:html';
     
+    import 'package:dartdoc_viewer/client.dart';
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
     
@@ -48,23 +46,25 @@
      * An HTML representation of a page
      */
     class PageElement extends WebComponent {
-      // All instance variables here contain immutable data, so they do not 
-      // need to be @observable since the data never changes.
+      RouteHandle route;
+      @observable String library;
+      @observable String currentRouteName;
       
-      // Instance of the viewer being displayed.
-      app.Viewer page = app.viewer;
-     
+      inserted() {
+        print('inserted');
+        var homeRoute = route.getRoute('home');
+        homeRoute.onRoute.listen((_) => currentRouteName = 'home');
+        
+        var libRoute = route.getRoute('libraryId');
+        libRoute.onRoute.listen((RouteEvent e) {
+          library = e.parameters['libraryId'];
+          print('onRoute: ' + library);
+          currentRouteName = 'library';
+        });
+      }
       
-      String get title => page.currentPage.name;
-      
-      /// Updates the display with the correct comment.
-      addComment() {
-        if (page.currentPage.comment != '' && 
-            page.currentPage.comment != null) {
-          var comment = getShadowRoot('dartdoc-page').query('.description');
-          comment.children.clear();
-          comment.children.add(new Element.html(page.currentPage.comment));
-        }
+      removed() {
+        route.discard();
       }
     }
   </script>

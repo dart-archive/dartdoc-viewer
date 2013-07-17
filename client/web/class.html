@@ -5,41 +5,45 @@
 <element name="dartdoc-class" constructor="ClassElement" extends="article"
     apply-author-styles>
   <template>
-    
-    <h1>{{clazz.decoratedName}}</h1>  
+    <template if="clazz == null">
+      Loading...
+    </template>
+    <template if="clazz != null">
+      <h1>{{clazz.decoratedName}}</h1>  
       
-      <p>
-        <template if="!interfaces.isEmpty">
-          Implements:&nbsp;
-          <template iterate="item in interfaces">
-            <a on-click="viewer.handleLink(item.location)">
-              {{item.simpleType}}
-            </a>
-            <template if="item != interfaces.last">
-              ,&nbsp;
+        <p>
+          <template if="!interfaces.isEmpty">
+            Implements:&nbsp;
+            <template iterate="item in interfaces">
+              <a on-click="viewer.handleLink(item.location)">
+                {{item.simpleType}}
+              </a>
+              <template if="item != interfaces.last">
+                ,&nbsp;
+              </template>
+              <template instantiate="if item == interfaces.last">
+                <br/>
+              </template>
             </template>
-            <template instantiate="if item == interfaces.last">
-              <br/>
-            </template>
+          
           </template>
-        
-        </template>
-        Extends:&nbsp;
-        <a on-click="viewer.handleLink(superClass.location)">
-          {{superClass.simpleType}}
-        </a>
-      </p>
+          Extends:&nbsp;
+          <a on-click="viewer.handleLink(superClass.location)">
+            {{superClass.simpleType}}
+          </a>
+        </p>
     
-    <!-- Comment -->
-    <section class="description">{{addComment()}}</section>
-    
-    <template instantiate="if variables != null">
-      <dartdoc-category category="{{variables}}"></dartdoc-category>
+      <!-- Comment -->
+      <section class="description">{{addComment()}}</section>
+      
+      <template instantiate="if variables != null">
+        <dartdoc-category category="{{variables}}"></dartdoc-category>
+      </template>
+      <template instantiate="if methods != null">
+        <dartdoc-category category="{{methods}}"></dartdoc-category>
+      </template>
+      
     </template>
-    <template instantiate="if methods != null">
-      <dartdoc-category category="{{methods}}"></dartdoc-category>
-    </template>
-    
   </template>
   
   <script type="application/dart">
@@ -51,7 +55,26 @@
     import 'app.dart';
     
     class ClassElement extends WebComponent {
+      String classname;
+      Library library;
       @observable Class clazz;
+      
+      inserted() {
+        _showClass();
+      }
+      
+      void _showClass() {
+        if (library.classes.content != null) {
+          for (var element in library.classes.content) {
+            if (element.name == classname) { 
+              clazz = element;
+              break;
+            }
+          }        
+        } else {
+          // TODO(tmandel): We have a problem.
+        }
+      }
       
       Category get variables => clazz.variables;
       

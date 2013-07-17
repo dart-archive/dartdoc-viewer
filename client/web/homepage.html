@@ -4,38 +4,28 @@
 <element name="dartdoc-homepage" constructor="HomeElement" extends="article"
     apply-author-styles>
   <template>
+    <template if="home != null">
+      <h1>{{home.name}}</h1>
     
-    <h1>{{home.decoratedName}}</h1>  
-    
-    <!-- Comment -->
-    <section class="description">{{addComment()}}</section>
-    
-    <template iterate="library in libraries">
-      <dartdoc-item item="{{library}}"></dartdoc-item>
+      <template iterate="library in home.libraries">
+        <dartdoc-item item="{{library}}"></dartdoc-item>
+      </template>
     </template>
-    
   </template>
   
-  <script type="application/dart">
-    import 'dart:html';
-    
+  <script type="application/dart">    
+    import 'package:dartdoc_viewer/data.dart';
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
     
     import 'app.dart';
     
     class HomeElement extends WebComponent {
-      Home home;
+      @observable Home home;
       
-      List<Container> get libraries => home.libraries;
-      
-      /// Updates the display with the correct comment.
-      addComment() {
-        if (home.comment != '' && home.comment != null) {
-          var comment = getShadowRoot('dartdoc-homepage').query('.description');
-          comment.children.clear();
-          comment.children.add(new Element.html(home.comment));
-        }
+      String getHref(Item library) {
+        return router.url('libraryId',
+          parameters: { 'libraryId' : libraryNames[library.name] });
       }
     }
   </script>
