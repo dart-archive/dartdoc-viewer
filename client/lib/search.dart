@@ -11,11 +11,11 @@ import 'package:dartdoc_viewer/data.dart';
 /// Search Index
 List<String> index = [];
 
-/// Search query from input. 
-@observable 
-String searchQuery = '';
-
-List<String> results = toObservable([]);
+////// Search query from input. 
+//@observable 
+//String searchQuery = '';
+//
+//List<String> results = toObservable([]);
 
 class SearchResult implements Comparable {
 
@@ -33,24 +33,27 @@ class SearchResult implements Comparable {
   SearchResult(this.element, this.score);
 }
 
-void lookupSearchResults(String searchQuery, int maxResults) {
-  results.clear();
-
-  if (searchQuery.length <= 0) {
-    return;
-  }
+List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
 
   var scoredResults = <SearchResult>[];
+
+  if (searchQuery.length <= 0) {
+    return scoredResults;
+  }
+  
   var resultsSet = new Set<String>();
 
-  var queryList = searchQuery.toLowerCase().split(' ');
+  var queryList = searchQuery.trim().toLowerCase().split(' ');
 
+  queryList.forEach((q) => q.trim());
+  
   queryList.forEach((q) => resultsSet.addAll(index.where((e) =>
     e.toLowerCase().contains(q))));
 
   for (var r in resultsSet) {
     int score = 0;
     var qualifiedNameParts = r.toLowerCase().split('.');
+    qualifiedNameParts.forEach((q) => q.trim());
     // If the result item is part of the dart library, give it a 50 point boost.
     // Removes 'dart' from list of segments to avoid penalizing it later on. 
     if (qualifiedNameParts.first == 'dart') {
@@ -92,11 +95,11 @@ void lookupSearchResults(String searchQuery, int maxResults) {
   }
   
   scoredResults.sort();
-
+  
   if (scoredResults.length > maxResults) {
-    results.addAll(scoredResults.take(maxResults).toList());
+    return scoredResults.take(maxResults).toList();
   } else {
-    results.addAll(scoredResults);
-  }
+    return scoredResults;
+  } 
 }
 

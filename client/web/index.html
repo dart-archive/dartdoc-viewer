@@ -6,6 +6,7 @@
 <link rel="import" href="category.html">
 <link rel="import" href="item.html">
 <link rel="import" href="page.html">
+<link rel="import" href="search.html">
 
 <script type="application/dart" src="app.dart"></script>
 <script src="packages/browser/dart.js"></script>
@@ -22,14 +23,7 @@
 </nav>
 
 <div>
-  <input type="text" placeholder="Search ..." bind-value="searchQuery" 
-      on-key-up="lookupSearchResults(searchQuery, 20)">
-  
-  <ul>
-    <template iterate="result in results">
-      <li>{{result.score}} - {{result.element}}</li>
-    </template>
-  </ul>
+  <search-box></search-box>
 </div>
 
 <main>
