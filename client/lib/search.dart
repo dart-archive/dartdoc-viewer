@@ -7,15 +7,8 @@ import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/data.dart';
 
-
 /// Search Index
 List<String> index = [];
-
-////// Search query from input. 
-//@observable 
-//String searchQuery = '';
-//
-//List<String> results = toObservable([]);
 
 class SearchResult implements Comparable {
 
@@ -93,7 +86,6 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
 
     scoredResults.add(new SearchResult(r, score));
   }
-  
   scoredResults.sort();
   
   if (scoredResults.length > maxResults) {
