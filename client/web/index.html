@@ -21,8 +21,21 @@
   </template>
 </nav>
 
+<div>
+  <input type="text" placeholder="Search ..." bind-value="searchQuery" 
+      on-key-up="lookupSearchResults(searchQuery, 20)">
+  
+  <ul>
+    <template iterate="result in results">
+      <li>{{result.score}} - {{result.element}}</li>
+    </template>
+  </ul>
+</div>
+
 <main>
   <template instantiate="if viewer.currentPage != null">
     <dartdoc-page></dartdoc-page>
   </template>
 </main>
+
+

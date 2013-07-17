@@ -13,3 +13,4 @@ Map<String, Item> pageIndex = toObservable({});
 // a new form for linking purposes. This maps original library names to names
 // with '%' characters replacing the '.' characters for consistency.
 Map<String, String> libraryNames = {};
+

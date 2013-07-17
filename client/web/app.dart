@@ -14,6 +14,7 @@ import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
+import 'package:dartdoc_viewer/search.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the YAML file being read in. 
@@ -139,6 +140,10 @@ class Viewer {
 
 // Handles browser navigation.
 main() {
+  retrieveFileContents('../../docs/index.txt').then((String list) {
+    index.addAll(list.split('\n'));
+  });
+  
   window.onPopState.listen((event) {
     if (event.state != null) {
       if (event.state != '') {
