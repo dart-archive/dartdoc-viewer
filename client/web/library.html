@@ -10,13 +10,13 @@
       Loading...
     </template>
     <template if="library != null">
-      <template if="currentRouteName == 'library'">
+      <template if="toplevelname == null">
         
         <h1>{{library.decoratedName}}</h1>  
-        
+      
         <!-- Comment -->
         <section class="description">{{addComment()}}</section>
-        
+      
         <template if="variables != null">
           <dartdoc-category category="{{variables}}"></dartdoc-category>
         </template>
@@ -28,9 +28,9 @@
         </template>
         
       </template>
-      <template if="currentRouteName == 'topLevel'">
+      <template if="toplevelname != null">
         <dartdoc-class 
-          classname="{{topLevel}}" library="{{library}}">
+          classname="{{toplevelname}}" library="{{library}}">
         </dartdoc-class>
       </template>
     </template>  
@@ -50,25 +50,15 @@
     class LibraryElement extends WebComponent {
       RouteHandle route;
       String libname;
-      @observable String topLevel;
-      @observable String currentRouteName = 'library';
+      @observable String toplevelname;
       @observable Library library;
       
       inserted() {
-      // TODO(tmandel): This should all be in page.html.
+        print('library inserted');
+        print(toplevelname == null);
         var topLevelRoute = route.getRoute('topLevelId');
-        _showLibrary().then((response) => this.library = response);
-        topLevelRoute.onRoute.listen((RouteEvent e) {
-          if (library != null) {
-            topLevel = e.parameters['topLevelId'];
-            currentRouteName = 'topLevel';
-          } else {
-            _showLibrary().then((response) {
-              this.library = response;
-              topLevel = e.parameters['topLevelId'];
-              currentRouteName = 'topLevel';
-            });
-          }
+        _showLibrary().then((response) { 
+          this.library = response;
         });
       }
       

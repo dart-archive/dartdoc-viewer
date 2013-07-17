@@ -150,6 +150,10 @@ class Viewer {
         'libraryId' : path[0].name,
         'topLevelId' : path[1].name 
       });
+      print(router.url('libraryId.topLevelId', parameters: { 
+        'libraryId' : path[0].name,
+        'topLevelId' : path[1].name 
+      }));
     } else if (path.length == 3) {
       print('going to a method');
       router.go('libraryId.topLevelId.methodId', { 

@@ -19,7 +19,9 @@
       <!-- Library -->
       <template if="currentRouteName == 'library'">
         <dartdoc-library 
-          route="{{route.getRoute('libraryId')}}" libname="{{library}}">
+          route="{{route.getRoute('libraryId')}}" 
+          libname="{{library}}" 
+          toplevelname="{{topLevel}}">
         </dartdoc-library>
       </template>
         
@@ -48,17 +50,25 @@
     class PageElement extends WebComponent {
       RouteHandle route;
       @observable String library;
+      @observable String topLevel;
+      @observable String method;
       @observable String currentRouteName;
       
       inserted() {
-        print('inserted');
         var homeRoute = route.getRoute('home');
         homeRoute.onRoute.listen((_) => currentRouteName = 'home');
         
         var libRoute = route.getRoute('libraryId');
         libRoute.onRoute.listen((RouteEvent e) {
           library = e.parameters['libraryId'];
-          print('onRoute: ' + library);
+          print(e.parameters['libraryId']);
+          currentRouteName = 'library';
+        });
+        
+        var topLevelRoute = libRoute.getRoute('topLevelId');
+        topLevelRoute.onRoute.listen((RouteEvent e) {
+          topLevel = e.parameters['topLevelId'];
+          print(e.parameters['topLevelId']);
           currentRouteName = 'library';
         });
       }

@@ -462,7 +462,6 @@ class Router {
         _lastRoute = path;
         return route(match.tail, startingFrom: newRoute);
       }
-      print('balls');
     });
   }
 
