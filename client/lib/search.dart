@@ -71,7 +71,7 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
         // score proportional to how far away it is from the library level. 
         // If it starts with the search query, give it a score boost inversely 
         // proportional to how far away it is from the library level. 
-        // if it contains the search query, give it an even smaller score boost, 
+        // if it contains the search query, give it an even smaller score boost,
         // also inversely proportional to how far away it is from the library 
         // level. 
         if (qualifiedNameParts[i] == q) {
