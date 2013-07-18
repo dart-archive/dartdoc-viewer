@@ -49,7 +49,7 @@ class Category extends Container {
 }
 
 /**
- * A [CompositeContainer] synonymous with a page.
+ * A [Container] synonymous with a page.
  */
 abstract class Item extends Container {
   /// A list of [Item]s representing the path to this [Item].
@@ -80,12 +80,10 @@ class Home extends Item {
   /// All libraries being viewed from the homepage.
   List<Item> libraries;
   
-  /// The constructor parses the [allLibraries] input and constructs
+  /// The constructor parses the [libraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
   Home(List libraries) {
-    // All paths must have three elements for breadcrumbs.
-    this.path = [null, null, null];
-    this.name = 'Dart API Reference';
+    name = 'Dart API Reference';
     this.libraries = [];
     for (String library in libraries) {
       var libraryName = library.replaceAll('.yaml', '');
@@ -110,31 +108,26 @@ class Home extends Item {
   /// Checks if [library] is defined in [libraries].
   bool contains(String library) => libraryNames.values.contains(library);
   
-  /// Returns the [Item] object representing [library].
+  /// Returns the [Item] representing [libraryName].
   // TODO(tmandel): Stop looping through 'libraries' so much. Possibly use a 
   // map from library names to their objects.
-  Item getMember(String library) {
-    for (var lib in libraries) {
-      if (libraryNames[lib.name] == library) {
-        return lib;
-      }
-    }
+  Item itemNamed(String libraryName) {
+    return libraries.firstWhere((lib) => libraryNames[lib.name] == libraryName,
+        orElse: () => null);
   }
 }
 
 
 /// Runs through the member structure and creates path information.
 void buildHierarchy(Item page, Item previous) {
-  if (page is Item) {
-    page.path
-      ..addAll(previous.path)
-      ..add(page);
-    if (page is Library || page is Class) {
-      if (page.functions != null) {
-        page.functions.content.forEach((method) {
-          buildHierarchy(method, page);
-        });
-      }
+  page.path
+    ..addAll(previous.path)
+    ..add(page);
+  if (page is Library || page is Class) {
+    if (page.functions != null) {
+      page.functions.content.forEach((method) {
+        buildHierarchy(method, page);
+      });
     }
     if (page is Library) {
       if (page.classes != null) {
@@ -143,8 +136,6 @@ void buildHierarchy(Item page, Item previous) {
         });
       }
     }
-    // All paths should have three elements for breadcrumbs.
-    while (page.path.length < 3) page.path.add(null);
   }
 }
 
@@ -303,19 +294,17 @@ class LinkableType {
   /// The resolved qualified name of the type this [LinkableType] represents.
   String type;
   
-  /**
-   * The constructor resolves the library name by finding the correct library
-   * from [libraryNames] and changing [type] to match.
-   */
+  /// The constructor resolves the library name by finding the correct library
+  /// from [libraryNames] and changing [type] to match.
   LinkableType(String type) {
     var current = type;
-    this.type = type;
-    while (current != '') {
+    this.type;
+    while (this.type == null) {
       if (libraryNames[current] != null) {
         this.type = type.replaceFirst(current, libraryNames[current]);
-        break;
       } else {
         var index = current.lastIndexOf('.');
+        if (index == -1) this.type = type;
         current = index != -1 ? current.substring(0, index) : '';
       }
     }

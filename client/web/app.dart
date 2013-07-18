@@ -24,9 +24,8 @@ const sourcePath = '../../docs/library_list.txt';
 /// The [Viewer] object being displayed.
 Viewer viewer;
 
-/**
- * The Dartdoc Viewer application state.
- */
+
+/// The Dartdoc Viewer application state.
 class Viewer {
   
   Future finished;
@@ -60,46 +59,44 @@ class Viewer {
   /// Creates a list of [Item] objects describing the path to [currentPage].
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
-  /// Finds a member of a library matching [topLevel].
-  Item _checkTopLevel(Library library, String topLevel) {
+  /// Finds a member of a library matching [topLevelName].
+  Item _checkTopLevel(Library library, String topLevelName) {
+    // TODO(tmandel): Categories shouldn't be null. Make their contents empty.
     if (library.classes != null) {
-      for (Class clazz in library.classes.content) {
-        if (clazz.name == topLevel) return clazz;
-      }
+      return library.classes.content.firstWhere((clazz) => 
+          clazz.name == topLevelName, 
+          orElse: () => _checkFunctions(library, topLevelName));
     }
-    _checkFunctions(library, topLevel);
     // TODO(tmandel): Handle variable linking with '#' characters.
   }
   
   /// Finds a member of [outer] (that contains a 'functions' category) that
-  /// matches [member].
-  Item _checkFunctions(Item outer, String member) {
+  /// matches [memberName].
+  Item _checkFunctions(Item outer, String memberName) {
+    // TODO(tmandel): Categories shouldn't be null. Make their contents empty.
     if (outer.functions != null) {
-      for (Method function in outer.functions.content) {
-        if (function.name == member) return function;
-      }
+      return outer.functions.classes.content.firstWhere((function) => 
+          function.name == memberName, orElse: () => null);
     }
   }
   
+  // TODO(tmandel): Create a map from qualified name to Item during initial
+  // load to avoid searching for the correct Item.
   /// Finds the member of [library] defined by the path in [members].
   Item _findChild(Library library, List members) {
     // If the url ends with a '/' an extra element needs to be removed.
     if (members.last == '') members.removeLast();
     if (members.length > 1) {
       var topLevel = _checkTopLevel(library, members[1]);
-      if (topLevel == null) {
-        return library;
-      } else {
+      if (topLevel != null) {
         if (members.length > 2) {
           var method = _checkFunctions(topLevel, members[2]);
-          if (method == null) {
-            return topLevel;
-          } else {
+          if (method != null) {
             return method;
           }
         } else return topLevel;
       }
-    } else return library;
+    }
   }
   
   /// Finds the correct [Item] described by [location] and pushes state to
@@ -110,11 +107,9 @@ class Viewer {
     });
   }
   
-  /**
-   * Finds the correct [Item] described by [location] and does not push
-   * state to the history api.
-   * Returns a [Future] to determine if a link was found or not.
-   */
+  /// Finds the correct [Item] described by [location] and does not push
+  /// state to the history api.
+  /// Returns a [Future] to determine if a link was found or not.
   Future _handleLinkWithoutState(List<String> location) {
     if (location != null) {
       var libraryName = location.first;
@@ -122,15 +117,14 @@ class Viewer {
         _updatePage(homePage);
         return new Future.value(true);
       }
-      var member = homePage.getMember(libraryName);
+      var member = homePage.itemNamed(libraryName);
       if (member != null) {
         if (member is Placeholder) {
           return homePage.loadLibrary(member).then((response) {
-            var library = response;
-            if (library != null) {
-              var child = _findChild(library, location);
+            if (response != null) {
+              var child = _findChild(response, location);
               if (child != null) _updatePage(child);
-              return true;
+              return child != null;
             }
           });
         } else {
@@ -162,9 +156,8 @@ class Viewer {
   void _updateState(Item page) {
     String url = '#home';
     for (var member in page.path) {
-      if (member != null)
-        url = url == '#home' ? '#${libraryNames[member.name]}' : 
-          '$url/${member.name}';
+      url = url == '#home' ? '#${libraryNames[member.name]}' : 
+        '$url/${member.name}';
     }
     window.history.pushState(url, url.replaceAll('/', '->'), url);
   }
