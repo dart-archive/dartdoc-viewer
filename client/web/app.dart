@@ -24,7 +24,6 @@ const sourcePath = '../../docs/library_list.txt';
 /// The [Viewer] object being displayed.
 Viewer viewer;
 
-
 /// The Dartdoc Viewer application state.
 class Viewer {
   
