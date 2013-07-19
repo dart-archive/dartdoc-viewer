@@ -34,16 +34,51 @@ class Category extends Container {
   
   List<Container> content = [];
   
-  Category.forClasses(Map yaml) : super('Classes') {
-    yaml.keys.forEach((key) => content.add(new Class(yaml[key])));
+  Category.forClasses(Map yaml, bool isAbstract, bool isError) : 
+      super(isAbstract ? 'Abstract Classes' : 
+        isError ? 'Exceptions' : 'Classes') {
+    if (yaml != null)
+      yaml.keys.forEach((key) => 
+          content.add(new Class(yaml[key], isAbstract)));
   }
   
-  Category.forVariables(Map yaml) : super('Variables') {
-    yaml.keys.forEach((key) => content.add(new Variable(yaml[key])));
+  Category.forVariables(Map variables, Map getters, Map setters) : 
+      super('Properties') { 
+    if (variables != null) {
+      variables.keys.forEach((key) {
+        var variable = variables[key];
+        content.add(new Variable(key, variable['comment'],
+            variable['final'] == 'true', variable['static'] == 'true',
+            variable['type']));
+      });
+    }
+    if (getters != null) {
+      getters.keys.forEach((key) {
+        var variable = getters[key];
+        content.add(new Variable(key, variable['comment'], false,
+            variable['static'] == 'true', variable['return'], isGetter: true));
+      });
+    }
+    if (setters != null) {
+      setters.keys.forEach((key) {
+        var variable = setters[key];
+        var parameterName = variable['parameters'].keys.first;
+        var parameter = new Parameter(parameterName,
+            variable['parameters'][parameterName]);
+        content.add(new Variable(key, variable['comment'], false,
+            variable['static'] == 'true', "void", isSetter: true,
+            setterParameter: parameter));
+      });
+    }
   }
   
-  Category.forFunctions(Map yaml, String name) : super(name) {
-    yaml.keys.forEach((key) => content.add(new Method(yaml[key])));
+  Category.forFunctions(Map yaml, String name, bool isConstructor, 
+      String className, bool isOperator) : super(name) {
+    if (yaml != null) {
+      yaml.keys.forEach((key) =>
+        content.add(new Method(yaml[key], isConstructor, 
+            className, isOperator)));
+    }
   }
 }
 
@@ -121,18 +156,21 @@ void buildHierarchy(Item page, Item previous) {
   page.path
     ..addAll(previous.path)
     ..add(page);
+  if (page is Class) {
+    [page.constructs, page.operators].forEach((category) =>
+        category.content.forEach((item) {
+          buildHierarchy(item, page);
+        }));
+  }
   if (page is Library || page is Class) {
-    if (page.functions != null) {
-      page.functions.content.forEach((method) {
-        buildHierarchy(method, page);
-      });
-    }
+    page.functions.content.forEach((method) {
+      buildHierarchy(method, page);
+    });
     if (page is Library) {
-      if (page.classes != null) {
-        page.classes.content.forEach((clazz) {
+      [page.classes, page.abstractClasses].forEach((category) =>
+        category.content.forEach((clazz) {
           buildHierarchy(clazz, page);
-        });
-      }
+      }));
     }
   }
 }
@@ -143,22 +181,37 @@ void buildHierarchy(Item page, Item previous) {
 class Library extends Item {
   
   Category classes;
+  Category abstractClasses;
+  Category errors;
   Category variables;
   Category functions;
-  
+  Category operators;
+
   Library(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
+    var classes, abstractClasses, exceptions;
     if (yaml['classes'] != null) {
-      classes = new Category.forClasses(yaml['classes']);
+      classes = yaml['classes']['class'];
+      abstractClasses = yaml['classes']['abstract'];
+      exceptions = yaml['classes']['error'];
     }
-    if (yaml['variables'] != null) {
-      variables = new Category.forVariables(yaml['variables']);
-    }
+    errors = new Category.forClasses(exceptions, false, true);
+    this.classes = new Category.forClasses(classes, false, false);
+    this.abstractClasses =
+        new Category.forClasses(abstractClasses, true, false);
+    var setters, getters, methods, opers;
     if (yaml['functions'] != null) {
-      functions = new Category.forFunctions(yaml['functions'], 'Functions');
+      setters = yaml['functions']['setters'];
+      getters = yaml['functions']['getters'];
+      methods = yaml['functions']['methods'];
+      opers = yaml['functions']['operators'];
     }
+    variables = new Category.forVariables(yaml['variables'], getters, setters);
+    functions = new Category.forFunctions(methods,
+        'Functions', false, '', false);
+    operators = new Category.forFunctions(opers, 'Operators', false, '', true);
   }
-  
-  String get decoratedName => "library $name";
+
+  String get decoratedName => '$name library';
 }
 
 /**
