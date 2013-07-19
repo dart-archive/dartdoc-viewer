@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+<link rel="import" href="class.html">
+<link rel="import" href="category.html">
+
+<element name="dartdoc-library" constructor="LibraryElement" extends="article"
+    apply-author-styles>
+  <template>
+    <template if="item == null">
+      Loading...
+    </template>
+    <template if="item != null">
+      <h1>{{item.decoratedName}}</h1>  
+    
+      <!-- Comment -->
+      <section class="description">{{addComment('dartdoc-library')}}</section>
+    
+      <template if="variables != null">
+        <dartdoc-category category="{{variables}}"></dartdoc-category>
+      </template>
+      <template if="functions != null">
+        <dartdoc-category category="{{functions}}"></dartdoc-category>
+      </template>
+      <template if="clazzes != null">
+        <dartdoc-category category="{{clazzes}}"></dartdoc-category>
+      </template>
+    </template>  
+  </template>
+  
+  <script type="application/dart">
+    import 'dart:async';
+    
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
+    import 'app.dart';
+    import 'member.dart';
+    
+    class LibraryElement extends MemberElement {
+      inserted() {
+        _showLibrary();
+      }
+      
+      /// Route handler for libraries.
+      void _showLibrary() {
+        if (item is Placeholder) {
+          viewer.homePage.loadLibrary(item).then((response) {
+            viewer.currentPage = response;
+            item = response;
+          });
+        } else {
+          viewer.currentPage = item;
+        }
+      }
+      
+      Category get variables => item.variables;
+      
+      Category get functions => item.functions;
+      
+      Category get clazzes => item.classes;
+    }
+  </script>
+</element>

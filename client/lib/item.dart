@@ -2,9 +2,10 @@ library category_item;
 
 import 'dart:async';
 import 'dart:html';
-import 'package:web_ui/web_ui.dart';
+
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
+import 'package:web_ui/web_ui.dart';
 
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
 const docsPath = '../../docs/';
@@ -16,15 +17,8 @@ const docsPath = '../../docs/';
 class Container {
   String name;
   String comment = '<span></span>';
-}
-
-/**
- * A [Container] that holds other containers.
- */
-class CompositeContainer extends Container {
-  List<Container> content = [];
   
-  String get pathName => name.replaceAll('.', '%');
+  Container(this.name, [this.comment]);
 }
 
 // Wraps a comment in span element to make it a single HTML Element.
@@ -34,31 +28,33 @@ String _wrapComment(String comment) {
 }
 
 /**
- * A [CompositeContainer] that contains other [Container]s to be displayed.
+ * A [Container] that contains other [Container]s to be displayed.
  */
-class Category extends CompositeContainer {
-  Category.forClasses(Map yaml) {
-    this.name = 'Classes';
+class Category extends Container {
+  
+  List<Container> content = [];
+  
+  Category.forClasses(Map yaml) : super('Classes') {
     yaml.keys.forEach((key) => content.add(new Class(yaml[key])));
   }
   
-  Category.forVariables(Map yaml) {
-    this.name = 'Variables';
+  Category.forVariables(Map yaml) : super('Variables') {
     yaml.keys.forEach((key) => content.add(new Variable(yaml[key])));
   }
   
-  Category.forFunctions(Map yaml, String name) {
-    this.name = name;
+  Category.forFunctions(Map yaml, String name) : super(name) {
     yaml.keys.forEach((key) => content.add(new Method(yaml[key])));
   }
 }
 
 /**
- * A [CompositeContainer] synonymous with a page.
+ * A [Container] synonymous with a page.
  */
-abstract class Item extends CompositeContainer {
-  /// A string representing the path to this [Item] from the homepage.
-  @observable String path;
+class Item extends Container {
+  /// A list of [Item]s representing the path to this [Item].
+  List<Item> path = [];
+  
+  Item(String name, [String comment]) : super(name, comment);
   
   /// [Item]'s name with its properties properly appended. 
   String get decoratedName => name;
@@ -72,15 +68,7 @@ class Placeholder extends Item {
   /// The path to the file with the real data relative to [docsPath].
   String location;
   
-  Placeholder(String name, this.location) {
-    this.name = name;
-  }
-  
-  /// Loads the library's data and returns a [Future] for external handling.
-  Future loadLibrary() {
-    // TODO(tmandel): Shouldn't be a relative path if possible.
-    return retrieveFileContents('$docsPath$location');
-  }
+  Placeholder(String name, this.location) : super(name);
 }
 
 /**
@@ -88,36 +76,64 @@ class Placeholder extends Item {
  */
 class Home extends Item {
   
-  /// The constructor parses the [allLibraries] input and constructs
+  /// All libraries being viewed from the homepage.
+  List<Item> libraries;
+  
+  /// The constructor parses the [libraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
-  Home(List libraries) {
-    this.name = 'Dart API Reference';
-    this.path = '';
-    pageIndex[''] = this;
+  Home(List libraries) : super('Dart API Reference') {
+    this.libraries = [];
     for (String library in libraries) {
       var libraryName = library.replaceAll('.yaml', '');
-      libraryNames[libraryName] = libraryName.replaceAll('.', '%');
-      content.add(new Placeholder(libraryName, library));
+      libraryNames[libraryName] = libraryName.replaceAll('.', '-');
+      this.libraries.add(new Placeholder(libraryName, library));
     };
+  }
+  
+  /// Loads the library's data and returns a [Future] for external handling.
+  Future loadLibrary(Placeholder place) {
+    var data = retrieveFileContents('$docsPath${place.location}');
+    return data.then((response) {
+      var lib = loadData(response);
+      var index = libraries.indexOf(place);
+      buildHierarchy(lib, lib);
+      libraries.remove(place);
+      libraries.insert(index, lib);
+      return lib;
+    });
+  }
+  
+  /// Checks if [library] is defined in [libraries].
+  bool contains(String library) => libraryNames.values.contains(library);
+  
+  /// Returns the [Item] representing [libraryName].
+  // TODO(tmandel): Stop looping through 'libraries' so much. Possibly use a 
+  // map from library names to their objects.
+  Item itemNamed(String libraryName) {
+    return libraries.firstWhere((lib) => libraryNames[lib.name] == libraryName,
+        orElse: () => null);
   }
 }
 
-/**
- * Runs through the member structure and creates path information and
- * populates the [pageIndex] map for proper linking.
- */
-void buildHierarchy(Container page, Item previous) {
-  if (page is Item) {
-    page.path = previous.path == null ?
-        '${page.pathName}/' : '${previous.path}${page.pathName}/';
-    pageIndex[page.path] = page;
-    page.content.forEach((subChild) {
-      buildHierarchy(subChild, page);
-    });
-  } else if (page is Category) {
-    page.content.forEach((subChild) {
-      buildHierarchy(subChild, previous);
-    });
+
+/// Runs through the member structure and creates path information.
+void buildHierarchy(Item page, Item previous) {
+  page.path
+    ..addAll(previous.path)
+    ..add(page);
+  if (page is Library || page is Class) {
+    if (page.functions != null) {
+      page.functions.content.forEach((method) {
+        buildHierarchy(method, page);
+      });
+    }
+    if (page is Library) {
+      if (page.classes != null) {
+        page.classes.content.forEach((clazz) {
+          buildHierarchy(clazz, page);
+        });
+      }
+    }
   }
 }
 
@@ -126,17 +142,19 @@ void buildHierarchy(Container page, Item previous) {
  */
 class Library extends Item {
   
-  Library(Map yaml) {
-    this.name = yaml['name'];
-    this.comment = _wrapComment(yaml['comment']);
+  Category classes;
+  Category variables;
+  Category functions;
+  
+  Library(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     if (yaml['classes'] != null) {
-      content.add(new Category.forClasses(yaml['classes']));
+      classes = new Category.forClasses(yaml['classes']);
     }
     if (yaml['variables'] != null) {
-      content.add(new Category.forVariables(yaml['variables']));
+      variables = new Category.forVariables(yaml['variables']);
     }
     if (yaml['functions'] != null) {
-      content.add(new Category.forFunctions(yaml['functions'], 'Functions'));
+      functions = new Category.forFunctions(yaml['functions'], 'Functions');
     }
   }
   
@@ -148,19 +166,20 @@ class Library extends Item {
  */
 class Class extends Item {
   
+  Category functions;
+  Category variables;
+  
   LinkableType superClass;
   bool isAbstract;
   bool isTypedef;
   List<LinkableType> implements;
   
-  Class(Map yaml) {
-    this.name = yaml['name'];
-    this.comment = _wrapComment(yaml['comment']);
+  Class(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     if (yaml['variables'] != null) {
-      content.add(new Category.forVariables(yaml['variables']));
+      variables = new Category.forVariables(yaml['variables']);
     }
     if (yaml['methods'] != null) {
-      content.add(new Category.forFunctions(yaml['methods'], 'Methods'));
+      functions = new Category.forFunctions(yaml['methods'], 'Methods');
     }
     this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = yaml['abstract'] == 'true';
@@ -182,9 +201,7 @@ class Method extends Item {
   LinkableType type;
   List<Parameter> parameters;
   
-  Method(Map yaml) {
-    this.name = yaml['name'];
-    this.comment = _wrapComment(yaml['comment']);
+  Method(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     this.isStatic = yaml['static'] == 'true';
     this.type = new LinkableType(yaml['return']);
     this.parameters = _getParameters(yaml['parameters']);
@@ -246,9 +263,7 @@ class Variable extends Container {
   bool isStatic;
   LinkableType type;
   
-  Variable(Map yaml) {
-    this.name = yaml['name'];
-    this.comment = _wrapComment(yaml['comment']);
+  Variable(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     this.isFinal = yaml['final'] == 'true';
     this.isStatic = yaml['static'] == 'true';
     this.type = new LinkableType(yaml['type']);
@@ -269,25 +284,25 @@ class LinkableType {
   /// The resolved qualified name of the type this [LinkableType] represents.
   String type;
   
-  /**
-   * The constructor resolves the library name by finding the correct library
-   * from [libraryNames] and changing [type] to match.
-   */
+  /// The constructor resolves the library name by finding the correct library
+  /// from [libraryNames] and changing [type] to match.
   LinkableType(String type) {
-    var current = '';
-    this.type = type;
-    List elements = type.split('.');
-    elements.forEach((element) {
-      current = current == '' ? element : '$current.$element';
+    var current = type;
+    this.type;
+    while (this.type == null) {
       if (libraryNames[current] != null) {
         this.type = type.replaceFirst(current, libraryNames[current]);
+      } else {
+        var index = current.lastIndexOf('.');
+        if (index == -1) this.type = type;
+        current = index != -1 ? current.substring(0, index) : '';
       }
-    });
+    }
   }
 
   /// The simple name for this type.
   String get simpleType => this.type.split('.').last;
 
   /// The [Item] describing this type if it has been loaded, otherwise null.
-  Item get location => pageIndex['${type.replaceAll('.', '/')}/'];
+  List<String> get location => type.split('.');
 }

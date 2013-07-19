@@ -1,94 +1,39 @@
 <!DOCTYPE html>
 <link rel="import" href="item.html">
-<link rel="import" href="category.html">
+<link rel="import" href="homepage.html">
+<link rel="import" href="library.html">
+<link rel="import" href="class.html">
+<link rel="import" href="method.html">
   
 <element name="dartdoc-page" constructor="PageElement" extends="article"
     apply-author-styles>
   <template>
-    
-    <!-- Return Type -->
-    <template instantiate="if page.currentPage is Method">
-      <a on-click="page.handleLink(page.currentPage.type)">
-        {{page.currentPage.type.simpleType}}
-      </a>
-    </template>
-
-    <h1>{{title}}</h1>
-
-    <!-- Parameters -->
-    <template instantiate="if page.currentPage is Method">
-      <p>(
       
-        <!-- TODO(tmandel): Possibly make a custom element for this -->
-        <template iterate="parameter in required">
-          <a on-click="page.handleLink(parameter.type)">
-            {{parameter.type.simpleType}}
-          </a>{{parameter.decoratedName}}
-          <template if="parameter != required.last || !optional.isEmpty">
-            ,&nbsp;
-          </template>
-        </template>
-        
-        <template if="!optional.isEmpty">
-          {{optional.first.isNamed ? '{' : '['}}
-          
-          <template iterate="parameter in optional">
-            <a on-click="page.handleLink(parameter.type)">
-              {{parameter.type.simpleType}}
-            </a>{{parameter.decoratedName}}
-            <template if="parameter != optional.last">
-              ,&nbsp;
-            </template>
-          </template>
-          
-          {{optional.first.isNamed ? '}' : ']'}}
-        </template>
-        
-      )</p>
-    </template>
-    
-    <!-- Inheritance -->
-    <template instantiate="if page.currentPage is Class">
-      <p>
-        
-        <template if="!interfaces.isEmpty">
-          Implements:&nbsp;
-          <template iterate="item in interfaces">
-            <a on-click="page.handleLink(item)">
-              {{item.simpleType}}
-            </a>
-            <template if="item != interfaces.last">
-              ,&nbsp;
-            </template>
-            <template instantiate="if item == interfaces.last">
-              <br/>
-            </template>
-          </template>
-          
-        </template>
-        Extends:&nbsp;
-        <a on-click="page.handleLink(superClass)">
-          {{superClass.simpleType}}
-        </a>
-        
-      </p>
+    <!-- Home -->
+    <template if="app.viewer.currentPage is Home">
+      <dartdoc-homepage home="{{app.viewer.homePage}}"></dartdoc-homepage>
     </template>
 
-    <!-- Comment -->
-    <section class="description">{{addComment()}}</section>
-
-    <!-- Contents -->
-    <template instantiate="if page.currentPage != null">
-      <template iterate="item in page.currentPage.content">
-        <template if="item is Item">
-          <dartdoc-item item="{{item}}"></dartdoc-item>
-        </template>
-        <template if="item is Category">
-          <dartdoc-category category="{{item}}" class="category">
-          </dartdoc-category>
-        </template>
+    <template if="app.viewer.homePage != null">
+      
+      <!-- Library -->
+      <template if="app.viewer.currentPage is Library">
+        <dartdoc-library item="{{app.viewer.currentPage}}">
+        </dartdoc-library>
       </template>
-    </template> 
+        
+      <!-- Class -->
+      <template if="app.viewer.currentPage is Class">
+        <dartdoc-class item="{{app.viewer.currentPage}}"></dartdoc-class>
+      </template>  
+        
+      <!-- Method -->
+      <template instantiate="if app.viewer.currentPage is Method">
+        <dartdoc-method item="{{app.viewer.currentPage}}"></dartdoc-method>
+      </template>
+     
+    </template>
+
   </template>
   
   <script type="application/dart">
@@ -103,35 +48,8 @@
      * An HTML representation of a page
      */
     class PageElement extends WebComponent {
-      // All instance variables here contain immutable data, so they do not 
-      // need to be @observable since the data never changes.
-      
-      // Instance of the viewer being displayed.
-      app.Viewer page = app.viewer;
-      
-      // Required parameters.
-      List<LinkableType> get required => 
-        page.currentPage.parameters.where((item) => !item.isOptional).toList();
-      
-      // Optional parameters.
-      List<LinkableType> get optional => 
-        page.currentPage.parameters.where((item) => item.isOptional).toList();
-        
-      List<LinkableType> get interfaces => page.currentPage.implements;
-      
-      LinkableType get superClass => page.currentPage.superClass;
-      
-      String get title => page.currentPage.name;
-      
-      /// Updates the display with the correct comment.
-      addComment() {
-        if (page.currentPage.comment != '' && 
-            page.currentPage.comment != null) {
-          var comment = getShadowRoot('dartdoc-page').query('.description');
-          comment.children.clear();
-          comment.children.add(new Element.html(page.currentPage.comment));
-        }
-      }
+      @observable Home home;
+
     }
   </script>
 </element>

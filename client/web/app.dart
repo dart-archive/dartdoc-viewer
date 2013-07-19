@@ -9,43 +9,37 @@
 // TODO(janicejl): Add a link to the dart docgen landing page in future. 
 library dartdoc_viewer;
 
+import 'dart:async';
 import 'dart:html';
-import 'package:web_ui/web_ui.dart';
+
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/search.dart';
+import 'package:web_ui/web_ui.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the YAML file being read in. 
 const sourcePath = '../../docs/library_list.txt';
 
 /// The [Viewer] object being displayed.
-final Viewer viewer = new Viewer._();
+Viewer viewer;
 
-/**
- * The Dartdoc Viewer application state.
- */
+/// The Dartdoc Viewer application state.
 class Viewer {
-
-  // The page pathname at first load for navigation.
-  String origin;
+  
+  Future finished;
 
   /// The homepage from which every [Item] can be reached.
-  @observable Item homePage;
+  @observable Home homePage;
   
   /// The current page being shown.
   @observable Item currentPage;
 
   // Private constructor for singleton instantiation.
   Viewer._() {
-    // Upon startup, the url ends with index.html. To allow for HTTP requests
-    // from any view, a proper path to the origin is needed, so removing 
-    // index.html from the initial url gives a base path for HTTP requests.
-    // TODO(tmandel): Find a way to remove 'origin' variable.
-    origin = window.location.pathname.replaceAll('index.html', '');
     var manifest = retrieveFileContents(sourcePath);
-    manifest.then((response) {
+    finished = manifest.then((response) {
       var libraries = response.split('\n');
       currentPage = new Home(libraries);
       homePage = currentPage;
@@ -55,102 +49,145 @@ class Viewer {
   /// The title of the current page.
   String get title => currentPage == null ? '' : currentPage.decoratedName;
   
-  /**
-   * Changes the currentPage to the page of the item clicked
-   * without pushing state onto the history.
-   */
-  changePageWithoutState(Item page) {
+  /// Updates [currentPage] to be [page].
+  void _updatePage(Item page) {
     if (page != null) {
       currentPage = page;
     }
   }
   
-  /// Replaces a [Placeholder] with a [Library] in [homePage]'s content.
-  Library _updateHomepage(String data, Placeholder page) {
-    var lib = loadData(data);
-    var index = homePage.content.indexOf(page);
-    homePage.content.remove(page);
-    homePage.content.insert(index, lib);
-    buildHierarchy(lib, homePage);
-    return lib;
-  }
+  /// Creates a list of [Item] objects describing the path to [currentPage].
+  List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
-  /**
-   * Pushes state onto the history before updating the [currentPage].
-   */
-  changePage(Item page) {
-    if (page is Placeholder) {
-      var data = page.loadLibrary();
-      data.then((response) {
-        var lib = _updateHomepage(response, page);
-        changePage(lib);
-      });
-    } else if (page != null && currentPage != page) {
-      var state = page.path;
-      var title = 'Dart API Reference';
-      var url = origin;
-      if (state != '') {
-        var title = state.substring(0, state.length - 1);
-        url = '$origin#$state';
-      } else {
-        url = '${origin}index.html';
-      }
-      // TODO(tmandel): Use package:route for history and URLs.
-      window.history.pushState(state, title, url);
+  /// Finds a member of a library matching [topLevelName].
+  Item _checkTopLevel(Library library, String topLevelName) {
+    // TODO(tmandel): Categories shouldn't be null. Make their contents empty.
+    if (library.classes != null) {
+      return library.classes.content.firstWhere((clazz) => 
+          clazz.name == topLevelName, 
+          orElse: () => _checkFunctions(library, topLevelName));
     }
-    changePageWithoutState(page);
+    // TODO(tmandel): Handle variable linking with '#' characters.
   }
   
-  /**
-   * Creates a list of [Item] objects from the [path] describing the
-   * path to a particular [Item] object.
-   */
-  List<Item> getBreadcrumbs() {
-    // Matches alphanumeric variable/method names ending with a '/'.  
-    var regex = new RegExp(r'(_?([a-zA-Z0-9_%]+)=?)/');
-    var matches = regex.allMatches(currentPage.path);
-    var currentPath = '';
-    var breadcrumbs = [homePage];
-    matches.forEach((match) {
-      currentPath = '$currentPath${match.group(0)}';
-      breadcrumbs.add(pageIndex[currentPath]);
+  /// Finds a member of [outer] (that contains a 'functions' category) that
+  /// matches [memberName].
+  Item _checkFunctions(Item outer, String memberName) {
+    // TODO(tmandel): Categories shouldn't be null. Make their contents empty.
+    if (outer.functions != null) {
+      return outer.functions.classes.content.firstWhere((function) => 
+          function.name == memberName, orElse: () => null);
+    }
+  }
+  
+  // TODO(tmandel): Refactor. Create a map from qualified name to Item 
+  // during initial load to avoid searching for the correct Item. Caching
+  // will be done so that lookups of the same member do not all search
+  // through the library to find the desired member.
+  /// Finds the member of [library] defined by the path in [members].
+  Item _findChild(Library library, List members) {
+    // If the url ends with a '/' an extra element needs to be removed.
+    if (members.last == '') members.removeLast();
+    if (members.length > 1) {
+      var topLevel = _checkTopLevel(library, members[1]);
+      if (topLevel != null) {
+        if (members.length > 2) {
+          var method = _checkFunctions(topLevel, members[2]);
+          if (method != null) {
+            return method;
+          }
+        } else return topLevel;
+      }
+    }
+  }
+  
+  /// Looks for the correct [Item] described by [location]. If it is found, 
+  /// [currentPage] is updated and state is pushed to the history api.
+  void handleLink(List<String> location) {
+    _handleLinkWithoutState(location).then((response) {
+      if (response) _updateState(currentPage);
     });
-    return breadcrumbs;
   }
   
-  /// Handles lazy loading of libraries from links not on the homepage.
-  void handleLink(LinkableType type) {
-    if (type.location != null) {
-      changePage(type.location);
-    } else {
-      homePage.content.forEach((element) {
-        if (element is Placeholder) {
-          var betterName = libraryNames[element.name];
-          if (type.type.startsWith(betterName)) {
-            element.loadLibrary().then((response) {
-              _updateHomepage(response, element);
-              changePage(type.location);
-            });
+  /// Looks for the correct [Item] described by [location]. If it is found,
+  /// [currentPage] is updated and state is not pushed to the history api.
+  /// Returns a [Future] to determine if a link was found or not.
+  Future _handleLinkWithoutState(List<String> location) {
+    if (location != null) {
+      var libraryName = location.first;
+      if (libraryName == 'home') {
+        _updatePage(homePage);
+        return new Future.value(true);
+      }
+      var member = homePage.itemNamed(libraryName);
+      if (member != null) {
+        if (member is Placeholder) {
+          return homePage.loadLibrary(member).then((response) {
+            if (response != null) {
+              var child = _findChild(response, location);
+              if (child != null) _updatePage(child);
+              return child != null;
+            }
+          });
+        } else {
+          var child = _findChild(member, location);
+          if (child != null) {
+            _updatePage(child);
+            return new Future.value(true);
           }
         }
-      });
+      }
     }
+    return new Future.value(false);
+  }
+  
+  /// Updates [currentPage] to [page] and pushes state for navigation.
+  void changePage(Item page) {
+    if (page is Placeholder) {
+      homePage.loadLibrary(page).then((response) {
+        _updatePage(response);
+        _updateState(response);
+      });
+    } else {
+      _updatePage(page);
+      _updateState(page);
+    }
+  }
+  
+  /// Pushes state to history for navigation in the browser.
+  void _updateState(Item page) {
+    String url = '#home';
+    for (var member in page.path) {
+      url = url == '#home' ? '#${libraryNames[member.name]}' : 
+        '$url/${member.name}';
+    }
+    window.history.pushState(url, url.replaceAll('/', '->'), url);
   }
 }
 
-// Handles browser navigation.
-main() {
-  retrieveFileContents('../../docs/index.txt').then((String list) {
-    index.addAll(list.split('\n'));
-  });
-  
+/// The latest url reached by a popState event.
+String location;
+
+/// Listens for browser navigation and acts accordingly.
+void startHistory() {
   window.onPopState.listen((event) {
-    if (event.state != null) {
-      if (event.state != '') {
-        viewer.changePageWithoutState(pageIndex[event.state]);
-      }
-    } else {
-      viewer.changePageWithoutState(viewer.homePage);
+    location = window.location.hash.replaceFirst('#', '');
+    if (viewer.homePage != null) {
+      if (location != '') viewer._handleLinkWithoutState(location.split('/'));
+      else viewer._handleLinkWithoutState(['home']);
+    }
+  });
+}
+
+/// Handles browser navigation.
+main() {
+  startHistory();
+  viewer = new Viewer._();
+  // If a user navigates to a page other than the homepage, the viewer
+  // must first load fully before navigating to the specified page.
+  viewer.finished.then((_) {
+    if (location != null && location != '') {
+      viewer._handleLinkWithoutState(location.split('/'));
     }
   });
 }

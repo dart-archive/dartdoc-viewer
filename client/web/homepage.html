@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+
+<element name="dartdoc-homepage" constructor="HomeElement" extends="article"
+    apply-author-styles>
+  <template>
+    <template if="home != null">
+      <h1>{{home.name}}</h1>
+    
+      <template iterate="library in home.libraries">
+        <dartdoc-item item="{{library}}"></dartdoc-item>
+      </template>
+    </template>
+  </template>
+  
+  <script type="application/dart">
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
+    class HomeElement extends WebComponent {
+      @observable Home home;
+    }
+  </script>
+</element>

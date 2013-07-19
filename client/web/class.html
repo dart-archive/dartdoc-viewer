@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+<link rel="import" href="category.html">
+
+<element name="dartdoc-class" constructor="ClassElement" extends="article"
+    apply-author-styles>
+  <template>
+    <template if="item == null">
+      Loading...
+    </template>
+    <template if="item != null">
+      <h1>{{item.decoratedName}}</h1>  
+      
+        <p>
+          <template if="!interfaces.isEmpty">
+            Implements:&nbsp;
+            <template iterate="interface in interfaces">
+              <a on-click="viewer.handleLink(interface.location)">
+                {{interface.simpleType}}
+              </a>
+              <template if="interface != interfaces.last">
+                ,&nbsp;
+              </template>
+              <template instantiate="if interface == interfaces.last">
+                <br/>
+              </template>
+            </template>
+          
+          </template>
+          Extends:&nbsp;
+          <a on-click="viewer.handleLink(superClass.location)">
+            {{superClass.simpleType}}
+          </a>
+        </p>
+    
+      <!-- Comment -->
+      <section class="description">{{addComment('dartdoc-class')}}</section>
+      
+      <template instantiate="if variables != null">
+        <dartdoc-category category="{{variables}}"></dartdoc-category>
+      </template>
+      <template instantiate="if methods != null">
+        <dartdoc-category category="{{methods}}"></dartdoc-category>
+      </template>
+      
+    </template>
+  </template>
+  
+  <script type="application/dart">
+    
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
+    import 'app.dart';
+    import 'member.dart';
+    
+    class ClassElement extends MemberElement {
+      Category get variables => item.variables;
+      
+      Category get methods => item.functions;
+      
+      List<LinkableType> get interfaces => item.implements;
+      
+      LinkableType get superClass => item.superClass;
+    }
+  </script>
+</element>

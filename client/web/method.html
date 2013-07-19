@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+<link rel="import" href="category.html">
+
+<element name="dartdoc-method" constructor="MethodElement" extends="article"
+    apply-author-styles>
+  <template>
+    <template if="item == null">
+      Loading...
+    </template>
+    <template if="item != null">
+      
+      <!-- Return Type -->
+      <a on-click="viewer.handleLink(item.type.location)">
+        {{item.type.simpleType}}
+      </a>
+      
+      <h1>{{item.decoratedName}}</h1>  
+      
+      <!-- Parameters -->
+      <p>(
+        
+        <!-- TODO(tmandel): Possibly make a custom element for this -->
+        <template iterate="parameter in required">
+          <a on-click="viewer.handleLink(parameter.type.location)">
+            {{parameter.type.simpleType}}
+          </a>{{parameter.decoratedName}}
+          <template if="parameter != required.last || !optional.isEmpty">
+            ,&nbsp;
+          </template>
+        </template>
+        
+        <template if="!optional.isEmpty">
+          {{optional.first.isNamed ? '{' : '['}}
+          
+          <template iterate="parameter in optional">
+            <a on-click="viewer.handleLink(parameter.type.location)">
+              {{parameter.type.simpleType}}
+            </a>{{parameter.decoratedName}}
+            <template if="parameter != optional.last">
+              ,&nbsp;
+            </template>
+          </template>
+            
+          {{optional.first.isNamed ? '}' : ']'}}
+        </template>
+          
+      )</p>
+      
+      <!-- Comment -->
+      <section class="description">{{addComment('dartdoc-method')}}</section>
+    
+    </template>
+  </template>
+  
+  <script type="application/dart">
+    
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
+    import 'app.dart';
+    import 'member.dart';
+    
+    class MethodElement extends MemberElement {
+      
+      // Required parameters.
+      List<LinkableType> get required => 
+        item.parameters.where((parameter) => !parameter.isOptional).toList();
+      
+      // Optional parameters.
+      List<LinkableType> get optional => 
+        item.parameters.where((parameter) => parameter.isOptional).toList();
+    }
+  </script>
+</element>
