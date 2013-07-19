@@ -49,7 +49,6 @@ class Search extends WebComponent {
         // If nothing is focused, use the first search result.
         refId = results.first.element;
       }
-      print(refId);
       viewer.handleLink(new LinkableType(refId).location);
       searchQuery = "";
       watchers.dispatch();
