@@ -26,17 +26,11 @@ class Search extends WebComponent {
   }
 
   void onBlurCallback(_) {
-    // Sadly we have to wait a few msec as the active element switches to the
-    // body and then the correct active element rather than switching directly
-    // to the correct element.
-    new Timer(const Duration(milliseconds: 50), () {
-      window.console.log(document.activeElement.tagName);
-      if (document.activeElement == null ||
-          !this.contains(document.activeElement)) {
-        isFocused = false;
-        watchers.dispatch();
-      }
-    });
+    if (document.activeElement == null ||
+        !this.contains(document.activeElement)) {
+      isFocused = false;
+      watchers.dispatch();
+    }
   }
 
   void onFocusCallback(_) {
@@ -70,7 +64,7 @@ class Search extends WebComponent {
   }
 
   void onKeyPressCallback(KeyboardEvent e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode == KeyCode.ENTER) {
       onSubmitCallback();
       e.preventDefault();
     }

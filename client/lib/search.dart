@@ -20,32 +20,46 @@ class SearchResult implements Comparable {
 
   /**
    * Order results with higher scores before lower scores.
-   * */
+   */
   int compareTo(SearchResult other) => other.score.compareTo(score);
 
   SearchResult(this.element, this.score);
 }
 
+/**
+ * Returns a list of up to [maxResults] number of [SearchResult]s based off the
+ * searchQuery. 
+ * 
+ * A score is given to each potential search result based off how likely it is
+ * the appropriate qualified name to return for the search query. 
+ */
 List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
 
   var scoredResults = <SearchResult>[];
-
-  if (searchQuery.length <= 0) {
-    return scoredResults;
-  }
   
-  var resultsSet = new Set<String>();
+  var resultSet = new Set<String>();
 
   var queryList = searchQuery.trim().toLowerCase().split(' ');
-
-  queryList.forEach((q) => q.trim());
   
-  queryList.forEach((q) => resultsSet.addAll(index.where((e) =>
+  queryList.forEach((q) => resultSet.addAll(index.where((e) =>
     e.toLowerCase().contains(q))));
-
-  for (var r in resultsSet) {
+  
+  for (var r in resultSet) {
     int score = 0;
-    var qualifiedNameParts = r.toLowerCase().split('.');
+    var lowerCaseResult = r.toLowerCase();
+    
+    var splitDotQueries = [];
+    // If the search was for a named constructor (Map.fromIterable), give it a
+    // score boost of 200. 
+    queryList.forEach((q) {
+      if (q.contains('.') && lowerCaseResult.endsWith(q)) {
+        score += 200;
+        splitDotQueries = q.split('.');
+      }
+    });
+    queryList.addAll(splitDotQueries);
+    
+    var qualifiedNameParts = lowerCaseResult.split('.');
     qualifiedNameParts.forEach((q) => q.trim());
     // If the result item is part of the dart library, give it a 50 point boost.
     // Removes 'dart' from list of segments to avoid penalizing it later on. 
@@ -61,9 +75,9 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
 
     queryList.forEach((q) {
       // If it is a direct match to the last segment of the qualified name, 
-      // give score an extra 200 point boost. 
+      // give score an extra point boost. 
       if (qualifiedNameParts.last == q) {
-        score += 200;
+        score += 500 - (qualifiedNameParts.length * 100);
       }
 
       for (int i = 0; i < qualifiedNameParts.length; i++) {
