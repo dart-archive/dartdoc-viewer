@@ -72,7 +72,7 @@ class Viewer {
   /// Finds a member of [outer] (that contains a 'functions' category) that
   /// matches [memberName].
   Item _checkFunctions(Item outer, String memberName) {
-    return outer.functions.classes.content.firstWhere((function) => 
+    return outer.functions.content.firstWhere((function) => 
         function.name == memberName, orElse: () => null);
   }
   

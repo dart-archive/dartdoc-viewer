@@ -34,16 +34,22 @@ class Category extends Container {
   
   List<Container> content = [];
   
-  Category.forClasses(Map yaml, bool isAbstract, bool isError) : 
-      super(isAbstract ? 'Abstract Classes' : 
-        isError ? 'Exceptions' : 'Classes') {
+  Category.forClasses(Map yaml, {bool isAbstract: false}) : 
+      super(isAbstract ? 'Abstract Classes' : 'Classes') {
     if (yaml != null)
       yaml.keys.forEach((key) => 
-          content.add(new Class(yaml[key], isAbstract)));
+          content.add(new Class(yaml[key], isAbstract: isAbstract)));
+  }
+  
+  Category.forErrors(Map yaml) : super('Exceptions') {
+    if (yaml != null)
+      yaml.keys.forEach((key) => content.add(new Class(yaml[key])));
   }
   
   Category.forVariables(Map variables, Map getters, Map setters) : 
-      super('Properties') { 
+      super('Properties') {
+    // TODO(tmandel): Setters and getters should have the same schema as
+    // variables in the yaml input.
     if (variables != null) {
       variables.keys.forEach((key) {
         var variable = variables[key];
@@ -72,12 +78,12 @@ class Category extends Container {
     }
   }
   
-  Category.forFunctions(Map yaml, String name, bool isConstructor, 
-      String className, bool isOperator) : super(name) {
+  Category.forFunctions(Map yaml, String name, {bool isConstructor: false, 
+      String className: '', bool isOperator: false}) : super(name) {
     if (yaml != null) {
       yaml.keys.forEach((key) =>
-        content.add(new Method(yaml[key], isConstructor, 
-            className, isOperator)));
+        content.add(new Method(yaml[key], isConstructor: isConstructor, 
+            className: className, isOperator: isOperator)));
     }
   }
 }
@@ -158,9 +164,9 @@ void buildHierarchy(Item page, Item previous) {
     ..add(page);
   if (page is Class) {
     [page.constructs, page.operators].forEach((category) =>
-        category.content.forEach((item) {
-          buildHierarchy(item, page);
-        }));
+      category.content.forEach((item) {
+        buildHierarchy(item, page);
+      }));
   }
   if (page is Library || page is Class) {
     page.functions.content.forEach((method) {
@@ -170,7 +176,7 @@ void buildHierarchy(Item page, Item previous) {
       [page.classes, page.abstractClasses].forEach((category) =>
         category.content.forEach((clazz) {
           buildHierarchy(clazz, page);
-      }));
+        }));
     }
   }
 }
@@ -194,10 +200,10 @@ class Library extends Item {
       abstractClasses = yaml['classes']['abstract'];
       exceptions = yaml['classes']['error'];
     }
-    errors = new Category.forClasses(exceptions, false, true);
-    this.classes = new Category.forClasses(classes, false, false);
+    errors = new Category.forErrors(exceptions);
+    this.classes = new Category.forClasses(classes);
     this.abstractClasses =
-        new Category.forClasses(abstractClasses, true, false);
+        new Category.forClasses(abstractClasses, isAbstract: true);
     var setters, getters, methods, opers;
     if (yaml['functions'] != null) {
       setters = yaml['functions']['setters'];
@@ -206,9 +212,9 @@ class Library extends Item {
       opers = yaml['functions']['operators'];
     }
     variables = new Category.forVariables(yaml['variables'], getters, setters);
-    functions = new Category.forFunctions(methods,
-        'Functions', false, '', false);
-    operators = new Category.forFunctions(opers, 'Operators', false, '', true);
+    functions = new Category.forFunctions(methods, 'Functions');
+    operators = new Category.forFunctions(opers, 'Operators', 
+        isOperator: true);
   }
 
   String get decoratedName => '$name library';
@@ -229,22 +235,22 @@ class Class extends Item {
   bool isTypedef;
   List<LinkableType> implements;
 
-  Class(Map yaml, bool isAbstract) : 
+  Class(Map yaml, {bool isAbstract: false}) : 
       super(yaml['name'], _wrapComment(yaml['comment'])){
-    var setters, getters, methods, opers, constructors;
+    var setters, getters, methods, operators, constructors;
     if (yaml['methods'] != null) {
       setters = yaml['methods']['setters'];
       getters = yaml['methods']['getters'];
       methods = yaml['methods']['methods'];
-      opers = yaml['methods']['operators'];
+      operators = yaml['methods']['operators'];
       constructors = yaml['methods']['constructors'];
     }
     variables = new Category.forVariables(yaml['variables'], getters, setters);
-    functions = new Category.forFunctions(methods,
-        'Functions', false, '', false);
-    operators = new Category.forFunctions(opers, 'Operators', false, '', true);
-    constructs = new Category.forFunctions(constructors,
-        'Constructors', true, this.name, false);
+    functions = new Category.forFunctions(methods, 'Functions');
+    this.operators = new Category.forFunctions(operators, 'Operators',
+        isOperator: true);
+    constructs = new Category.forFunctions(constructors, 'Constructors', 
+        isConstructor: true, className: this.name);
     this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = isAbstract;
     this.isTypedef = yaml['typedef'] == 'true';
@@ -269,8 +275,8 @@ class Method extends Item {
   LinkableType type;
   List<Parameter> parameters;
 
-  Method(Map yaml, bool isConstructor, String className, bool isOperator) :
-      super(yaml['name'], yaml['comment']) {
+  Method(Map yaml, {bool isConstructor: false, String className: '', 
+      bool isOperator: false}) : super(yaml['name'], yaml['comment']) {
     this.isStatic = yaml['static'] == 'true';
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
@@ -340,7 +346,9 @@ class Variable extends Container {
   LinkableType type;
 
   // Since getters and setters are treated as variables, this does not                                
-  // take in a map and instead takes in all properties.                                               
+  // take in a map and instead takes in all properties.
+  // TODO(tmandel): Getters and setters should have the same schema
+  // as variables in yaml input.
   Variable(String name, String comment, this.isFinal, this.isStatic,
       String type, {bool isGetter: false, bool isSetter: false,
       Parameter setterParameter: null}) :
