@@ -17,6 +17,8 @@ const docsPath = '../../docs/';
 class Container {
   String name;
   String comment = '<span></span>';
+  
+  Container(this.name, [this.comment]);
 }
 
 // Wraps a comment in span element to make it a single HTML Element.
@@ -32,18 +34,15 @@ class Category extends Container {
   
   List<Container> content = [];
   
-  Category.forClasses(Map yaml) {
-    this.name = 'Classes';
+  Category.forClasses(Map yaml) : super('Classes') {
     yaml.keys.forEach((key) => content.add(new Class(yaml[key])));
   }
   
-  Category.forVariables(Map yaml) {
-    this.name = 'Variables';
+  Category.forVariables(Map yaml) : super('Variables') {
     yaml.keys.forEach((key) => content.add(new Variable(yaml[key])));
   }
   
-  Category.forFunctions(Map yaml, String name) {
-    this.name = name;
+  Category.forFunctions(Map yaml, String name) : super(name) {
     yaml.keys.forEach((key) => content.add(new Method(yaml[key])));
   }
 }
@@ -51,9 +50,11 @@ class Category extends Container {
 /**
  * A [Container] synonymous with a page.
  */
-abstract class Item extends Container {
+class Item extends Container {
   /// A list of [Item]s representing the path to this [Item].
   List<Item> path = [];
+  
+  Item(String name, [String comment]) : super(name, comment);
   
   /// [Item]'s name with its properties properly appended. 
   String get decoratedName => name;
@@ -67,9 +68,7 @@ class Placeholder extends Item {
   /// The path to the file with the real data relative to [docsPath].
   String location;
   
-  Placeholder(String name, this.location) {
-    this.name = name;
-  }
+  Placeholder(String name, this.location) : super(name);
 }
 
 /**
@@ -82,8 +81,7 @@ class Home extends Item {
   
   /// The constructor parses the [libraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
-  Home(List libraries) {
-    name = 'Dart API Reference';
+  Home(List libraries) : super('Dart API Reference') {
     this.libraries = [];
     for (String library in libraries) {
       var libraryName = library.replaceAll('.yaml', '');
@@ -148,9 +146,7 @@ class Library extends Item {
   Category variables;
   Category functions;
   
-  Library(Map yaml) {
-    this.name = yaml['name'];
-    this.comment = _wrapComment(yaml['comment']);
+  Library(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     if (yaml['classes'] != null) {
       classes = new Category.forClasses(yaml['classes']);
     }
@@ -178,9 +174,7 @@ class Class extends Item {
   bool isTypedef;
   List<LinkableType> implements;
   
-  Class(Map yaml) {
-    this.name = yaml['name'];
-    this.comment = _wrapComment(yaml['comment']);
+  Class(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     if (yaml['variables'] != null) {
       variables = new Category.forVariables(yaml['variables']);
     }
@@ -207,9 +201,7 @@ class Method extends Item {
   LinkableType type;
   List<Parameter> parameters;
   
-  Method(Map yaml) {
-    this.name = yaml['name'];
-    this.comment = _wrapComment(yaml['comment']);
+  Method(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     this.isStatic = yaml['static'] == 'true';
     this.type = new LinkableType(yaml['return']);
     this.parameters = _getParameters(yaml['parameters']);
@@ -271,9 +263,7 @@ class Variable extends Container {
   bool isStatic;
   LinkableType type;
   
-  Variable(Map yaml) {
-    this.name = yaml['name'];
-    this.comment = _wrapComment(yaml['comment']);
+  Variable(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     this.isFinal = yaml['final'] == 'true';
     this.isStatic = yaml['static'] == 'true';
     this.type = new LinkableType(yaml['type']);

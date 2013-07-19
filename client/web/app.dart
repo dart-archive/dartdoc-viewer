@@ -79,8 +79,10 @@ class Viewer {
     }
   }
   
-  // TODO(tmandel): Create a map from qualified name to Item during initial
-  // load to avoid searching for the correct Item.
+  // TODO(tmandel): Refactor. Create a map from qualified name to Item 
+  // during initial load to avoid searching for the correct Item. Caching
+  // will be done so that lookups of the same member do not all search
+  // through the library to find the desired member.
   /// Finds the member of [library] defined by the path in [members].
   Item _findChild(Library library, List members) {
     // If the url ends with a '/' an extra element needs to be removed.
@@ -98,16 +100,16 @@ class Viewer {
     }
   }
   
-  /// Finds the correct [Item] described by [location] and pushes state to
-  /// the history api for navigation.
+  /// Looks for the correct [Item] described by [location]. If it is found, 
+  /// [currentPage] is updated and state is pushed to the history api.
   void handleLink(List<String> location) {
     _handleLinkWithoutState(location).then((response) {
       if (response) _updateState(currentPage);
     });
   }
   
-  /// Finds the correct [Item] described by [location] and does not push
-  /// state to the history api.
+  /// Looks for the correct [Item] described by [location]. If it is found,
+  /// [currentPage] is updated and state is not pushed to the history api.
   /// Returns a [Future] to determine if a link was found or not.
   Future _handleLinkWithoutState(List<String> location) {
     if (location != null) {
