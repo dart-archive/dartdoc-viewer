@@ -34,22 +34,19 @@ class Category extends Container {
   
   List<Container> content = [];
   
-  Category.forClasses(Map yaml, {bool isAbstract: false}) : 
-      super(isAbstract ? 'Abstract Classes' : 'Classes') {
+  Category.forClasses(Map yaml, String name, {bool isAbstract: false}) :
+      super(name) {
     if (yaml != null)
       yaml.keys.forEach((key) => 
-          content.add(new Class(yaml[key], isAbstract: isAbstract)));
-  }
-  
-  Category.forErrors(Map yaml) : super('Exceptions') {
-    if (yaml != null)
-      yaml.keys.forEach((key) => content.add(new Class(yaml[key])));
+        content.add(new Class(yaml[key], isAbstract: isAbstract)));
   }
   
   Category.forVariables(Map variables, Map getters, Map setters) : 
       super('Properties') {
     // TODO(tmandel): Setters and getters should have the same schema as
-    // variables in the yaml input.
+    // variables in the yaml input. The Variable constructor should take in
+    // a YAML map as input instead of each individual field when this is done.
+    // This will cut down on lengthy code here.
     if (variables != null) {
       variables.keys.forEach((key) {
         var variable = variables[key];
@@ -200,20 +197,21 @@ class Library extends Item {
       abstractClasses = yaml['classes']['abstract'];
       exceptions = yaml['classes']['error'];
     }
-    errors = new Category.forErrors(exceptions);
-    this.classes = new Category.forClasses(classes);
+    errors = new Category.forClasses(exceptions, 'Exceptions');
+    this.classes = new Category.forClasses(classes, 'Classes');
     this.abstractClasses =
-        new Category.forClasses(abstractClasses, isAbstract: true);
-    var setters, getters, methods, opers;
+        new Category.forClasses(abstractClasses, 'Abstract Classes',
+            isAbstract: true);
+    var setters, getters, methods, operators;
     if (yaml['functions'] != null) {
       setters = yaml['functions']['setters'];
       getters = yaml['functions']['getters'];
       methods = yaml['functions']['methods'];
-      opers = yaml['functions']['operators'];
+      operators = yaml['functions']['operators'];
     }
     variables = new Category.forVariables(yaml['variables'], getters, setters);
     functions = new Category.forFunctions(methods, 'Functions');
-    operators = new Category.forFunctions(opers, 'Operators', 
+    this.operators = new Category.forFunctions(operators, 'Operators', 
         isOperator: true);
   }
 
@@ -229,7 +227,6 @@ class Class extends Item {
   Category variables;
   Category constructs;
   Category operators;
-
   LinkableType superClass;
   bool isAbstract;
   bool isTypedef;
@@ -348,7 +345,8 @@ class Variable extends Container {
   // Since getters and setters are treated as variables, this does not                                
   // take in a map and instead takes in all properties.
   // TODO(tmandel): Getters and setters should have the same schema
-  // as variables in yaml input.
+  // as variables in yaml input so that this constructor can take a YAML
+  // map as input instead of each field.
   Variable(String name, String comment, this.isFinal, this.isStatic,
       String type, {bool isGetter: false, bool isSetter: false,
       Parameter setterParameter: null}) :
