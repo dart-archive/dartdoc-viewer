@@ -75,7 +75,7 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
 
     queryList.forEach((q) {
       // If it is a direct match to the last segment of the qualified name, 
-      // give score an extra point boost. 
+      // give score an extra point boost proportional to the number of segments.
       if (qualifiedNameParts.last == q) {
         score += 500 - (qualifiedNameParts.length * 100);
       }
