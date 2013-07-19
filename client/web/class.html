@@ -36,10 +36,16 @@
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-class')}}</section>
       
-      <template instantiate="if variables != null">
+      <template instantiate="if !variables.content.isEmpty">
         <dartdoc-category category="{{variables}}"></dartdoc-category>
       </template>
-      <template instantiate="if methods != null">
+      <template instantiate="if !operators.content.isEmpty">
+        <dartdoc-category category="{{operators}}"></dartdoc-category>
+      </template>
+      <template instantiate="if !constructors.content.isEmpty">
+        <dartdoc-category category="{{constructors}}"></dartdoc-category>
+      </template>
+      <template instantiate="if !methods.content.isEmpty">
         <dartdoc-category category="{{methods}}"></dartdoc-category>
       </template>
       
@@ -56,7 +62,11 @@
     
     class ClassElement extends MemberElement {
       Category get variables => item.variables;
-      
+
+      Category get operators => item.operators;
+
+      Category get constructors => item.constructs;
+
       Category get methods => item.functions;
       
       List<LinkableType> get interfaces => item.implements;

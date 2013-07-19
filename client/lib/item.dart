@@ -218,49 +218,68 @@ class Library extends Item {
  * An [Item] that describes a single Dart class.
  */
 class Class extends Item {
-  
+
   Category functions;
   Category variables;
-  
+  Category constructs;
+  Category operators;
+
   LinkableType superClass;
   bool isAbstract;
   bool isTypedef;
   List<LinkableType> implements;
-  
-  Class(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
-    if (yaml['variables'] != null) {
-      variables = new Category.forVariables(yaml['variables']);
-    }
+
+  Class(Map yaml, bool isAbstract) : 
+      super(yaml['name'], _wrapComment(yaml['comment'])){
+    var setters, getters, methods, opers, constructors;
     if (yaml['methods'] != null) {
-      functions = new Category.forFunctions(yaml['methods'], 'Methods');
+      setters = yaml['methods']['setters'];
+      getters = yaml['methods']['getters'];
+      methods = yaml['methods']['methods'];
+      opers = yaml['methods']['operators'];
+      constructors = yaml['methods']['constructors'];
     }
+    variables = new Category.forVariables(yaml['variables'], getters, setters);
+    functions = new Category.forFunctions(methods,
+        'Functions', false, '', false);
+    operators = new Category.forFunctions(opers, 'Operators', false, '', true);
+    constructs = new Category.forFunctions(constructors,
+        'Constructors', true, this.name, false);
     this.superClass = new LinkableType(yaml['superclass']);
-    this.isAbstract = yaml['abstract'] == 'true';
+    this.isAbstract = isAbstract;
     this.isTypedef = yaml['typedef'] == 'true';
     this.implements = yaml['implements'] == null ? [] :
         yaml['implements'].map((item) => new LinkableType(item)).toList();
   }
-  
-  String get decoratedName => isAbstract ? 'abstract class ${this.name}' :
-    isTypedef ? 'typedef ${this.name}' : 'class ${this.name}';
+
+  String get decoratedName => isAbstract ? '${this.name} abstract class' :
+    isTypedef ? '${this.name} typedef' : '${this.name} class';
 }
+
 
 /**
  * An [Item] that describes a single Dart method.
  */
 class Method extends Item {
-  
+
   bool isStatic;
+  bool isConstructor;
+  String className;
+  bool isOperator;
   LinkableType type;
   List<Parameter> parameters;
-  
-  Method(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
+
+  Method(Map yaml, bool isConstructor, String className, bool isOperator) :
+      super(yaml['name'], yaml['comment']) {
     this.isStatic = yaml['static'] == 'true';
+    this.isOperator = isOperator;
+    this.isConstructor = isConstructor;
     this.type = new LinkableType(yaml['return']);
     this.parameters = _getParameters(yaml['parameters']);
+    this.className = className;
   }
-  
-  /// Creates [Parameter] objects for each parameter to this method.
+
+  /// Creates [Parameter] objects for each parameter to this method.                                  
   List<Parameter> _getParameters(Map parameters) {
     var values = [];
     if (parameters != null) {
@@ -270,8 +289,9 @@ class Method extends Item {
     }
     return values;
   }
-  
-  String get decoratedName => isStatic ? 'static $name' : name;
+
+  String get decoratedName => isStatic ? 'static $name' :
+    isConstructor ? (name != '' ? '$className.$name' : className) : name;
 }
 
 /**
@@ -314,15 +334,24 @@ class Variable extends Container {
   
   bool isFinal;
   bool isStatic;
+  bool isGetter;
+  bool isSetter;
+  Parameter setterParameter;
   LinkableType type;
-  
-  Variable(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
-    this.isFinal = yaml['final'] == 'true';
-    this.isStatic = yaml['static'] == 'true';
-    this.type = new LinkableType(yaml['type']);
+
+  // Since getters and setters are treated as variables, this does not                                
+  // take in a map and instead takes in all properties.                                               
+  Variable(String name, String comment, this.isFinal, this.isStatic,
+      String type, {bool isGetter: false, bool isSetter: false,
+      Parameter setterParameter: null}) :
+        super(name, _wrapComment(comment)) {
+    this.setterParameter = setterParameter;
+    this.isGetter = isGetter;
+    this.isSetter = isSetter;
+    this.type = new LinkableType(type);
   }
-  
-  /// The attributes of this variable to be displayed before it.
+
+  /// The attributes of this variable to be displayed before it.                                      
   String get prefix {
     var prefix = isStatic ? 'static ' : '';
     return isFinal ? '${prefix}final' : prefix;
@@ -354,7 +383,7 @@ class LinkableType {
   }
 
   /// The simple name for this type.
-  String get simpleType => this.type.split('.').last;
+  String get simpleType => type.split('.').last;
 
   /// The [Item] describing this type if it has been loaded, otherwise null.
   List<String> get location => type.split('.');

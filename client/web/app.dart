@@ -61,23 +61,19 @@ class Viewer {
   
   /// Finds a member of a library matching [topLevelName].
   Item _checkTopLevel(Library library, String topLevelName) {
-    // TODO(tmandel): Categories shouldn't be null. Make their contents empty.
-    if (library.classes != null) {
-      return library.classes.content.firstWhere((clazz) => 
-          clazz.name == topLevelName, 
-          orElse: () => _checkFunctions(library, topLevelName));
-    }
+    return library.classes.content.firstWhere((clazz) => 
+        clazz.name == topLevelName, 
+        orElse: () => library.abstractClasses.content.firstWhere((clazz) =>
+            clazz.name == topLevelName, 
+            orElse: () => _checkFunctions(library, topLevelName)));
     // TODO(tmandel): Handle variable linking with '#' characters.
   }
   
   /// Finds a member of [outer] (that contains a 'functions' category) that
   /// matches [memberName].
   Item _checkFunctions(Item outer, String memberName) {
-    // TODO(tmandel): Categories shouldn't be null. Make their contents empty.
-    if (outer.functions != null) {
-      return outer.functions.content.firstWhere((function) => 
-          function.name == memberName, orElse: () => null);
-    }
+    return outer.functions.classes.content.firstWhere((function) => 
+        function.name == memberName, orElse: () => null);
   }
   
   // TODO(tmandel): Refactor. Create a map from qualified name to Item 

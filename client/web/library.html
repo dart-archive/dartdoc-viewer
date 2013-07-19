@@ -14,15 +14,24 @@
     
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-library')}}</section>
-    
-      <template if="variables != null">
+
+      <template if="!variables.content.isEmpty">
         <dartdoc-category category="{{variables}}"></dartdoc-category>
       </template>
-      <template if="functions != null">
+      <template if="!operators.content.isEmpty">
+        <dartdoc-category category="{{operators}}"></dartdoc-category>
+      </template>
+      <template if="!functions.content.isEmpty">
         <dartdoc-category category="{{functions}}"></dartdoc-category>
       </template>
-      <template if="clazzes != null">
+      <template if="!abstractClasses.content.isEmpty">
+        <dartdoc-category category="{{abstractClasses}}"></dartdoc-category>
+      </template>
+      <template if="!clazzes.content.isEmpty">
         <dartdoc-category category="{{clazzes}}"></dartdoc-category>
+      </template>
+      <template if="!errors.content.isEmpty">
+        <dartdoc-category category="{{errors}}"></dartdoc-category>
       </template>
     </template>  
   </template>
@@ -54,10 +63,16 @@
       }
       
       Category get variables => item.variables;
-      
+
+      Category get operators => item.operators;
+
       Category get functions => item.functions;
-      
+
+      Category get abstractClasses => item.abstractClasses;
+
       Category get clazzes => item.classes;
+
+      Category get errors => item.errors;
     }
   </script>
 </element>

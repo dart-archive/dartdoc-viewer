@@ -11,9 +11,11 @@
     <template if="item != null">
       
       <!-- Return Type -->
-      <a on-click="viewer.handleLink(item.type.location)">
-        {{item.type.simpleType}}
-      </a>
+      <template instantiate="if !item.isConstructor">
+        <a on-click="viewer.handleLink(item.type.location)">
+          {{item.type.simpleType}}
+        </a>
+      </template>
       
       <h1>{{item.decoratedName}}</h1>  
       

@@ -1,40 +1,55 @@
 <!DOCTYPE html>
-<element name="dartdoc-variable" constructor="VariableElement" extends="div"  
+<element name="dartdoc-variable" constructor="VariableElement" extends="div"
     apply-author-styles>
   <template>
-    <p class="description">
-      {{prefix}}&nbsp; 
-      <a on-click="app.viewer.handleLink(type.location)">
-        {{type.simpleType}}
-      </a>
-      &nbsp;{{name}}
-    </p>
+    <template if="variable.isSetter">
+      <p>
+        {{prefix}}void&nbsp;set&nbsp;{{name}}(
+        <a on-click="app.viewer.handleLink(setterParameter.type.location)">
+          {{setterParameter.type.simpleType}}
+        </a>{{setterParameter.decoratedName}}&nbsp;)
+      </p>
+    </template>
+    <template if="!variable.isSetter">
+      <p>
+        {{prefix}}
+        <a on-click="app.viewer.handleLink(type.location)">
+          {{type.simpleType}}
+        </a>
+        {{getter}}&nbsp;{{name}}
+      </p>
+    </template>
+    <p class="description"></p>
   </template>
   <script type="application/dart">
     import 'dart:html';
     import 'package:web_ui/web_ui.dart';
     import 'package:dartdoc_viewer/item.dart';
     import 'app.dart' as app;
-    
+
     /**
-     * An HTML representation of a Variable.  
+     * An HTML representation of a Variable.
      */
     class VariableElement extends WebComponent {
       Variable variable;
-      
+
       String get prefix => variable.prefix;
-      
+
+      String get getter => variable.isGetter ? 'get' : '';
+
+      Parameter get setterParameter => variable.setterParameter;
+
       LinkableType get type => variable.type;
-      
+
       String get name => variable.name;
-      
+
       // Cannot extend MemberElement because the description <p> tag should
       // not be cleared since it also contains the name and type.
       inserted() {
         if (variable.comment != '' && variable.comment != null) {
           var comment = getShadowRoot('dartdoc-variable').query('.description');
           comment.children.add(new Element.html(variable.comment));
-        }
+  }
       }
     }
   </script>
