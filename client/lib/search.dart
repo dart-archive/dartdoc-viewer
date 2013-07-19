@@ -7,7 +7,7 @@ import 'package:web_ui/web_ui.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/data.dart';
 
-/// Search Index
+/** Search Index */
 List<String> index = [];
 
 class SearchResult implements Comparable {
@@ -36,11 +36,8 @@ class SearchResult implements Comparable {
 List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
 
   var scoredResults = <SearchResult>[];
-  
   var resultSet = new Set<String>();
-
   var queryList = searchQuery.trim().toLowerCase().split(' ');
-  
   queryList.forEach((q) => resultSet.addAll(index.where((e) =>
     e.toLowerCase().contains(q))));
   
