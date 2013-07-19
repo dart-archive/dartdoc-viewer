@@ -75,7 +75,7 @@ class Viewer {
   Item _checkFunctions(Item outer, String memberName) {
     // TODO(tmandel): Categories shouldn't be null. Make their contents empty.
     if (outer.functions != null) {
-      return outer.functions.classes.content.firstWhere((function) => 
+      return outer.functions.content.firstWhere((function) => 
           function.name == memberName, orElse: () => null);
     }
   }

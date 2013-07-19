@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:html' hide Element;
 import 'dart:html' as html show Element;
 import 'app.dart';
+import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:web_ui/web_ui.dart';
 import 'package:web_ui/watcher.dart' as watchers;
@@ -48,7 +49,8 @@ class Search extends WebComponent {
         // If nothing is focused, use the first search result.
         refId = results.first.element;
       }
-      viewer.handleLink(refId.split('.'));
+      print(refId);
+      viewer.handleLink(new LinkableType(refId).location);
       searchQuery = "";
       watchers.dispatch();
     }
