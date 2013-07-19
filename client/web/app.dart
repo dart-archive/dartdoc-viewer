@@ -189,5 +189,9 @@ main() {
     if (location != null && location != '') {
       viewer._handleLinkWithoutState(location.split('/'));
     }
+    
+    retrieveFileContents('../../docs/index.txt').then((String list) {
+      index.addAll(list.split('\n'));
+    });
   });
 }
