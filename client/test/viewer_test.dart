@@ -20,7 +20,6 @@ String empty = '';
 // account for the use of literal strings.
 String parameter =
 '''"name" : "input"
-"qualifiedname" : "Library.method#input"
 "optional" : "true"
 "named" : "true"
 "default" : "true"
@@ -29,7 +28,6 @@ String parameter =
 
 String variable =
 '''"name" : "variable"
-"qualifiedname" : "Library.variable"
 "comment" : "<p>This is a test comment</p>"
 "final" : "false"
 "static" : "false"
@@ -37,15 +35,12 @@ String variable =
 
 String method = 
 '''"name" : "getA"
-"qualifiedname" : "Library.B.getA"
 "comment" : ""
-"type" : "method"
 "static" : "false"
 "return" : "Library.A"
 "parameters" :
   "testInt" :
     "name" : "testInt"
-    "qualifiedname" : "Library.B.getA#testInt"
     "optional" : "false"
     "named" : "false"
     "default" : "false"
@@ -54,107 +49,100 @@ String method =
 
 String clazz =
 '''"name" : "A"
-"qualifiedname" : "Library.A"
 "comment" : "<p>This class is used for testing.</p>"
 "superclass" : "dart.core.Object"
-"abstract" : "false"
-"typedef" : "false"
 "implements" :
   - "Library.B"
   - "Library.C"
 "variables" :
 "methods" : 
-  "doAction" :
-    "name" : "doAction"
-    "qualifiedname" : "Library.A.doAction"
-    "comment" : "<p>This is a test comment</p>."
-    "type" : "method"
-    "static" : "true"
-    "return" : "void"
-    "parameters" :''';
+  "getters" :
+  "setters" :
+  "constructors" :
+  "operators" :
+  "methods" :
+    "doAction" :
+      "name" : "doAction"
+      "comment" : "<p>This is a test comment</p>."
+      "static" : "true"
+      "return" : "void"
+      "parameters" :''';
 
 String library =
 '''"name" : "DummyLibrary"
-"qualifiedname" : "DummyLibrary"
 "comment" : "<p>This is a library.</p>"
 "variables" :
 "functions" :
 "classes" :
-  "A" :
-    "name" : "A"
-    "qualifiedname" : "DummyLibrary.A"
-    "comment" : "<p>This is a test class</p>"
-    "superclass" : "dart.core.Object"
-    "abstract" : "true"
-    "typedef" : "false"
-    "implements" :
-      - "Library.A.B"
-      - "Library.C.Y"
-    "variables" :
-    "methods" :''';
+  "abstract" :
+    "A" :
+      "name" : "A"
+      "comment" : "<p>This is a test class</p>"
+      "superclass" : "dart.core.Object"
+      "implements" :
+        - "Library.A.B"
+        - "Library.C.Y"
+      "variables" :
+      "methods" :
+  "class" :
+  "error" :
+  "typedef" :''';
 
 // A string of YAML with return types that are in scope for testing links.
 String dependencies = 
 '''"name" : "Library"
-"qualifiedname" : "Library"
 "comment" : "<p>This is a library.</p>"
 "variables" :
   "variable" :
     "name" : "variable"
-    "qualifiedname" : "Library.variable"
     "comment" : "<p>This is a test comment</p>"
     "final" : "false"
     "static" : "false"
     "type" : "Library.A"
 "functions" :
-  "changeA" :
-    "name" : "changeA"
-    "qualifiedname" : "Library.A.changeA"
-    "comment" : ""
-    "type" : "method"
-    "static" : "false"
-    "return" : "Library.A"
-    "parameters" :
-      "testA" :
-        "name" : "testA"
-        "qualifiedname" : "Library.A.changeA#testInt"
-        "optional" : "false"
-        "named" : "false"
-        "default" : "false"
-        "type" : "Library.A"
-        "value" : "null"
+  "setters" :
+  "getters" :
+  "constructors" :
+  "operators" :
+  "methods" :
+    "changeA" :
+      "name" : "changeA"
+      "comment" : ""
+      "static" : "false"
+      "return" : "Library.A"
+      "parameters" :
+        "testA" :
+          "name" : "testA"
+          "optional" : "false"
+          "named" : "false"
+          "default" : "false"
+          "type" : "Library.A"
+          "value" : "null"
 "classes" :
-  "A" :
-    "name" : "A"
-    "qualifiedname" : "Library.A"
-    "comment" : ""
-    "superclass" : "dart.core.Object"
-    "abstract" : "false"
-    "typedef" : "false"
-    "implements" : 
-      - "Library.B"
-    "variables" : 
-    "methods" :
-  "B" :
-    "name" : "B"
-    "qualifiedname" : "Library.B"
-    "comment" : ""
-    "superclass" : "dart.core.Object"
-    "abstract" : "true"
-    "typedef" : "false"
-    "implements" : 
-    "variables" : 
-    "methods" :
-  "C" :
-    "name" : "C"
-    "qualifiedname" : "Library.C"
-    "comment" : ""
-    "superclass" : "Library.A"
-    "abstract" : "false"
-    "typedef" : "false"
-    "implements" : 
-    "variables" : 
-    "methods" :''';
+  "class"
+    "A" :
+      "name" : "A"
+      "comment" : ""
+      "superclass" : "dart.core.Object"
+      "implements" : 
+        - "Library.B"
+      "variables" : 
+      "methods" :
+  "abstract" :
+    "B" :
+      "name" : "B"
+      "comment" : ""
+      "superclass" : "dart.core.Object"
+      "implements" : 
+      "variables" : 
+      "methods" :
+    "C" :
+      "name" : "C"
+      "comment" : ""
+      "superclass" : "Library.A"
+      "implements" : 
+      "variables" : 
+      "methods" :''';
 
 void main() {
   useHtmlEnhancedConfiguration();
@@ -185,9 +173,9 @@ void main() {
     retrieveFileContents('yaml/variable.yaml').then(expectAsync1((data) {
       expect(data, equals(variable));
     }));
-  
     var yaml = loadYaml(variable);
-    var item = new Variable(yaml);
+    var item = new Variable(yaml['name'], yaml['comment'], 
+        yaml['final'] == 'true', yaml['static'] == 'true', yaml['type']);
     expect(item is Variable, isTrue);
     expect(item.type is LinkableType, isTrue);
   });
@@ -201,13 +189,17 @@ void main() {
     var yaml = loadYaml(clazz);
     var item = new Class(yaml);
     expect(item is Class, isTrue);
+    expect(2, equals(1));
     
-    expect(item.content.first is Category, isTrue);
+    expect(item.variables is Category, isTrue);
+    expect(item.operators is Category, isTrue);
+    expect(item.constructs is Category, isTrue);
+    expect(item.functions is Category, isTrue);
     
-    var category = item.content.first;
-    expect(category.content.first is Method, isTrue);
+    var functions = item.functions;
+    expect(functions.content.first is Method, isTrue);
     
-    var method = category.content.first;
+    var method = functions.content.first;
     expect(method.type is LinkableType, isTrue);
     
     var implements = item.implements;
@@ -255,10 +247,14 @@ void main() {
     expect(itemAutomatic.comment, equals(itemManual.comment));
     // TODO(tmandel): Should test for the same classes/functions/etc.
     
-    expect(itemManual.content.first is Category, isTrue);
+    expect(itemManual.classes is Category, isTrue);
+    expect(itemManual.abstractClasses is Category, isTrue);
+    expect(itemManual.errors is Category, isTrue);
+    expect(itemManual.variables is Category, isTrue);
+    expect(itemManual.functions is Category, isTrue);
+    expect(itemManual.operators is Category, isTrue);
     
-    var category = itemManual.content.first;
-    var clazz = category.content.first;
+    var clazz = itemManual.abstractClasses.content.first;
     expect(clazz is Class, isTrue);
     
     var implements = clazz.implements;

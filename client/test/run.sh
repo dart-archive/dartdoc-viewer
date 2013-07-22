@@ -6,7 +6,7 @@
 # Usage: call directly in the command line as test/run.sh with 'content_shell' 
 # in your path. This script runs all tests for the dartdoc viewer.
 
-results=$(content_shell --dump-render-tree test/viewer_test.html)
+results=$(content_shell --dump-render-tree viewer_test.html)
 echo $results
 
 echo $results | grep -q PASS
