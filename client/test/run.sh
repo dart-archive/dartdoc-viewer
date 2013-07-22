@@ -18,8 +18,7 @@ failures=$?
 echo $results | grep -q ERROR
 errors=$?
 
-if [[ ($cs_exit_code != 0 || $failures == 0 || 
-       $errors == 0 || $passed != 0) ]]; then
+if [[ ($failures != 0 && $errors != 0 && $passed == 0) ]]; then
     exit 0
 fi
 

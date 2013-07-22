@@ -252,7 +252,7 @@ void main() {
     expect(itemManual.variables is Category, isTrue);
     expect(itemManual.functions is Category, isTrue);
     expect(itemManual.operators is Category, isTrue);
-    
+
     var clazz = itemManual.abstractClasses.content.first;
     expect(clazz is Class, isTrue);
     
