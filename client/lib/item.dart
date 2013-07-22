@@ -332,7 +332,7 @@ class Variable extends Container {
   LinkableType type;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false})
-        : super(yaml['name'], _wrapComment(yaml['comment'])) {
+      : super(yaml['name'], _wrapComment(yaml['comment'])) {
     this.isGetter = isGetter;
     this.isSetter = isSetter;
     isFinal = yaml['final'] == 'true';
