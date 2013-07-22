@@ -95,9 +95,9 @@ class Viewer {
     }
   }
   
-  /// Finds the correct [Item], updates [currentPage], and returns whether
-  /// it was successful or not.
-  bool _handleMembers(List<String> location, Library library) {
+  /// Finds the correct [Item] from [location] and [library], updates
+  /// [currentPage], and returns whether it was successful or not.
+  bool _handleLocation(List<String> location, Library library) {
     if (location.length > 1) {
       var child = _findChild(library, location);
       if (child != null) _updatePage(child);
@@ -125,11 +125,11 @@ class Viewer {
         if (member is Placeholder) {
           return homePage.loadLibrary(member).then((response) {
             if (response != null) {
-              return _handleMembers(location, response);
+              return _handleLocation(location, response);
             }
           });
         } else {
-          return new Future.value(_handleMembers(location, member));
+          return new Future.value(_handleLocation(location, member));
         }
       }
     }
