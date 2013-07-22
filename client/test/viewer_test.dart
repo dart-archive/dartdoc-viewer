@@ -261,7 +261,6 @@ void main() {
   });
   
   // Test that links that are in scope are aliased to the correct objects.
-
   test('dependencies_test', () {
     var currentMap = loadYaml(dependencies);
     var library = new Library(currentMap);
