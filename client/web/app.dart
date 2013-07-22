@@ -59,6 +59,13 @@ class Viewer {
   /// Creates a list of [Item] objects describing the path to [currentPage].
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
+  /// Finds a member of [outer] (that contains a 'functions' category) that
+  /// matches [memberName].
+  Item _checkFunctions(Item outer, String memberName) {
+    return outer.functions.content.firstWhere((function) => 
+        function.name == memberName, orElse: () => null);
+  }
+  
   /// Finds a member of a library matching [topLevelName].
   Item _checkTopLevel(Library library, String topLevelName) {
     return library.classes.content.firstWhere((clazz) => 
@@ -69,21 +76,12 @@ class Viewer {
     // TODO(tmandel): Handle variable linking with '#' characters.
   }
   
-  /// Finds a member of [outer] (that contains a 'functions' category) that
-  /// matches [memberName].
-  Item _checkFunctions(Item outer, String memberName) {
-    return outer.functions.content.firstWhere((function) => 
-        function.name == memberName, orElse: () => null);
-  }
-  
   // TODO(tmandel): Refactor. Create a map from qualified name to Item 
   // during initial load to avoid searching for the correct Item. Caching
   // will be done so that lookups of the same member do not all search
   // through the library to find the desired member.
   /// Finds the member of [library] defined by the path in [members].
   Item _findChild(Library library, List members) {
-    // If the url ends with a '/' an extra element needs to be removed.
-    if (members.last == '') members.removeLast();
     if (members.length > 1) {
       var topLevel = _checkTopLevel(library, members[1]);
       if (topLevel != null) {
@@ -97,12 +95,17 @@ class Viewer {
     }
   }
   
-  /// Looks for the correct [Item] described by [location]. If it is found, 
-  /// [currentPage] is updated and state is pushed to the history api.
-  void handleLink(List<String> location) {
-    _handleLinkWithoutState(location).then((response) {
-      if (response) _updateState(currentPage);
-    });
+  /// Finds the correct [Item], updates [currentPage], and returns whether
+  /// it was successful or not.
+  bool _handleMembers(List<String> location, Library library) {
+    if (location.length > 1) {
+      var child = _findChild(library, location);
+      if (child != null) _updatePage(child);
+      return child != null;
+    } else {
+      _updatePage(library);
+      return true;
+    }
   }
   
   /// Looks for the correct [Item] described by [location]. If it is found,
@@ -110,6 +113,8 @@ class Viewer {
   /// Returns a [Future] to determine if a link was found or not.
   Future _handleLinkWithoutState(List<String> location) {
     if (location != null) {
+      // If the url ends with a '/' an extra element needs to be removed.
+      if (location.last == '') location.removeLast();
       var libraryName = location.first;
       if (libraryName == 'home') {
         _updatePage(homePage);
@@ -120,21 +125,23 @@ class Viewer {
         if (member is Placeholder) {
           return homePage.loadLibrary(member).then((response) {
             if (response != null) {
-              var child = _findChild(response, location);
-              if (child != null) _updatePage(child);
-              return child != null;
+              return _handleMembers(location, response);
             }
           });
         } else {
-          var child = _findChild(member, location);
-          if (child != null) {
-            _updatePage(child);
-            return new Future.value(true);
-          }
+          return new Future.value(_handleMembers(location, member));
         }
       }
     }
     return new Future.value(false);
+  }
+  
+  /// Looks for the correct [Item] described by [location]. If it is found, 
+  /// [currentPage] is updated and state is pushed to the history api.
+  void handleLink(List<String> location) {
+    _handleLinkWithoutState(location).then((response) {
+      if (response) _updateState(currentPage);
+    });
   }
   
   /// Updates [currentPage] to [page] and pushes state for navigation.
