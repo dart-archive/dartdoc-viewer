@@ -119,7 +119,7 @@ String dependencies =
           "type" : "Library.A"
           "value" : "null"
 "classes" :
-  "class"
+  "class" :
     "A" :
       "name" : "A"
       "comment" : ""
@@ -189,7 +189,6 @@ void main() {
     var yaml = loadYaml(clazz);
     var item = new Class(yaml);
     expect(item is Class, isTrue);
-    expect(2, equals(1));
     
     expect(item.variables is Category, isTrue);
     expect(item.operators is Category, isTrue);
@@ -262,37 +261,31 @@ void main() {
   });
   
   // Test that links that are in scope are aliased to the correct objects.
+
   test('dependencies_test', () {
     var currentMap = loadYaml(dependencies);
     var library = new Library(currentMap);
     buildHierarchy(library, library);
     
-    var variables, classes, functions;
-    library.content.forEach((category) {
-      if (category.name == 'Classes') classes = category;
-      if (category.name == 'Variables') variables = category;
-      if (category.name == 'Functions') functions = category;
-    });
+    var classes = library.classes;
+    var abstractClasses = library.abstractClasses;
+    var variables = library.variables;
+    var functions = library.functions;
+    
     var variable = variables.content.first;
-    var classA, classB, classC;
-    classes.content.forEach((element) {
-      if (element.name == 'A') classA = element;
+    var classA = classes.content.first;
+    var classB, classC;
+    abstractClasses.content.forEach((element) {
       if (element.name == 'B') classB = element;
       if (element.name == 'C') classC = element;
     });
     var function = functions.content.first;
     
-    // Test that the destination of the links are aliased with classA.
-    expect(variable.type.location, equals(classA));
-    expect(function.type.location, equals(classA));
-    
-    var parameter = function.parameters.first;
-    expect(parameter.type.location, equals(classA));
-    
-    var implements = classA.implements.first;
-    expect(implements.location, equals(classB));
-    
-    var superClass = classC.superClass;
-    expect(superClass.location, equals(classA));
+    // TODO(tmandel): Since LinkableType.location does not return an Item
+    // anymore, this test can't run without instantiating a viewer and 
+    // attempting to change the homepage. This should be fixed when a global
+    // map from qualified name to Item is used instead of the logic in
+    // handleLink in web/app.dart. Add checks that the return types and
+    // superclasses are aliased to the right classes when this is done.
   });
 }
