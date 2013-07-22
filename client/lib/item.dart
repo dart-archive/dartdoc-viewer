@@ -230,6 +230,8 @@ class Class extends Item {
   Category operators;
   LinkableType superClass;
   bool isAbstract;
+  bool isTypedef;
+  List<LinkableType> annotations;
   List<LinkableType> implements;
   String qualifiedName;
 
@@ -253,6 +255,9 @@ class Class extends Item {
         isConstructor: true, className: this.name);
     this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = isAbstract;
+    this.isTypedef = yaml['typedef'] == 'true';
+    this.annotations = yaml['annotations'] == null ? [] :
+        yaml['annotations'].map((item) => new LinkableType(item)).toList();
     this.implements = yaml['implements'] == null ? [] :
         yaml['implements'].map((item) => new LinkableType(item)).toList();
   }
@@ -309,6 +314,8 @@ class Method extends Parameterized {
   String className;
   bool isOperator;
   LinkableType type;
+  List<LinkableType> annotations;
+  List<Parameter> parameters;
   String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
@@ -321,6 +328,8 @@ class Method extends Parameterized {
     this.type = new LinkableType(yaml['return']);
     this.parameters = getParameters(yaml['parameters']);
     this.className = className;
+    this.annotations = yaml['annotations'] == null ? [] :
+      yaml['annotations'].map((item) => new LinkableType(item)).toList();
   }
 
   String get decoratedName => isStatic ? 'static $name' :
@@ -338,6 +347,7 @@ class Parameter {
   bool hasDefault;
   LinkableType type;
   String defaultValue;
+  List<LinkableType> annotations;
   
   Parameter(this.name, Map yaml) {
     this.isOptional = yaml['optional'] == 'true';
@@ -345,6 +355,8 @@ class Parameter {
     this.hasDefault = yaml['default'] == 'true';
     this.type = new LinkableType(yaml['type']);
     this.defaultValue = yaml['value'];
+    this.annotations = yaml['annotations'] == null ? [] :
+      yaml['annotations'].map((item) => new LinkableType(item)).toList();
   }
   
   String get decoratedName {
@@ -372,6 +384,7 @@ class Variable extends Container {
   Parameter setterParameter;
   LinkableType type;
   String qualifiedName;
+  List<LinkableType> annotations = [];
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false})
       : super(yaml['name'], _wrapComment(yaml['comment'])) {
@@ -391,6 +404,7 @@ class Variable extends Container {
     } else {
       type = new LinkableType(yaml['type']);
     }
+    // TODO(tmandel): Add annotations when Map is passed in.
   }
 
   /// The attributes of this variable to be displayed before it.

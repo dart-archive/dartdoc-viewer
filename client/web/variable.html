@@ -1,7 +1,13 @@
 <!DOCTYPE html>
+<link rel="import" href="annotations.html">
+
 <element name="dartdoc-variable" constructor="VariableElement" extends="div"
     apply-author-styles>
   <template>
+    
+    <dartdoc-annotation annotations="{{variable.annotations}}">
+    </dartdoc-annotation>
+    
     <template if="variable.isSetter">
       <p>
         {{prefix}}void&nbsp;set&nbsp;{{name}}(

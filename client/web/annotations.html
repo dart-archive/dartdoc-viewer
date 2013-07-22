@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+<link rel="import" href="category.html">
+
+<element name="dartdoc-annotation" constructor="AnnotationElement" 
+    extends="article" apply-author-styles>
+  <template>
+    <template instantiate="if annotations.isNotEmpty">
+      <template iterate="annotation in annotations">
+        <a on-click="viewer.handleLink(annotation.location)">
+          @{{annotation.simpleType}}
+        </a>
+      </template>
+    </template>
+  </template>
+  
+  <script type="application/dart">
+    
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    
+    import 'app.dart';
+    
+    class AnnotationElement extends WebComponent {
+      List<LinkableType> annotations;
+    }
+  </script>
+</element>

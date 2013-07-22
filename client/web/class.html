@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <link rel="import" href="item.html">
 <link rel="import" href="category.html">
+<link rel="import" href="annotations.html">
 
 <element name="dartdoc-class" constructor="ClassElement" extends="article"
     apply-author-styles>
@@ -9,7 +10,11 @@
       Loading...
     </template>
     <template if="item != null">
-      <h1>{{item.decoratedName}}</h1>  
+      
+      <dartdoc-annotation annotations="{{item.annotations}}">
+      </dartdoc-annotation>
+      
+      <h1>{{item.decoratedName}}</h1>
       
         <p>
           <template if="interfaces.isNotEmpty">

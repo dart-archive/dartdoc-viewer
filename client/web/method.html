@@ -2,6 +2,8 @@
 <link rel="import" href="item.html">
 <link rel="import" href="category.html">
 <link rel="import" href="parameters.html">
+<link rel="import" href="annotations.html">
+>>>>>>> Added annotations and new custom element
 
 <element name="dartdoc-method" constructor="MethodElement" extends="article"
     apply-author-styles>
@@ -10,7 +12,10 @@
       Loading...
     </template>
     <template if="item != null">
- 
+      
+      <dartdoc-annotation annotations="{{item.annotations}}">
+      </dartdoc-annotation>
+      
       <!-- Return Type -->
       <template instantiate="if !item.isConstructor">
         <a on-click="viewer.handleLink(item.type.location)">
