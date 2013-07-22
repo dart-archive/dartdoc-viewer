@@ -44,34 +44,19 @@ class Category extends Container {
   
   Category.forVariables(Map variables, Map getters, Map setters) 
       : super('Properties') {
-    // TODO(tmandel): Setters and getters should have the same schema as
-    // variables in the yaml input. The Variable constructor should take in
-    // a YAML map as input instead of each individual field when this is done.
-    // This will cut down on lengthy code here.
     if (variables != null) {
       variables.keys.forEach((key) {
-        var variable = variables[key];
-        content.add(new Variable(key, variable['comment'],
-            variable['final'] == 'true', variable['static'] == 'true',
-            variable['type']));
+        content.add(new Variable(variables[key]));
       });
     }
     if (getters != null) {
       getters.keys.forEach((key) {
-        var variable = getters[key];
-        content.add(new Variable(key, variable['comment'], false,
-            variable['static'] == 'true', variable['return'], isGetter: true));
+        content.add(new Variable(getters[key], isGetter: true));
       });
     }
     if (setters != null) {
       setters.keys.forEach((key) {
-        var variable = setters[key];
-        var parameterName = variable['parameters'].keys.first;
-        var parameter = new Parameter(parameterName,
-            variable['parameters'][parameterName]);
-        content.add(new Variable(key, variable['comment'], false,
-            variable['static'] == 'true', "void", isSetter: true,
-            setterParameter: parameter));
+        content.add(new Variable(setters[key], isSetter: true ));
       });
     }
   }
@@ -346,19 +331,23 @@ class Variable extends Container {
   Parameter setterParameter;
   LinkableType type;
 
-  // Since getters and setters are treated as variables, this does not                                
-  // take in a map and instead takes in all properties.
-  // TODO(tmandel): Getters and setters should have the same schema
-  // as variables in yaml input so that this constructor can take a YAML
-  // map as input instead of each field.
-  Variable(String name, String comment, this.isFinal, this.isStatic,
-      String type, {bool isGetter: false, bool isSetter: false,
-      Parameter setterParameter: null})
-        : super(name, _wrapComment(comment)) {
-    this.setterParameter = setterParameter;
+  Variable(Map yaml, {bool isGetter: false, bool isSetter: false})
+        : super(yaml['name'], _wrapComment(yaml['comment'])) {
     this.isGetter = isGetter;
     this.isSetter = isSetter;
-    this.type = new LinkableType(type);
+    isFinal = yaml['final'] == 'true';
+    isStatic = yaml['static'] == 'true';
+    if (isGetter) {
+      type = new LinkableType(yaml['return']);
+    } else if (isSetter) {
+      type = new LinkableType('void');
+      var parameters = yaml['parameters'];
+      var parameterName = parameters.keys.first;
+      setterParameter = new Parameter(parameterName, 
+          parameters[parameterName]);
+    } else {
+      type = new LinkableType(yaml['type']);
+    }
   }
 
   /// The attributes of this variable to be displayed before it.
