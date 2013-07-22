@@ -276,7 +276,7 @@ class Method extends Item {
   List<Parameter> parameters;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
-      bool isOperator: false}) 
+      bool isOperator: false})
         : super(yaml['name'], _wrapComment(yaml['comment'])) {
     this.isStatic = yaml['static'] == 'true';
     this.isOperator = isOperator;
