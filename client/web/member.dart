@@ -18,6 +18,9 @@ class MemberElement extends WebComponent {
       var comment = new Element.html(item.comment);
       var links = comment.queryAll('a');
       for (AnchorElement link in links) {
+        // TODO(tmandel): Also check that there are no on-click handlers. Since
+        // link.onClick.isEmpty is a Future, it is hard to check each and then
+        // add them all to [commentLocation].
         if (link.href =='') {
           if (link.text.contains('#')) {
             // TODO(tmandel): Handle parameters differently?
