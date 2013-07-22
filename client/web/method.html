@@ -27,12 +27,12 @@
           <a on-click="viewer.handleLink(parameter.type.location)">
             {{parameter.type.simpleType}}
           </a>{{parameter.decoratedName}}
-          <template if="parameter != required.last || !optional.isEmpty">
+          <template if="parameter != required.last || optional.isNotEmpty">
             ,&nbsp;
           </template>
         </template>
         
-        <template if="!optional.isEmpty">
+        <template if="optional.isNotEmpty">
           {{optional.first.isNamed ? '{' : '['}}
           
           <template iterate="parameter in optional">

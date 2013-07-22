@@ -15,22 +15,22 @@
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-library')}}</section>
 
-      <template if="!variables.content.isEmpty">
+      <template if="variables.content.isNotEmpty">
         <dartdoc-category category="{{variables}}"></dartdoc-category>
       </template>
-      <template if="!operators.content.isEmpty">
+      <template if="operators.content.isNotEmpty">
         <dartdoc-category category="{{operators}}"></dartdoc-category>
       </template>
-      <template if="!functions.content.isEmpty">
+      <template if="functions.content.isNotEmpty">
         <dartdoc-category category="{{functions}}"></dartdoc-category>
       </template>
-      <template if="!abstractClasses.content.isEmpty">
+      <template if="abstractClasses.content.isNotEmpty">
         <dartdoc-category category="{{abstractClasses}}"></dartdoc-category>
       </template>
-      <template if="!clazzes.content.isEmpty">
+      <template if="clazzes.content.isNotEmpty">
         <dartdoc-category category="{{clazzes}}"></dartdoc-category>
       </template>
-      <template if="!errors.content.isEmpty">
+      <template if="errors.content.isNotEmpty">
         <dartdoc-category category="{{errors}}"></dartdoc-category>
       </template>
     </template>  

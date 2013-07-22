@@ -34,15 +34,16 @@ class Category extends Container {
   
   List<Container> content = [];
   
-  Category.forClasses(Map yaml, String name, {bool isAbstract: false}) :
-      super(name) {
-    if (yaml != null)
+  Category.forClasses(Map yaml, String name, {bool isAbstract: false})
+      : super(name) {
+    if (yaml != null) {
       yaml.keys.forEach((key) => 
         content.add(new Class(yaml[key], isAbstract: isAbstract)));
+    }
   }
   
-  Category.forVariables(Map variables, Map getters, Map setters) : 
-      super('Properties') {
+  Category.forVariables(Map variables, Map getters, Map setters) 
+      : super('Properties') {
     // TODO(tmandel): Setters and getters should have the same schema as
     // variables in the yaml input. The Variable constructor should take in
     // a YAML map as input instead of each individual field when this is done.
@@ -192,10 +193,11 @@ class Library extends Item {
 
   Library(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     var classes, abstractClasses, exceptions;
-    if (yaml['classes'] != null) {
-      classes = yaml['classes']['class'];
-      abstractClasses = yaml['classes']['abstract'];
-      exceptions = yaml['classes']['error'];
+    var allClasses = yaml['classes'];
+    if (allClasses != null) {
+      classes = allClasses['class'];
+      abstractClasses = allClasses['abstract'];
+      exceptions = allClasses['error'];
     }
     errors = new Category.forClasses(exceptions, 'Exceptions');
     this.classes = new Category.forClasses(classes, 'Classes');
@@ -203,11 +205,12 @@ class Library extends Item {
         new Category.forClasses(abstractClasses, 'Abstract Classes',
             isAbstract: true);
     var setters, getters, methods, operators;
-    if (yaml['functions'] != null) {
-      setters = yaml['functions']['setters'];
-      getters = yaml['functions']['getters'];
-      methods = yaml['functions']['methods'];
-      operators = yaml['functions']['operators'];
+    var allFunctions = yaml['functions'];
+    if (allFunctions != null) {
+      setters = allFunctions['setters'];
+      getters = allFunctions['getters'];
+      methods = allFunctions['methods'];
+      operators = allFunctions['operators'];
     }
     variables = new Category.forVariables(yaml['variables'], getters, setters);
     functions = new Category.forFunctions(methods, 'Functions');
@@ -232,15 +235,16 @@ class Class extends Item {
   bool isTypedef;
   List<LinkableType> implements;
 
-  Class(Map yaml, {bool isAbstract: false}) : 
-      super(yaml['name'], _wrapComment(yaml['comment'])){
+  Class(Map yaml, {bool isAbstract: false})
+      : super(yaml['name'], _wrapComment(yaml['comment'])){
     var setters, getters, methods, operators, constructors;
-    if (yaml['methods'] != null) {
-      setters = yaml['methods']['setters'];
-      getters = yaml['methods']['getters'];
-      methods = yaml['methods']['methods'];
-      operators = yaml['methods']['operators'];
-      constructors = yaml['methods']['constructors'];
+    var allMethods;
+    if (allMethods != null) {
+      setters = allMethods['setters'];
+      getters = allMethods['getters'];
+      methods = allMethods['methods'];
+      operators = allMethods['operators'];
+      constructors = allMethods['constructors'];
     }
     variables = new Category.forVariables(yaml['variables'], getters, setters);
     functions = new Category.forFunctions(methods, 'Functions');
@@ -258,7 +262,6 @@ class Class extends Item {
   String get decoratedName => isAbstract ? '${this.name} abstract class' :
     isTypedef ? '${this.name} typedef' : '${this.name} class';
 }
-
 
 /**
  * An [Item] that describes a single Dart method.
@@ -349,15 +352,15 @@ class Variable extends Container {
   // map as input instead of each field.
   Variable(String name, String comment, this.isFinal, this.isStatic,
       String type, {bool isGetter: false, bool isSetter: false,
-      Parameter setterParameter: null}) :
-        super(name, _wrapComment(comment)) {
+      Parameter setterParameter: null})
+        : super(name, _wrapComment(comment)) {
     this.setterParameter = setterParameter;
     this.isGetter = isGetter;
     this.isSetter = isSetter;
     this.type = new LinkableType(type);
   }
 
-  /// The attributes of this variable to be displayed before it.                                      
+  /// The attributes of this variable to be displayed before it.
   String get prefix {
     var prefix = isStatic ? 'static ' : '';
     return isFinal ? '${prefix}final' : prefix;

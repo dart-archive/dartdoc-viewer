@@ -12,7 +12,7 @@
       <h1>{{item.decoratedName}}</h1>  
       
         <p>
-          <template if="!interfaces.isEmpty">
+          <template if="interfaces.isNotEmpty">
             Implements:&nbsp;
             <template iterate="interface in interfaces">
               <a on-click="viewer.handleLink(interface.location)">
@@ -36,16 +36,16 @@
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-class')}}</section>
       
-      <template instantiate="if !variables.content.isEmpty">
+      <template instantiate="if variables.content.isNotEmpty">
         <dartdoc-category category="{{variables}}"></dartdoc-category>
       </template>
-      <template instantiate="if !operators.content.isEmpty">
+      <template instantiate="if operators.content.isNotEmpty">
         <dartdoc-category category="{{operators}}"></dartdoc-category>
       </template>
-      <template instantiate="if !constructors.content.isEmpty">
+      <template instantiate="if constructors.content.isNotEmpty">
         <dartdoc-category category="{{constructors}}"></dartdoc-category>
       </template>
-      <template instantiate="if !methods.content.isEmpty">
+      <template instantiate="if methods.content.isNotEmpty">
         <dartdoc-category category="{{methods}}"></dartdoc-category>
       </template>
       
