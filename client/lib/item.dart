@@ -238,7 +238,7 @@ class Class extends Item {
   Class(Map yaml, {bool isAbstract: false})
       : super(yaml['name'], _wrapComment(yaml['comment'])){
     var setters, getters, methods, operators, constructors;
-    var allMethods;
+    var allMethods = yaml['methods'];
     if (allMethods != null) {
       setters = allMethods['setters'];
       getters = allMethods['getters'];
