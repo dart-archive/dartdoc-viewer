@@ -64,7 +64,11 @@ class Viewer {
   /// Returns a [Future] to determine if a link was found or not.
   Future _handleLinkWithoutState(String location) {
     if (location != null && location != '') {
-      location = location.replaceAll('/', '.').replaceAll('-', '.');
+      location = location.replaceAll('/', '.');
+      if (location.endsWith('.')) 
+        location = location.substring(0, location.length - 1);
+      var libraryName = location.split('.').first;
+      location = location.replaceAll('-', '.');
       if (location == 'home') {
         _updatePage(homePage);
         return new Future.value(true);
@@ -74,11 +78,8 @@ class Viewer {
         _updatePage(destination);
         return new Future.value(true);
       } else {
-        var dotIndex = location.indexOf('.');
-        var libraryName = dotIndex == -1 ? location :
-            location.substring(0, dotIndex);
         var member = homePage.itemNamed(libraryName);
-        if (member != null && member is Placeholder) {
+        if (member is Placeholder) {
           return homePage.loadLibrary(member).then((_) {
             destination = pageIndex[location];
             if (destination != null) _updatePage(destination);

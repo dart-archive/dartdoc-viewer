@@ -33,7 +33,7 @@
      * Used as a placeholder for an CategoryItem object. 
      */
     class CategoryElement extends WebComponent {
-      Container category;
+      @observable Container category;
       
       String get title => category.name;
     }
