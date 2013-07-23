@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<link rel="import" href="parameters.html">
 
 <element name="dartdoc-typedef" constructor="TypedefElement" extends="article"
     apply-author-styles>
@@ -17,33 +18,12 @@
       <p>typedef&nbsp;
         <a on-click="viewer.handleLink(item.type.location)">
           {{item.type.simpleType}}
-        </a>{{item.name}}(
+        </a>{{item.name}}
         
-        <template iterate="parameter in required">
-          <a on-click="viewer.handleLink(parameter.type.location)">
-            {{parameter.type.simpleType}}
-          </a>{{parameter.decoratedName}}
-          <template if="parameter != required.last || optional.isNotEmpty">
-            ,&nbsp;
-          </template>
-        </template>
+        <dartdoc-parameter parameters="{{item.parameters}}">
+        </dartdoc-parameter>
         
-        <template if="optional.isNotEmpty">
-          {{optional.first.isNamed ? '{' : '['}}
-          
-          <template iterate="parameter in optional">
-            <a on-click="viewer.handleLink(parameter.type.location)">
-              {{parameter.type.simpleType}}
-            </a>{{parameter.decoratedName}}
-            <template if="parameter != optional.last">
-              ,&nbsp;
-            </template>
-          </template>
-            
-          {{optional.first.isNamed ? '}' : ']'}}
-        </template>
-          
-      )</p>
+      </p>
       
     
     </template>

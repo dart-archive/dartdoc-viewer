@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <link rel="import" href="item.html">
 <link rel="import" href="category.html">
+<link rel="import" href="parameters.html">
 
 <element name="dartdoc-method" constructor="MethodElement" extends="article"
     apply-author-styles>
@@ -20,34 +21,9 @@
       <h1>{{item.decoratedName}}</h1>  
       
       <!-- Parameters -->
-      <p>(
-        
-        <!-- TODO(tmandel): Possibly make a custom element for this -->
-        <template iterate="parameter in required">
-          <a on-click="viewer.handleLink(parameter.type.location)">
-            {{parameter.type.simpleType}}
-          </a>{{parameter.decoratedName}}
-          <template if="parameter != required.last || optional.isNotEmpty">
-            ,&nbsp;
-          </template>
-        </template>
-        
-        <template if="optional.isNotEmpty">
-          {{optional.first.isNamed ? '{' : '['}}
-          
-          <template iterate="parameter in optional">
-            <a on-click="viewer.handleLink(parameter.type.location)">
-              {{parameter.type.simpleType}}
-            </a>{{parameter.decoratedName}}
-            <template if="parameter != optional.last">
-              ,&nbsp;
-            </template>
-          </template>
-            
-          {{optional.first.isNamed ? '}' : ']'}}
-        </template>
-          
-      )</p>
+      <p>
+        <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
+      </p>
       
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-method')}}</section>
@@ -64,14 +40,7 @@
     import 'member.dart';
     
     class MethodElement extends MemberElement {
-      
-      // Required parameters.
-      List<Parameter> get required => 
-        item.parameters.where((parameter) => !parameter.isOptional).toList();
-      
-      // Optional parameters.
-      List<Parameter> get optional => 
-        item.parameters.where((parameter) => parameter.isOptional).toList();
+      List<Parameter> get parameters => item.parameters;
     }
   </script>
 </element>
