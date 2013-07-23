@@ -129,8 +129,8 @@ box-sizing: content-box;
         <div class="search-results drop-down" tabindex="0">
           <ul>
             <template iterate="result in results">
-              <li class="search-result" tabindex="10" 
-                  data-ref-id="{{result.element}}"
+              <li class="search-result"  id="search{{result.position}}"
+                  tabindex="10" data-ref-id="{{result.element}}"
                   on-click="onSubmitCallback()">
                 <search-result qualifiedname="{{result.element}}"
                   class="search-result">

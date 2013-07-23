@@ -18,6 +18,7 @@ class SearchResult implements Comparable {
   /** Score of the search result match. Higher is better. */
   int score;
 
+  int position;
   /**
    * Order results with higher scores before lower scores.
    */
@@ -98,10 +99,16 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
     scoredResults.add(new SearchResult(r, score));
   }
   scoredResults.sort();
-  
+  updatePositions(scoredResults);
   if (scoredResults.length > maxResults) {
     return scoredResults.take(maxResults).toList();
   } else {
     return scoredResults;
   } 
+}
+
+void updatePositions(List<SearchResult> list) {
+  for(int i = 0; i < list.length; i++) {
+    list[i].position = i;
+  }
 }
