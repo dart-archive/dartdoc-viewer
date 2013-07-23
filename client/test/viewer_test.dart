@@ -174,8 +174,7 @@ void main() {
       expect(data, equals(variable));
     }));
     var yaml = loadYaml(variable);
-    var item = new Variable(yaml['name'], yaml['comment'], 
-        yaml['final'] == 'true', yaml['static'] == 'true', yaml['type']);
+    var item = new Variable(yaml);
     expect(item is Variable, isTrue);
     expect(item.type is LinkableType, isTrue);
   });
