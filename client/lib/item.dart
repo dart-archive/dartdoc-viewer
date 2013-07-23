@@ -308,7 +308,7 @@ class Method extends Item {
     isConstructor ? (name != '' ? '$className.$name' : className) : name;
 }
 
-/// Creates [Parameter] objects for each parameter to this method.                                  
+/// Creates [Parameter] objects for each parameter to this method.
 List<Parameter> _getParameters(Map parameters) {
   var values = [];
   if (parameters != null) {

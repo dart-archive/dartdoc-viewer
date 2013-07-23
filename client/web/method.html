@@ -9,7 +9,14 @@
       Loading...
     </template>
     <template if="item != null">
-      
+ 
+      <!-- Return Type -->  
+      <template instantiate="if !item.isConstructor"> 
+        <a on-click="viewer.handleLink(item.type.location)">  
+          {{item.type.simpleType}}  
+        </a>  
+      </template>
+ 
       <h1>{{item.decoratedName}}</h1>  
       
       <!-- Parameters -->
