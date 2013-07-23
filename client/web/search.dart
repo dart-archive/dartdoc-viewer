@@ -73,7 +73,7 @@ class Search extends WebComponent {
     if (e.keyCode == KeyCode.ENTER) {
       onSubmitCallback();
       e.preventDefault();
-    } 
+    }
   }
   
   void handleUpDown(KeyboardEvent e) {
