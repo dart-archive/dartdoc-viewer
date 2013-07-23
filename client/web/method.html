@@ -3,7 +3,6 @@
 <link rel="import" href="category.html">
 <link rel="import" href="parameters.html">
 <link rel="import" href="annotations.html">
->>>>>>> Added annotations and new custom element
 
 <element name="dartdoc-method" constructor="MethodElement" extends="article"
     apply-author-styles>
@@ -29,6 +28,44 @@
       <p>
         <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
       </p>
+      <p>(
+        
+        <!-- TODO(tmandel): Possibly make a custom element for this -->
+        <template iterate="parameter in required">
+         
+          <dartdoc-annotation annotations="{{parameter.annotations}}">
+          </dartdoc-annotation>
+          
+          <a on-click="viewer.handleLink(parameter.type.location)">
+            {{parameter.type.simpleType}}
+          </a>{{parameter.decoratedName}}
+          
+          <template if="parameter != required.last || optional.isNotEmpty">
+            ,&nbsp;
+          </template>
+          
+        </template>
+        
+        <template if="optional.isNotEmpty">
+          {{optional.first.isNamed ? '{' : '['}}
+          
+          <template iterate="parameter in optional">
+            
+            <dartdoc-annotation annotations="{{parameter.annotations}}">
+            </dartdoc-annotation> 
+            
+            <a on-click="viewer.handleLink(parameter.type.location)">
+              {{parameter.type.simpleType}}
+            </a>{{parameter.decoratedName}}
+            <template if="parameter != optional.last">
+              ,&nbsp;
+            </template>
+          </template>
+            
+          {{optional.first.isNamed ? '}' : ']'}}
+        </template>
+          
+      )</p>
       
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-method')}}</section>

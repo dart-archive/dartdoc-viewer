@@ -3,7 +3,7 @@
 <link rel="import" href="category.html">
 
 <element name="dartdoc-annotation" constructor="AnnotationElement" 
-    extends="article" apply-author-styles>
+    extends="span" apply-author-styles>
   <template>
     <template instantiate="if annotations.isNotEmpty">
       <template iterate="annotation in annotations">
