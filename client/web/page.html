@@ -4,6 +4,7 @@
 <link rel="import" href="library.html">
 <link rel="import" href="class.html">
 <link rel="import" href="method.html">
+<link rel="import" href="typedef.html">
   
 <element name="dartdoc-page" constructor="PageElement" extends="article"
     apply-author-styles>
@@ -30,6 +31,11 @@
       <!-- Method -->
       <template instantiate="if app.viewer.currentPage is Method">
         <dartdoc-method item="{{app.viewer.currentPage}}"></dartdoc-method>
+      </template>
+      
+      <!-- Typedef -->
+      <template instantiate="if app.viewer.currentPage is Typedef">
+        <dartdoc-typedef item="{{app.viewer.currentPage}}"></dartdoc-typedef>
       </template>
      
     </template>

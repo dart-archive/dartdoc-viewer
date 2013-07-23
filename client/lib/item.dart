@@ -69,6 +69,13 @@ class Category extends Container {
             className: className, isOperator: isOperator)));
     }
   }
+  
+  Category.forTypedefs(Map yaml) : super ('Typedefs') {
+    if (yaml != null) {
+      yaml.keys.forEach((key) =>
+        content.add(new Typedef(yaml[key])));
+    }
+  }
 }
 
 /**
@@ -157,7 +164,7 @@ void buildHierarchy(Item page, Item previous) {
       buildHierarchy(method, page);
     });
     if (page is Library) {
-      [page.classes, page.abstractClasses].forEach((category) =>
+      [page.classes, page.abstractClasses, page.typedefs].forEach((category) =>
         category.content.forEach((clazz) {
           buildHierarchy(clazz, page);
         }));
@@ -173,6 +180,7 @@ class Library extends Item {
   Category classes;
   Category abstractClasses;
   Category errors;
+  Category typedefs;
   Category variables;
   Category functions;
   Category operators;
@@ -186,7 +194,9 @@ class Library extends Item {
       classes = allClasses['class'];
       abstractClasses = allClasses['abstract'];
       exceptions = allClasses['error'];
+      typedefs = allClasses['typedef'];
     }
+    this.typedefs = new Category.forTypedefs(typedefs);
     errors = new Category.forClasses(exceptions, 'Exceptions');
     this.classes = new Category.forClasses(classes, 'Classes');
     this.abstractClasses =
@@ -220,7 +230,6 @@ class Class extends Item {
   Category operators;
   LinkableType superClass;
   bool isAbstract;
-  bool isTypedef;
   List<LinkableType> implements;
   String qualifiedName;
 
@@ -244,13 +253,30 @@ class Class extends Item {
         isConstructor: true, className: this.name);
     this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = isAbstract;
-    this.isTypedef = yaml['typedef'] == 'true';
     this.implements = yaml['implements'] == null ? [] :
         yaml['implements'].map((item) => new LinkableType(item)).toList();
   }
 
-  String get decoratedName => isAbstract ? '${this.name} abstract class' :
-    isTypedef ? '${this.name} typedef' : '${this.name} class';
+  String get decoratedName => isAbstract ?
+      '${this.name} abstract class' : '${this.name} class';
+}
+
+/**
+ * An [Item] that describes a single Dart typedef.
+ */
+class Typedef extends Item {
+  
+  String qualifiedName;
+  LinkableType type;
+  List<Parameter> parameters;
+  
+  Typedef(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
+    qualifiedName = yaml['qualifiedname'];
+    type = new LinkableType(yaml['return']);
+    parameters = _getParameters(yaml['parameters']);
+  }
+  
+  String get decoratedName => '$name typedef';
 }
 
 /**
@@ -278,19 +304,19 @@ class Method extends Item {
     this.className = className;
   }
 
-  /// Creates [Parameter] objects for each parameter to this method.                                  
-  List<Parameter> _getParameters(Map parameters) {
-    var values = [];
-    if (parameters != null) {
-      parameters.forEach((name, data) {
-        values.add(new Parameter(name, data));
-      });
-    }
-    return values;
-  }
-
   String get decoratedName => isStatic ? 'static $name' :
     isConstructor ? (name != '' ? '$className.$name' : className) : name;
+}
+
+/// Creates [Parameter] objects for each parameter to this method.                                  
+List<Parameter> _getParameters(Map parameters) {
+  var values = [];
+  if (parameters != null) {
+    parameters.forEach((name, data) {
+      values.add(new Parameter(name, data));
+    });
+  }
+  return values;
 }
 
 /**

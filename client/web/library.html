@@ -30,6 +30,9 @@
       <template if="clazzes.content.isNotEmpty">
         <dartdoc-category category="{{clazzes}}"></dartdoc-category>
       </template>
+      <template if="typedefs.content.isNotEmpty">
+        <dartdoc-category category="{{typedefs}}"></dartdoc-category>
+      </template>
       <template if="errors.content.isNotEmpty">
         <dartdoc-category category="{{errors}}"></dartdoc-category>
       </template>
@@ -71,6 +74,8 @@
       Category get abstractClasses => item.abstractClasses;
 
       Category get clazzes => item.classes;
+      
+      Category get typedefs => item.typedefs;
 
       Category get errors => item.errors;
     }
