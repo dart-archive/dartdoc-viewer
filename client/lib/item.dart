@@ -145,6 +145,7 @@ void buildHierarchy(Item page, Item previous) {
   page.path
     ..addAll(previous.path)
     ..add(page);
+  pageIndex[page.qualifiedName] = page;
   if (page is Class) {
     [page.constructs, page.operators].forEach((category) =>
       category.content.forEach((item) {
@@ -175,8 +176,10 @@ class Library extends Item {
   Category variables;
   Category functions;
   Category operators;
+  String qualifiedName;
 
   Library(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
+    qualifiedName = yaml['qualifiedname'];
     var classes, abstractClasses, exceptions;
     var allClasses = yaml['classes'];
     if (allClasses != null) {
@@ -219,9 +222,11 @@ class Class extends Item {
   bool isAbstract;
   bool isTypedef;
   List<LinkableType> implements;
+  String qualifiedName;
 
   Class(Map yaml, {bool isAbstract: false})
       : super(yaml['name'], _wrapComment(yaml['comment'])){
+    qualifiedName = yaml['qualifiedname'];
     var setters, getters, methods, operators, constructors;
     var allMethods = yaml['methods'];
     if (allMethods != null) {
@@ -259,10 +264,12 @@ class Method extends Item {
   bool isOperator;
   LinkableType type;
   List<Parameter> parameters;
+  String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
       bool isOperator: false}) 
         : super(yaml['name'], _wrapComment(yaml['comment'])) {
+    qualifiedName = yaml['qualifiedname'];
     this.isStatic = yaml['static'] == 'true';
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
@@ -330,9 +337,11 @@ class Variable extends Container {
   bool isSetter;
   Parameter setterParameter;
   LinkableType type;
+  String qualifiedName;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false})
       : super(yaml['name'], _wrapComment(yaml['comment'])) {
+    qualifiedName = yaml['qualifiedname'];
     this.isGetter = isGetter;
     this.isSetter = isSetter;
     isFinal = yaml['final'] == 'true';
@@ -385,5 +394,5 @@ class LinkableType {
   String get simpleType => type.split('.').last;
 
   /// The [Item] describing this type if it has been loaded, otherwise null.
-  List<String> get location => type.split('.');
+  String get location => type;
 }

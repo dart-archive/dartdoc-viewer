@@ -59,78 +59,32 @@ class Viewer {
   /// Creates a list of [Item] objects describing the path to [currentPage].
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
-  /// Finds a member of [outer] (that contains a 'functions' category) that
-  /// matches [memberName].
-  Item _checkFunctions(Item outer, String memberName) {
-    return outer.functions.content.firstWhere((function) => 
-        function.name == memberName, orElse: () => null);
-  }
-  
-  /// Finds a member of a library matching [topLevelName].
-  Item _checkTopLevel(Library library, String topLevelName) {
-    return library.classes.content.firstWhere((clazz) => 
-        clazz.name == topLevelName, 
-        orElse: () => library.abstractClasses.content.firstWhere((clazz) =>
-            clazz.name == topLevelName, 
-            orElse: () => _checkFunctions(library, topLevelName)));
-    // TODO(tmandel): Handle variable linking with '#' characters.
-  }
-  
-  // TODO(tmandel): Refactor. Create a map from qualified name to Item 
-  // during initial load to avoid searching for the correct Item. Caching
-  // will be done so that lookups of the same member do not all search
-  // through the library to find the desired member.
-  /// Finds the member of [library] defined by the path in [members].
-  Item _findChild(Library library, List members) {
-    if (members.length > 1) {
-      var topLevel = _checkTopLevel(library, members[1]);
-      if (topLevel != null) {
-        if (members.length > 2) {
-          var method = _checkFunctions(topLevel, members[2]);
-          if (method != null) {
-            return method;
-          }
-        } else return topLevel;
-      }
-    }
-  }
-  
-  /// Finds the correct [Item] from [location] and [library], updates
-  /// [currentPage], and returns whether it was successful or not.
-  bool _handleLocation(List<String> location, Library library) {
-    if (location.length > 1) {
-      var child = _findChild(library, location);
-      if (child != null) _updatePage(child);
-      return child != null;
-    } else {
-      _updatePage(library);
-      return true;
-    }
-  }
-  
   /// Looks for the correct [Item] described by [location]. If it is found,
   /// [currentPage] is updated and state is not pushed to the history api.
   /// Returns a [Future] to determine if a link was found or not.
-  Future _handleLinkWithoutState(List<String> location) {
-    if (location != null) {
-      // If the url ends with a '/' an extra element needs to be removed.
-      if (location.last == '') location.removeLast();
-      var libraryName = location.first;
-      if (libraryName == 'home') {
+  Future _handleLinkWithoutState(String location) {
+    if (location != null && location != '') {
+      location = location.replaceAll('/', '.').replaceAll('-', '.');
+      if (location == 'home') {
         _updatePage(homePage);
         return new Future.value(true);
       }
-      var member = homePage.itemNamed(libraryName);
-      if (member != null) {
-        if (member is Placeholder) {
-          return homePage.loadLibrary(member).then((response) {
-            if (response != null) {
-              return _handleLocation(location, response);
-            }
+      var destination = pageIndex[location];
+      if (destination != null) {
+        _updatePage(destination);
+        return new Future.value(true);
+      } else {
+        var dotIndex = location.indexOf('.');
+        var libraryName = dotIndex == -1 ? location :
+            location.substring(0, dotIndex);
+        var member = homePage.itemNamed(libraryName);
+        if (member != null && member is Placeholder) {
+          return homePage.loadLibrary(member).then((_) {
+            destination = pageIndex[location];
+            if (destination != null) _updatePage(destination);
+            return destination != null;
           });
-        } else {
-          return new Future.value(_handleLocation(location, member));
-        }
+        } 
       }
     }
     return new Future.value(false);
@@ -138,7 +92,7 @@ class Viewer {
   
   /// Looks for the correct [Item] described by [location]. If it is found, 
   /// [currentPage] is updated and state is pushed to the history api.
-  void handleLink(List<String> location) {
+  void handleLink(String location) {
     _handleLinkWithoutState(location).then((response) {
       if (response) _updateState(currentPage);
     });
@@ -176,8 +130,8 @@ void startHistory() {
   window.onPopState.listen((event) {
     location = window.location.hash.replaceFirst('#', '');
     if (viewer.homePage != null) {
-      if (location != '') viewer._handleLinkWithoutState(location.split('/'));
-      else viewer._handleLinkWithoutState(['home']);
+      if (location != '') viewer._handleLinkWithoutState(location);
+      else viewer._handleLinkWithoutState('home');
     }
   });
 }
@@ -190,7 +144,7 @@ main() {
   // must first load fully before navigating to the specified page.
   viewer.finished.then((_) {
     if (location != null && location != '') {
-      viewer._handleLinkWithoutState(location.split('/'));
+      viewer._handleLinkWithoutState(location);
     }
     
     retrieveFileContents('../../docs/index.txt').then((String list) {
