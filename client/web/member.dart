@@ -20,6 +20,9 @@ class MemberElement extends WebComponent {
       for (AnchorElement link in links) {
         if (link.href =='') {
           if (link.text.contains('#')) {
+            // If the link is to a parameter of this method, it shouldn't be
+            // made into a working link. It instead is replaced with an <i>
+            // tag to make it stand out within the comment.
             // TODO(tmandel): Handle parameters differently?
             var index = link.text.indexOf('#');
             var newName = link.text.substring(index + 1, link.text.length);
