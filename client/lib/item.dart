@@ -188,7 +188,7 @@ class Library extends Item {
 
   Library(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
-    var classes, abstractClasses, exceptions;
+    var classes, abstractClasses, exceptions, typedefs;
     var allClasses = yaml['classes'];
     if (allClasses != null) {
       classes = allClasses['class'];
