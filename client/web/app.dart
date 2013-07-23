@@ -72,8 +72,10 @@ class Viewer {
       // Converts to a qualified name from a url path.
       location = location.replaceAll('/', '.');
       var libraryName = location.split('.').first;
-      // Convert library name containing '-' characters to have full 
-      // qualified name.
+      // Since library names can contain '.' characters, the library part
+      // of the input contains '-' characters replacing the '.' characters
+      // in the original qualified name to make finding a library easier. These
+      // must be changed back to '.' characters to be true qualified names.
       location = location.replaceAll('-', '.');
       if (location == 'home') {
         _updatePage(homePage);
