@@ -11,6 +11,8 @@
     <template if="variable.isSetter">
       <p>
         {{prefix}}void&nbsp;set&nbsp;{{name}}(
+        <dartdoc-annotation annotations="{{setterParameter.annotations}}">
+        </dartdoc-annotation>
         <a on-click="app.viewer.handleLink(setterParameter.type.location)">
           {{setterParameter.type.simpleType}}
         </a>{{setterParameter.decoratedName}}&nbsp;)

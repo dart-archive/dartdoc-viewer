@@ -404,7 +404,8 @@ class Variable extends Container {
     } else {
       type = new LinkableType(yaml['type']);
     }
-    // TODO(tmandel): Add annotations when Map is passed in.
+    this.annotations = yaml['annotations'] == null ? [] :
+      yaml['annotations'].map((item) => new LinkableType(item)).toList();
   }
 
   /// The attributes of this variable to be displayed before it.
