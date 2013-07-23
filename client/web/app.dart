@@ -62,16 +62,18 @@ class Viewer {
   /// Looks for the correct [Item] described by [location]. If it is found,
   /// [currentPage] is updated and state is not pushed to the history api.
   /// Returns a [Future] to determine if a link was found or not.
+  /// [location] is a [String] path to the location (either a qualified name
+  /// or a url path).
   Future _handleLinkWithoutState(String location) {
     if (location != null && location != '') {
-      // location can be either delimited by '.' or '/' characters,
-      // so this is standardized to '.' characters.
-      location = location.replaceAll('/', '.');
-      // If the url ends with a '/' an extra '.' must be removed.
-      if (location.endsWith('.')) 
+      // An extra '/' at the end of the url must be removed.
+      if (location.endsWith('/')) 
         location = location.substring(0, location.length - 1);
+      // Converts to a qualified name from a url path.
+      location = location.replaceAll('/', '.');
       var libraryName = location.split('.').first;
-      // Convert qualified name created in LinkableType to real qualified name.
+      // Convert library name containing '-' characters to have full 
+      // qualified name.
       location = location.replaceAll('-', '.');
       if (location == 'home') {
         _updatePage(homePage);
