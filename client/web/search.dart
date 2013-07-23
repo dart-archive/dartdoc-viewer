@@ -66,6 +66,7 @@ class Search extends WebComponent {
         .listen(onBlurCallback);
     onKeyPress.listen(onKeyPressCallback);
     onKeyDown.listen(handleUpDown);
+    window.onKeyDown.listen(shortcutHandler);
   }
 
   void onKeyPressCallback(KeyboardEvent e) {
@@ -90,6 +91,19 @@ class Search extends WebComponent {
         document.query('#search$currentIndex').focus();
       }
       e.preventDefault();
+    }
+  }
+  
+  /** Activate search on Ctrl+3 and S. */
+  void shortcutHandler(KeyboardEvent event) {
+    if (event.keyCode == KeyCode.THREE && event.ctrlKey) {
+      document.query('#q').focus();
+      event.preventDefault();
+    } else if (event.target != document.query('#q')
+        && event.keyCode == KeyCode.S) {
+      // Allow writing 's' in the search input.
+      document.query('#q').focus();
+      event.preventDefault();
     }
   }
 }
