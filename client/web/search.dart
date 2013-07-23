@@ -73,7 +73,7 @@ class Search extends WebComponent {
     if (e.keyCode == KeyCode.ENTER) {
       onSubmitCallback();
       e.preventDefault();
-    }
+    } 
   }
   
   void handleUpDown(KeyboardEvent e) {
@@ -86,12 +86,12 @@ class Search extends WebComponent {
       }
       e.preventDefault();
     } else if (e.keyCode == KeyCode.DOWN) {
-      if (currentIndex != results.length - 1) {
+      if (currentIndex < results.length - 1) {
         currentIndex++;
         document.query('#search$currentIndex').focus();
       }
       e.preventDefault();
-    }
+    } 
   }
   
   /** Activate search on Ctrl+3 and S. */
@@ -103,6 +103,10 @@ class Search extends WebComponent {
         && event.keyCode == KeyCode.S) {
       // Allow writing 's' in the search input.
       document.query('#q').focus();
+      event.preventDefault();
+    } else if (event.keyCode == KeyCode.ESC) {
+      document.body.focus();
+      isFocused = false;
       event.preventDefault();
     }
   }

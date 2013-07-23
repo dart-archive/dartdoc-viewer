@@ -18,7 +18,9 @@ class SearchResult implements Comparable {
   /** Score of the search result match. Higher is better. */
   int score;
 
+  /** Its numerical position from the top of the list of results. */
   int position;
+  
   /**
    * Order results with higher scores before lower scores.
    */
