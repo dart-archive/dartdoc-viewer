@@ -64,10 +64,14 @@ class Viewer {
   /// Returns a [Future] to determine if a link was found or not.
   Future _handleLinkWithoutState(String location) {
     if (location != null && location != '') {
+      // location can be either delimited by '.' or '/' characters,
+      // so this is standardized to '.' characters.
       location = location.replaceAll('/', '.');
+      // If the url ends with a '/' an extra '.' must be removed.
       if (location.endsWith('.')) 
         location = location.substring(0, location.length - 1);
       var libraryName = location.split('.').first;
+      // Convert qualified name created in LinkableType to real qualified name.
       location = location.replaceAll('-', '.');
       if (location == 'home') {
         _updatePage(homePage);
