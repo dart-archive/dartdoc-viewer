@@ -233,6 +233,7 @@ class Class extends Item {
   List<LinkableType> annotations;
   List<LinkableType> implements;
   String qualifiedName;
+  List<String> generics = [];
 
   Class(Map yaml, {bool isAbstract: false})
       : super(yaml['name'], _wrapComment(yaml['comment'])){
@@ -258,6 +259,10 @@ class Class extends Item {
         yaml['annotations'].map((item) => new LinkableType(item)).toList();
     this.implements = yaml['implements'] == null ? [] :
         yaml['implements'].map((item) => new LinkableType(item)).toList();
+    var generics = yaml['generics'];
+    if (generics != null) {
+      generics.keys.forEach((generic) => this.generics.add(generic));
+    }
   }
 
   String get decoratedName => isAbstract ?
