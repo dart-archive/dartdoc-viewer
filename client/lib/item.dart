@@ -294,11 +294,14 @@ class Typedef extends Parameterized {
   
   String qualifiedName;
   LinkableType type;
+  List<LinkableType> annotations;
   
   Typedef(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     type = new LinkableType(yaml['return']);
     parameters = getParameters(yaml['parameters']);
+    annotations = yaml['annotations'] == null ? [] :
+      yaml['annotations'].map((item) => new LinkableType(item)).toList();
   }
   
   String get decoratedName => '$name typedef';

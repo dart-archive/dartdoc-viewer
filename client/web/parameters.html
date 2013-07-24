@@ -1,10 +1,13 @@
 <!DOCTYPE html>
+<link rel="import" href="annotations.html">
 
 <element name="dartdoc-parameter" constructor="ParameterElement" 
     extends="span" apply-author-styles>
   <template>
     (
       <template iterate="parameter in required">
+        <dartdoc-annotation annotations="{{parameter.annotations}}">
+        </dartdoc-annotation>
         <a on-click="viewer.handleLink(parameter.type.location)">
           {{parameter.type.simpleType}}
         </a>{{parameter.decoratedName}}
@@ -17,6 +20,8 @@
         {{optional.first.isNamed ? '{' : '['}}
         
         <template iterate="parameter in optional">
+          <dartdoc-annotation annotations="{{parameter.annotations}}">
+          </dartdoc-annotation>
           <a on-click="viewer.handleLink(parameter.type.location)">
             {{parameter.type.simpleType}}
           </a>{{parameter.decoratedName}}
