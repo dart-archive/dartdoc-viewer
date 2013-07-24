@@ -230,7 +230,6 @@ class Class extends Item {
   Category operators;
   LinkableType superClass;
   bool isAbstract;
-  bool isTypedef;
   List<LinkableType> annotations;
   List<LinkableType> implements;
   String qualifiedName;
@@ -255,7 +254,6 @@ class Class extends Item {
         isConstructor: true, className: this.name);
     this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = isAbstract;
-    this.isTypedef = yaml['typedef'] == 'true';
     this.annotations = yaml['annotations'] == null ? [] :
         yaml['annotations'].map((item) => new LinkableType(item)).toList();
     this.implements = yaml['implements'] == null ? [] :
@@ -318,7 +316,6 @@ class Method extends Parameterized {
   bool isOperator;
   LinkableType type;
   List<LinkableType> annotations;
-  List<Parameter> parameters;
   String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
