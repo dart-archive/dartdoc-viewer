@@ -262,18 +262,38 @@ class Class extends Item {
 }
 
 /**
+ * An [Item] that describes a Dart member with parameters.
+ */
+class Parameterized extends Item {
+  
+  List<Parameter> parameters;
+  
+  Parameterized(String name, String comment) : super(name, comment);
+  
+  /// Creates [Parameter] objects for each parameter to this method.
+  List<Parameter> getParameters(Map parameters) {
+    var values = [];
+    if (parameters != null) {
+      parameters.forEach((name, data) {
+        values.add(new Parameter(name, data));
+      });
+    }
+    return values;
+  }
+}
+
+/**
  * An [Item] that describes a single Dart typedef.
  */
-class Typedef extends Item {
+class Typedef extends Parameterized {
   
   String qualifiedName;
   LinkableType type;
-  List<Parameter> parameters;
   
   Typedef(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     type = new LinkableType(yaml['return']);
-    parameters = _getParameters(yaml['parameters']);
+    parameters = getParameters(yaml['parameters']);
   }
   
   String get decoratedName => '$name typedef';
@@ -282,14 +302,13 @@ class Typedef extends Item {
 /**
  * An [Item] that describes a single Dart method.
  */
-class Method extends Item {
+class Method extends Parameterized {
 
   bool isStatic;
   bool isConstructor;
   String className;
   bool isOperator;
   LinkableType type;
-  List<Parameter> parameters;
   String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
@@ -300,23 +319,12 @@ class Method extends Item {
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
     this.type = new LinkableType(yaml['return']);
-    this.parameters = _getParameters(yaml['parameters']);
+    this.parameters = getParameters(yaml['parameters']);
     this.className = className;
   }
 
   String get decoratedName => isStatic ? 'static $name' :
     isConstructor ? (name != '' ? '$className.$name' : className) : name;
-}
-
-/// Creates [Parameter] objects for each parameter to this method.
-List<Parameter> _getParameters(Map parameters) {
-  var values = [];
-  if (parameters != null) {
-    parameters.forEach((name, data) {
-      values.add(new Parameter(name, data));
-    });
-  }
-  return values;
 }
 
 /**
