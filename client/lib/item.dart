@@ -384,7 +384,7 @@ class Variable extends Container {
   Parameter setterParameter;
   LinkableType type;
   String qualifiedName;
-  List<LinkableType> annotations = [];
+  List<LinkableType> annotations;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false})
       : super(yaml['name'], _wrapComment(yaml['comment'])) {
