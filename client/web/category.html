@@ -7,12 +7,12 @@
   <template>
     <summary>{{title}}</summary>      
     <template iterate="item in category.content">
-      <template if="item is Item">
+      <template if="item is Item && item is! Variable">
         <dartdoc-item item="{{item}}"></dartdoc-item>
       </template>
       
       <template if="item is Variable">
-        <dartdoc-variable variable="{{item}}"></dartdoc-variable>
+        <dartdoc-variable item="{{item}}"></dartdoc-variable>
       </template>
       
       <template if="item is Category">

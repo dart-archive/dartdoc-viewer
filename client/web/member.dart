@@ -1,3 +1,5 @@
+library member;
+
 import 'dart:html';
 
 import 'package:dartdoc_viewer/item.dart';
@@ -11,6 +13,8 @@ import 'app.dart' as app;
 class MemberElement extends WebComponent {
   @observable Item item;
   
+  /// Adds [item]'s comment to the the [elementName] element with markdown
+  /// links converted to working links.
   void addComment(String elementName) {
     if (item.comment != '' && item.comment != null) {
       var commentLocation = getShadowRoot(elementName).query('.description');
@@ -41,7 +45,7 @@ class MemberElement extends WebComponent {
   
   /// A recursive function to create an HTML element for a parameterized 
   /// type.  
-  Element _createInner(NestedType type) {
+  static Element createInner(NestedType type) {
     var span = new SpanElement();
     var outer = new AnchorElement()
     ..text = type.outer.simpleType
@@ -50,7 +54,7 @@ class MemberElement extends WebComponent {
     if (type.inner.isNotEmpty) {
       span.appendText('<');
       type.inner.forEach((element) {
-        span.append(_createInner(element));
+        span.append(createInner(element));
         if (element != type.inner.last) span.appendText(', ');
       });
       span.appendText('>');
@@ -59,16 +63,9 @@ class MemberElement extends WebComponent {
   }
   
   /// Creates a new HTML element describing a possibly parameterized type.  
-  void createType(List<NestedType> types, String memberName, String className) {
-    var outerSpan = new SpanElement();
+  void createType(NestedType type, String memberName, String className) {
     var location = getShadowRoot(memberName).query('.$className');
     location.children.clear();
-    types.forEach((type) {
-      var finalType = _createInner(type);
-      outerSpan.append(finalType);
-      if (type != types.last) outerSpan.appendText(', ');
-    });
-    location.children.add(outerSpan);
+    location.children.add(createInner(type));
   }
-  
 }

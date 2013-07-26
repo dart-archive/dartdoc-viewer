@@ -306,25 +306,6 @@ class Typedef extends Parameterized {
 }
 
 /**
- * A Dart type that potentially contains generic parameters.
- */
-class NestedType {
-  LinkableType outer;
-  List<NestedType> inner = [];
-  
-  NestedType(Map yaml) {
-    if (yaml == null) {
-      outer = new LinkableType('void');
-    } else {
-      outer = new LinkableType(yaml['outer']);
-      var innerMap = yaml['inner'];
-      if (yaml['inner'] != null)
-      innerMap.forEach((element) => inner.add(new NestedType(element)));
-    }
-  }
-}
-
-/**
  * An [Item] that describes a single Dart method.
  */
 class Method extends Parameterized {
@@ -337,7 +318,6 @@ class Method extends Parameterized {
   bool isOperator;
   List<LinkableType> annotations;
   NestedType type;
-  List<Parameter> parameters;
   String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
@@ -350,7 +330,7 @@ class Method extends Parameterized {
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
     this.type = new NestedType(yaml['return'].first);
-    this.parameters = _getParameters(yaml['parameters']);
+    parameters = getParameters(yaml['parameters']);
     this.className = className;
     this.annotations = yaml['annotations'] == null ? [] :
       yaml['annotations'].map((item) => new LinkableType(item)).toList();
@@ -399,7 +379,7 @@ class Parameter {
 /**
  * A [Container] that describes a single Dart variable.
  */
-class Variable extends Container {
+class Variable extends Item {
   
   bool isFinal;
   bool isStatic;
@@ -440,6 +420,25 @@ class Variable extends Container {
   String get prefix {
     var prefix = isStatic ? 'static ' : '';
     return isFinal ? '${prefix}final' : prefix;
+  }
+}
+
+/**
+ * A Dart type that potentially contains generic parameters.
+ */
+class NestedType {
+  LinkableType outer;
+  List<NestedType> inner = [];
+  
+  NestedType(Map yaml) {
+    if (yaml == null) {
+      outer = new LinkableType('void');
+    } else {
+      outer = new LinkableType(yaml['outer']);
+      var innerMap = yaml['inner'];
+      if (yaml['inner'] != null)
+      innerMap.forEach((element) => inner.add(new NestedType(element)));
+    }
   }
 }
 

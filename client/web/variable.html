@@ -5,59 +5,51 @@
     apply-author-styles>
   <template>
     
-    <dartdoc-annotation annotations="{{variable.annotations}}">
+    <dartdoc-annotation annotations="{{item.annotations}}">
     </dartdoc-annotation>
     
     <p>
-      <template if="variable.isFinal">final</template>
-      <template if="variable.isStatic">static</template>
-      <template if="variable.isAbstract">static</template>
-      <template if="variable.isConstant">const</template>
-      <template if="variable.isSetter">
+      <template if="item.isFinal">final</template>
+      <template if="item.isStatic">static</template>
+      <template if="item.isAbstract">static</template>
+      <template if="item.isConstant">const</template>
+      <template if="item.isSetter">
         void&nbsp;set&nbsp;{{name}}(
-        <a on-click="app.viewer.handleLink(setterParameter.type.outer.location)">
-          {{setterParameter.type.outer.simpleType}}
-        </a>{{setterParameter.decoratedName}}&nbsp;)
+        <span class="setParam">
+          {{createType(setterParameter.type, 'dartdoc-variable', 'setParam')}}
+        </span>
+        {{setterParameter.decoratedName}})
       </template>
-      <template if="!variable.isSetter">
-        <a on-click="app.viewer.handleLink(type.outer.location)">
-          {{type.outer.simpleType}}
-        </a>
+      <template if="!item.isSetter">
+        <span class="type">
+          {{createType(item.type, 'dartdoc-variable', 'type')}}
+        </span>
         {{getter}}&nbsp;{{name}}
       </template>
     </p>
-    <p class="description"></p>
+    <p class="description">
+      {{addComment('dartdoc-variable')}}
+    </p>
   </template>
   <script type="application/dart">
     import 'dart:html';
     import 'package:web_ui/web_ui.dart';
     import 'package:dartdoc_viewer/item.dart';
     import 'app.dart' as app;
+    import 'member.dart';
 
     /**
      * An HTML representation of a Variable.
      */
-    class VariableElement extends WebComponent {
-      Variable variable;
+    class VariableElement extends MemberElement {
 
-      String get prefix => variable.prefix;
+      String get getter => item.isGetter ? 'get' : '';
 
-      String get getter => variable.isGetter ? 'get' : '';
+      Parameter get setterParameter => item.setterParameter;
 
-      Parameter get setterParameter => variable.setterParameter;
+      NestedType get type => item.type;
 
-      NestedType get type => variable.type;
-
-      String get name => variable.name;
-
-      // Cannot extend MemberElement because the description <p> tag should
-      // not be cleared since it also contains the name and type.
-      inserted() {
-        if (variable.comment != '' && variable.comment != null) {
-          var comment = getShadowRoot('dartdoc-variable').query('.description');
-          comment.children.add(new Element.html(variable.comment));
-        }
-      }
+      String get name => item.name;
     }
   </script>
 </element>

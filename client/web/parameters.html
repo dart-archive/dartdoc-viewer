@@ -5,36 +5,24 @@
     extends="span" apply-author-styles>
   <template>
     (
-      <template iterate="parameter in required">
-        <dartdoc-annotation annotations="{{parameter.annotations}}">
-        </dartdoc-annotation>
-        <a on-click="viewer.handleLink(parameter.type.location)">
-          {{parameter.type.simpleType}}
-        </a>{{parameter.decoratedName}}
-        <template if="parameter != required.last || optional.isNotEmpty">
-          ,&nbsp;
-        </template>
-      </template>
+    <template if="parameters != null">
+      <span class="required">
+        {{addParameters(required, 'required')}}
+      </span>
       
       <template if="optional.isNotEmpty">
         {{optional.first.isNamed ? '{' : '['}}
-        
-        <template iterate="parameter in optional">
-          <dartdoc-annotation annotations="{{parameter.annotations}}">
-          </dartdoc-annotation>
-          <a on-click="viewer.handleLink(parameter.type.location)">
-            {{parameter.type.simpleType}}
-          </a>{{parameter.decoratedName}}
-          <template if="parameter != optional.last">
-            ,&nbsp;
-          </template>
-        </template>
+        <span class="optional">
+          {{addParameters(optional, 'optional')}}
+        </span>
           
         {{optional.first.isNamed ? '}' : ']'}}
       </template>
+    </template>
     )
   </template>
   <script type="application/dart">
+    import 'dart:html';
     
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
@@ -52,6 +40,32 @@
       // Optional parameters.
       List<Parameter> get optional => 
         parameters.where((parameter) => parameter.isOptional).toList();
+      
+      /// Adds [elements] to the tag with class [className]. 
+      void addParameters(List<Parameter> elements, String className) {
+        var location = getShadowRoot('dartdoc-parameter').query('.$className');
+        var outerSpan = new SpanElement();
+        elements.forEach((element) {
+          // Since a dartdoc-annotation cannot be instantiated from Dart code,
+          // the annotations must be built manually.
+          element.annotations.forEach((annotation) {
+            var anchor = new AnchorElement()
+              ..text = '@${annotation.simpleType}'
+              ..onClick.listen((_) => viewer.handleLink(annotation.location));
+            outerSpan.append(anchor);
+            outerSpan.appendText(' ');
+          });
+          outerSpan.append(MemberElement.createInner(element.type));
+          outerSpan.appendText(' ${element.decoratedName}');
+          if (className == 'required' && optional.isNotEmpty ||
+              element != elements.last) {
+            outerSpan.appendText(', ');
+          }
+        });
+        location.children.clear();
+        location.children.add(outerSpan);        
+      }
+        
     }
   </script>
 </element>
