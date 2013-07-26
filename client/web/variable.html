@@ -8,25 +8,24 @@
     <dartdoc-annotation annotations="{{variable.annotations}}">
     </dartdoc-annotation>
     
-    <template if="variable.isSetter">
-      <p>
-        {{prefix}}void&nbsp;set&nbsp;{{name}}(
-        <dartdoc-annotation annotations="{{setterParameter.annotations}}">
-        </dartdoc-annotation>
-        <a on-click="app.viewer.handleLink(setterParameter.type.location)">
-          {{setterParameter.type.simpleType}}
+    <p>
+      <template if="variable.isFinal">final</template>
+      <template if="variable.isStatic">static</template>
+      <template if="variable.isAbstract">static</template>
+      <template if="variable.isConstant">const</template>
+      <template if="variable.isSetter">
+        void&nbsp;set&nbsp;{{name}}(
+        <a on-click="app.viewer.handleLink(setterParameter.type.outer.location)">
+          {{setterParameter.type.outer.simpleType}}
         </a>{{setterParameter.decoratedName}}&nbsp;)
-      </p>
-    </template>
-    <template if="!variable.isSetter">
-      <p>
-        {{prefix}}
+      </template>
+      <template if="!variable.isSetter">
         <a on-click="app.viewer.handleLink(type.outer.location)">
           {{type.outer.simpleType}}
         </a>
         {{getter}}&nbsp;{{name}}
-      </p>
-    </template>
+      </template>
+    </p>
     <p class="description"></p>
   </template>
   <script type="application/dart">

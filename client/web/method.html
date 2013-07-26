@@ -18,11 +18,16 @@
       <!-- Return Type -->
       <template instantiate="if !item.isConstructor">
         <span class="type">
-          {{createType(item.type, 'dartdoc-method', 'type')}}
+          {{createType([item.type], 'dartdoc-method', 'type')}}
         </span>
       </template>
- 
-      <h1>{{item.decoratedName}}</h1>  
+      
+      <h1>
+        <template if="item.isConstant">const</template>
+        <template if="item.isAbstract">abstract</template>
+        <template if="item.isStatic">static</template>
+        {{item.decoratedName}}
+      </h1>
       
       <!-- Parameters -->
       <p>

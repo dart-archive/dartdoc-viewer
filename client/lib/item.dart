@@ -215,8 +215,6 @@ class Library extends Item {
     this.operators = new Category.forFunctions(operators, 'Operators', 
         isOperator: true);
   }
-
-  String get decoratedName => '$name library';
 }
 
 /**
@@ -264,9 +262,6 @@ class Class extends Item {
       generics.keys.forEach((generic) => this.generics.add(generic));
     }
   }
-
-  String get decoratedName => isAbstract ?
-      '${this.name} abstract class' : '${this.name} class';
 }
 
 /**
@@ -335,6 +330,8 @@ class NestedType {
 class Method extends Parameterized {
 
   bool isStatic;
+  bool isAbstract;
+  bool isConstant;
   bool isConstructor;
   String className;
   bool isOperator;
@@ -348,6 +345,8 @@ class Method extends Parameterized {
         : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     this.isStatic = yaml['static'] == 'true';
+    this.isAbstract = yaml['abstract'] == 'true';
+    this.isConstant = yaml['constant'] == 'true';
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
     this.type = new NestedType(yaml['return'].first);
@@ -357,8 +356,8 @@ class Method extends Parameterized {
       yaml['annotations'].map((item) => new LinkableType(item)).toList();
   }
 
-  String get decoratedName => isStatic ? 'static $name' :
-    isConstructor ? (name != '' ? '$className.$name' : className) : name;
+  String get decoratedName => isConstructor ? 
+      (name != '' ? '$className.$name' : className) : name;
 }
 
 /**
@@ -404,6 +403,8 @@ class Variable extends Container {
   
   bool isFinal;
   bool isStatic;
+  bool isAbstract;
+  bool isConstant;
   bool isGetter;
   bool isSetter;
   Parameter setterParameter;
@@ -418,6 +419,8 @@ class Variable extends Container {
     this.isSetter = isSetter;
     isFinal = yaml['final'] == 'true';
     isStatic = yaml['static'] == 'true';
+    isConstant = yaml['constant'] == 'true';
+    isAbstract = yaml['abstract'] == 'true';
     if (isGetter) {
       type = new NestedType(yaml['return'].first);
     } else if (isSetter) {

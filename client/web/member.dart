@@ -42,8 +42,8 @@ class MemberElement extends WebComponent {
   /// A recursive function to create an HTML element for a parameterized 
   /// type.  
   Element _createInner(NestedType type) {
-    SpanElement span = new SpanElement();
-    AnchorElement outer = new AnchorElement()
+    var span = new SpanElement();
+    var outer = new AnchorElement()
     ..text = type.outer.simpleType
     ..onClick.listen((_) => app.viewer.handleLink(type.outer.location));
     span.append(outer);
@@ -59,11 +59,16 @@ class MemberElement extends WebComponent {
   }
   
   /// Creates a new HTML element describing a possibly parameterized type.  
-  void createType(NestedType type, String memberName, String className) {
+  void createType(List<NestedType> types, String memberName, String className) {
+    var outerSpan = new SpanElement();
     var location = getShadowRoot(memberName).query('.$className');
-    var finalType = _createInner(type);
     location.children.clear();
-    location.children.add(finalType);
+    types.forEach((type) {
+      var finalType = _createInner(type);
+      outerSpan.append(finalType);
+      if (type != types.last) outerSpan.appendText(', ');
+    });
+    location.children.add(outerSpan);
   }
   
 }

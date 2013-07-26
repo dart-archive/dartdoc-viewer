@@ -13,10 +13,9 @@
       
       <dartdoc-annotation annotations="{{item.annotations}}">
       </dartdoc-annotation>
-      
-      <h1>{{item.decoratedName}}</h1>
+     
       <h1>
-        {{item.decoratedName}}
+        {{item.name}}
         <template instantiate="if item.generics.isNotEmpty">
           &lt;
           <template iterate="generic in item.generics">
@@ -27,29 +26,31 @@
           </template>
           &gt;
         </template>
-      </h1> 
+        <template if="item.isAbstract">abstract</template>
+        class
+      </h1>
       
-        <p>
-          <template if="interfaces.isNotEmpty">
-            Implements:&nbsp;
-            <template iterate="interface in interfaces">
-              <a on-click="viewer.handleLink(interface.location)">
-                {{interface.simpleType}}
-              </a>
-              <template if="interface != interfaces.last">
-                ,&nbsp;
-              </template>
-              <template instantiate="if interface == interfaces.last">
-                <br/>
-              </template>
+      <p>
+        <template if="interfaces.isNotEmpty">
+          Implements:&nbsp;
+          <template iterate="interface in interfaces">
+            <a on-click="viewer.handleLink(interface.location)">
+              {{interface.simpleType}}
+            </a>
+            <template if="interface != interfaces.last">
+              ,&nbsp;
             </template>
-          
+            <template instantiate="if interface == interfaces.last">
+              <br/>
+            </template>
           </template>
-          Extends:&nbsp;
-          <a on-click="viewer.handleLink(superClass.location)">
-            {{superClass.simpleType}}
-          </a>
-        </p>
+        
+        </template>
+        Extends:&nbsp;
+        <a on-click="viewer.handleLink(superClass.location)">
+          {{superClass.simpleType}}
+        </a>
+      </p>
     
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-class')}}</section>
