@@ -47,8 +47,8 @@ class MemberElement extends WebComponent {
   static Element createInner(NestedType type) {
     var span = new SpanElement();
     var outer = new AnchorElement()
-    ..text = type.outer.simpleType
-    ..onClick.listen((_) => app.viewer.handleLink(type.outer.location));
+      ..text = type.outer.simpleType
+      ..onClick.listen((_) => app.viewer.handleLink(type.outer.location));
     span.append(outer);
     if (type.inner.isNotEmpty) {
       span.appendText('<');
