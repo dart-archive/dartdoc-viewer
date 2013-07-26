@@ -146,7 +146,6 @@ class Home extends Item {
   }
 }
 
-
 /// Runs through the member structure and creates path information.
 void buildHierarchy(Item page, Item previous) {
   page.path
@@ -428,7 +427,7 @@ class NestedType {
     } else {
       outer = new LinkableType(yaml['outer']);
       var innerMap = yaml['inner'];
-      if (yaml['inner'] != null)
+      if (innerMap != null)
       innerMap.forEach((element) => inner.add(new NestedType(element)));
     }
   }

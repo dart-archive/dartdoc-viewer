@@ -43,8 +43,7 @@ class MemberElement extends WebComponent {
     }
   }
   
-  /// A recursive function to create an HTML element for a parameterized 
-  /// type.  
+  /// Creates an HTML element for a parameterized type.  
   static Element createInner(NestedType type) {
     var span = new SpanElement();
     var outer = new AnchorElement()
@@ -62,7 +61,8 @@ class MemberElement extends WebComponent {
     return span;
   }
   
-  /// Creates a new HTML element describing a possibly parameterized type.  
+  /// Creates a new HTML element describing a possibly parameterized type
+  /// and adds it to [memberName]'s tag with class [className].
   void createType(NestedType type, String memberName, String className) {
     var location = getShadowRoot(memberName).query('.$className');
     location.children.clear();
