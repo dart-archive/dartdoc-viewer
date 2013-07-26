@@ -17,9 +17,9 @@
       
       <!-- Return Type -->
       <template instantiate="if !item.isConstructor">
-        <a on-click="viewer.handleLink(item.type.location)">
-          {{item.type.simpleType}}
-        </a>
+        <span class="type">
+          {{createType(item.type, 'dartdoc-method', 'type')}}
+        </span>
       </template>
  
       <h1>{{item.decoratedName}}</h1>  
@@ -36,6 +36,7 @@
   </template>
   
   <script type="application/dart">
+    import 'dart:html';
     
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';

@@ -311,6 +311,25 @@ class Typedef extends Parameterized {
 }
 
 /**
+ * A Dart type that potentially contains generic parameters.
+ */
+class NestedType {
+  LinkableType outer;
+  List<NestedType> inner = [];
+  
+  NestedType(Map yaml) {
+    if (yaml == null) {
+      outer = new LinkableType('void');
+    } else {
+      outer = new LinkableType(yaml['outer']);
+      var innerMap = yaml['inner'];
+      if (yaml['inner'] != null)
+      innerMap.forEach((element) => inner.add(new NestedType(element)));
+    }
+  }
+}
+
+/**
  * An [Item] that describes a single Dart method.
  */
 class Method extends Parameterized {
@@ -319,8 +338,9 @@ class Method extends Parameterized {
   bool isConstructor;
   String className;
   bool isOperator;
-  LinkableType type;
   List<LinkableType> annotations;
+  NestedType type;
+  List<Parameter> parameters;
   String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
@@ -330,8 +350,8 @@ class Method extends Parameterized {
     this.isStatic = yaml['static'] == 'true';
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
-    this.type = new LinkableType(yaml['return']);
-    this.parameters = getParameters(yaml['parameters']);
+    this.type = new NestedType(yaml['return'].first);
+    this.parameters = _getParameters(yaml['parameters']);
     this.className = className;
     this.annotations = yaml['annotations'] == null ? [] :
       yaml['annotations'].map((item) => new LinkableType(item)).toList();
@@ -350,7 +370,7 @@ class Parameter {
   bool isOptional;
   bool isNamed;
   bool hasDefault;
-  LinkableType type;
+  NestedType type;
   String defaultValue;
   List<LinkableType> annotations;
   
@@ -358,7 +378,7 @@ class Parameter {
     this.isOptional = yaml['optional'] == 'true';
     this.isNamed = yaml['named'] == 'true';
     this.hasDefault = yaml['default'] == 'true';
-    this.type = new LinkableType(yaml['type']);
+    this.type = new NestedType(yaml['type'].first);
     this.defaultValue = yaml['value'];
     this.annotations = yaml['annotations'] == null ? [] :
       yaml['annotations'].map((item) => new LinkableType(item)).toList();
@@ -387,7 +407,7 @@ class Variable extends Container {
   bool isGetter;
   bool isSetter;
   Parameter setterParameter;
-  LinkableType type;
+  NestedType type;
   String qualifiedName;
   List<LinkableType> annotations;
 
@@ -399,15 +419,15 @@ class Variable extends Container {
     isFinal = yaml['final'] == 'true';
     isStatic = yaml['static'] == 'true';
     if (isGetter) {
-      type = new LinkableType(yaml['return']);
+      type = new NestedType(yaml['return'].first);
     } else if (isSetter) {
-      type = new LinkableType('void');
+      type = new NestedType(yaml['return'].first);
       var parameters = yaml['parameters'];
       var parameterName = parameters.keys.first;
       setterParameter = new Parameter(parameterName, 
           parameters[parameterName]);
     } else {
-      type = new LinkableType(yaml['type']);
+      type = new NestedType(yaml['type'].first);
     }
     this.annotations = yaml['annotations'] == null ? [] :
       yaml['annotations'].map((item) => new LinkableType(item)).toList();

@@ -21,8 +21,8 @@
     <template if="!variable.isSetter">
       <p>
         {{prefix}}
-        <a on-click="app.viewer.handleLink(type.location)">
-          {{type.simpleType}}
+        <a on-click="app.viewer.handleLink(type.outer.location)">
+          {{type.outer.simpleType}}
         </a>
         {{getter}}&nbsp;{{name}}
       </p>
@@ -47,7 +47,7 @@
 
       Parameter get setterParameter => variable.setterParameter;
 
-      LinkableType get type => variable.type;
+      NestedType get type => variable.type;
 
       String get name => variable.name;
 

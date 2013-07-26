@@ -38,4 +38,32 @@ class MemberElement extends WebComponent {
       commentLocation.children.add(comment);
     }
   }
+  
+  /// A recursive function to create an HTML element for a parameterized 
+  /// type.  
+  Element _createInner(NestedType type) {
+    SpanElement span = new SpanElement();
+    AnchorElement outer = new AnchorElement()
+    ..text = type.outer.simpleType
+    ..onClick.listen((_) => app.viewer.handleLink(type.outer.location));
+    span.append(outer);
+    if (type.inner.isNotEmpty) {
+      span.appendText('<');
+      type.inner.forEach((element) {
+        span.append(_createInner(element));
+        if (element != type.inner.last) span.appendText(', ');
+      });
+      span.appendText('>');
+    }
+    return span;
+  }
+  
+  /// Creates a new HTML element describing a possibly parameterized type.  
+  void createType(NestedType type, String memberName, String className) {
+    var location = getShadowRoot(memberName).query('.$className');
+    var finalType = _createInner(type);
+    location.children.clear();
+    location.children.add(finalType);
+  }
+  
 }
