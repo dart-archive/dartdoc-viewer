@@ -301,8 +301,6 @@ class Typedef extends Parameterized {
     annotations = yaml['annotations'] == null ? [] :
       yaml['annotations'].map((item) => new LinkableType(item)).toList();
   }
-  
-  String get decoratedName => '$name typedef';
 }
 
 /**
@@ -414,12 +412,6 @@ class Variable extends Item {
     }
     this.annotations = yaml['annotations'] == null ? [] :
       yaml['annotations'].map((item) => new LinkableType(item)).toList();
-  }
-
-  /// The attributes of this variable to be displayed before it.
-  String get prefix {
-    var prefix = isStatic ? 'static ' : '';
-    return isFinal ? '${prefix}final' : prefix;
   }
 }
 
