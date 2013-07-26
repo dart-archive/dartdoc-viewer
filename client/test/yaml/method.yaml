@@ -1,12 +1,21 @@
 "name" : "getA"
+"qualifiedname" : "Library.getA"
 "comment" : ""
 "static" : "false"
-"return" : "Library.A"
+"constant" : "false"
+"abstract" : "false"
+"annotations" : 
+"return" : 
+  - "inner" : 
+    "outer" : "Library.A"
 "parameters" :
   "testInt" :
     "name" : "testInt"
     "optional" : "false"
     "named" : "false"
     "default" : "false"
-    "type" : "dart.core.int"
+    "type" : 
+      - "inner" : 
+        "outer" : "dart.core.int"
     "value" : "null"
+    "annotations" :

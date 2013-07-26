@@ -1,10 +1,13 @@
 "name" : "A"
+"qualifiedname" : "Library.A"
 "comment" : "<p>This class is used for testing.</p>"
 "superclass" : "dart.core.Object"
 "implements" :
   - "Library.B"
   - "Library.C"
 "variables" :
+"annotations" : 
+"generics" :
 "methods" : 
   "getters" :
   "setters" :
@@ -13,7 +16,13 @@
   "methods" :
     "doAction" :
       "name" : "doAction"
+      "qualifiedname" : "Library.A.doAction"
       "comment" : "<p>This is a test comment</p>."
       "static" : "true"
-      "return" : "void"
+      "constant" : "false"
+      "abstract" : "false"
+      "annotations" :
+      "return" : 
+        - "inner" :
+          "outer" : "void"
       "parameters" :

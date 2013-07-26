@@ -6,6 +6,7 @@ library viewer_test;
 
 import 'dart:html';
 
+import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:unittest/html_enhanced_config.dart';
@@ -23,38 +24,58 @@ String parameter =
 "optional" : "true"
 "named" : "true"
 "default" : "true"
-"type" : "dart.core.String"
-"value" : "\\\"test\\\""''';
+"type" : 
+  - "inner" :
+    "outer" : "dart.core.String"
+"value" : "\\\"test\\\""
+"annotations" :''';
 
 String variable =
 '''"name" : "variable"
+"qualifiedname" : "Library.variable"
 "comment" : "<p>This is a test comment</p>"
 "final" : "false"
 "static" : "false"
-"type" : "dart.core.String"''';
+"constant" : "false"
+"type" : 
+  - "inner" :
+    "outer" : "dart.core.String"
+"annotations" :''';
 
 String method = 
 '''"name" : "getA"
+"qualifiedname" : "Library.getA"
 "comment" : ""
 "static" : "false"
-"return" : "Library.A"
+"constant" : "false"
+"abstract" : "false"
+"annotations" : 
+"return" : 
+  - "inner" : 
+    "outer" : "Library.A"
 "parameters" :
   "testInt" :
     "name" : "testInt"
     "optional" : "false"
     "named" : "false"
     "default" : "false"
-    "type" : "dart.core.int"
-    "value" : "null"''';
+    "type" : 
+      - "inner" : 
+        "outer" : "dart.core.int"
+    "value" : "null"
+    "annotations" :''';
 
 String clazz =
 '''"name" : "A"
+"qualifiedname" : "Library.A"
 "comment" : "<p>This class is used for testing.</p>"
 "superclass" : "dart.core.Object"
 "implements" :
   - "Library.B"
   - "Library.C"
 "variables" :
+"annotations" : 
+"generics" :
 "methods" : 
   "getters" :
   "setters" :
@@ -63,27 +84,38 @@ String clazz =
   "methods" :
     "doAction" :
       "name" : "doAction"
+      "qualifiedname" : "Library.A.doAction"
       "comment" : "<p>This is a test comment</p>."
       "static" : "true"
-      "return" : "void"
+      "constant" : "false"
+      "abstract" : "false"
+      "annotations" :
+      "return" : 
+        - "inner" :
+          "outer" : "void"
       "parameters" :''';
 
 String library =
 '''"name" : "DummyLibrary"
+"qualifiedname" : "DummyLibrary"
 "comment" : "<p>This is a library.</p>"
 "variables" :
 "functions" :
+"annotations" :
 "classes" :
   "abstract" :
     "A" :
       "name" : "A"
+      "qualifiedname" : "DummyLibrary.A"
       "comment" : "<p>This is a test class</p>"
       "superclass" : "dart.core.Object"
       "implements" :
         - "Library.A.B"
         - "Library.C.Y"
       "variables" :
-      "methods" :
+      "generics" :
+      "annotations" :
+  "methods" :
   "class" :
   "error" :
   "typedef" :''';
@@ -91,14 +123,21 @@ String library =
 // A string of YAML with return types that are in scope for testing links.
 String dependencies = 
 '''"name" : "Library"
+"qualifiedname" : "Library"
+"annotations" :
 "comment" : "<p>This is a library.</p>"
 "variables" :
   "variable" :
     "name" : "variable"
+    "qualifiedname" : "Library.variable"
     "comment" : "<p>This is a test comment</p>"
     "final" : "false"
     "static" : "false"
-    "type" : "Library.A"
+    "constant" : "false"
+    "type" : 
+      - "inner" :
+        "outer" : "Library.A"
+    "annotations" :
 "functions" :
   "setters" :
   "getters" :
@@ -107,21 +146,33 @@ String dependencies =
   "methods" :
     "changeA" :
       "name" : "changeA"
+      "qualifiedname" : "Library.changeA"
       "comment" : ""
+      "constant" : "false"
       "static" : "false"
-      "return" : "Library.A"
+      "abstract" : "false"
+      "return" : 
+        - "inner" : 
+          "outer" : "Library.A"
       "parameters" :
         "testA" :
           "name" : "testA"
+          "annotations" :
           "optional" : "false"
           "named" : "false"
           "default" : "false"
-          "type" : "Library.A"
+          "type" : 
+            - "inner" :
+              "outer" : "Library.A"
           "value" : "null"
+      "annotations" : 
 "classes" :
   "class" :
     "A" :
       "name" : "A"
+      "qualifiedname" : "Library.A"
+      "annotations" : 
+      "generics" : 
       "comment" : ""
       "superclass" : "dart.core.Object"
       "implements" : 
@@ -131,6 +182,9 @@ String dependencies =
   "abstract" :
     "B" :
       "name" : "B"
+      "qualifiedname" : "Library.B"
+      "annotations" :
+      "generics" : 
       "comment" : ""
       "superclass" : "dart.core.Object"
       "implements" : 
@@ -138,6 +192,9 @@ String dependencies =
       "methods" :
     "C" :
       "name" : "C"
+      "qualifiedname" : "Library.C"
+      "annotations" :
+      "generics" : 
       "comment" : ""
       "superclass" : "Library.A"
       "implements" : 
@@ -165,7 +222,7 @@ void main() {
     var currentMap = loadYaml(parameter);
     var item = new Parameter(currentMap['name'], currentMap);
     expect(item is Parameter, isTrue);
-    expect(item.type is LinkableType, isTrue);
+    expect(item.type is NestedType, isTrue);
   });
   
   test('variable_test', () {
@@ -176,7 +233,7 @@ void main() {
     var yaml = loadYaml(variable);
     var item = new Variable(yaml);
     expect(item is Variable, isTrue);
-    expect(item.type is LinkableType, isTrue);
+    expect(item.type is NestedType, isTrue);
   });
   
   test('clazz_test', () {
@@ -198,7 +255,7 @@ void main() {
     expect(functions.content.first is Method, isTrue);
     
     var method = functions.content.first;
-    expect(method.type is LinkableType, isTrue);
+    expect(method.type is NestedType, isTrue);
     
     var implements = item.implements;
     expect(implements is List, isTrue);
@@ -219,10 +276,10 @@ void main() {
     var item = new Method(yaml);
     expect(item is Method, isTrue);
         
-    expect(item.type is LinkableType, isTrue);
+    expect(item.type is NestedType, isTrue);
     expect(item.parameters is List, isTrue);
     expect(item.parameters.first is Parameter, isTrue);
-    expect(item.parameters.first.type is LinkableType, isTrue);
+    expect(item.parameters.first.type is NestedType, isTrue);
   });
   
   test('library_test', () {
@@ -264,12 +321,12 @@ void main() {
     var currentMap = loadYaml(dependencies);
     var library = new Library(currentMap);
     buildHierarchy(library, library);
-    
+
     var classes = library.classes;
     var abstractClasses = library.abstractClasses;
     var variables = library.variables;
     var functions = library.functions;
-    
+
     var variable = variables.content.first;
     var classA = classes.content.first;
     var classB, classC;
@@ -278,12 +335,24 @@ void main() {
       if (element.name == 'C') classC = element;
     });
     var function = functions.content.first;
-    
-    // TODO(tmandel): Since LinkableType.location does not return an Item
-    // anymore, this test can't run without instantiating a viewer and 
-    // attempting to change the homepage. This should be fixed when a global
-    // map from qualified name to Item is used instead of the logic in
-    // handleLink in web/app.dart. Add checks that the return types and
-    // superclasses are aliased to the right classes when this is done.
+
+    // Test that the destination of the links are aliased with the right class.                       
+    var location = pageIndex[variable.type.outer.location];
+    expect(location, equals(classA));
+
+    location = pageIndex[function.type.outer.location];
+    expect(location, equals(classA));
+
+    var parameter = function.parameters.first;
+    location = pageIndex[parameter.type.outer.location];
+    expect(location, equals(classA));
+
+    var implements = classA.implements.first;
+    location = pageIndex[implements.location];
+    expect(location, equals(classB));
+
+    var superClass = classC.superClass;
+    location = pageIndex[superClass.location];
+    expect(location, equals(classA));
   });
 }

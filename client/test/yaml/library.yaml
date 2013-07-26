@@ -1,18 +1,23 @@
 "name" : "DummyLibrary"
+"qualifiedname" : "DummyLibrary"
 "comment" : "<p>This is a library.</p>"
 "variables" :
 "functions" :
+"annotations" :
 "classes" :
   "abstract" :
     "A" :
       "name" : "A"
+      "qualifiedname" : "DummyLibrary.A"
       "comment" : "<p>This is a test class</p>"
       "superclass" : "dart.core.Object"
       "implements" :
         - "Library.A.B"
         - "Library.C.Y"
       "variables" :
-      "methods" :
+      "generics" :
+      "annotations" :
+  "methods" :
   "class" :
   "error" :
   "typedef" :
