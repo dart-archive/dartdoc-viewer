@@ -38,7 +38,8 @@ class Category extends Container {
       : super(name) {
     if (yaml != null) {
       yaml.keys.forEach((key) => 
-        content.add(new Class(yaml[key], isAbstract: isAbstract)));
+        content.add(new Class.forPlaceholder(yaml[key], 
+            isAbstract: isAbstract)));
     }
   }
   
@@ -152,13 +153,13 @@ void buildHierarchy(Item page, Item previous) {
     ..addAll(previous.path)
     ..add(page);
   pageIndex[page.qualifiedName] = page;
-  if (page is Class) {
+  if (page is Class && page.isLoaded) {
     [page.constructs, page.operators].forEach((category) =>
       category.content.forEach((item) {
         buildHierarchy(item, page);
       }));
   }
-  if (page is Library || page is Class) {
+  if (page is Library || (page is Class && page.isLoaded)) {
     page.functions.content.forEach((method) {
       buildHierarchy(method, page);
     });
@@ -221,6 +222,9 @@ class Library extends Item {
  */
 class Class extends Item {
 
+  Map yaml;
+  bool isLoaded = false;
+  
   Category functions;
   Category variables;
   Category constructs;
@@ -232,8 +236,13 @@ class Class extends Item {
   String qualifiedName;
   List<String> generics = [];
 
-  Class(Map yaml, {bool isAbstract: false})
-      : super(yaml['name'], _wrapComment(yaml['comment'])){
+  Class.forPlaceholder(Map yaml, {bool isAbstract: false}) 
+      : super(yaml['name'], _wrapComment(yaml['comment'])) {
+    this.yaml = yaml;
+    this.isAbstract = isAbstract;
+  }
+  
+  void loadClass() {
     qualifiedName = yaml['qualifiedname'];
     var setters, getters, methods, operators, constructors;
     var allMethods = yaml['methods'];
@@ -260,6 +269,7 @@ class Class extends Item {
     if (generics != null) {
       generics.keys.forEach((generic) => this.generics.add(generic));
     }
+    isLoaded = true;
   }
 }
 

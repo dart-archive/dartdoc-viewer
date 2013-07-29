@@ -115,6 +115,10 @@ class Viewer {
         _updateState(response);
       });
     } else {
+      if (page is Class && !page.isLoaded) {
+        page.loadClass();
+        buildHierarchy(page, currentPage);
+      }
       _updatePage(page);
       _updateState(page);
     }
