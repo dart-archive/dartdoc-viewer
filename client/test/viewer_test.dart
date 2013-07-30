@@ -168,38 +168,44 @@ String dependencies =
       "annotations" : 
 "classes" :
   "class" :
-    "A" :
-      "name" : "A"
-      "qualifiedname" : "Library.A"
-      "annotations" : 
-      "generics" : 
-      "comment" : ""
-      "superclass" : "dart.core.Object"
-      "implements" : 
-        - "Library.B"
-      "variables" : 
-      "methods" :
+    - "Library.A"
   "abstract" :
-    "B" :
-      "name" : "B"
-      "qualifiedname" : "Library.B"
-      "annotations" :
-      "generics" : 
-      "comment" : ""
-      "superclass" : "dart.core.Object"
-      "implements" : 
-      "variables" : 
-      "methods" :
-    "C" :
-      "name" : "C"
-      "qualifiedname" : "Library.C"
-      "annotations" :
-      "generics" : 
-      "comment" : ""
-      "superclass" : "Library.A"
-      "implements" : 
-      "variables" : 
-      "methods" :''';
+    - "Library.B" :
+    - "Library.C"''';
+
+String clazzA =
+'''"name" : "A"
+"qualifiedname" : "Library.A"
+"annotations" : 
+"generics" : 
+"comment" : ""
+"superclass" : "dart.core.Object"
+"implements" : 
+  - "Library.B"
+"variables" : 
+"methods" :''';
+
+String clazzB =
+'''"name" : "B"
+"qualifiedname" : "Library.B"
+"annotations" :
+"generics" : 
+"comment" : ""
+"superclass" : "dart.core.Object"
+"implements" : 
+"variables" : 
+"methods" :''';
+
+String clazzC = 
+'''"name" : "C"
+"qualifiedname" : "Library.C"
+"annotations" :
+"generics" : 
+"comment" : ""
+"superclass" : "Library.A"
+"implements" : 
+"variables" : 
+"methods" :''';
 
 void main() {
   useHtmlEnhancedConfiguration();

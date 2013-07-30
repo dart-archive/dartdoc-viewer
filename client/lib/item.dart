@@ -241,6 +241,13 @@ class Class extends LazyItem {
     this.isAbstract = isAbstract;
   }
   
+  /// Normal constructor for testing.
+  Class(Map yaml, {bool isAbstract: false}) : super(yaml['name']) {
+    this.isAbstract = isAbstract;
+    _loadValues(yaml);
+  }
+
+  
   void _loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
     var setters, getters, methods, operators, constructors;
