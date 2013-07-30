@@ -59,6 +59,19 @@ class Viewer {
   /// Creates a list of [Item] objects describing the path to [currentPage].
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
+  /// Loads [className] and updates the current page to [location].
+  Future _memberOfClass(String className, String location) {
+    var clazz = pageIndex[className];
+    if (clazz is Class && !clazz.isLoaded) {
+      return clazz.loadClass().then((_) {
+        var destination = pageIndex[location];
+        if (destination != null) _updatePage(destination);
+        return destination != null;
+      });
+    }
+    return new Future.value(false);
+  }
+  
   /// Looks for the correct [Item] described by [location]. If it is found,
   /// [currentPage] is updated and state is not pushed to the history api.
   /// Returns a [Future] to determine if a link was found or not.
@@ -73,6 +86,8 @@ class Viewer {
       location = location.replaceAll('/', '.');
       var members = location.split('.');
       var libraryName = members.first;
+      var className = members.length <= 1 ? null :
+        '${libraryName.replaceAll('-', '.')}.${members[1]}';
       // Since library names can contain '.' characters, the library part
       // of the input contains '-' characters replacing the '.' characters
       // in the original qualified name to make finding a library easier. These
@@ -83,29 +98,37 @@ class Viewer {
         return new Future.value(true);
       }
       var destination = pageIndex[location];
-      if (destination != null) {
-        _updatePage(destination);
-        return new Future.value(true);
-      } else {
+      if (destination == null) {
         var member = homePage.itemNamed(libraryName);
         if (member is Placeholder) {
           return homePage.loadLibrary(member).then((_) {
             destination = pageIndex[location];
             if (destination != null) {
-              if (destination is Class && !destination.isLoaded) {
+              if (destination is Class) {
                 return destination.loadClass().then((_) {
                   _updatePage(destination);
                   return true;
                 });
               } else {
                 _updatePage(destination);
+                return true;
               }
             } else {
-              // TODO(tmandel): Deal with links to methods in classes that
-              // have not yet loaded.
+              return _memberOfClass(className, location);
             }
-            return destination != null;
           });
+        } else {
+          return _memberOfClass(className, location);
+        }
+      } else {
+        if (destination is Class && !destination.isLoaded) {
+          return destination.loadClass().then((_) {
+            _updatePage(destination);
+            return true;
+          });
+        } else {
+          _updatePage(destination);
+          return new Future.value(true);
         } 
       }
     }
