@@ -59,7 +59,7 @@ class Viewer {
   /// Creates a list of [Item] objects describing the path to [currentPage].
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
-  /// Loads the [className] classs and updates the current page to the
+  /// Loads the [className] class and updates the current page to the
   /// class's member described by [location].
   Future _memberOfClass(String className, String location) {
     var clazz = pageIndex[className];
