@@ -63,7 +63,6 @@ class Viewer {
   /// class's member described by [location].
   Future _updateToClassMember(String className, String location) {
     var clazz = pageIndex[className];
-    print(className);
     if (!clazz.isLoaded) {
       return clazz.load().then((_) {
         var destination = pageIndex[location];
