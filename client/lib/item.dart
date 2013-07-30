@@ -6,6 +6,7 @@ import 'dart:html';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:web_ui/web_ui.dart';
+import 'package:yaml/yaml.dart';
 
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
 const docsPath = '../../docs/';
@@ -34,12 +35,11 @@ class Category extends Container {
   
   List<Container> content = [];
   
-  Category.forClasses(Map yaml, String name, {bool isAbstract: false})
-      : super(name) {
-    if (yaml != null) {
-      yaml.keys.forEach((key) => 
-        content.add(new Class.forPlaceholder(yaml[key], 
-            isAbstract: isAbstract)));
+  Category.forClasses(List<String> locations, String name, 
+      {bool isAbstract: false}) : super(name) {
+    if (locations != null) {
+      locations.forEach((key) => 
+        content.add(new Class.forPlaceholder(key, isAbstract: isAbstract)));
     }
   }
   
@@ -73,8 +73,7 @@ class Category extends Container {
   
   Category.forTypedefs(Map yaml) : super ('Typedefs') {
     if (yaml != null) {
-      yaml.keys.forEach((key) =>
-        content.add(new Typedef(yaml[key])));
+      yaml.keys.forEach((key) => content.add(new Typedef(yaml[key])));
     }
   }
 }
@@ -116,9 +115,9 @@ class Home extends Item {
   Home(List libraries) : super('Dart API Reference') {
     this.libraries = [];
     for (String library in libraries) {
-      var libraryName = library.replaceAll('.yaml', '');
-      libraryNames[libraryName] = libraryName.replaceAll('.', '-');
-      this.libraries.add(new Placeholder(libraryName, library));
+      var location = '$library.yaml';
+      libraryNames[library] = library.replaceAll('.', '-');
+      this.libraries.add(new Placeholder(library, location));
     };
   }
   
@@ -149,10 +148,12 @@ class Home extends Item {
 
 /// Runs through the member structure and creates path information.
 void buildHierarchy(Item page, Item previous) {
-  page.path
-    ..addAll(previous.path)
-    ..add(page);
-  pageIndex[page.qualifiedName] = page;
+  if (page.path.isEmpty) {
+    page.path
+      ..addAll(previous.path)
+      ..add(page);
+    pageIndex[page.qualifiedName] = page;
+  }
   if (page is Class && page.isLoaded) {
     [page.constructs, page.operators].forEach((category) =>
       category.content.forEach((item) {
@@ -164,10 +165,11 @@ void buildHierarchy(Item page, Item previous) {
       buildHierarchy(method, page);
     });
     if (page is Library) {
-      [page.classes, page.abstractClasses, page.typedefs].forEach((category) =>
-        category.content.forEach((clazz) {
-          buildHierarchy(clazz, page);
-        }));
+      [page.classes, page.abstractClasses, page.typedefs, page.errors]
+        .forEach((category) =>
+          category.content.forEach((clazz) {
+            buildHierarchy(clazz, page);
+          }));
     }
   }
 }
@@ -222,7 +224,6 @@ class Library extends Item {
  */
 class Class extends Item {
 
-  Map yaml;
   bool isLoaded = false;
   
   Category functions;
@@ -236,13 +237,23 @@ class Class extends Item {
   String qualifiedName;
   List<String> generics = [];
 
-  Class.forPlaceholder(Map yaml, {bool isAbstract: false}) 
-      : super(yaml['name'], _wrapComment(yaml['comment'])) {
-    this.yaml = yaml;
+  Class.forPlaceholder(String location, {bool isAbstract: false}) 
+      : super(location.split('.').last) {
     this.isAbstract = isAbstract;
+    this.qualifiedName = location;
   }
   
-  void loadClass() {
+  Future loadClass() {
+    var data = retrieveFileContents('$docsPath$qualifiedName.yaml');
+    return data.then((response) {
+      var yaml = loadYaml(response);
+      loadValues(yaml);
+      buildHierarchy(this, this);
+    });
+  }
+  
+  void loadValues(Map yaml) {
+    this.comment = _wrapComment(yaml['comment']);
     qualifiedName = yaml['qualifiedname'];
     var setters, getters, methods, operators, constructors;
     var allMethods = yaml['methods'];
@@ -280,7 +291,7 @@ class Parameterized extends Item {
   
   List<Parameter> parameters;
   
-  Parameterized(String name, String comment) : super(name, comment);
+  Parameterized(String name, [String comment]) : super(name, comment);
   
   /// Creates [Parameter] objects for each parameter to this method.
   List<Parameter> getParameters(Map parameters) {
@@ -304,6 +315,7 @@ class Typedef extends Parameterized {
   List<LinkableType> annotations;
   
   Typedef(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
+    this.comment = _wrapComment(yaml['comment']);
     qualifiedName = yaml['qualifiedname'];
     type = new LinkableType(yaml['return']);
     parameters = getParameters(yaml['parameters']);

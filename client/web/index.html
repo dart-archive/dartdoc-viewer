@@ -16,7 +16,7 @@
   <template if="viewer.currentPage != null">
     <template iterate="item in viewer.breadcrumbs">
       <template instantiate="if item != null">
-        <a on-click="viewer.changePage(item)">{{item.name}}</a>
+        <a on-click="viewer.changePage(item)">{{item.decoratedName}}</a>
       </template>
     </template>
   </template>

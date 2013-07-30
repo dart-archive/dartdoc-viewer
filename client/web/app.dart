@@ -71,7 +71,8 @@ class Viewer {
         location = location.substring(0, location.length - 1);
       // Converts to a qualified name from a url path.
       location = location.replaceAll('/', '.');
-      var libraryName = location.split('.').first;
+      var members = location.split('.');
+      var libraryName = members.first;
       // Since library names can contain '.' characters, the library part
       // of the input contains '-' characters replacing the '.' characters
       // in the original qualified name to make finding a library easier. These
@@ -90,7 +91,19 @@ class Viewer {
         if (member is Placeholder) {
           return homePage.loadLibrary(member).then((_) {
             destination = pageIndex[location];
-            if (destination != null) _updatePage(destination);
+            if (destination != null) {
+              if (destination is Class && !destination.isLoaded) {
+                return destination.loadClass().then((_) {
+                  _updatePage(destination);
+                  return true;
+                });
+              } else {
+                _updatePage(destination);
+              }
+            } else {
+              // TODO(tmandel): Deal with links to methods in classes that
+              // have not yet loaded.
+            }
             return destination != null;
           });
         } 
@@ -114,11 +127,12 @@ class Viewer {
         _updatePage(response);
         _updateState(response);
       });
+    } else if (page is Class && !page.isLoaded) {
+      page.loadClass().then((_) {
+        _updatePage(page);
+        _updateState(page);
+      });
     } else {
-      if (page is Class && !page.isLoaded) {
-        page.loadClass();
-        buildHierarchy(page, currentPage);
-      }
       _updatePage(page);
       _updateState(page);
     }
