@@ -96,26 +96,15 @@ String clazz =
       "parameters" :''';
 
 String library =
-'''"name" : "DummyLibrary"
-"qualifiedname" : "DummyLibrary"
+'''"name" : "Library"
+"qualifiedname" : "Library"
 "comment" : "<p>This is a library.</p>"
 "variables" :
 "functions" :
 "annotations" :
 "classes" :
   "abstract" :
-    "A" :
-      "name" : "A"
-      "qualifiedname" : "DummyLibrary.A"
-      "comment" : "<p>This is a test class</p>"
-      "superclass" : "dart.core.Object"
-      "implements" :
-        - "Library.A.B"
-        - "Library.C.Y"
-      "variables" :
-      "generics" :
-      "annotations" :
-  "methods" :
+    - "Library.A"
   "class" :
   "error" :
   "typedef" :''';
@@ -170,7 +159,7 @@ String dependencies =
   "class" :
     - "Library.A"
   "abstract" :
-    - "Library.B" :
+    - "Library.B"
     - "Library.C"''';
 
 String clazzA =
@@ -317,16 +306,12 @@ void main() {
 
     var clazz = itemManual.abstractClasses.content.first;
     expect(clazz is Class, isTrue);
-    
-    var implements = clazz.implements;
-    implements.forEach((element) => expect(element is LinkableType, isTrue));
   });
   
   // Test that links that are in scope are aliased to the correct objects.
   test('dependencies_test', () {
     var currentMap = loadYaml(dependencies);
     var library = new Library(currentMap);
-    buildHierarchy(library, library);
 
     var classes = library.classes;
     var abstractClasses = library.abstractClasses;
@@ -342,6 +327,14 @@ void main() {
     });
     var function = functions.content.first;
 
+    expect(classA.isLoaded, isFalse);
+    expect(classB.isLoaded, isFalse);
+    expect(classC.isLoaded, isFalse);
+    
+    classA.loadValues(loadYaml(clazzA));
+    classB.loadValues(loadYaml(clazzB));
+    classC.loadValues(loadYaml(clazzC));
+    
     // Test that the destination of the links are aliased with the right class.                       
     var location = pageIndex[variable.type.outer.location];
     expect(location, equals(classA));
