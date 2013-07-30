@@ -64,7 +64,7 @@ class Viewer {
   Future _memberOfClass(String className, String location) {
     var clazz = pageIndex[className];
     if (clazz is Class && !clazz.isLoaded) {
-      return clazz.loadClass().then((_) {
+      return clazz.load().then((_) {
         var destination = pageIndex[location];
         if (destination != null) _updatePage(destination);
         return destination != null;
@@ -87,12 +87,12 @@ class Viewer {
       location = location.replaceAll('/', '.');
       var members = location.split('.');
       var libraryName = members.first;
-      var className = members.length <= 1 ? null :
-        '${libraryName.replaceAll('-', '.')}.${members[1]}';
       // Since library names can contain '.' characters, the library part
       // of the input contains '-' characters replacing the '.' characters
       // in the original qualified name to make finding a library easier. These
       // must be changed back to '.' characters to be true qualified names.
+      var className = members.length <= 1 ? null :
+        '${libraryName.replaceAll('-', '.')}.${members[1]}';
       location = location.replaceAll('-', '.');
       if (location == 'home') {
         _updatePage(homePage);
@@ -102,12 +102,12 @@ class Viewer {
       if (destination == null) {
         // Either a library or class has not been loaded.
         var member = homePage.itemNamed(libraryName);
-        if (member is Placeholder) {
-          return homePage.loadLibrary(member).then((_) {
+        if (!member.isLoaded) {
+          return member.load().then((_) {
             destination = pageIndex[location];
             if (destination != null) {
               if (destination is Class) {
-                return destination.loadClass().then((_) {
+                return destination.load().then((_) {
                   _updatePage(destination);
                   return true;
                 });
@@ -126,7 +126,7 @@ class Viewer {
         // The destination has been loaded or is a class that has not been 
         // loaded.
         if (destination is Class && !destination.isLoaded) {
-          return destination.loadClass().then((_) {
+          return destination.load().then((_) {
             _updatePage(destination);
             return true;
           });
@@ -149,13 +149,13 @@ class Viewer {
   
   /// Updates [currentPage] to [page] and pushes state for navigation.
   void changePage(Item page) {
-    if (page is Placeholder) {
-      homePage.loadLibrary(page).then((response) {
-        _updatePage(response);
-        _updateState(response);
+    if (page is Library && !page.isLoaded) {
+      page.load().then((_) {
+        _updatePage(page);
+        _updateState(page);
       });
     } else if (page is Class && !page.isLoaded) {
-      page.loadClass().then((_) {
+      page.load().then((_) {
         _updatePage(page);
         _updateState(page);
       });

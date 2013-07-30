@@ -49,22 +49,6 @@
     import 'member.dart';
     
     class LibraryElement extends MemberElement {
-      inserted() {
-        _showLibrary();
-      }
-      
-      /// Route handler for libraries.
-      void _showLibrary() {
-        if (item is Placeholder) {
-          viewer.homePage.loadLibrary(item).then((response) {
-            viewer.currentPage = response;
-            item = response;
-          });
-        } else {
-          viewer.currentPage = item;
-        }
-      }
-      
       Category get variables => item.variables;
 
       Category get operators => item.operators;

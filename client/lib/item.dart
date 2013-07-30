@@ -92,50 +92,21 @@ class Item extends Container {
 }
 
 /**
- * An [Item] with no content. This is used to facilitate lazy loading.
- */
-class Placeholder extends Item {
-  
-  /// The path to the file with the real data relative to [docsPath].
-  String location;
-  
-  Placeholder(String name, this.location) : super(name);
-}
-
-/**
  * An [Item] containing all of the [Library] and [Placeholder] objects.
  */
 class Home extends Item {
   
   /// All libraries being viewed from the homepage.
-  List<Item> libraries;
+  List<Item> libraries = [];
   
   /// The constructor parses the [libraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
   Home(List libraries) : super('Dart API Reference') {
-    this.libraries = [];
     for (String library in libraries) {
-      var location = '$library.yaml';
       libraryNames[library] = library.replaceAll('.', '-');
-      this.libraries.add(new Placeholder(library, location));
+      this.libraries.add(new Library.forPlaceholder(library));
     };
   }
-  
-  /// Loads the library's data and returns a [Future] for external handling.
-  Future loadLibrary(Placeholder place) {
-    var data = retrieveFileContents('$docsPath${place.location}');
-    return data.then((response) {
-      var lib = loadData(response);
-      var index = libraries.indexOf(place);
-      buildHierarchy(lib, lib);
-      libraries.remove(place);
-      libraries.insert(index, lib);
-      return lib;
-    });
-  }
-  
-  /// Checks if [library] is defined in [libraries].
-  bool contains(String library) => libraryNames.values.contains(library);
   
   /// Returns the [Item] representing [libraryName].
   // TODO(tmandel): Stop looping through 'libraries' so much. Possibly use a 
@@ -179,6 +150,8 @@ void buildHierarchy(Item page, Item previous) {
  */
 class Library extends Item {
   
+  bool isLoaded = false;
+  
   Category classes;
   Category abstractClasses;
   Category errors;
@@ -188,8 +161,24 @@ class Library extends Item {
   Category operators;
   String qualifiedName;
 
-  Library(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
-    qualifiedName = yaml['qualifiedname'];
+  /// Creates a [Library] placeholder object with null fields.
+  Library.forPlaceholder(String location) : super(location) {
+    this.qualifiedName = location;
+  }
+  
+  /// Loads this [Library]'s data and populates all fields.
+  Future load() {
+    var data = retrieveFileContents('$docsPath$qualifiedName.yaml');
+    return data.then((response) {
+      var yaml = loadYaml(response);
+      _loadValues(yaml);
+      buildHierarchy(this, this);
+    });
+  }
+  
+  /// Populates this [Library]'s fields.
+  void _loadValues(Map yaml) {
+    this.comment = _wrapComment(yaml['comment']);
     var classes, abstractClasses, exceptions, typedefs;
     var allClasses = yaml['classes'];
     if (allClasses != null) {
@@ -216,6 +205,7 @@ class Library extends Item {
     functions = new Category.forFunctions(methods, 'Functions');
     this.operators = new Category.forFunctions(operators, 'Operators', 
         isOperator: true);
+    isLoaded = true;
   }
 }
 
@@ -245,7 +235,7 @@ class Class extends Item {
   }
   
   /// Loads this [Class]'s data and populates all fields.
-  Future loadClass() {
+  Future load() {
     var data = retrieveFileContents('$docsPath$qualifiedName.yaml');
     return data.then((response) {
       var yaml = loadYaml(response);
@@ -257,7 +247,6 @@ class Class extends Item {
   /// Populates this [Class]'s fields.
   void _loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
-    qualifiedName = yaml['qualifiedname'];
     var setters, getters, methods, operators, constructors;
     var allMethods = yaml['methods'];
     if (allMethods != null) {
