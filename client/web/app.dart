@@ -76,7 +76,7 @@ class Viewer {
   /// Loads the [libraryName] [Library] and [className] [Class] if necessary
   /// and updates the current page to the member described by [location] 
   /// once the correct member is found and loaded.
-  Future loadAndUpdatePage(String libraryName, String className, 
+  Future _loadAndUpdatePage(String libraryName, String className, 
                            String location) {
     var destination = pageIndex[location];
     if (destination == null) {
@@ -84,7 +84,7 @@ class Viewer {
       if (library == null) return new Future.value(false);
       if (!library.isLoaded) {
         return library.load().then((_) =>
-          loadAndUpdatePage(libraryName, className, location));
+          _loadAndUpdatePage(libraryName, className, location));
       } else {
         return _updateToClassMember(className, location);
       }
@@ -126,7 +126,7 @@ class Viewer {
       _updatePage(homePage);
       return new Future.value(true);
     }
-    return loadAndUpdatePage(libraryName, className, location);
+    return _loadAndUpdatePage(libraryName, className, location);
   }
   
   /// Looks for the correct [Item] described by [location]. If it is found, 
