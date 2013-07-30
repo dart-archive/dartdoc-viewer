@@ -145,25 +145,14 @@ void buildHierarchy(Item page, Item previous) {
   }
 }
 
-/**
- * An [Item] that describes a single Dart library.
- */
-class Library extends Item {
+abstract class LazyItem extends Item {
   
   bool isLoaded = false;
-  
-  Category classes;
-  Category abstractClasses;
-  Category errors;
-  Category typedefs;
-  Category variables;
-  Category functions;
-  Category operators;
   String qualifiedName;
-
-  /// Creates a [Library] placeholder object with null fields.
-  Library.forPlaceholder(String location) : super(location) {
-    this.qualifiedName = location;
+  
+  LazyItem(String qualifiedName, String name, [String comment]) 
+      : super(name, comment) {
+    this.qualifiedName = qualifiedName;
   }
   
   /// Loads this [Library]'s data and populates all fields.
@@ -175,6 +164,26 @@ class Library extends Item {
       buildHierarchy(this, this);
     });
   }
+  
+  void _loadValues(Map yaml);
+  
+}
+
+/**
+ * An [Item] that describes a single Dart library.
+ */
+class Library extends LazyItem {
+  
+  Category classes;
+  Category abstractClasses;
+  Category errors;
+  Category typedefs;
+  Category variables;
+  Category functions;
+  Category operators;
+
+  /// Creates a [Library] placeholder object with null fields.
+  Library.forPlaceholder(String location) : super(location, location);
   
   /// Populates this [Library]'s fields.
   void _loadValues(Map yaml) {
@@ -212,9 +221,7 @@ class Library extends Item {
 /**
  * An [Item] that describes a single Dart class.
  */
-class Class extends Item {
-
-  bool isLoaded = false;
+class Class extends LazyItem {
   
   Category functions;
   Category variables;
@@ -224,24 +231,12 @@ class Class extends Item {
   bool isAbstract;
   List<LinkableType> annotations;
   List<LinkableType> implements;
-  String qualifiedName;
   List<String> generics = [];
 
   /// Creates a [Class] placeholder object with null fields.
   Class.forPlaceholder(String location, {bool isAbstract: false}) 
-      : super(location.split('.').last) {
+      : super(location, location.split('.').last) {
     this.isAbstract = isAbstract;
-    this.qualifiedName = location;
-  }
-  
-  /// Loads this [Class]'s data and populates all fields.
-  Future load() {
-    var data = retrieveFileContents('$docsPath$qualifiedName.yaml');
-    return data.then((response) {
-      var yaml = loadYaml(response);
-      _loadValues(yaml);
-      buildHierarchy(this, this);
-    });
   }
   
   /// Populates this [Class]'s fields.

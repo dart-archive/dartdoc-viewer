@@ -61,9 +61,10 @@ class Viewer {
   
   /// Loads the [className] class and updates the current page to the
   /// class's member described by [location].
-  Future _memberOfClass(String className, String location) {
+  Future _updateToClassMember(String className, String location) {
     var clazz = pageIndex[className];
-    if (clazz is Class && !clazz.isLoaded) {
+    print(className);
+    if (!clazz.isLoaded) {
       return clazz.load().then((_) {
         var destination = pageIndex[location];
         if (destination != null) _updatePage(destination);
@@ -72,6 +73,34 @@ class Viewer {
     }
     return new Future.value(false);
   }
+
+  /// Loads the [libraryName] [Library] and [className] [Class] if necessary
+  /// and updates the current page to the member described by [location] 
+  /// once the correct member is found and loaded.
+  Future loadAndUpdatePage(String libraryName, String className, 
+                           String location) {
+    var destination = pageIndex[location];
+    if (destination == null) {
+      var library = homePage.itemNamed(libraryName);
+      if (library == null) return new Future.value(false);
+      if (!library.isLoaded) {
+        return library.load().then((_) =>
+          loadAndUpdatePage(libraryName, className, location));
+      } else {
+        return _updateToClassMember(className, location);
+      }
+    } else {
+      if (destination is Class && !destination.isLoaded) {
+        return destination.load().then((_) {
+          _updatePage(destination);
+          return true;
+        });
+      } else {
+        _updatePage(destination);
+        return new Future.value(true);
+      } 
+    }
+  }
   
   /// Looks for the correct [Item] described by [location]. If it is found,
   /// [currentPage] is updated and state is not pushed to the history api.
@@ -79,64 +108,26 @@ class Viewer {
   /// [location] is a [String] path to the location (either a qualified name
   /// or a url path).
   Future _handleLinkWithoutState(String location) {
-    if (location != null && location != '') {
-      // An extra '/' at the end of the url must be removed.
-      if (location.endsWith('/')) 
-        location = location.substring(0, location.length - 1);
-      // Converts to a qualified name from a url path.
-      location = location.replaceAll('/', '.');
-      var members = location.split('.');
-      var libraryName = members.first;
-      // Since library names can contain '.' characters, the library part
-      // of the input contains '-' characters replacing the '.' characters
-      // in the original qualified name to make finding a library easier. These
-      // must be changed back to '.' characters to be true qualified names.
-      var className = members.length <= 1 ? null :
-        '${libraryName.replaceAll('-', '.')}.${members[1]}';
-      location = location.replaceAll('-', '.');
-      if (location == 'home') {
-        _updatePage(homePage);
-        return new Future.value(true);
-      }
-      var destination = pageIndex[location];
-      if (destination == null) {
-        // Either a library or class has not been loaded.
-        var member = homePage.itemNamed(libraryName);
-        if (!member.isLoaded) {
-          return member.load().then((_) {
-            destination = pageIndex[location];
-            if (destination != null) {
-              if (destination is Class) {
-                return destination.load().then((_) {
-                  _updatePage(destination);
-                  return true;
-                });
-              } else {
-                _updatePage(destination);
-                return true;
-              }
-            } else {
-              return _memberOfClass(className, location);
-            }
-          });
-        } else {
-          return _memberOfClass(className, location);
-        }
-      } else {
-        // The destination has been loaded or is a class that has not been 
-        // loaded.
-        if (destination is Class && !destination.isLoaded) {
-          return destination.load().then((_) {
-            _updatePage(destination);
-            return true;
-          });
-        } else {
-          _updatePage(destination);
-          return new Future.value(true);
-        } 
-      }
+    if (location == null || location == '') return new Future.value(false);
+    // An extra '/' at the end of the url must be removed.
+    if (location.endsWith('/')) 
+      location = location.substring(0, location.length - 1);
+    // Converts to a qualified name from a url path.
+    location = location.replaceAll('/', '.');
+    var members = location.split('.');
+    var libraryName = members.first;
+    // Since library names can contain '.' characters, the library part
+    // of the input contains '-' characters replacing the '.' characters
+    // in the original qualified name to make finding a library easier. These
+    // must be changed back to '.' characters to be true qualified names.
+    var className = members.length <= 1 ? null :
+      '${libraryName.replaceAll('-', '.')}.${members[1]}';
+    location = location.replaceAll('-', '.');
+    if (location == 'home') {
+      _updatePage(homePage);
+      return new Future.value(true);
     }
-    return new Future.value(false);
+    return loadAndUpdatePage(libraryName, className, location);
   }
   
   /// Looks for the correct [Item] described by [location]. If it is found, 
@@ -149,12 +140,7 @@ class Viewer {
   
   /// Updates [currentPage] to [page] and pushes state for navigation.
   void changePage(Item page) {
-    if (page is Library && !page.isLoaded) {
-      page.load().then((_) {
-        _updatePage(page);
-        _updateState(page);
-      });
-    } else if (page is Class && !page.isLoaded) {
+    if (page is LazyItem && !page.isLoaded) {
       page.load().then((_) {
         _updatePage(page);
         _updateState(page);
