@@ -163,13 +163,13 @@ abstract class LazyItem extends Item {
     var data = retrieveFileContents('$docsPath$qualifiedName.yaml');
     return data.then((response) {
       var yaml = loadYaml(response);
-      _loadValues(yaml);
+      loadValues(yaml);
       buildHierarchy(this, this);
     });
   }
   
   /// Populates all of this [Item]'s fields.
-  void _loadValues(Map yaml);
+  void loadValues(Map yaml);
 }
 
 /**
@@ -190,11 +190,11 @@ class Library extends LazyItem {
   
   /// Normal constructor for testing.
   Library(Map yaml) : super(yaml['qualifiedname'], yaml['name']) {
-    _loadValues(yaml);
+    loadValues(yaml);
     buildHierarchy(this, this);
   } 
   
-  void _loadValues(Map yaml) {
+  void loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
     var classes, abstractClasses, exceptions, typedefs;
     var allClasses = yaml['classes'];
@@ -251,11 +251,11 @@ class Class extends LazyItem {
   Class(Map yaml, {bool isAbstract: false}) 
       : super(yaml['qualifiedname'], yaml['name']) {
     this.isAbstract = isAbstract;
-    _loadValues(yaml);
+    loadValues(yaml);
   }
   
   /// Populates this [Class]'s fields.
-  void _loadValues(Map yaml) {
+  void loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
     var setters, getters, methods, operators, constructors;
     var allMethods = yaml['methods'];
