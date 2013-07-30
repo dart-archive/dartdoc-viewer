@@ -315,7 +315,6 @@ class Typedef extends Parameterized {
   List<LinkableType> annotations;
   
   Typedef(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
-    this.comment = _wrapComment(yaml['comment']);
     qualifiedName = yaml['qualifiedname'];
     type = new LinkableType(yaml['return']);
     parameters = getParameters(yaml['parameters']);
