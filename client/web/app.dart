@@ -59,7 +59,8 @@ class Viewer {
   /// Creates a list of [Item] objects describing the path to [currentPage].
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
-  /// Loads [className] and updates the current page to [location].
+  /// Loads the [className] classs and updates the current page to the
+  /// class's member described by [location].
   Future _memberOfClass(String className, String location) {
     var clazz = pageIndex[className];
     if (clazz is Class && !clazz.isLoaded) {
@@ -99,6 +100,7 @@ class Viewer {
       }
       var destination = pageIndex[location];
       if (destination == null) {
+        // Either a library or class has not been loaded.
         var member = homePage.itemNamed(libraryName);
         if (member is Placeholder) {
           return homePage.loadLibrary(member).then((_) {
@@ -121,6 +123,8 @@ class Viewer {
           return _memberOfClass(className, location);
         }
       } else {
+        // The destination has been loaded or is a class that has not been 
+        // loaded.
         if (destination is Class && !destination.isLoaded) {
           return destination.loadClass().then((_) {
             _updatePage(destination);

@@ -237,22 +237,25 @@ class Class extends Item {
   String qualifiedName;
   List<String> generics = [];
 
+  /// Creates a [Class] placeholder object with null fields.
   Class.forPlaceholder(String location, {bool isAbstract: false}) 
       : super(location.split('.').last) {
     this.isAbstract = isAbstract;
     this.qualifiedName = location;
   }
   
+  /// Loads this [Class]'s data and populates all fields.
   Future loadClass() {
     var data = retrieveFileContents('$docsPath$qualifiedName.yaml');
     return data.then((response) {
       var yaml = loadYaml(response);
-      loadValues(yaml);
+      _loadValues(yaml);
       buildHierarchy(this, this);
     });
   }
   
-  void loadValues(Map yaml) {
+  /// Populates this [Class]'s fields.
+  void _loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
     qualifiedName = yaml['qualifiedname'];
     var setters, getters, methods, operators, constructors;
