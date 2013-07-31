@@ -34,6 +34,11 @@
         <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
       </p>
       
+      <!-- TODO(tmandel): Add more information about inheritance. -->
+      <template if="item.isInherited">
+        <p>Inherited</p>
+      </template>
+      
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-method')}}</section>
     

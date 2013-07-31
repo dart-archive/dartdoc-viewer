@@ -34,6 +34,7 @@ String _wrapComment(String comment) {
 class Category extends Container {
   
   List<Container> content = [];
+  Set<String> memberNames = new Set<String>();
   
   Category.forClasses(List<String> locations, String name, 
       {bool isAbstract: false}) : super(name) {
@@ -47,16 +48,19 @@ class Category extends Container {
       : super('Properties') {
     if (variables != null) {
       variables.keys.forEach((key) {
+        memberNames.add(key);
         content.add(new Variable(variables[key]));
       });
     }
     if (getters != null) {
       getters.keys.forEach((key) {
+        memberNames.add(key);
         content.add(new Variable(getters[key], isGetter: true));
       });
     }
     if (setters != null) {
       setters.keys.forEach((key) {
+        memberNames.add(key);
         content.add(new Variable(setters[key], isSetter: true ));
       });
     }
@@ -65,9 +69,11 @@ class Category extends Container {
   Category.forFunctions(Map yaml, String name, {bool isConstructor: false, 
       String className: '', bool isOperator: false}) : super(name) {
     if (yaml != null) {
-      yaml.keys.forEach((key) =>
+      yaml.keys.forEach((key) {
+        memberNames.add(key);
         content.add(new Method(yaml[key], isConstructor: isConstructor, 
-            className: className, isOperator: isOperator)));
+            className: className, isOperator: isOperator));
+      });
     }
   }
   
@@ -132,7 +138,8 @@ void buildHierarchy(Item page, Item previous) {
     page.path
       ..addAll(previous.path)
       ..add(page);
-    pageIndex[page.qualifiedName] = page;
+    if (!((page is Method || page is Variable) && page.isInherited))
+      pageIndex[page.qualifiedName] = page;
   }
   if (page is Class && page.isLoaded) {
     [page.constructs, page.operators].forEach((category) =>
@@ -283,6 +290,53 @@ class Class extends LazyItem {
         isOperator: true);
     constructs = new Category.forFunctions(constructors, 'Constructors', 
         isConstructor: true, className: this.name);
+    var inheritedMethods = yaml['inheritedmethods'];
+    if (inheritedMethods != null) {
+      setters = inheritedMethods['setters'];
+      getters = inheritedMethods['getters'];
+      methods = inheritedMethods['methods'];
+      operators = inheritedMethods['operators'];
+      constructors = inheritedMethods['constructors'];
+    }
+    if (setters != null) {
+      setters.keys.forEach((key) {
+        if (!variables.memberNames.contains(key)) {
+          var item = new Variable(setters[key], isSetter: true, 
+              isInherited: true);
+          pageIndex['${this.qualifiedName}.$key'] = item;
+          variables.content.add(item);
+        }
+      });
+    }
+    if (getters != null) {
+      getters.keys.forEach((key) {
+        if (!variables.memberNames.contains(key)) {
+          var item = new Variable(getters[key], isGetter: true, 
+              isInherited: true);
+          pageIndex['${this.qualifiedName}.$key'] = item;
+          variables.content.add(item);
+        }
+      });
+    }
+    if (methods != null) {
+      methods.keys.forEach((key) {
+        if (!functions.memberNames.contains(key)) {
+          var item = new Method(methods[key], isInherited: true);
+          pageIndex['${this.qualifiedName}.$key'] = item;
+          functions.content.add(item);
+        }
+      });
+    }
+    if (operators != null) {
+      operators.keys.forEach((key) {
+        if (!this.operators.memberNames.contains(key)) {
+          var item = new Method(operators[key], isOperator: true,
+              isInherited: true);
+          pageIndex['${this.qualifiedName}.$key'] = item;
+          this.operators.content.add(item);
+        }
+      });
+    }
     this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = isAbstract;
     this.annotations = yaml['annotations'] == null ? [] :
@@ -363,6 +417,7 @@ class Method extends Parameterized {
   bool isAbstract;
   bool isConstant;
   bool isConstructor;
+  bool isInherited;
   String className;
   bool isOperator;
   List<LinkableType> annotations;
@@ -370,7 +425,7 @@ class Method extends Parameterized {
   String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
-      bool isOperator: false}) 
+      bool isOperator: false, bool isInherited: false}) 
         : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     this.isStatic = yaml['static'] == 'true';
@@ -378,6 +433,7 @@ class Method extends Parameterized {
     this.isConstant = yaml['constant'] == 'true';
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
+    this.isInherited = isInherited;
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
     this.className = className;
@@ -436,16 +492,19 @@ class Variable extends Item {
   bool isConstant;
   bool isGetter;
   bool isSetter;
+  bool isInherited;
   Parameter setterParameter;
   NestedType type;
   String qualifiedName;
   List<Annotation> annotations;
 
-  Variable(Map yaml, {bool isGetter: false, bool isSetter: false})
+  Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
+      bool isInherited: false})
       : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     this.isGetter = isGetter;
     this.isSetter = isSetter;
+    this.isInherited = isInherited;
     isFinal = yaml['final'] == 'true';
     isStatic = yaml['static'] == 'true';
     isConstant = yaml['constant'] == 'true';
