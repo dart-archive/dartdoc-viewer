@@ -54,6 +54,21 @@
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-class')}}</section>
       
+      <!-- Subclasses -->
+      <template instantiate="if item.qualifiedName != 'dart.core.Object'">
+        <template if="subclasses.isNotEmpty">
+          Subclasses:
+        </template>
+        <template iterate="subclass in subclasses">
+          <a on-click="viewer.handleLink(subclass.location)">
+            {{subclass.simpleType}}
+          </a>
+          <template if="subclass != subclasses.last">
+            ,&nbsp;
+          </template>
+        </template>
+      </template>
+      
       <template instantiate="if variables.content.isNotEmpty">
         <dartdoc-category category="{{variables}}"></dartdoc-category>
       </template>
@@ -88,6 +103,8 @@
       Category get methods => item.functions;
       
       List<LinkableType> get interfaces => item.implements;
+      
+      List<LinkableType> get subclasses => item.subclasses;
       
       LinkableType get superClass => item.superClass;
     }

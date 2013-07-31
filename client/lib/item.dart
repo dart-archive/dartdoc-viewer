@@ -258,6 +258,7 @@ class Class extends LazyItem {
   bool isAbstract;
   List<Annotation> annotations;
   List<LinkableType> implements;
+  List<LinkableType> subclasses;
   List<String> generics = [];
 
   /// Creates a [Class] placeholder object with null fields.
@@ -300,45 +301,35 @@ class Class extends LazyItem {
     }
     if (setters != null) {
       setters.keys.forEach((key) {
-        if (!variables.memberNames.contains(key)) {
-          var item = new Variable(setters[key], isSetter: true, 
-              inheritedFrom: setters[key]['qualifiedName']);
-          pageIndex['${this.qualifiedName}.$key'] = item;
-          variables.content.add(item);
-        }
+        var item = new Variable(setters[key], isSetter: true, 
+            inheritedFrom: setters[key]['qualifiedName']);
+        _addInherited(variables, item);
       });
     }
     if (getters != null) {
       getters.keys.forEach((key) {
-        if (!variables.memberNames.contains(key)) {
-          var item = new Variable(getters[key], isGetter: true, 
-              inheritedFrom: getters[key]['qualifiedname']);
-          pageIndex['${this.qualifiedName}.$key'] = item;
-          variables.content.add(item);
-        }
+        var item = new Variable(getters[key], isGetter: true, 
+            inheritedFrom: getters[key]['qualifiedname']);
+        _addInherited(variables, item);
       });
     }
     if (methods != null) {
       methods.keys.forEach((key) {
-        if (!functions.memberNames.contains(key)) {
-          var item = new Method(methods[key], 
-              inheritedFrom: methods[key]['qualifiedname']);
-          pageIndex['${this.qualifiedName}.$key'] = item;
-          functions.content.add(item);
-        }
+        var item = new Method(methods[key], 
+            inheritedFrom: methods[key]['qualifiedname']);
+        _addInherited(functions, item);
       });
     }
     if (operators != null) {
       operators.keys.forEach((key) {
-        if (!this.operators.memberNames.contains(key)) {
-          var item = new Method(operators[key], isOperator: true,
-              inheritedFrom: operators[key]['qualifiedname']);
-          pageIndex['${this.qualifiedName}.$key'] = item;
-          this.operators.content.add(item);
-        }
+        var item = new Method(operators[key], isOperator: true,
+            inheritedFrom: operators[key]['qualifiedname']);
+        _addInherited(this.operators, item);
       });
     }
     this.superClass = new LinkableType(yaml['superclass']);
+    this.subclasses = yaml['subclass'] == null ? [] :
+      yaml['subclass'].map((item) => new LinkableType(item)).toList();
     this.isAbstract = isAbstract;
     this.annotations = yaml['annotations'] == null ? [] :
         yaml['annotations'].map((item) => new Annotation(item)).toList();
@@ -351,6 +342,13 @@ class Class extends LazyItem {
     _sort([this.functions.content, this.variables.content, 
            this.constructs.content, this.operators.content]);
     isLoaded = true;
+  }
+  
+  void _addInherited(Category destination, Item item) {
+    if (!destination.memberNames.contains(item.name)) {
+      pageIndex['${this.qualifiedName}.${item.name}'] = item;
+      destination.content.add(item);
+    }
   }
 }
 
