@@ -270,8 +270,7 @@ void main() {
     var yaml = loadYaml(method);
     var item = new Method(yaml);
     expect(item is Method, isTrue);
-
-    /// Populates this [Class]'s fields. 
+ 
     expect(item.type is NestedType, isTrue);
     expect(item.parameters is List, isTrue);
     expect(item.parameters.first is Parameter, isTrue);
