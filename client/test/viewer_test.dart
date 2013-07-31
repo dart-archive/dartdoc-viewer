@@ -270,7 +270,8 @@ void main() {
     var yaml = loadYaml(method);
     var item = new Method(yaml);
     expect(item is Method, isTrue);
-        
+
+    /// Populates this [Class]'s fields. 
     expect(item.type is NestedType, isTrue);
     expect(item.parameters is List, isTrue);
     expect(item.parameters.first is Parameter, isTrue);
@@ -306,6 +307,10 @@ void main() {
 
     var clazz = itemManual.abstractClasses.content.first;
     expect(clazz is Class, isTrue);
+    clazz.loadValues(loadYaml(clazzA));
+    
+    var implements = clazz.implements;
+    implements.forEach((element) => expect(element is LinkableType, isTrue));
   });
   
   // Test that links that are in scope are aliased to the correct objects.

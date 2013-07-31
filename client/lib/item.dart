@@ -158,7 +158,7 @@ abstract class LazyItem extends Item {
     this.qualifiedName = qualifiedName;
   }
   
-  /// Loads this [Library]'s data and populates all fields.
+  /// Loads this [Item]'s data and populates all fields.
   Future load() {
     var data = retrieveFileContents('$docsPath$qualifiedName.yaml');
     return data.then((response) {
@@ -254,7 +254,6 @@ class Class extends LazyItem {
     loadValues(yaml);
   }
   
-  /// Populates this [Class]'s fields.
   void loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
     var setters, getters, methods, operators, constructors;
