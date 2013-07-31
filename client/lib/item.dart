@@ -299,32 +299,35 @@ class Class extends LazyItem {
       operators = inheritedMethods['operators'];
       constructors = inheritedMethods['constructors'];
     }
+    var inheritedVariables = yaml['inheritedvariables'];
+    if (inheritedVariables != null) {
+      inheritedVariables.keys.forEach((key) {
+        _addInherited(variables, new Variable(inheritedVariables[key], 
+            inheritedFrom: inheritedVariables[key]['qualifiedname']));
+      });
+    }
     if (setters != null) {
       setters.keys.forEach((key) {
-        var item = new Variable(setters[key], isSetter: true, 
-            inheritedFrom: setters[key]['qualifiedName']);
-        _addInherited(variables, item);
+        _addInherited(variables, new Variable(setters[key], isSetter: true, 
+            inheritedFrom: setters[key]['qualifiedname']));
       });
     }
     if (getters != null) {
       getters.keys.forEach((key) {
-        var item = new Variable(getters[key], isGetter: true, 
-            inheritedFrom: getters[key]['qualifiedname']);
-        _addInherited(variables, item);
+        _addInherited(variables, new Variable(getters[key], isGetter: true, 
+            inheritedFrom: getters[key]['qualifiedname']));
       });
     }
     if (methods != null) {
       methods.keys.forEach((key) {
-        var item = new Method(methods[key], 
-            inheritedFrom: methods[key]['qualifiedname']);
-        _addInherited(functions, item);
+        _addInherited(functions, new Method(methods[key], 
+            inheritedFrom: methods[key]['qualifiedname']));
       });
     }
     if (operators != null) {
       operators.keys.forEach((key) {
-        var item = new Method(operators[key], isOperator: true,
-            inheritedFrom: operators[key]['qualifiedname']);
-        _addInherited(this.operators, item);
+        _addInherited(this.operators, new Method(operators[key], 
+            isOperator: true, inheritedFrom: operators[key]['qualifiedname']));
       });
     }
     this.superClass = new LinkableType(yaml['superclass']);
@@ -348,6 +351,12 @@ class Class extends LazyItem {
     if (!destination.memberNames.contains(item.name)) {
       pageIndex['${this.qualifiedName}.${item.name}'] = item;
       destination.content.add(item);
+    } else {
+      var member = destination.content.firstWhere((innerItem) => 
+          innerItem.name == item.name);
+      if (member.comment == '<span></span>') {
+        print('still need superclass comments');
+      }
     }
   }
 }

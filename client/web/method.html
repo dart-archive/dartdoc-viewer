@@ -35,7 +35,7 @@
       </p>
       
       <template if="isInherited">
-        This method is inherited from 
+        This member is inherited from 
         <a on-click="viewer.handleLink(inheritedFrom.location)">
           {{inheritedFrom.simpleType}}
         </a>
@@ -59,7 +59,8 @@
     class MethodElement extends MemberElement {
       List<Parameter> get parameters => item.parameters;
       
-      bool get isInherited => item.inheritedFrom != '';
+      bool get isInherited => 
+        item.inheritedFrom != null && item.inheritedFrom != '';
       
       LinkableType get inheritedFrom {
         if (isInherited) {
