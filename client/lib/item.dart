@@ -91,7 +91,7 @@ class Item extends Container {
   String get decoratedName => name;
 }
 
-/// Sorts each inner [List]] by the [Item]'s qualified names.
+/// Sorts each inner [List] by qualified names.
 void _sort(List<List<Item>> items) {
   items.forEach((item) {
     item.sort((Item a, Item b) =>
