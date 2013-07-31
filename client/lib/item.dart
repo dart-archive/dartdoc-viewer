@@ -138,7 +138,7 @@ void buildHierarchy(Item page, Item previous) {
     page.path
       ..addAll(previous.path)
       ..add(page);
-    if (!((page is Method || page is Variable) && page.isInherited))
+    if (!((page is Method || page is Variable) && page.inheritedFrom != ''))
       pageIndex[page.qualifiedName] = page;
   }
   if (page is Class && page.isLoaded) {
@@ -302,7 +302,7 @@ class Class extends LazyItem {
       setters.keys.forEach((key) {
         if (!variables.memberNames.contains(key)) {
           var item = new Variable(setters[key], isSetter: true, 
-              isInherited: true);
+              inheritedFrom: setters[key]['qualifiedName']);
           pageIndex['${this.qualifiedName}.$key'] = item;
           variables.content.add(item);
         }
@@ -312,7 +312,7 @@ class Class extends LazyItem {
       getters.keys.forEach((key) {
         if (!variables.memberNames.contains(key)) {
           var item = new Variable(getters[key], isGetter: true, 
-              isInherited: true);
+              inheritedFrom: getters[key]['qualifiedname']);
           pageIndex['${this.qualifiedName}.$key'] = item;
           variables.content.add(item);
         }
@@ -321,7 +321,8 @@ class Class extends LazyItem {
     if (methods != null) {
       methods.keys.forEach((key) {
         if (!functions.memberNames.contains(key)) {
-          var item = new Method(methods[key], isInherited: true);
+          var item = new Method(methods[key], 
+              inheritedFrom: methods[key]['qualifiedname']);
           pageIndex['${this.qualifiedName}.$key'] = item;
           functions.content.add(item);
         }
@@ -331,7 +332,7 @@ class Class extends LazyItem {
       operators.keys.forEach((key) {
         if (!this.operators.memberNames.contains(key)) {
           var item = new Method(operators[key], isOperator: true,
-              isInherited: true);
+              inheritedFrom: operators[key]['qualifiedname']);
           pageIndex['${this.qualifiedName}.$key'] = item;
           this.operators.content.add(item);
         }
@@ -417,7 +418,7 @@ class Method extends Parameterized {
   bool isAbstract;
   bool isConstant;
   bool isConstructor;
-  bool isInherited;
+  String inheritedFrom;
   String className;
   bool isOperator;
   List<LinkableType> annotations;
@@ -425,7 +426,7 @@ class Method extends Parameterized {
   String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
-      bool isOperator: false, bool isInherited: false}) 
+      bool isOperator: false, String inheritedFrom: ''}) 
         : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     this.isStatic = yaml['static'] == 'true';
@@ -433,7 +434,7 @@ class Method extends Parameterized {
     this.isConstant = yaml['constant'] == 'true';
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
-    this.isInherited = isInherited;
+    this.inheritedFrom = inheritedFrom;
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
     this.className = className;
@@ -492,19 +493,19 @@ class Variable extends Item {
   bool isConstant;
   bool isGetter;
   bool isSetter;
-  bool isInherited;
+  String inheritedFrom;
   Parameter setterParameter;
   NestedType type;
   String qualifiedName;
   List<Annotation> annotations;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
-      bool isInherited: false})
+      String inheritedFrom: ''})
       : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     this.isGetter = isGetter;
     this.isSetter = isSetter;
-    this.isInherited = isInherited;
+    this.inheritedFrom = inheritedFrom;
     isFinal = yaml['final'] == 'true';
     isStatic = yaml['static'] == 'true';
     isConstant = yaml['constant'] == 'true';

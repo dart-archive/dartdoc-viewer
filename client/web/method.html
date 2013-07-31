@@ -34,9 +34,11 @@
         <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
       </p>
       
-      <!-- TODO(tmandel): Add more information about inheritance. -->
-      <template if="item.isInherited">
-        <p>Inherited</p>
+      <template if="isInherited">
+        This method is inherited from 
+        <a on-click="viewer.handleLink(inheritedFrom.location)">
+          {{inheritedFrom.simpleType}}
+        </a>
       </template>
       
       <!-- Comment -->
@@ -56,6 +58,17 @@
     
     class MethodElement extends MemberElement {
       List<Parameter> get parameters => item.parameters;
+      
+      bool get isInherited => item.inheritedFrom != '';
+      
+      LinkableType get inheritedFrom {
+        if (isInherited) {
+          var qualifiedName = item.inheritedFrom;
+          var index = qualifiedName.lastIndexOf('.');
+          var superName = qualifiedName.substring(0, index);
+          return new LinkableType(superName);
+        }
+      }
     }
   </script>
 </element>

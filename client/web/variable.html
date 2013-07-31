@@ -31,6 +31,14 @@
         {{getter}}&nbsp;{{name}}
       </template>
     </p>
+    
+    <template if="isInherited">
+      This property is inherited from 
+      <a on-click="app.viewer.handleLink(inheritedFrom.location)">
+        {{inheritedFrom.simpleType}}
+      </a>
+    </template>
+    
     <p class="description">
       {{addComment('dartdoc-variable')}}
     </p>
@@ -54,6 +62,17 @@
       NestedType get type => item.type;
 
       String get name => item.name;
+      
+      bool get isInherited => item.inheritedFrom != '';
+      
+      LinkableType get inheritedFrom {
+        if (isInherited) {
+          var qualifiedName = item.inheritedFrom;
+          var index = qualifiedName.lastIndexOf('.');
+          var superName = qualifiedName.substring(0, index);
+          return new LinkableType(superName);
+        }
+      }
     }
   </script>
 </element>
