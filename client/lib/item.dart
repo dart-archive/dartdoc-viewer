@@ -91,6 +91,14 @@ class Item extends Container {
   String get decoratedName => name;
 }
 
+/// Sorts each inner [List]] by the [Item]'s qualified names.
+void _sort(List<List<Item>> items) {
+  items.forEach((item) {
+    item.sort((Item a, Item b) =>
+      a.qualifiedName.compareTo(b.qualifiedName));
+  });
+}
+
 /**
  * An [Item] containing all of the [Library] and [Placeholder] objects.
  */
@@ -106,6 +114,7 @@ class Home extends Item {
       libraryNames[library] = library.replaceAll('.', '-');
       this.libraries.add(new Library.forPlaceholder(library));
     };
+    _sort([this.libraries]);
   }
   
   /// Returns the [Item] representing [libraryName].
@@ -222,6 +231,9 @@ class Library extends LazyItem {
     functions = new Category.forFunctions(methods, 'Functions');
     this.operators = new Category.forFunctions(operators, 'Operators', 
         isOperator: true);
+    _sort([this.classes.content, this.abstractClasses.content, 
+           this.errors.content, this.typedefs.content, this.variables.content,
+           this.functions.content, this.operators.content]);
     isLoaded = true;
   }
 }
@@ -281,6 +293,8 @@ class Class extends LazyItem {
     if (generics != null) {
       generics.keys.forEach((generic) => this.generics.add(generic));
     }
+    _sort([this.functions.content, this.variables.content, 
+           this.constructs.content, this.operators.content]);
     isLoaded = true;
   }
 }
