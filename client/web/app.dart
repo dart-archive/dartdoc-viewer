@@ -35,6 +35,9 @@ class Viewer {
   
   /// The current page being shown.
   @observable Item currentPage;
+  
+  /// The current element on the current page being shown.
+  String _hash;
 
   // Private constructor for singleton instantiation.
   Viewer._() {
@@ -49,46 +52,51 @@ class Viewer {
   /// The title of the current page.
   String get title => currentPage == null ? '' : currentPage.decoratedName;
   
-  /// Updates [currentPage] to be [page].
-  void _updatePage(Item page) {
-    if (page != null) {
-      currentPage = page;
-    }
-  }
-  
   /// Creates a list of [Item] objects describing the path to [currentPage].
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
   /// Scrolls the screen to the correct member if necessary.
   void _scrollScreen(String hash, Item destination) {
-    if (hash != null) {
-      // window.setImmediate() does not work.
-      Timer.run(() {
-        if (currentPage == destination) {
-          for (var e in document.queryAll('$hash')) {
-            try {
-              e.scrollIntoView();
-            } catch (error) {
-              // TODO(tmandel): Find out what to do here.
-            }
+    if (hash == null) hash = '#dartdoc-top';
+    // window.setImmediate() does not work.
+    Timer.run(() {
+      if (currentPage == destination) {
+        for (var e in document.queryAll('$hash')) {
+          try {
+            e.scrollIntoView();
+          } catch (error) {
+            // TODO(tmandel): Find out what to do here.
           }
         }
-      });
+      }
+    });
+  }
+  
+  /// Updates [currentPage] to be [page].
+  void _updatePage(Item page, String hash) {
+    if (page != null) {
+      _hash = hash;
+      currentPage = page;
+      _scrollScreen(hash, page);
     }
   }
   
   /// Loads the [className] class and updates the current page to the
   /// class's member described by [location].
   Future _updateToClassMember(String className, String location, String hash) {
+    // TODO(tmandel): Fix search for variables. Should change state correctly.
     var clazz = pageIndex[className];
     if (!clazz.isLoaded) {
       return clazz.load().then((_) {
         var destination = pageIndex[location];
         if (destination != null)  {
-          _updatePage(destination);
-          _scrollScreen(hash, destination);
+          _updatePage(destination, hash);
+        } else {
+          // Handle searching for variables.
+          var variable = location.split('.').last;
+          _updatePage(clazz, '#$variable');
         }
-        return destination != null;
+        return clazz != null;
       });
     }
     return new Future.value(false);
@@ -107,18 +115,23 @@ class Viewer {
         return library.load().then((_) =>
           _loadAndUpdatePage(libraryName, className, location, hash));
       } else {
-        return _updateToClassMember(className, location, hash);
+        if (pageIndex[className] != null) {
+          return _updateToClassMember(className, location, hash);
+        } else {
+          // This case is for a top-level variable in a library.
+          var variable = location.split('.').last;
+          _updatePage(library, '#$variable');
+          return new Future.value(true);
+        }
       }
     } else {
       if (destination is Class && !destination.isLoaded) {
         return destination.load().then((_) {
-          _updatePage(destination);
-          _scrollScreen(hash, destination);
+          _updatePage(destination, hash);
           return true;
         });
       } else {
-        _updatePage(destination);
-        _scrollScreen(hash, destination);
+        _updatePage(destination, hash);
         return new Future.value(true);
       } 
     }
@@ -136,7 +149,12 @@ class Viewer {
       location = location.substring(0, location.length - 1);
     // Converts to a qualified name from a url path.
     location = location.replaceAll('/', '.');
-    var members = location.split('.').first.split('#');
+    var hash = location.indexOf('#');
+    var withoutHash = location;
+    if (hash != -1) {
+      withoutHash = location.substring(0, hash);
+    }
+    var members = withoutHash.split('.');
     var libraryName = members.first;
     // Since library names can contain '.' characters, the library part
     // of the input contains '-' characters replacing the '.' characters
@@ -146,10 +164,9 @@ class Viewer {
       '${libraryName.replaceAll('-', '.')}.${members[1]}';
     location = location.replaceAll('-', '.');
     if (location == 'home') {
-      _updatePage(homePage);
+      _updatePage(homePage, null);
       return new Future.value(true);
     }
-    var hash = location.indexOf('#');
     var variable;
     if (hash != -1) {
       variable = location.substring(hash, location.length);
@@ -170,22 +187,24 @@ class Viewer {
   void changePage(Item page) {
     if (page is LazyItem && !page.isLoaded) {
       page.load().then((_) {
-        _updatePage(page);
+        _updatePage(page, null);
         _updateState(page);
       });
     } else {
-      _updatePage(page);
+      _updatePage(page, null);
       _updateState(page);
     }
   }
   
   /// Pushes state to history for navigation in the browser.
+  // TODO(tmandel): Should take in the hash as well for in-page links.
   void _updateState(Item page) {
     String url = '#home';
     for (var member in page.path) {
       url = url == '#home' ? '#${libraryNames[member.name]}' : 
         '$url/${member.name}';
     }
+    if (_hash != null) url = '$url$_hash';
     window.history.pushState(url, url.replaceAll('/', '->'), url);
   }
 }
@@ -214,7 +233,6 @@ main() {
     if (location != null && location != '') {
       viewer._handleLinkWithoutState(location);
     }
-    
     retrieveFileContents('../../docs/index.txt').then((String list) {
       index.addAll(list.split('\n'));
     });

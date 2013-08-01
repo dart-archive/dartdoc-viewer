@@ -2,6 +2,7 @@
 <element name="dartdoc-item" constructor="ItemElement" extends="article"  
     apply-author-styles>
   <template>
+    <a id="{{item.name}}"></a>
     <h1 on-click="app.viewer.changePage(item)">{{title}}</h1> 
   </template>
   <script type="application/dart">
