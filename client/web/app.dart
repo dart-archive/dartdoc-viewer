@@ -36,7 +36,7 @@ class Viewer {
   /// The current page being shown.
   @observable Item currentPage;
   
-  /// The current element on the current page being shown.
+  /// The current element on the current page being shown (e.g. #dartdoc-top).
   String _hash;
 
   // Private constructor for singleton instantiation.
@@ -144,12 +144,12 @@ class Viewer {
     }
     // Converts to a qualified name from a url path.
     location = location.replaceAll('/', '.');
-    var hash = location.indexOf('#');
+    var hashIndex = location.indexOf('#');
     var variableHash;
     var locationWithoutHash = location;
-    if (hash != -1) {
-      variableHash = location.substring(hash, location.length);
-      locationWithoutHash = location.substring(0, hash);
+    if (hashIndex != -1) {
+      variableHash = location.substring(hashIndex, location.length);
+      locationWithoutHash = location.substring(0, hashIndex);
     }
     var members = locationWithoutHash.split('.');
     var libraryName = members.first;
