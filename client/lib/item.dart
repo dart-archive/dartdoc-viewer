@@ -355,7 +355,7 @@ class Class extends LazyItem {
       var member = destination.content.firstWhere((innerItem) => 
           innerItem.name == item.name);
       if (member.comment == '<span></span>') {
-        print('still need superclass comments');
+        member.comment = item.comment;
       }
     }
   }
