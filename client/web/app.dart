@@ -58,17 +58,9 @@ class Viewer {
   /// Scrolls the screen to the correct member if necessary.
   void _scrollScreen(String hash, Item destination) {
     if (hash == null) hash = '#dartdoc-top';
-    // window.setImmediate() does not work.
     Timer.run(() {
-      if (currentPage == destination) {
-        for (var e in document.queryAll('$hash')) {
-          try {
-            e.scrollIntoView();
-          } catch (error) {
-            // TODO(tmandel): Find out what to do here.
-          }
-        }
-      }
+      var e = document.query('$hash');
+      e.scrollIntoView();
     });
   }
   
@@ -83,20 +75,18 @@ class Viewer {
   
   /// Loads the [className] class and updates the current page to the
   /// class's member described by [location].
-  Future _updateToClassMember(String className, String location, String hash) {
-    // TODO(tmandel): Fix search for variables. Should change state correctly.
-    var clazz = pageIndex[className];
+  Future _updateToClassMember(Class clazz, String location, String hash) {
     if (!clazz.isLoaded) {
       return clazz.load().then((_) {
         var destination = pageIndex[location];
         if (destination != null)  {
           _updatePage(destination, hash);
         } else {
-          // Handle searching for variables.
+          // If the destination is null, then it is a variable in this class.
           var variable = location.split('.').last;
           _updatePage(clazz, '#$variable');
         }
-        return clazz != null;
+        return true;
       });
     }
     return new Future.value(false);
@@ -115,10 +105,11 @@ class Viewer {
         return library.load().then((_) =>
           _loadAndUpdatePage(libraryName, className, location, hash));
       } else {
-        if (pageIndex[className] != null) {
-          return _updateToClassMember(className, location, hash);
+        var clazz = pageIndex[className];
+        if (clazz != null) {
+          return _updateToClassMember(clazz, location, hash);
         } else {
-          // This case is for a top-level variable in a library.
+          // The location is of a top-level variable in a library.
           var variable = location.split('.').last;
           _updatePage(library, '#$variable');
           return new Future.value(true);
@@ -147,11 +138,17 @@ class Viewer {
     // An extra '/' at the end of the url must be removed.
     if (location.endsWith('/')) 
       location = location.substring(0, location.length - 1);
+    if (location == 'home') {
+      _updatePage(homePage, null);
+      return new Future.value(true);
+    }
     // Converts to a qualified name from a url path.
     location = location.replaceAll('/', '.');
     var hash = location.indexOf('#');
+    var variableHash;
     var withoutHash = location;
     if (hash != -1) {
+      variableHash = location.substring(hash, location.length);
       withoutHash = location.substring(0, hash);
     }
     var members = withoutHash.split('.');
@@ -162,17 +159,9 @@ class Viewer {
     // must be changed back to '.' characters to be true qualified names.
     var className = members.length <= 1 ? null :
       '${libraryName.replaceAll('-', '.')}.${members[1]}';
-    location = location.replaceAll('-', '.');
-    if (location == 'home') {
-      _updatePage(homePage, null);
-      return new Future.value(true);
-    }
-    var variable;
-    if (hash != -1) {
-      variable = location.substring(hash, location.length);
-      location = location.substring(0, hash);
-    }
-    return _loadAndUpdatePage(libraryName, className, location, variable);
+    withoutHash = withoutHash.replaceAll('-', '.');
+    return _loadAndUpdatePage(libraryName, className, 
+        withoutHash, variableHash);
   }
   
   /// Looks for the correct [Item] described by [location]. If it is found, 
@@ -197,7 +186,6 @@ class Viewer {
   }
   
   /// Pushes state to history for navigation in the browser.
-  // TODO(tmandel): Should take in the hash as well for in-page links.
   void _updateState(Item page) {
     String url = '#home';
     for (var member in page.path) {
