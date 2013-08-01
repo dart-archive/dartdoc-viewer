@@ -7,14 +7,15 @@
 
 import logging
 import urllib2
+import os
+from os.path import join, dirname, abspath, exists
 from webapp2 import *
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import files
 
 # Paths to Cloud Storage for dev server requests.
-LOCAL_PATH = 'http://dartlang-docgen.storage.googleapis.com/'
-LOCAL_VERSION = 'http://dartlang-docgen.storage.googleapis.com/VERSION'
+LOCAL_PATH = abspath(join(dirname(__file__), '../client/local/'))
 
 # Paths to Cloud Storage for App Engine requests.
 GS_PATH = '/gs/dartlang-docgen/'
@@ -38,9 +39,10 @@ class RequestHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
   def GetLocal(self):
     """ Used for local, dev server HTTP requests. """
-    version = urllib2.urlopen(LOCAL_VERSION).read()
-    path = LOCAL_PATH + version + self.request.path[len('docs/'):]
-    result = urllib2.urlopen(path).read()
+    path = LOCAL_PATH + self.request.path[len('docs/'):]
+    print(path)
+    with open(path, 'r') as file:
+      result = file.read()
     self.HandleCacheAge(path)
     self.response.out.write(result)
 
