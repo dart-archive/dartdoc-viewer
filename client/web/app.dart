@@ -59,43 +59,66 @@ class Viewer {
   /// Creates a list of [Item] objects describing the path to [currentPage].
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
+  /// Scrolls the screen to the correct member if necessary.
+  void _scrollScreen(String hash, Item destination) {
+    if (hash != null) {
+      // window.setImmediate() does not work.
+      Timer.run(() {
+        if (currentPage == destination) {
+          for (var e in document.queryAll('$hash')) {
+            try {
+              e.scrollIntoView();
+            } catch (error) {
+              // TODO(tmandel): Find out what to do here.
+            }
+          }
+        }
+      });
+    }
+  }
+  
   /// Loads the [className] class and updates the current page to the
   /// class's member described by [location].
-  Future _updateToClassMember(String className, String location) {
+  Future _updateToClassMember(String className, String location, String hash) {
     var clazz = pageIndex[className];
     if (!clazz.isLoaded) {
       return clazz.load().then((_) {
         var destination = pageIndex[location];
-        if (destination != null) _updatePage(destination);
+        if (destination != null)  {
+          _updatePage(destination);
+          _scrollScreen(hash, destination);
+        }
         return destination != null;
       });
     }
     return new Future.value(false);
   }
-
+  
   /// Loads the [libraryName] [Library] and [className] [Class] if necessary
   /// and updates the current page to the member described by [location] 
   /// once the correct member is found and loaded.
   Future _loadAndUpdatePage(String libraryName, String className, 
-                           String location) {
+                           String location, String hash) {
     var destination = pageIndex[location];
     if (destination == null) {
       var library = homePage.itemNamed(libraryName);
       if (library == null) return new Future.value(false);
       if (!library.isLoaded) {
         return library.load().then((_) =>
-          _loadAndUpdatePage(libraryName, className, location));
+          _loadAndUpdatePage(libraryName, className, location, hash));
       } else {
-        return _updateToClassMember(className, location);
+        return _updateToClassMember(className, location, hash);
       }
     } else {
       if (destination is Class && !destination.isLoaded) {
         return destination.load().then((_) {
           _updatePage(destination);
+          _scrollScreen(hash, destination);
           return true;
         });
       } else {
         _updatePage(destination);
+        _scrollScreen(hash, destination);
         return new Future.value(true);
       } 
     }
@@ -113,7 +136,7 @@ class Viewer {
       location = location.substring(0, location.length - 1);
     // Converts to a qualified name from a url path.
     location = location.replaceAll('/', '.');
-    var members = location.split('.');
+    var members = location.split('.').first.split('#');
     var libraryName = members.first;
     // Since library names can contain '.' characters, the library part
     // of the input contains '-' characters replacing the '.' characters
@@ -126,7 +149,13 @@ class Viewer {
       _updatePage(homePage);
       return new Future.value(true);
     }
-    return _loadAndUpdatePage(libraryName, className, location);
+    var hash = location.indexOf('#');
+    var variable;
+    if (hash != -1) {
+      variable = location.substring(hash, location.length);
+      location = location.substring(0, hash);
+    }
+    return _loadAndUpdatePage(libraryName, className, location, variable);
   }
   
   /// Looks for the correct [Item] described by [location]. If it is found, 
