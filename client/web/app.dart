@@ -146,12 +146,12 @@ class Viewer {
     location = location.replaceAll('/', '.');
     var hash = location.indexOf('#');
     var variableHash;
-    var withoutHash = location;
+    var locationWithoutHash = location;
     if (hash != -1) {
       variableHash = location.substring(hash, location.length);
-      withoutHash = location.substring(0, hash);
+      locationWithoutHash = location.substring(0, hash);
     }
-    var members = withoutHash.split('.');
+    var members = locationWithoutHash.split('.');
     var libraryName = members.first;
     // Since library names can contain '.' characters, the library part
     // of the input contains '-' characters replacing the '.' characters
@@ -159,9 +159,9 @@ class Viewer {
     // must be changed back to '.' characters to be true qualified names.
     var className = members.length <= 1 ? null :
       '${libraryName.replaceAll('-', '.')}.${members[1]}';
-    withoutHash = withoutHash.replaceAll('-', '.');
+    locationWithoutHash = locationWithoutHash.replaceAll('-', '.');
     return _loadAndUpdatePage(libraryName, className, 
-        withoutHash, variableHash);
+        locationWithoutHash, variableHash);
   }
   
   /// Looks for the correct [Item] described by [location]. If it is found, 
