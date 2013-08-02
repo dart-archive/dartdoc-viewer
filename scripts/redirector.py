@@ -40,7 +40,6 @@ class RequestHandler(blobstore_handlers.BlobstoreDownloadHandler):
   def GetLocal(self):
     """ Used for local, dev server HTTP requests. """
     path = LOCAL_PATH + self.request.path[len('docs/'):]
-    print(path)
     with open(path, 'r') as file:
       result = file.read()
     self.HandleCacheAge(path)
