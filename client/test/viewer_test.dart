@@ -242,7 +242,12 @@ void main() {
     var currentMap = loadYaml(parameter);
     var item = new Parameter(currentMap['name'], currentMap);
     expect(item is Parameter, isTrue);
+    expect(item.name is String, isTrue);
+    expect(item.isOptional, isNotNull);
+    expect(item.isNamed, isNotNull);
+    expect(item.hasDefault, isNotNull);
     expect(item.type is NestedType, isTrue);
+    expect(item.annotations is List, isTrue);
   });
   
   test('variable_test', () {
