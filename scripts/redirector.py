@@ -14,7 +14,7 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import files
 
-# Paths to Cloud Storage for dev server requests.
+# Path to local location of documents to be display on the server.
 LOCAL_PATH = abspath(join(dirname(__file__), '../client/local/'))
 
 # Paths to Cloud Storage for App Engine requests.
