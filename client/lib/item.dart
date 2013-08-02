@@ -302,32 +302,42 @@ class Class extends LazyItem {
     var inheritedVariables = yaml['inheritedvariables'];
     if (inheritedVariables != null) {
       inheritedVariables.keys.forEach((key) {
-        _addInherited(variables, new Variable(inheritedVariables[key], 
-            inheritedFrom: inheritedVariables[key]['qualifiedname']));
+        var item = inheritedVariables[key];
+        _addInherited(variables, new Variable(item, 
+            inheritedFrom: item['qualifiedname'], 
+            commentFrom: item['commentfrom']));
       });
     }
     if (setters != null) {
       setters.keys.forEach((key) {
-        _addInherited(variables, new Variable(setters[key], isSetter: true, 
-            inheritedFrom: setters[key]['qualifiedname']));
+        var item = setters[key];
+        _addInherited(variables, new Variable(item, isSetter: true, 
+            inheritedFrom: item['qualifiedname'],
+            commentFrom: item['commentfrom']));
       });
     }
     if (getters != null) {
       getters.keys.forEach((key) {
-        _addInherited(variables, new Variable(getters[key], isGetter: true, 
-            inheritedFrom: getters[key]['qualifiedname']));
+        var item = getters[key];
+        _addInherited(variables, new Variable(item, isGetter: true, 
+            inheritedFrom: item['qualifiedname'],
+            commentFrom: item['commentfrom']));
       });
     }
     if (methods != null) {
       methods.keys.forEach((key) {
-        _addInherited(functions, new Method(methods[key], 
-            inheritedFrom: methods[key]['qualifiedname']));
+        var item = methods[key];
+        _addInherited(functions, new Method(item, 
+            inheritedFrom: item['qualifiedname'],
+            commentFrom: item['commentfrom']));
       });
     }
     if (operators != null) {
       operators.keys.forEach((key) {
-        _addInherited(this.operators, new Method(operators[key], 
-            isOperator: true, inheritedFrom: operators[key]['qualifiedname']));
+        var item = operators[key];
+        _addInherited(this.operators, new Method(item, isOperator: true,
+            inheritedFrom: item['qualifiedname'],
+            commentFrom: item['commentfrom']));
       });
     }
     this.superClass = new LinkableType(yaml['superclass']);
@@ -356,6 +366,7 @@ class Class extends LazyItem {
           innerItem.name == item.name);
       if (member.comment == '<span></span>') {
         member.comment = item.comment;
+        member.commentFrom = item.commentFrom;
       }
     }
   }
@@ -426,6 +437,7 @@ class Method extends Parameterized {
   bool isConstant;
   bool isConstructor;
   String inheritedFrom;
+  String commentFrom;
   String className;
   bool isOperator;
   List<LinkableType> annotations;
@@ -433,7 +445,8 @@ class Method extends Parameterized {
   String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
-      bool isOperator: false, String inheritedFrom: ''}) 
+      bool isOperator: false, String inheritedFrom: '',
+      String commentFrom: ''}) 
         : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     this.isStatic = yaml['static'] == 'true';
@@ -442,6 +455,7 @@ class Method extends Parameterized {
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
     this.inheritedFrom = inheritedFrom;
+    this.commentFrom = commentFrom;
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
     this.className = className;
@@ -501,18 +515,20 @@ class Variable extends Item {
   bool isGetter;
   bool isSetter;
   String inheritedFrom;
+  String commentFrom;
   Parameter setterParameter;
   NestedType type;
   String qualifiedName;
   List<Annotation> annotations;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
-      String inheritedFrom: ''})
+      String inheritedFrom: '', String commentFrom: ''})
       : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     this.isGetter = isGetter;
     this.isSetter = isSetter;
     this.inheritedFrom = inheritedFrom;
+    this.commentFrom = commentFrom;
     isFinal = yaml['final'] == 'true';
     isStatic = yaml['static'] == 'true';
     isConstant = yaml['constant'] == 'true';

@@ -34,14 +34,22 @@
     
     <template if="isInherited">
       This property is inherited from 
-      <a on-click="app.viewer.handleLink(inheritedFrom.location)">
-        {{inheritedFrom.simpleType}}
+      <a on-click="app.viewer.handleLink(inheritedFrom(item.inheritedFrom).location)">
+        {{inheritedFrom(item.inheritedFrom).simpleType}}
       </a>
     </template>
     
     <p class="description">
       {{addComment('dartdoc-variable')}}
     </p>
+    
+    <template if="isInherited">
+      This documentation is inherited from 
+      <a on-click="app.viewer.handleLink(inheritedFrom(item.commentFrom).location)">
+        {{inheritedFrom(item.commentFrom).simpleType}}
+      </a>
+    </template>
+    
   </template>
   <script type="application/dart">
     import 'dart:html';
@@ -65,13 +73,12 @@
       
       bool get isInherited => item.inheritedFrom != '';
       
-      LinkableType get inheritedFrom {
-        if (isInherited) {
-          var qualifiedName = item.inheritedFrom;
-          var index = qualifiedName.lastIndexOf('.');
-          var superName = qualifiedName.substring(0, index);
-          return new LinkableType(superName);
-        }
+      bool get hasInheritedComment => item.commentFrom != '';
+      
+      LinkableType inheritedFrom(String qualifiedName) {
+        var index = qualifiedName.lastIndexOf('.');
+        var superName = qualifiedName.substring(0, index);
+        return new LinkableType(superName);
       }
     }
   </script>
