@@ -36,13 +36,20 @@
       
       <template if="isInherited">
         This member is inherited from 
-        <a on-click="viewer.handleLink(inheritedFrom.location)">
-          {{inheritedFrom.simpleType}}
+        <a on-click="viewer.handleLink(inheritedFrom(item.inheritedFrom).location)">
+          {{inheritedFrom(item.inheritedFrom).simpleType}}
         </a>
       </template>
       
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-method')}}</section>
+    
+      <template if="hasInheritedComment">
+        This documentation is inherited from 
+        <a on-click="viewer.handleLink(inheritedFrom(item.commentFrom).location)">
+          {{inheritedFrom(item.commentFrom).simpleType}}
+        </a>
+      </template>
     
     </template>
   </template>
@@ -61,14 +68,14 @@
       
       bool get isInherited => 
         item.inheritedFrom != null && item.inheritedFrom != '';
+        
+      bool get hasInheritedComment =>
+        item.commentFrom != null && item.commentFrom != '';
       
-      LinkableType get inheritedFrom {
-        if (isInherited) {
-          var qualifiedName = item.inheritedFrom;
-          var index = qualifiedName.lastIndexOf('.');
-          var superName = qualifiedName.substring(0, index);
-          return new LinkableType(superName);
-        }
+      LinkableType inheritedFrom(String qualifiedName) {
+        var index = qualifiedName.lastIndexOf('.');
+        var superName = qualifiedName.substring(0, index);
+        return new LinkableType(superName);
       }
     }
   </script>

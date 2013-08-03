@@ -258,7 +258,7 @@ class Class extends LazyItem {
   bool isAbstract;
   List<Annotation> annotations;
   List<LinkableType> implements;
-  List<LinkableType> subclasses;
+  List<LinkableType> subclasses = [];
   List<String> generics = [];
 
   /// Creates a [Class] placeholder object with null fields.
@@ -341,8 +341,8 @@ class Class extends LazyItem {
       });
     }
     this.superClass = new LinkableType(yaml['superclass']);
-    this.subclasses = yaml['subclass'] == null ? [] :
-      yaml['subclass'].map((item) => new LinkableType(item)).toList();
+    //this.subclasses = yaml['subclass'] == null ? [] :
+      //yaml['subclass'].map((item) => new LinkableType(item)).toList();
     this.isAbstract = isAbstract;
     this.annotations = yaml['annotations'] == null ? [] :
         yaml['annotations'].map((item) => new Annotation(item)).toList();

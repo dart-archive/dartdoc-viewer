@@ -43,10 +43,10 @@
       {{addComment('dartdoc-variable')}}
     </p>
     
-    <template if="isInherited">
+    <template if="hasInheritedComment">
       This documentation is inherited from 
       <a on-click="app.viewer.handleLink(inheritedFrom(item.commentFrom).location)">
-        {{inheritedFrom(item.commentFrom).simpleType}}
+        {{inheritedFrom(item.commentFrom).simpleType}}.
       </a>
     </template>
     
@@ -73,8 +73,9 @@
       
       bool get isInherited => item.inheritedFrom != '';
       
-      bool get hasInheritedComment => item.commentFrom != '';
-      
+      bool get hasInheritedComment =>
+        item.commentFrom != '' && item.commentFrom != null;
+           
       LinkableType inheritedFrom(String qualifiedName) {
         var index = qualifiedName.lastIndexOf('.');
         var superName = qualifiedName.substring(0, index);
