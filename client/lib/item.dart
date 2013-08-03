@@ -249,7 +249,7 @@ class Class extends LazyItem {
   Category operators;
   LinkableType superClass;
   bool isAbstract;
-  List<LinkableType> annotations;
+  List<Annotation> annotations;
   List<LinkableType> implements;
   List<String> generics = [];
 
@@ -286,7 +286,7 @@ class Class extends LazyItem {
     this.superClass = new LinkableType(yaml['superclass']);
     this.isAbstract = isAbstract;
     this.annotations = yaml['annotations'] == null ? [] :
-        yaml['annotations'].map((item) => new LinkableType(item)).toList();
+        yaml['annotations'].map((item) => new Annotation(item)).toList();
     this.implements = yaml['implements'] == null ? [] :
         yaml['implements'].map((item) => new LinkableType(item)).toList();
     var generics = yaml['generics'];
@@ -296,6 +296,22 @@ class Class extends LazyItem {
     _sort([this.functions.content, this.variables.content, 
            this.constructs.content, this.operators.content]);
     isLoaded = true;
+  }
+}
+
+/**
+ * A single annotation to an [Item].
+ */
+class Annotation {
+  
+  String qualifiedName;
+  LinkableType link;
+  List<String> parameters;
+  
+  Annotation(Map yaml) {
+    qualifiedName = yaml['name'];
+    link = new LinkableType(qualifiedName);
+    parameters = yaml['parameters'] == null ? [] : yaml['parameters'];
   }
 }
 
@@ -327,14 +343,14 @@ class Typedef extends Parameterized {
   
   String qualifiedName;
   LinkableType type;
-  List<LinkableType> annotations;
+  List<Annotation> annotations;
   
   Typedef(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
     qualifiedName = yaml['qualifiedname'];
     type = new LinkableType(yaml['return']);
     parameters = getParameters(yaml['parameters']);
     annotations = yaml['annotations'] == null ? [] :
-      yaml['annotations'].map((item) => new LinkableType(item)).toList();
+      yaml['annotations'].map((item) => new Annotation(item)).toList();
   }
 }
 
@@ -349,7 +365,7 @@ class Method extends Parameterized {
   bool isConstructor;
   String className;
   bool isOperator;
-  List<LinkableType> annotations;
+  List<Annotation> annotations;
   NestedType type;
   String qualifiedName;
 
@@ -366,7 +382,7 @@ class Method extends Parameterized {
     parameters = getParameters(yaml['parameters']);
     this.className = className;
     this.annotations = yaml['annotations'] == null ? [] :
-      yaml['annotations'].map((item) => new LinkableType(item)).toList();
+      yaml['annotations'].map((item) => new Annotation(item)).toList();
   }
 
   String get decoratedName => isConstructor ? 
@@ -384,7 +400,7 @@ class Parameter {
   bool hasDefault;
   NestedType type;
   String defaultValue;
-  List<LinkableType> annotations;
+  List<Annotation> annotations;
   
   Parameter(this.name, Map yaml) {
     this.isOptional = yaml['optional'] == 'true';
@@ -393,7 +409,7 @@ class Parameter {
     this.type = new NestedType(yaml['type'].first);
     this.defaultValue = yaml['value'];
     this.annotations = yaml['annotations'] == null ? [] :
-      yaml['annotations'].map((item) => new LinkableType(item)).toList();
+      yaml['annotations'].map((item) => new Annotation(item)).toList();
   }
   
   String get decoratedName {
@@ -423,7 +439,7 @@ class Variable extends Item {
   Parameter setterParameter;
   NestedType type;
   String qualifiedName;
-  List<LinkableType> annotations;
+  List<Annotation> annotations;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false})
       : super(yaml['name'], _wrapComment(yaml['comment'])) {
@@ -446,7 +462,7 @@ class Variable extends Item {
       type = new NestedType(yaml['type'].first);
     }
     this.annotations = yaml['annotations'] == null ? [] :
-      yaml['annotations'].map((item) => new LinkableType(item)).toList();
+      yaml['annotations'].map((item) => new Annotation(item)).toList();
   }
 }
 

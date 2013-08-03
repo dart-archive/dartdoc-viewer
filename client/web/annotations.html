@@ -6,11 +6,28 @@
     extends="span" apply-author-styles>
   <template>
     <template instantiate="if annotations.isNotEmpty">
+      
       <template iterate="annotation in annotations">
-        <a on-click="viewer.handleLink(annotation.location)">
-          @{{annotation.simpleType}}
+        <a on-click="viewer.handleLink(annotation.link.location)">
+          @{{annotation.link.simpleType}}
         </a>
+        
+        <template if="annotation.parameters.isNotEmpty">
+          (
+          <template iterate="parameter in annotation.parameters">
+            {{parameter}}
+            <template if="parameter != annotation.parameters.last">
+              ,&nbsp;
+            </template>
+          </template>
+          )
+        </template>
+        
+        <template if="annotation != annotations.last">
+          <br/>
+        </template>
       </template>
+      
     </template>
   </template>
   
@@ -22,7 +39,7 @@
     import 'app.dart';
     
     class AnnotationElement extends WebComponent {
-      List<LinkableType> annotations;
+      List<Annotation> annotations;
     }
   </script>
 </element>
