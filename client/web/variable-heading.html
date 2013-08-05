@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<link rel="import" href="annotations.html">
+
+<element name="variable-heading" constructor="VariableHeading" 
+  extends="p" apply-author-styles>
+  <template>
+    <template if="item.isFinal">final</template>
+    <template if="item.isStatic">static</template>
+    <template if="item.isAbstract">static</template>
+    <template if="item.isConstant">const</template>
+    <template if="item.isSetter">
+      void&nbsp;set&nbsp;{{name}}(
+      <dartdoc-annotation annotations="{{setterParameter.annotations}}">
+      </dartdoc-annotation>
+      <span class="setParam">
+        {{createType(setterParameter.type, 'variable-heading', 'setParam')}}
+      </span>
+      {{setterParameter.decoratedName}})
+    </template>
+    <template if="!item.isSetter">
+      <span class="type">
+        {{createType(item.type, 'variable-heading', 'type')}}
+      </span>
+      {{getter}}&nbsp;{{name}}
+    </template>
+  </template>
+  <script type="application/dart">
+    import 'dart:html';
+    import 'package:web_ui/web_ui.dart';
+    import 'package:dartdoc_viewer/item.dart';
+    import 'app.dart' as app;
+    import 'member.dart';
+
+    /**
+     * An HTML representation of a Variable.
+     */
+    class VariableHeading extends MemberElement {
+
+      String get getter => item.isGetter ? 'get' : '';
+
+      Parameter get setterParameter => item.setterParameter;
+
+      NestedType get type => item.type;
+
+      String get name => item.name;
+    }
+  </script>
+</element>
