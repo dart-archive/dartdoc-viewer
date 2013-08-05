@@ -13,6 +13,19 @@
   "getters" :
   "setters" :
   "constructors" :
+    "" :
+      "abstract" : "false"
+      "annotations" : 
+      "comment" :
+      "commentfrom" : ""
+      "constant" : "false"
+      "name" : ""
+      "parameters" :
+      "qualifiedname" : "Library.A."
+      "return" :
+        - "inner" :
+          "outer" : "Library.A"
+      "static" : "false"
   "operators" :
   "methods" :
     "doAction" :

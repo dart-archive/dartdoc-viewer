@@ -138,6 +138,19 @@ String clazz =
   "getters" :
   "setters" :
   "constructors" :
+    "" :
+      "abstract" : "false"
+      "annotations" : 
+      "comment" :
+      "commentfrom" : ""
+      "constant" : "false"
+      "name" : ""
+      "parameters" :
+      "qualifiedname" : "Library.A."
+      "return" :
+        - "inner" :
+          "outer" : "Library.A"
+      "static" : "false"
   "operators" :
   "methods" :
     "doAction" :
@@ -341,6 +354,7 @@ void main() {
     var returnType = item.type;
     expect(returnType.outer is LinkableType, isTrue);
     expect(returnType.inner is List<NestedType>, isTrue);
+    
     var innerType = returnType.inner.first;
     expect(innerType.outer is LinkableType, isTrue);
     expect(innerType.inner is List<NestedType>, isTrue);
@@ -356,51 +370,24 @@ void main() {
     var returnType = item.type;
     expect(returnType.outer is LinkableType, isTrue);
     expect(returnType.inner is List<NestedType>, isTrue);
+    
     var innerType = returnType.inner.first;
     expect(innerType.outer is LinkableType, isTrue);
     expect(innerType.inner is List<NestedType>, isTrue);
+    
     var firstInner = innerType.inner.first;
     expect(firstInner, isNotNull);
     expect(firstInner is NestedType, isTrue);
     expect(firstInner.inner is List<NestedType>, isTrue);
     expect(firstInner.inner, isEmpty);
     expect(firstInner.outer is LinkableType, isTrue);
+    
     var secondInner = innerType.inner[1];
     expect(secondInner, isNotNull);
     expect(secondInner is NestedType, isTrue);
     expect(secondInner.inner is List<NestedType>, isTrue);
     expect(secondInner.inner, isEmpty);
     expect(secondInner.outer is LinkableType, isTrue);
-  });
-  
-  test('clazz_test', () {
-    // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/class.yaml').then(expectAsync1((data) {
-      expect(data, equals(clazz));
-    }));
-    
-    var yaml = loadYaml(clazz);
-    var item = new Class(yaml);
-    expect(item is Class, isTrue);
-    
-    expect(item.variables is Category, isTrue);
-    expect(item.operators is Category, isTrue);
-    expect(item.constructs is Category, isTrue);
-    expect(item.functions is Category, isTrue);
-    
-    var functions = item.functions;
-    expect(functions.content.first is Method, isTrue);
-    
-    var method = functions.content.first;
-    expect(method.type is NestedType, isTrue);
-    
-    var implements = item.implements;
-    expect(implements is List, isTrue);
-    implements.forEach((interface) => 
-        expect(interface is LinkableType, isTrue));
-    
-    var superClass = item.superClass;
-    expect(superClass is LinkableType, isTrue);
   });
   
   test('method_test', () {
@@ -417,6 +404,44 @@ void main() {
     expect(item.parameters is List, isTrue);
     expect(item.parameters.first is Parameter, isTrue);
     expect(item.parameters.first.type is NestedType, isTrue);
+  });
+  
+  test('clazz_test', () {
+    // Check that read_yaml reads the right data.
+    retrieveFileContents('yaml/class.yaml').then(expectAsync1((data) {
+      expect(data, equals(clazz));
+    }));
+    
+    // TODO(tmandel): Add tests for inherited methods/variables and superclass
+    // comments.
+    
+    var yaml = loadYaml(clazz);
+    var item = new Class(yaml);
+    expect(item is Class, isTrue);
+    
+    expect(item.variables is Category, isTrue);
+    expect(item.operators is Category, isTrue);
+    expect(item.constructs is Category, isTrue);
+    expect(item.functions is Category, isTrue);
+    
+    var functions = item.functions;
+    expect(functions.content.first is Method, isTrue);
+    
+    var method = functions.content.first;
+    expect(method.type is NestedType, isTrue);
+    
+    var constructor = item.constructs.content.first;
+    expect(constructor is Method, isTrue);
+    expect(constructor.isConstructor, isTrue);
+    expect(constructor.decoratedName != constructor.name, isTrue);
+    
+    var implements = item.implements;
+    expect(implements is List, isTrue);
+    implements.forEach((interface) => 
+        expect(interface is LinkableType, isTrue));
+    
+    var superClass = item.superClass;
+    expect(superClass is LinkableType, isTrue);
   });
   
   test('library_test', () {
