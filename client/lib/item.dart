@@ -365,7 +365,7 @@ class Method extends Parameterized {
   bool isConstructor;
   String className;
   bool isOperator;
-  List<Annotation> annotations;
+  List<LinkableType> annotations;
   NestedType type;
   String qualifiedName;
 
