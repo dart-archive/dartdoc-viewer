@@ -34,8 +34,8 @@
     
     <template if="isInherited">
       This property is inherited from 
-      <a on-click="app.viewer.handleLink(inheritedFrom(item.inheritedFrom).location)">
-        {{inheritedFrom(item.inheritedFrom).simpleType}}
+      <a on-click="app.viewer.handleLink(inheritedFrom.location)">
+        {{inheritedFrom.simpleType}}
       </a>
     </template>
     
@@ -45,8 +45,8 @@
     
     <template if="hasInheritedComment">
       This documentation is inherited from 
-      <a on-click="app.viewer.handleLink(inheritedFrom(item.commentFrom).location)">
-        {{inheritedFrom(item.commentFrom).simpleType}}.
+      <a on-click="app.viewer.handleLink(commentFrom.location)">
+        {{commentFrom.simpleType}}.
       </a>
     </template>
     
@@ -62,6 +62,17 @@
      * An HTML representation of a Variable.
      */
     class VariableElement extends MemberElement {
+      LinkableType inheritedFrom;
+      LinkableType commentFrom;
+    
+      inserted() {
+        if (isInherited) {
+          inheritedFrom = findInheritance(item.inheritedFrom);
+        }
+        if (hasInheritedComment) {
+          commentFrom = findInheritance(item.commentFrom);
+        }
+      }
 
       String get getter => item.isGetter ? 'get' : '';
 
@@ -71,12 +82,14 @@
 
       String get name => item.name;
       
-      bool get isInherited => item.inheritedFrom != '';
+      bool get isInherited => 
+        item.inheritedFrom != '' && item.inheritedFrom != null;
       
       bool get hasInheritedComment =>
         item.commentFrom != '' && item.commentFrom != null;
-           
-      LinkableType inheritedFrom(String qualifiedName) {
+        
+      /// Creates a [LinkableType] for the owner of [qualifiedName].
+      LinkableType findInheritance(String qualifiedName) {
         var index = qualifiedName.lastIndexOf('.');
         var superName = qualifiedName.substring(0, index);
         return new LinkableType(superName);

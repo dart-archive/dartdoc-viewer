@@ -36,8 +36,8 @@
       
       <template if="isInherited">
         This member is inherited from 
-        <a on-click="viewer.handleLink(inheritedFrom(item.inheritedFrom).location)">
-          {{inheritedFrom(item.inheritedFrom).simpleType}}
+        <a on-click="viewer.handleLink(inheritedFrom.location)">
+          {{inheritedFrom.simpleType}}
         </a>
       </template>
       
@@ -46,8 +46,8 @@
     
       <template if="hasInheritedComment">
         This documentation is inherited from 
-        <a on-click="viewer.handleLink(inheritedFrom(item.commentFrom).location)">
-          {{inheritedFrom(item.commentFrom).simpleType}}
+        <a on-click="viewer.handleLink(commentFrom.location)">
+          {{commentFrom.simpleType}}
         </a>
       </template>
     
@@ -64,6 +64,18 @@
     import 'member.dart';
     
     class MethodElement extends MemberElement {
+      LinkableType inheritedFrom;
+      LinkableType commentFrom;
+      
+      inserted() {
+        if (isInherited) {
+          inheritedFrom = _findInheritance(item.inheritedFrom);
+        }
+        if (hasInheritedComment) {
+          commentFrom = _findInheritance(item.commentFrom);
+        }
+      }
+    
       List<Parameter> get parameters => item.parameters;
       
       bool get isInherited => 
@@ -72,7 +84,8 @@
       bool get hasInheritedComment =>
         item.commentFrom != null && item.commentFrom != '';
       
-      LinkableType inheritedFrom(String qualifiedName) {
+      /// Creates a [LinkableType] for the owner of [qualifiedName].
+      LinkableType _findInheritance(String qualifiedName) {
         var index = qualifiedName.lastIndexOf('.');
         var superName = qualifiedName.substring(0, index);
         return new LinkableType(superName);

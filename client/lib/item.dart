@@ -61,7 +61,7 @@ class Category extends Container {
     if (setters != null) {
       setters.keys.forEach((key) {
         memberNames.add(key);
-        content.add(new Variable(setters[key], isSetter: true ));
+        content.add(new Variable(setters[key], isSetter: true));
       });
     }
   }
@@ -258,7 +258,7 @@ class Class extends LazyItem {
   bool isAbstract;
   List<Annotation> annotations;
   List<LinkableType> implements;
-  List<LinkableType> subclasses = [];
+  List<LinkableType> subclasses;
   List<String> generics = [];
 
   /// Creates a [Class] placeholder object with null fields.
@@ -276,6 +276,18 @@ class Class extends LazyItem {
   
   void loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
+    this.isAbstract = isAbstract;
+    this.superClass = new LinkableType(yaml['superclass']);
+    this.subclasses = yaml['subclass'] == null ? [] :
+      yaml['subclass'].map((item) => new LinkableType(item)).toList();
+    this.annotations = yaml['annotations'] == null ? [] :
+        yaml['annotations'].map((item) => new Annotation(item)).toList();
+    this.implements = yaml['implements'] == null ? [] :
+        yaml['implements'].map((item) => new LinkableType(item)).toList();
+    var generics = yaml['generics'];
+    if (generics != null) {
+      generics.keys.forEach((generic) => this.generics.add(generic));
+    }
     var setters, getters, methods, operators, constructors;
     var allMethods = yaml['methods'];
     if (allMethods != null) {
@@ -292,71 +304,25 @@ class Class extends LazyItem {
     constructs = new Category.forFunctions(constructors, 'Constructors', 
         isConstructor: true, className: this.name);
     var inheritedMethods = yaml['inheritedmethods'];
+    var inheritedVariables = yaml['inheritedvariables'];
     if (inheritedMethods != null) {
       setters = inheritedMethods['setters'];
       getters = inheritedMethods['getters'];
       methods = inheritedMethods['methods'];
       operators = inheritedMethods['operators'];
-      constructors = inheritedMethods['constructors'];
     }
-    var inheritedVariables = yaml['inheritedvariables'];
-    if (inheritedVariables != null) {
-      inheritedVariables.keys.forEach((key) {
-        var item = inheritedVariables[key];
-        _addInherited(variables, new Variable(item, 
-            inheritedFrom: item['qualifiedname'], 
-            commentFrom: item['commentfrom']));
-      });
-    }
-    if (setters != null) {
-      setters.keys.forEach((key) {
-        var item = setters[key];
-        _addInherited(variables, new Variable(item, isSetter: true, 
-            inheritedFrom: item['qualifiedname'],
-            commentFrom: item['commentfrom']));
-      });
-    }
-    if (getters != null) {
-      getters.keys.forEach((key) {
-        var item = getters[key];
-        _addInherited(variables, new Variable(item, isGetter: true, 
-            inheritedFrom: item['qualifiedname'],
-            commentFrom: item['commentfrom']));
-      });
-    }
-    if (methods != null) {
-      methods.keys.forEach((key) {
-        var item = methods[key];
-        _addInherited(functions, new Method(item, 
-            inheritedFrom: item['qualifiedname'],
-            commentFrom: item['commentfrom']));
-      });
-    }
-    if (operators != null) {
-      operators.keys.forEach((key) {
-        var item = operators[key];
-        _addInherited(this.operators, new Method(item, isOperator: true,
-            inheritedFrom: item['qualifiedname'],
-            commentFrom: item['commentfrom']));
-      });
-    }
-    this.superClass = new LinkableType(yaml['superclass']);
-    //this.subclasses = yaml['subclass'] == null ? [] :
-      //yaml['subclass'].map((item) => new LinkableType(item)).toList();
-    this.isAbstract = isAbstract;
-    this.annotations = yaml['annotations'] == null ? [] :
-        yaml['annotations'].map((item) => new Annotation(item)).toList();
-    this.implements = yaml['implements'] == null ? [] :
-        yaml['implements'].map((item) => new LinkableType(item)).toList();
-    var generics = yaml['generics'];
-    if (generics != null) {
-      generics.keys.forEach((generic) => this.generics.add(generic));
-    }
+    _addVariable(inheritedVariables);
+    _addVariable(setters, isSetter: true);
+    _addVariable(getters, isGetter: true);
+    _addMethod(methods);
+    _addMethod(operators, isOperator: true);
     _sort([this.functions.content, this.variables.content, 
            this.constructs.content, this.operators.content]);
     isLoaded = true;
   }
   
+  /// Adds [item] to [destination] if [item] has not yet been defined within
+  /// [destination] and handles inherited comments.
   void _addInherited(Category destination, Item item) {
     if (!destination.memberNames.contains(item.name)) {
       pageIndex['${this.qualifiedName}.${item.name}'] = item;
@@ -368,6 +334,33 @@ class Class extends LazyItem {
         member.comment = item.comment;
         member.commentFrom = item.commentFrom;
       }
+    }
+  }
+  
+  /// Adds an inherited variable to [variables] if not present.
+  void _addVariable(Map items, {isSetter: false, isGetter: false}) {
+    if (items != null) {
+      items.keys.forEach((key) {
+        var item = items[key];
+        var object = new Variable(item, isSetter: isSetter, 
+            isGetter: isGetter, inheritedFrom: item['qualifiedname'],
+            commentFrom: item['commentfrom']);
+        _addInherited(this.variables, object);
+      }); 
+    }
+  }
+  
+  /// Adds an inherited method to the correct [Category] if not present.
+  void _addMethod(Map items, {isOperator: false}) {
+    if (items != null) {
+      items.keys.forEach((key) {
+        var item = items[key];
+        var object = new Method(item, isOperator: isOperator,
+            inheritedFrom: item['qualifiedname'],
+            commentFrom: item['commentfrom']);
+        var location = isOperator ? this.operators : this.functions;
+        _addInherited(location, object);
+      });
     }
   }
 }
@@ -455,7 +448,7 @@ class Method extends Parameterized {
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
     this.inheritedFrom = inheritedFrom;
-    this.commentFrom = commentFrom;
+    this.commentFrom = commentFrom == '' ? yaml['commentfrom'] : commentFrom;
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
     this.className = className;
@@ -528,7 +521,7 @@ class Variable extends Item {
     this.isGetter = isGetter;
     this.isSetter = isSetter;
     this.inheritedFrom = inheritedFrom;
-    this.commentFrom = commentFrom;
+    this.commentFrom = commentFrom == '' ? yaml['commentfrom'] : commentFrom;
     isFinal = yaml['final'] == 'true';
     isStatic = yaml['static'] == 'true';
     isConstant = yaml['constant'] == 'true';
