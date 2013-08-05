@@ -49,10 +49,14 @@ class MemberElement extends WebComponent {
   /// Creates an HTML element for a parameterized type.  
   static Element createInner(NestedType type) {
     var span = new SpanElement();
-    var outer = new AnchorElement()
-      ..text = type.outer.simpleType
-      ..onClick.listen((_) => app.viewer.handleLink(type.outer.location));
-    span.append(outer);
+    if (!index.contains(type.outer.simpleType)) {
+      var outer = new AnchorElement()
+        ..text = type.outer.simpleType
+        ..onClick.listen((_) => app.viewer.handleLink(type.outer.location));
+      span.append(outer);
+    } else {
+      span.appendText(type.outer.simpleType);
+    }
     if (type.inner.isNotEmpty) {
       span.appendText('<');
       type.inner.forEach((element) {
