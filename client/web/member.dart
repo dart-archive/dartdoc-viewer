@@ -3,6 +3,7 @@ library member;
 import 'dart:html';
 
 import 'package:dartdoc_viewer/item.dart';
+import 'package:dartdoc_viewer/search.dart';
 import 'package:web_ui/web_ui.dart';
 
 import 'app.dart' as app;
@@ -31,6 +32,8 @@ class MemberElement extends WebComponent {
             var index = link.text.indexOf('#');
             var newName = link.text.substring(index + 1, link.text.length);
             link.replaceWith(new Element.html('<i>$newName</i>'));
+          } else if (!index.contains(link.text)) {
+            link.replaceWith(new Element.html('<i>${link.text}</i>'));
           } else {
             var linkable = new LinkableType(link.text);
             link
