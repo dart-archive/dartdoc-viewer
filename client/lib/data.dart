@@ -13,3 +13,16 @@ Map<String, Item> pageIndex = toObservable({});
 // a new form for linking purposes. This maps original library names to names
 // with '%' characters replacing the '.' characters for consistency.
 Map<String, String> libraryNames = {};
+
+String findLibraryName(String type) {
+  var current = type;
+  while (true) {
+    if (libraryNames[current] != null) {
+      return type.replaceFirst(current, libraryNames[current]);
+    } else {
+      var index = current.lastIndexOf('.');
+      if (index == -1) return type;
+      current = index != -1 ? current.substring(0, index) : '';
+    }
+  }
+}

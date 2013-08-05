@@ -11,129 +11,23 @@ BSD-style license that can be found in the LICENSE file.
   </head>
 
   <body>
-  <element name="search-box" constructor="Search" extends="span">
+  <element name="search-box" constructor="Search" extends="div">
     <template>
-      <style scoped>
-input[type="search"] {
--webkit-box-sizing: content-box;
--moz-box-sizing: content-box;
-box-sizing: content-box;
--webkit-appearance: textfield;
-}
-
-#search-box {
-  display: inline;
-  float: right;
-  margin-right: 11px;
-}
-
-.search-input, .drop-down {
-  font: 400 13px/22px 'Open Sans', 'Lucida Sans Unicode', 'Lucida Grande',
-      sans-serif;
-  width: 300px;
-}
-
-#search-box .search-input {
-  padding-right: 0px;
-  padding-left: 9px;
-  padding-left: 9px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  font-weight: normal;
-  line-height: 1;
-  color: white;
-  background-color: #626262;
-  border: 1px solid #151515;
-  -webkit-box-shadow: "inset 0 1px 2px rgba(0,0,0,.1), 0 1px 0px rgba(255,255,255,.15)";
-  -moz-box-shadow: "inset 0 1px 2px rgba(0,0,0,.1), 0 1px 0px rgba(255,255,255,.15)";
-  box-shadow: "inset 0 1px 2px rgba(0,0,0,.1), 0 1px 0px rgba(255,255,255,.15)";
-  -webkit-transition: none;
-  -moz-transition: none;
-  -ms-transition: none;
-  -o-transition: none;
-  transition: none;
-}
-
-#search-box .search-input:-moz-placeholder {
-  color: #cccccc;
-}
-#search-box .search-input::-webkit-input-placeholder {
-  color: #cccccc;
-}
-#search-box .search-input:focus, #search-box .search-input.focused {
-  color: #333333;
-  text-shadow: 0 1px 0 white;
-  background-color: white;
-  border: 0;
-  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
-  outline: 0;
-}
-
-#search-box .search-input {
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  height: 20px;
-}
-
-.search-input {
-  /* IE7-8 doesn't have border-radius, so don't indent the padding */
-  margin-bottom: 0;
-  -webkit-border-radius: 14px;
-  -moz-border-radius: 14px;
-  border-radius: 14px;
-}
-
-.drop-down {
-  z-index: 1000;
-  position: absolute;
-  right: 10px;
-  top: 40px;
-  border: 1px #CCC solid;
-  background-color: white;
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  padding: 4px;
-}
-
-.search-results {
-  color: black;
-}
-
-.search-results ul {
-  padding-left: 0px;
-}
-
-.search-results ul li {
-  list-style: none;
-}
-
-.search-result:focus {
-  background-color: #F0F0F0;
-}
-
-      </style>  
-      <div id="search-box">
+      <form class="navbar-form pull-right dropdown-toggle" id="search-box" 
+        data-toggle="dropdown">
         <input type="search" name="q" id="q" autocomplete="off"
-            class="search-input" placeholder="Search API"
+            class="form-control" style="width: 200px;" placeholder="Search API"
             bind-value="searchQuery" on-key-press="updateResults()" 
             on-key-up="updateResults()">
-      </div>
+      </form>
       <template if="!searchQuery.isEmpty && isFocused">
-        <div class="search-results drop-down" tabindex="0">
-          <ul>
+        <div class="dropdown">
+          <ul class="dropdown-menu pull-right" role="menu" 
+            aria-labelledby="dropdownMenu">
             <template iterate="result in results">
-              <li class="search-result"  id="search{{result.position}}"
-                  tabindex="10" data-ref-id="{{result.element}}"
+              <li data-ref-id="{{result.element}}"
                   on-click="onSubmitCallback()">
-                <search-result qualifiedname="{{result.element}}"
-                  class="search-result">
+                <search-result id="search{{result.position}}" qualifiedname="{{result.element}}" tabindex="-1">
                 </search-result>
               </li>
             </template>
@@ -141,7 +35,10 @@ box-sizing: content-box;
         </div>
       </template>
     </template>
+   
+    
     <script type="application/dart" src="search.dart">
     </script>
   </element>
+  
 </body></html>

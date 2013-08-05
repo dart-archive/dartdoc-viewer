@@ -497,16 +497,7 @@ class LinkableType {
   /// from [libraryNames] and changing [type] to match.
   LinkableType(String type) {
     var current = type;
-    this.type;
-    while (this.type == null) {
-      if (libraryNames[current] != null) {
-        this.type = type.replaceFirst(current, libraryNames[current]);
-      } else {
-        var index = current.lastIndexOf('.');
-        if (index == -1) this.type = type;
-        current = index != -1 ? current.substring(0, index) : '';
-      }
-    }
+    this.type = findLibraryName(type);
   }
 
   /// The simple name for this type.
