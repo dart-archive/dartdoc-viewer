@@ -43,6 +43,38 @@ String variable =
     "outer" : "dart.core.String"
 "annotations" :''';
 
+String generic_one_level_variable =
+'''"name" : "generic"
+"qualifiedname" : "Library.generic"
+"comment" : "<p>This is a test comment for generic types</p>"
+"final" : "false"
+"static" : "false"
+"constant" : "false"
+"type" : 
+  - "inner" : 
+      - "inner" :
+        "outer" : "dart.core.String"
+    "outer" : "dart.core.List"
+"annotations" :''';
+
+String generic_two_level_variable =
+'''"name" : "generic"
+"qualifiedname" : "Library.generic"
+"comment" : "<p>This is a test comment for generic types</p>"
+"final" : "false"
+"static" : "false"
+"constant" : "false"
+"type" : 
+  - "inner" : 
+      - "inner" :
+          - "inner" :
+            "outer" : "dart.core.int"
+          - "inner" :
+            "outer" : "dart.core.String" 
+        "outer" : "dart.core.Map"
+    "outer" : "dart.core.List"
+"annotations" :''';
+
 String setter =
 '''"abstract" : "false"
 "annotations" :
@@ -267,9 +299,6 @@ void main() {
     var item = new Parameter(currentMap['name'], currentMap);
     expect(item is Parameter, isTrue);
     expect(item.name is String, isTrue);
-    expect(item.isOptional, isNotNull);
-    expect(item.isNamed, isNotNull);
-    expect(item.hasDefault, isNotNull);
     expect(item.type is NestedType, isTrue);
     expect(item.annotations is List, isTrue);
   });
@@ -287,6 +316,61 @@ void main() {
     expect(item.comment is String, isTrue);
     expect(item.setterParameter, isNull);
     expect(item.type is NestedType, isTrue);
+  });
+  
+  test('setter_test', () {
+    var currentMap = loadYaml(setter);
+    var item = new Variable(currentMap, isSetter: true);
+    expect(item is Variable, isTrue);
+    expect(item.annotations is List, isTrue);
+    expect(item.comment is String, isTrue);
+    expect(item.type is NestedType, isTrue);
+    
+    expect(item.setterParameter is Parameter, isTrue);
+    var parameter = item.setterParameter;
+    expect(parameter.type is NestedType, isTrue);
+    expect(parameter.annotations is List, isTrue);
+  });
+  
+  test('one_level_generic_variable_test', () {
+    var currentMap = loadYaml(generic_one_level_variable);
+    var item = new Variable(currentMap);
+    expect(item is Variable, isTrue);
+    expect(item.type is NestedType, isTrue);
+    
+    var returnType = item.type;
+    expect(returnType.outer is LinkableType, isTrue);
+    expect(returnType.inner is List<NestedType>, isTrue);
+    var innerType = returnType.inner.first;
+    expect(innerType.outer is LinkableType, isTrue);
+    expect(innerType.inner is List<NestedType>, isTrue);
+    expect(innerType.inner, isEmpty);
+  });
+  
+  test('two_level_generic_variable_test', () {
+    var currentMap = loadYaml(generic_two_level_variable);
+    var item = new Variable(currentMap);
+    expect(item is Variable, isTrue);
+    expect(item.type is NestedType, isTrue);
+    
+    var returnType = item.type;
+    expect(returnType.outer is LinkableType, isTrue);
+    expect(returnType.inner is List<NestedType>, isTrue);
+    var innerType = returnType.inner.first;
+    expect(innerType.outer is LinkableType, isTrue);
+    expect(innerType.inner is List<NestedType>, isTrue);
+    var firstInner = innerType.inner.first;
+    expect(firstInner, isNotNull);
+    expect(firstInner is NestedType, isTrue);
+    expect(firstInner.inner is List<NestedType>, isTrue);
+    expect(firstInner.inner, isEmpty);
+    expect(firstInner.outer is LinkableType, isTrue);
+    var secondInner = innerType.inner[1];
+    expect(secondInner, isNotNull);
+    expect(secondInner is NestedType, isTrue);
+    expect(secondInner.inner is List<NestedType>, isTrue);
+    expect(secondInner.inner, isEmpty);
+    expect(secondInner.outer is LinkableType, isTrue);
   });
   
   test('clazz_test', () {
