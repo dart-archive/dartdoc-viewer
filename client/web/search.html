@@ -21,7 +21,7 @@ BSD-style license that can be found in the LICENSE file.
             on-key-up="updateResults()">
       </form>
       <template if="!searchQuery.isEmpty && isFocused">
-        <div class="dropdown">
+        
           <ul class="dropdown-menu pull-right" role="menu" 
             aria-labelledby="dropdownMenu">
             <template iterate="result in results">
@@ -32,7 +32,7 @@ BSD-style license that can be found in the LICENSE file.
               </li>
             </template>
           </ul>
-        </div>
+        
       </template>
     </template>
    

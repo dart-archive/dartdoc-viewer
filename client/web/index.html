@@ -2,7 +2,10 @@
 <meta charset="utf-8">
 <title>Dart API Reference</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <!--link rel="stylesheet" href="styles.css" -->
+<link rel="stylesheet" href="static/css/pics.css">
 <link rel="stylesheet" href="static/css/bootstrap.css">
 <link rel="import" href="category.html">
 <link rel="import" href="item.html">
@@ -18,6 +21,7 @@
 
 <nav class="navbar">
   <search-box></search-box>
+  <a href="http://www.dartlang.org/" class="navbar-brand header-logo"></a>
   <ul class="breadcrumb">
     <template if="viewer.currentPage != null">
       <template iterate="item in viewer.breadcrumbs">
@@ -30,7 +34,7 @@
     </template>
   </ul>  
 </nav>
-<main>
+<main class="container">
   <template instantiate="if viewer.homePage != null">
     <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
   </template>

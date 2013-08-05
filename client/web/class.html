@@ -14,7 +14,7 @@
       <dartdoc-annotation annotations="{{item.annotations}}">
       </dartdoc-annotation>
      
-      <h1>
+      <div class="page-header"><h1>
         {{item.name}}
         <template instantiate="if item.generics.isNotEmpty">
           &lt;
@@ -28,7 +28,7 @@
         </template>
         <template if="item.isAbstract">abstract</template>
         class
-      </h1>
+      </h1></div>
       
       <p>
         <template if="interfaces.isNotEmpty">
@@ -54,18 +54,24 @@
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-class')}}</section>
       
-      <template instantiate="if variables.content.isNotEmpty">
-        <dartdoc-category category="{{variables}}"></dartdoc-category>
-      </template>
-      <template instantiate="if operators.content.isNotEmpty">
-        <dartdoc-category category="{{operators}}"></dartdoc-category>
-      </template>
-      <template instantiate="if constructors.content.isNotEmpty">
-        <dartdoc-category category="{{constructors}}"></dartdoc-category>
-      </template>
-      <template instantiate="if methods.content.isNotEmpty">
-        <dartdoc-category category="{{methods}}"></dartdoc-category>
-      </template>
+      <div class="accordion" id="accordion-grouping">
+        <template instantiate="if variables.content.isNotEmpty">
+          <dartdoc-category category="{{variables}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template instantiate="if operators.content.isNotEmpty">
+          <dartdoc-category category="{{operators}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template instantiate="if constructors.content.isNotEmpty">
+          <dartdoc-category category="{{constructors}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template instantiate="if methods.content.isNotEmpty">
+          <dartdoc-category category="{{methods}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+      </div>
       
     </template>
   </template>

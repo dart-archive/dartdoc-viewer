@@ -5,21 +5,30 @@
 <element name="dartdoc-category" constructor="CategoryElement" 
     extends="div" apply-author-styles>     
   <template>
-    <summary>{{title}}</summary>      
-    <template iterate="item in category.content">
-      <template if="item is Item && item is! Variable">
-        <dartdoc-item item="{{item}}"></dartdoc-item>
-      </template>
-      
-      <template if="item is Variable">
-        <dartdoc-variable item="{{item}}"></dartdoc-variable>
-      </template>
-      
-      <template if="item is Category">
-        <dartdoc-category category="{{item}}" class="category">
-        </dartdoc-category>
-      </template>
-    </template>
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" 
+        data-parent="#accordion-grouping" 
+        href="#accordion-{{title.replaceAll(' ', '-')}}">
+        {{title}}
+      </a>
+    </div>
+    <div id="accordion-{{title.replaceAll(' ', '-')}}" 
+      class="accordion-body collapse"> 
+      <div class="accordion-inner">
+        <ul class="nav nav-pills nav-stacked">
+          <template iterate="item in category.content">
+            <template if="item is Item && item is! Variable">
+              <dartdoc-item item="{{item}}"></dartdoc-item>
+            </template>
+            
+            <template if="item is Variable">
+              <dartdoc-variable item="{{item}}" class="panel">
+              </dartdoc-variable>
+            </template>
+          </template>
+        </ul>
+      </div>
+    </div>
   </template>
   
   <script type="application/dart">

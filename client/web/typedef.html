@@ -10,24 +10,25 @@
     </template>
     <template if="item != null">
       
-      <h1>{{item.name}} typedef</h1>
+      <div class="page-header"><h1>{{item.name}} typedef</h1></div>
       
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-typedef')}}</section>
       
       <!-- Signature -->
-        
-      <dartdoc-annotation annotations="{{item.annotations}}">
-      </dartdoc-annotation>
-        
-      <p>typedef&nbsp;
-        <a on-click="viewer.handleLink(item.type.location)">
-          {{item.type.simpleType}}
-        </a>{{item.name}}
-        
-        <dartdoc-parameter parameters="{{item.parameters}}">
-        </dartdoc-parameter>
-      </p>
+      <div class="panel">  
+        <dartdoc-annotation annotations="{{item.annotations}}">
+        </dartdoc-annotation>
+          
+        <p class="panel-title">typedef&nbsp;
+          <a on-click="viewer.handleLink(item.type.location)">
+            {{item.type.simpleType}}
+          </a>{{item.name}}
+          
+          <dartdoc-parameter parameters="{{item.parameters}}">
+          </dartdoc-parameter>
+        </p>
+      </div>
       
     </template>
   </template>

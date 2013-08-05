@@ -10,32 +10,41 @@
       Loading...
     </template>
     <template if="item != null">
-      <h1>{{item.name}} library</h1>
+      <div class="page-header"><h1>{{item.name}} library</h1></div>
     
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-library')}}</section>
 
-      <template if="variables.content.isNotEmpty">
-        <dartdoc-category category="{{variables}}"></dartdoc-category>
-      </template>
-      <template if="operators.content.isNotEmpty">
-        <dartdoc-category category="{{operators}}"></dartdoc-category>
-      </template>
-      <template if="functions.content.isNotEmpty">
-        <dartdoc-category category="{{functions}}"></dartdoc-category>
-      </template>
-      <template if="abstractClasses.content.isNotEmpty">
-        <dartdoc-category category="{{abstractClasses}}"></dartdoc-category>
-      </template>
-      <template if="clazzes.content.isNotEmpty">
-        <dartdoc-category category="{{clazzes}}"></dartdoc-category>
-      </template>
-      <template if="typedefs.content.isNotEmpty">
-        <dartdoc-category category="{{typedefs}}"></dartdoc-category>
-      </template>
-      <template if="errors.content.isNotEmpty">
-        <dartdoc-category category="{{errors}}"></dartdoc-category>
-      </template>
+      <div class="accordion" id="accordion-grouping">
+        <template if="variables.content.isNotEmpty">
+          <dartdoc-category category="{{variables}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template if="operators.content.isNotEmpty">
+          <dartdoc-category category="{{operators}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template if="functions.content.isNotEmpty">
+          <dartdoc-category category="{{functions}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template if="abstractClasses.content.isNotEmpty">
+          <dartdoc-category category="{{abstractClasses}}" 
+            class="accordion-group"></dartdoc-category>
+        </template>
+        <template if="clazzes.content.isNotEmpty">
+          <dartdoc-category category="{{clazzes}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template if="typedefs.content.isNotEmpty">
+          <dartdoc-category category="{{typedefs}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template if="errors.content.isNotEmpty">
+          <dartdoc-category category="{{errors}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+      </div>
     </template>  
   </template>
   

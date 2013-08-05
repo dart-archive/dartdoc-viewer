@@ -59,6 +59,7 @@ class Viewer {
   void _scrollScreen(String hash, Item destination) {
     if (hash == null) hash = '#dartdoc-top';
     Timer.run(() {
+      
       var e = document.query('$hash');
       e.scrollIntoView();
     });
