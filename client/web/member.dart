@@ -33,6 +33,8 @@ class MemberElement extends WebComponent {
             var newName = link.text.substring(index + 1, link.text.length);
             link.replaceWith(new Element.html('<i>$newName</i>'));
           } else if (!index.contains(link.text)) {
+            // If markdown links to private or otherwise unknown members are
+            // found, make them <i> tags instead of <a> tags for CSS.
             link.replaceWith(new Element.html('<i>${link.text}</i>'));
           } else {
             var linkable = new LinkableType(link.text);
