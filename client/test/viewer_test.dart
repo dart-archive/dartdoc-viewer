@@ -43,6 +43,30 @@ String variable =
     "outer" : "dart.core.String"
 "annotations" :''';
 
+String setter =
+'''"abstract" : "false"
+"annotations" :
+"comment" : "<p>This is a setter</p>"
+"commentfrom" : ""
+"constant" : "false"
+"name" : "length="
+"parameters" :
+  "newLength" :
+    "annotations" :
+    "default" : "false"
+    "name" : "newLength"
+    "named" : "false"
+    "optional" : "false"
+    "type" :
+      - "inner" : 
+        "outer" : "dart.core.int"
+    "value" : "null"
+"qualifiedname" : "Library.Class.length="
+"return" : 
+  - "inner" :
+    "outer" : "void"
+"static" : "false"''';
+
 String method = 
 '''"name" : "getA"
 "qualifiedName" : "Library.getA"
@@ -259,6 +283,9 @@ void main() {
     var yaml = loadYaml(variable);
     var item = new Variable(yaml);
     expect(item is Variable, isTrue);
+    expect(item.annotations is List, isTrue);
+    expect(item.comment is String, isTrue);
+    expect(item.setterParameter, isNull);
     expect(item.type is NestedType, isTrue);
   });
   
