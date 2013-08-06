@@ -19,21 +19,52 @@
 
 <a id='dartdoc-top'></a>
 
-<nav class="navbar">
-  <search-box></search-box>
-  <a href="http://www.dartlang.org/" class="navbar-brand header-logo"></a>
-  <ul class="breadcrumb">
-    <template if="viewer.currentPage != null">
-      <template iterate="item in viewer.breadcrumbs">
-        <li>
-          <template instantiate="if item != null">
-            <a on-click="viewer.changePage(item)">{{item.decoratedName}}</a>
+<div class="navbar">
+  <div class="container">
+    <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
+    <button type="button" class="navbar-toggle" data-toggle="collapse" 
+      data-target=".navbar-responsive-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+
+    
+    <a href="http://www.dartlang.org/" class="navbar-brand header-logo"></a>
+    <a on-click="viewer.changePage(viewer.homePage)" 
+      class="navbar-brand">
+      Dart API Reference
+    </a>
+
+    <div class="nav-collapse collapse navbar-responsive-collapse">
+      <ul class="nav navbar-nav">
+        <template if="viewer.currentPage != null">
+          <template iterate="item in viewer.breadcrumbs">
+            <template if="item != viewer.breadcrumbs.first">
+              <template if="item != viewer.breadcrumbs.last">
+                <li>
+                  <template instantiate="if item != null">
+                    <a on-click="viewer.changePage(item)">
+                      {{item.decoratedName}}
+                    </a>
+                  </template>
+                </li>
+              </template>
+              <template if="item == viewer.breadcrumbs.last">
+                <li class="active">
+                  <template instantiate="if item != null">
+                    <a>{{item.decoratedName}}</a>
+                  </template>
+                </li>
+              </template>
+            </template>
           </template>
-        </li>
-      </template>
-    </template>
-  </ul>  
-</nav>
+        </template>
+      </ul>  
+      <search-box></search-box>
+    </div>
+  </div>
+</div>
 <main class="container">
   <template instantiate="if viewer.homePage != null">
     <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>

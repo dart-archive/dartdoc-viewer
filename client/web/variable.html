@@ -8,18 +8,19 @@
     
     <a id="{{item.name}}"></a>
     
-    <dartdoc-annotation annotations="{{item.annotations}}">
-    </dartdoc-annotation>
-    <template if="item.comment == '<span></span>'">
+    <template if="item.comment == '<span></span>' && item.annotations.isEmpty">
       <variable-heading item="{{item}}"  class="panel-title">
         </variable-heading>
     </template>
-    <template if="item.comment != '<span></span>'">
+    <template
+      if="item.comment != '<span></span>' || item.annotations.isNotEmpty">
       <variable-heading item="{{item}}" class="panel-heading">
         </variable-heading>
       <p class="description">
         {{addComment('dartdoc-variable')}}
       </p>
+      <dartdoc-annotation annotations="{{item.annotations}}">
+      </dartdoc-annotation>
     </template>
   </template>
   <script type="application/dart">
