@@ -98,10 +98,7 @@ class Category extends Container {
     } else {
       var member = content.firstWhere((innerItem) => 
           innerItem.name == item.name);
-      if (member.comment == '<span></span>') {
-        member.comment = item.comment;
-        member.commentFrom = item.commentFrom;
-      }
+      member.addInheritedComment(item);
     }
   }
 }
@@ -124,6 +121,9 @@ class Item extends Container {
   void addToHierarchy() {
     pageIndex[qualifiedName] = this;
   }
+  
+  /// Adds the comment from [item] to [this].
+  void addInheritedComment(Item item) {}
 }
 
 /// Sorts each inner [List] by qualified names.
@@ -464,6 +464,13 @@ class Method extends Parameterized {
     if (inheritedFrom != '') pageIndex[qualifiedName] = this;
   }
   
+  void addInheritedComment(Item item) {
+    if (comment == '<span></span>') {
+      comment = item.comment;
+      commentFrom = item.commentFrom;
+    }
+  }
+  
   String get decoratedName => isConstructor ? 
       (name != '' ? '$className.$name' : className) : name;
 }
@@ -546,6 +553,13 @@ class Variable extends Item {
     }
     this.annotations = yaml['annotations'] == null ? [] :
       yaml['annotations'].map((item) => new Annotation(item)).toList();
+  }
+  
+  void addInheritedComment(Item item) {
+    if (comment == '<span></span>') {
+      comment = item.comment;
+      commentFrom = item.commentFrom;
+    }
   }
   
   void addToHierarchy() {
