@@ -28,6 +28,12 @@ String _wrapComment(String comment) {
   return '<span>$comment</span>';
 }
 
+/// Returns the qualified name of [qualifiedName]'s owner.
+String ownerName(String qualifiedName) {
+  var index = qualifiedName.lastIndexOf('.');
+  return index != -1 ? qualifiedName.substring(0, index) : '';
+}
+
 /**
  * A [Container] that contains other [Container]s to be displayed.
  */
@@ -82,6 +88,22 @@ class Category extends Container {
       yaml.keys.forEach((key) => content.add(new Typedef(yaml[key])));
     }
   }
+  
+  /// Adds [item] to [destination] if [item] has not yet been defined within
+  /// [destination] and handles inherited comments.
+  void addInheritedItem(Class clazz, Item item) {
+    if (!memberNames.contains(item.name)) {
+      pageIndex['${clazz.qualifiedName}.${item.name}'] = item;
+      content.add(item);
+    } else {
+      var member = content.firstWhere((innerItem) => 
+          innerItem.name == item.name);
+      if (member.comment == '<span></span>') {
+        member.comment = item.comment;
+        member.commentFrom = item.commentFrom;
+      }
+    }
+  }
 }
 
 /**
@@ -90,11 +112,18 @@ class Category extends Container {
 class Item extends Container {
   /// A list of [Item]s representing the path to this [Item].
   List<Item> path = [];
+  String qualifiedName;
   
-  Item(String name, [String comment]) : super(name, comment);
+  Item(String name, this.qualifiedName, [String comment]) 
+      : super(name, comment);
   
   /// [Item]'s name with its properties properly appended. 
   String get decoratedName => name;
+  
+  /// Adds this [Item] to [pageIndex] and updates all necessary members.
+  void addToHierarchy() {
+    pageIndex[qualifiedName] = this;
+  }
 }
 
 /// Sorts each inner [List] by qualified names.
@@ -115,7 +144,7 @@ class Home extends Item {
   
   /// The constructor parses the [libraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
-  Home(List libraries) : super('Dart API Reference') {
+  Home(List libraries) : super('Dart API Reference', 'home') {
     for (String library in libraries) {
       libraryNames[library] = library.replaceAll('.', '-');
       this.libraries.add(new Library.forPlaceholder(library));
@@ -138,27 +167,8 @@ void buildHierarchy(Item page, Item previous) {
     page.path
       ..addAll(previous.path)
       ..add(page);
-    if (!((page is Method || page is Variable) && page.inheritedFrom != ''))
-      pageIndex[page.qualifiedName] = page;
   }
-  if (page is Class && page.isLoaded) {
-    [page.constructs, page.operators].forEach((category) =>
-      category.content.forEach((item) {
-        buildHierarchy(item, page);
-      }));
-  }
-  if (page is Library || (page is Class && page.isLoaded)) {
-    page.functions.content.forEach((method) {
-      buildHierarchy(method, page);
-    });
-    if (page is Library) {
-      [page.classes, page.abstractClasses, page.typedefs, page.errors]
-        .forEach((category) =>
-          category.content.forEach((clazz) {
-            buildHierarchy(clazz, page);
-          }));
-    }
-  }
+  page.addToHierarchy();
 }
 
 /**
@@ -167,12 +177,9 @@ void buildHierarchy(Item page, Item previous) {
 abstract class LazyItem extends Item {
   
   bool isLoaded = false;
-  String qualifiedName;
   
   LazyItem(String qualifiedName, String name, [String comment]) 
-      : super(name, comment) {
-    this.qualifiedName = qualifiedName;
-  }
+      : super(name, qualifiedName, comment);
   
   /// Loads this [Item]'s data and populates all fields.
   Future load() {
@@ -209,6 +216,15 @@ class Library extends LazyItem {
     loadValues(yaml);
     buildHierarchy(this, this);
   } 
+  
+  void addToHierarchy() {
+    pageIndex[qualifiedName] = this;
+    [classes, abstractClasses, typedefs, errors, functions].forEach((category) {
+      category.content.forEach((clazz) {
+        buildHierarchy(clazz, this);
+      });
+    });
+  }
   
   void loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
@@ -262,44 +278,51 @@ class Class extends LazyItem {
   List<String> generics = [];
 
   /// Creates a [Class] placeholder object with null fields.
-  Class.forPlaceholder(String location, {bool isAbstract: false}) 
-      : super(location, location.split('.').last) {
-    this.isAbstract = isAbstract;
-  }
+  Class.forPlaceholder(String location, {bool this.isAbstract: false}) 
+      : super(location, location.split('.').last);
   
   /// Normal constructor for testing.
-  Class(Map yaml, {bool isAbstract: false}) 
+  Class(Map yaml, {bool this.isAbstract: false}) 
       : super(yaml['qualifiedname'], yaml['name']) {
-    this.isAbstract = isAbstract;
     loadValues(yaml);
   }
   
-  void loadValues(Map yaml) {
-    this.comment = _wrapComment(yaml['comment']);
-    this.isAbstract = isAbstract;
-    this.superClass = new LinkableType(yaml['superclass']);
-    this.subclasses = yaml['subclass'] == null ? [] :
-      yaml['subclass'].map((item) => new LinkableType(item)).toList();
-    this.annotations = yaml['annotations'] == null ? [] :
-        yaml['annotations'].map((item) => new Annotation(item)).toList();
-    this.implements = yaml['implements'] == null ? [] :
-        yaml['implements'].map((item) => new LinkableType(item)).toList();
-    var generics = yaml['generics'];
-    if (generics != null) {
-      generics.keys.forEach((generic) => this.generics.add(generic));
+  void addToHierarchy() {
+    pageIndex[qualifiedName] = this;
+    if (isLoaded) {
+      [functions, constructs, operators].forEach((category) {
+        category.content.forEach((clazz) {
+          buildHierarchy(clazz, this);
+        });
+      });
     }
-    var setters, getters, methods, operators, constructors;
+  }
+  
+  void loadValues(Map yaml) {
+    comment = _wrapComment(yaml['comment']);
+    superClass = new LinkableType(yaml['superclass']);
+    subclasses = yaml['subclass'] == null ? [] :
+      yaml['subclass'].map((item) => new LinkableType(item)).toList();
+    annotations = yaml['annotations'] == null ? [] :
+        yaml['annotations'].map((item) => new Annotation(item)).toList();
+    implements = yaml['implements'] == null ? [] :
+        yaml['implements'].map((item) => new LinkableType(item)).toList();
+    var genericValues = yaml['generics'];
+    if (genericValues != null) {
+      genericValues.keys.forEach((generic) => generics.add(generic));
+    }
+    var setters, getters, methods, operates, constructors;
     var allMethods = yaml['methods'];
     if (allMethods != null) {
       setters = allMethods['setters'];
       getters = allMethods['getters'];
       methods = allMethods['methods'];
-      operators = allMethods['operators'];
+      operates = allMethods['operators'];
       constructors = allMethods['constructors'];
     }
     variables = new Category.forVariables(yaml['variables'], getters, setters);
     functions = new Category.forFunctions(methods, 'Functions');
-    this.operators = new Category.forFunctions(operators, 'Operators',
+    operators = new Category.forFunctions(operates, 'Operators',
         isOperator: true);
     constructs = new Category.forFunctions(constructors, 'Constructors', 
         isConstructor: true, className: this.name);
@@ -309,43 +332,26 @@ class Class extends LazyItem {
       setters = inheritedMethods['setters'];
       getters = inheritedMethods['getters'];
       methods = inheritedMethods['methods'];
-      operators = inheritedMethods['operators'];
+      operates = inheritedMethods['operators'];
     }
     _addVariable(inheritedVariables);
     _addVariable(setters, isSetter: true);
     _addVariable(getters, isGetter: true);
     _addMethod(methods);
-    _addMethod(operators, isOperator: true);
+    _addMethod(operates, isOperator: true);
     _sort([this.functions.content, this.variables.content, 
            this.constructs.content, this.operators.content]);
     isLoaded = true;
   }
   
-  /// Adds [item] to [destination] if [item] has not yet been defined within
-  /// [destination] and handles inherited comments.
-  void _addInherited(Category destination, Item item) {
-    if (!destination.memberNames.contains(item.name)) {
-      pageIndex['${this.qualifiedName}.${item.name}'] = item;
-      destination.content.add(item);
-    } else {
-      var member = destination.content.firstWhere((innerItem) => 
-          innerItem.name == item.name);
-      if (member.comment == '<span></span>') {
-        member.comment = item.comment;
-        member.commentFrom = item.commentFrom;
-      }
-    }
-  }
-  
   /// Adds an inherited variable to [variables] if not present.
   void _addVariable(Map items, {isSetter: false, isGetter: false}) {
     if (items != null) {
-      items.keys.forEach((key) {
-        var item = items[key];
+      items.values.forEach((item) {
         var object = new Variable(item, isSetter: isSetter, 
             isGetter: isGetter, inheritedFrom: item['qualifiedname'],
             commentFrom: item['commentfrom']);
-        _addInherited(this.variables, object);
+        variables.addInheritedItem(this, object);
       }); 
     }
   }
@@ -353,13 +359,12 @@ class Class extends LazyItem {
   /// Adds an inherited method to the correct [Category] if not present.
   void _addMethod(Map items, {isOperator: false}) {
     if (items != null) {
-      items.keys.forEach((key) {
-        var item = items[key];
+      items.values.forEach((item) {
         var object = new Method(item, isOperator: isOperator,
             inheritedFrom: item['qualifiedname'],
             commentFrom: item['commentfrom']);
         var location = isOperator ? this.operators : this.functions;
-        _addInherited(location, object);
+        location.addInheritedItem(this, object);
       });
     }
   }
@@ -388,7 +393,8 @@ class Parameterized extends Item {
   
   List<Parameter> parameters;
   
-  Parameterized(String name, [String comment]) : super(name, comment);
+  Parameterized(String name, String qualifiedName, [String comment]) 
+      : super(name, qualifiedName, comment);
   
   /// Creates [Parameter] objects for each parameter to this method.
   List<Parameter> getParameters(Map parameters) {
@@ -407,12 +413,11 @@ class Parameterized extends Item {
  */
 class Typedef extends Parameterized {
   
-  String qualifiedName;
   LinkableType type;
   List<Annotation> annotations;
   
-  Typedef(Map yaml) : super(yaml['name'], _wrapComment(yaml['comment'])) {
-    qualifiedName = yaml['qualifiedname'];
+  Typedef(Map yaml) : super(yaml['name'], yaml['qualifiedname'],
+      _wrapComment(yaml['comment'])) {
     type = new LinkableType(yaml['return']);
     parameters = getParameters(yaml['parameters']);
     annotations = yaml['annotations'] == null ? [] :
@@ -435,13 +440,12 @@ class Method extends Parameterized {
   bool isOperator;
   List<LinkableType> annotations;
   NestedType type;
-  String qualifiedName;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
       bool isOperator: false, String inheritedFrom: '',
       String commentFrom: ''}) 
-        : super(yaml['name'], _wrapComment(yaml['comment'])) {
-    qualifiedName = yaml['qualifiedname'];
+        : super(yaml['name'], yaml['qualifiedname'], 
+            _wrapComment(yaml['comment'])) {
     this.isStatic = yaml['static'] == 'true';
     this.isAbstract = yaml['abstract'] == 'true';
     this.isConstant = yaml['constant'] == 'true';
@@ -456,6 +460,10 @@ class Method extends Parameterized {
       yaml['annotations'].map((item) => new Annotation(item)).toList();
   }
 
+  void addToHierarchy() {
+    if (inheritedFrom != '') pageIndex[qualifiedName] = this;
+  }
+  
   String get decoratedName => isConstructor ? 
       (name != '' ? '$className.$name' : className) : name;
 }
@@ -511,13 +519,12 @@ class Variable extends Item {
   String commentFrom;
   Parameter setterParameter;
   NestedType type;
-  String qualifiedName;
   List<Annotation> annotations;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
       String inheritedFrom: '', String commentFrom: ''})
-      : super(yaml['name'], _wrapComment(yaml['comment'])) {
-    qualifiedName = yaml['qualifiedname'];
+      : super(yaml['name'], yaml['qualifiedname'], 
+          _wrapComment(yaml['comment'])) {
     this.isGetter = isGetter;
     this.isSetter = isSetter;
     this.inheritedFrom = inheritedFrom;
@@ -539,6 +546,10 @@ class Variable extends Item {
     }
     this.annotations = yaml['annotations'] == null ? [] :
       yaml['annotations'].map((item) => new Annotation(item)).toList();
+  }
+  
+  void addToHierarchy() {
+    if (inheritedFrom != '') pageIndex[qualifiedName] = this;
   }
 }
 

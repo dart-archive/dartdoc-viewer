@@ -63,33 +63,8 @@
     import 'app.dart';
     import 'member.dart';
     
-    class MethodElement extends MemberElement {
-      LinkableType inheritedFrom;
-      LinkableType commentFrom;
-      
-      inserted() {
-        if (isInherited) {
-          inheritedFrom = _findInheritance(item.inheritedFrom);
-        }
-        if (hasInheritedComment) {
-          commentFrom = _findInheritance(item.commentFrom);
-        }
-      }
-    
+    class MethodElement extends InheritedElement {
       List<Parameter> get parameters => item.parameters;
-      
-      bool get isInherited => 
-        item.inheritedFrom != null && item.inheritedFrom != '';
-        
-      bool get hasInheritedComment =>
-        item.commentFrom != null && item.commentFrom != '';
-      
-      /// Creates a [LinkableType] for the owner of [qualifiedName].
-      LinkableType _findInheritance(String qualifiedName) {
-        var index = qualifiedName.lastIndexOf('.');
-        var superName = qualifiedName.substring(0, index);
-        return new LinkableType(superName);
-      }
     }
   </script>
 </element>

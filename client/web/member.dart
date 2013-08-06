@@ -78,3 +78,29 @@ class MemberElement extends WebComponent {
     location.children.add(createInner(type));
   }
 }
+
+/// A [MemberElement] that could be inherited from another [MemberElement].
+class InheritedElement extends MemberElement {
+  LinkableType inheritedFrom;
+  LinkableType commentFrom;
+  
+  inserted() {
+    if (isInherited) {
+      inheritedFrom = findInheritance(item.inheritedFrom);
+    }
+    if (hasInheritedComment) {
+      commentFrom = findInheritance(item.commentFrom);
+    }
+  }
+  
+  bool get isInherited => 
+      item.inheritedFrom != '' && item.inheritedFrom != null;
+  
+  bool get hasInheritedComment =>
+      item.commentFrom != '' && item.commentFrom != null;
+  
+  /// Creates a [LinkableType] for the owner of [qualifiedName].
+  LinkableType findInheritance(String qualifiedName) {
+    return new LinkableType(ownerName(qualifiedName));
+  }
+}

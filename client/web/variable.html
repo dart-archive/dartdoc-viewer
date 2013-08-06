@@ -61,19 +61,8 @@
     /**
      * An HTML representation of a Variable.
      */
-    class VariableElement extends MemberElement {
-      LinkableType inheritedFrom;
-      LinkableType commentFrom;
-    
-      inserted() {
-        if (isInherited) {
-          inheritedFrom = findInheritance(item.inheritedFrom);
-        }
-        if (hasInheritedComment) {
-          commentFrom = findInheritance(item.commentFrom);
-        }
-      }
-
+    class VariableElement extends InheritedElement {
+      
       String get getter => item.isGetter ? 'get' : '';
 
       Parameter get setterParameter => item.setterParameter;
@@ -81,19 +70,6 @@
       NestedType get type => item.type;
 
       String get name => item.name;
-      
-      bool get isInherited => 
-        item.inheritedFrom != '' && item.inheritedFrom != null;
-      
-      bool get hasInheritedComment =>
-        item.commentFrom != '' && item.commentFrom != null;
-        
-      /// Creates a [LinkableType] for the owner of [qualifiedName].
-      LinkableType findInheritance(String qualifiedName) {
-        var index = qualifiedName.lastIndexOf('.');
-        var superName = qualifiedName.substring(0, index);
-        return new LinkableType(superName);
-      }
     }
   </script>
 </element>
