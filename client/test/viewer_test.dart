@@ -293,11 +293,38 @@ String clazzA =
 "annotations" : 
 "generics" : 
 "comment" : ""
-"superclass" : "dart.core.Object"
+"superclass" : "Library.B"
 "implements" : 
   - "Library.B"
 "variables" : 
-"methods" :''';
+"methods" :
+  "constructors" :
+  "getters" :
+  "methods" :
+    "getA" :
+      "name" : "getA"
+      "qualifiedname" : "Library.A.getA"
+      "comment" : ""
+      "static" : "false"
+      "constant" : "false"
+      "abstract" : "false"
+      "annotations" : 
+      "return" : 
+        - "inner" : 
+          "outer" : "Library.B"
+      "parameters" :
+        "testInt" :
+          "name" : "testInt"
+          "optional" : "false"
+          "named" : "false"
+          "default" : "false"
+          "type" : 
+            - "inner" : 
+              "outer" : "Library.C"
+          "value" : "null"
+          "annotations" :
+  "operators" :
+  "setters" :''';
 
 String clazzB =
 '''"name" : "B"
@@ -608,6 +635,7 @@ void main() {
     }
   });
 
+  // Test that annotations link to the proper classes.
   test('annotation_link_test', () {
     var currentMap = loadYaml(annotationsAndGenerics);
     var library = new Library(currentMap);
@@ -629,6 +657,7 @@ void main() {
     expect(firstAnnotation.parameters[1], isNotNull);
   });
   
+  // Test that generic types link to the proper types.
   test('generic_type_test', () {
     var currentMap = loadYaml(annotationsAndGenerics);
     var library = new Library(currentMap);
@@ -657,7 +686,53 @@ void main() {
     expect(type.inner, isEmpty);
   });
   
-  test('markdown_links', () {
-        
+  test('markdown_links_test', () {
+    
+  });
+  
+  test('breadcrumbs_test', () {
+    var currentMap = loadYaml(dependencies);
+    var library = new Library(currentMap);
+    
+    expect(library.path[0], equals(library));
+    expect(library.path.length, equals(1));
+    
+    var classA = library.classes.content.first;
+    classA.loadValues(loadYaml(clazzA));
+    buildHierarchy(classA, classA);
+    
+    expect(classA.path[0], equals(library));
+    expect(classA.path[1], equals(classA));
+    
+    var method = classA.functions.content.first;
+    
+    expect(method.path[0], equals(library));
+    expect(method.path[1], equals(classA));
+    expect(method.path[2], equals(method));
+    
+    var classB = library.abstractClasses.content.firstWhere((item) =>
+        item.name == 'B');
+    
+    expect(classB.path[0], equals(library));
+    expect(classB.path[1], equals(classB));
+    
+    var classC = library.abstractClasses.content.firstWhere((item) =>
+        item.name == 'C');
+    
+    expect(classC.path[0], equals(library));
+    expect(classC.path[1], equals(classC));
+    
+    method = library.functions.content.first;
+    
+    expect(method.path[0], equals(library));
+    expect(method.path[1], equals(method));
+  });
+  
+  test('inheritance_test', () {
+    
+  });
+  
+  test('search_autocomplete_test', () {
+    
   });
 }
