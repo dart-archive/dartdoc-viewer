@@ -65,8 +65,34 @@
     </div>
   </div>
 </div>
-<main class="container">
+
+<div class="container">
   <template instantiate="if viewer.homePage != null">
-    <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
+    <template if="viewer.currentPage != viewer.homePage">
+      <div class="list-group visible-lg col-lg-4" 
+        data-spy="affix" data-offset-top="200">
+        <template iterate="library in viewer.homePage.libraries">
+          <template if="library.decoratedName == viewer.breadcrumbs[1].decoratedName">
+            <a on-click="viewer.changePage(library)" class="list-group-item active">
+              {{library.decoratedName}}
+            </a>
+          </template>
+          <template if="library.decoratedName != viewer.breadcrumbs[1].decoratedName">
+            <a on-click="viewer.changePage(library)" class="list-group-item">
+              {{library.decoratedName}}
+            </a>
+          </template>
+        </template>
+      </div>
+      <main class="col-12 col-lg-8">
+        <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
+      </main>
+    </template>
+    <template if="viewer.currentPage == viewer.homePage">
+      <main class="col-12">
+        <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
+      </main>
+    </template>
   </template>
-</main>
+  
+</div>
