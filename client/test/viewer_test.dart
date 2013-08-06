@@ -232,6 +232,42 @@ String dependencies =
     - "name" : "Library.B"
     - "name" : "Library.C"''';
 
+String annotations =
+'''"name" : "Library"
+"qualifiedname" : "Library"
+"comment" : "<p>This is an annotation test</p>"
+"variables" :
+  "variable" :
+    "name" : "variable"
+    "qualifiedname" : "Library.variable"
+    "comment" : ""
+    "final" : "false"
+    "static" : "false"
+    "constant" : "false"
+    "type" :
+      - "inner" :
+        "outer" : "Library.A"
+    "annotations" :
+      - "name" : "Library.B"
+        "parameters" :
+          - "firstParameter"
+          - "secondParameter"
+      - "name" : "Library.A"
+        "parameters" :
+"functions" :
+  "setters" :
+  "getters" :
+  "constructors" :
+  "operators" :
+  "methods" :
+"classes" :
+  "class" :
+    - "Library.A"
+  "abstract" :
+    - "Library.B"
+  "error" :
+  "typedef" :''';
+
 String clazzA =
 '''"name" : "A"
 "qualifiedName" : "Library.A"
@@ -375,7 +411,7 @@ void main() {
     expect(innerType.outer is LinkableType, isTrue);
     expect(innerType.inner is List<NestedType>, isTrue);
     
-    var firstInner = innerType.inner.first;
+    var firstInner = innerType.inresponsener.first;
     expect(firstInner, isNotNull);
     expect(firstInner is NestedType, isTrue);
     expect(firstInner.inner is List<NestedType>, isTrue);
@@ -414,6 +450,9 @@ void main() {
     
     // TODO(tmandel): Add tests for inherited methods/variables and superclass
     // comments.
+    //   * Check comment content and inherited content
+    //   * Check inheritedFrom and commentFrom
+    //   * Check subclasses
     
     var yaml = loadYaml(clazz);
     var item = new Class(yaml);
@@ -462,10 +501,12 @@ void main() {
     // Test that the same results are produced.
     expect(itemAutomatic.name, equals(itemManual.name));
     expect(itemAutomatic.comment, equals(itemManual.comment));
-    // TODO(tmandel): Should test for the same classes/functions/etc.
+    expect(itemAutomatic.abstractClasses.content.length, 
+        equals(itemManual.abstractClasses.content.length));
     
     expect(itemManual.classes is Category, isTrue);
     expect(itemManual.errors is Category, isTrue);
+    expect(itemManual.typedefs is Category, isTrue);
     expect(itemManual.variables is Category, isTrue);
     expect(itemManual.functions is Category, isTrue);
     expect(itemManual.operators is Category, isTrue);
