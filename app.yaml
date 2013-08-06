@@ -3,13 +3,16 @@
 # BSD-style license that can be found in the LICENSE file.
 
 application: dart-documentation
-version: 1
+version: css-inprogress
 
 runtime: python27
 api_version: 1
 threadsafe: true
 
 handlers:
+- url: /static
+  static_dir: client/web/static
+  
 - url: /
   static_files: client/web/out/index.html
   upload: web/out/index.html
