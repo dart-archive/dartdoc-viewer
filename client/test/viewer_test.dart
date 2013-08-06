@@ -43,7 +43,7 @@ String variable =
     "outer" : "dart.core.String"
 "annotations" :''';
 
-String generic_one_level_variable =
+String genericOneLevelVariable =
 '''"name" : "generic"
 "qualifiedname" : "Library.generic"
 "comment" : "<p>This is a test comment for generic types</p>"
@@ -57,7 +57,7 @@ String generic_one_level_variable =
     "outer" : "dart.core.List"
 "annotations" :''';
 
-String generic_two_level_variable =
+String genericTwoLevelVariable =
 '''"name" : "generic"
 "qualifiedname" : "Library.generic"
 "comment" : "<p>This is a test comment for generic types</p>"
@@ -232,11 +232,28 @@ String dependencies =
     - "name" : "Library.B"
     - "name" : "Library.C"''';
 
-String annotations =
+String annotationsAndGenerics =
 '''"name" : "Library"
 "qualifiedname" : "Library"
 "comment" : "<p>This is an annotation test</p>"
 "variables" :
+  "generic" :
+    "name" : "generic"
+    "qualifiedname" : "Library.generic"
+    "comment" : "<p>This is a test comment for generic types</p>"
+    "final" : "false"
+    "static" : "false"
+    "constant" : "false"
+    "type" : 
+      - "inner" : 
+          - "inner" :
+              - "inner" :
+                "outer" : "Library.A"
+              - "inner" :
+                "outer" : "Library.A" 
+            "outer" : "Library.B"
+        "outer" : "Library.C"
+    "annotations" :
   "variable" :
     "name" : "variable"
     "qualifiedname" : "Library.variable"
@@ -265,6 +282,7 @@ String annotations =
     - "Library.A"
   "abstract" :
     - "Library.B"
+    - "Library.C"
   "error" :
   "typedef" :''';
 
@@ -381,8 +399,9 @@ void main() {
     expect(parameter.annotations is List, isTrue);
   });
   
+  // A test for A<B> type generic links.
   test('one_level_generic_variable_test', () {
-    var currentMap = loadYaml(generic_one_level_variable);
+    var currentMap = loadYaml(genericOneLevelVariable);
     var item = new Variable(currentMap);
     expect(item is Variable, isTrue);
     expect(item.type is NestedType, isTrue);
@@ -397,9 +416,9 @@ void main() {
     expect(innerType.inner, isEmpty);
   });
   
-  // TODO(tmandel): Fix error here.
+  // A test for A<B<C,D>> type generic links.
   test('two_level_generic_variable_test', () {
-    var currentMap = loadYaml(generic_two_level_variable);
+    var currentMap = loadYaml(genericTwoLevelVariable);
     var item = new Variable(currentMap);
     expect(item is Variable, isTrue);
     expect(item.type is NestedType, isTrue);
@@ -589,13 +608,12 @@ void main() {
     }
   });
 
-  // TODO(tmandel): Fix error here.
-  test('link_test', () {
-    // Annotation links
-    var currentMap = loadYaml(annotations);
+  test('annotation_link_test', () {
+    var currentMap = loadYaml(annotationsAndGenerics);
     var library = new Library(currentMap);
 
-    var variable = library.variables.content.first;
+    var variable = library.variables.content.firstWhere((item) => 
+        item.name == 'variable');
     var firstAnnotation = variable.annotations.first;
     var secondAnnotation = variable.annotations[1];
     
@@ -609,12 +627,37 @@ void main() {
     
     expect(firstAnnotation.parameters.first, isNotNull);
     expect(firstAnnotation.parameters[1], isNotNull);
+  });
+  
+  test('generic_type_test', () {
+    var currentMap = loadYaml(annotationsAndGenerics);
+    var library = new Library(currentMap);
     
-    // Generic type links
+    var variable = library.variables.content.firstWhere((item) =>
+        item.name == 'generic');
+    var type = variable.type;
     
+    var classA = library.classes.content.first;
+    var classB = library.abstractClasses.content.firstWhere((item) =>
+        item.name == 'B');
+    var classC = library.abstractClasses.content.firstWhere((item) =>
+        item.name == 'C');
     
-    // Markdown links
-    
-    
+    var outer = type.outer;
+    expect(pageIndex[outer.location], equals(classC));
+    var inner = type.inner;
+    type = inner.first;
+    expect(pageIndex[type.outer.location], equals(classB));
+    inner = type.inner;
+    type = inner.first;
+    expect(pageIndex[type.outer.location], equals(classA));
+    expect(type.inner, isEmpty);
+    type = inner[1];
+    expect(pageIndex[type.outer.location], equals(classA));
+    expect(type.inner, isEmpty);
+  });
+  
+  test('markdown_links', () {
+        
   });
 }
