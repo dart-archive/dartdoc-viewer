@@ -397,6 +397,7 @@ void main() {
     expect(innerType.inner, isEmpty);
   });
   
+  // TODO(tmandel): Fix error here.
   test('two_level_generic_variable_test', () {
     var currentMap = loadYaml(generic_two_level_variable);
     var item = new Variable(currentMap);
@@ -411,7 +412,7 @@ void main() {
     expect(innerType.outer is LinkableType, isTrue);
     expect(innerType.inner is List<NestedType>, isTrue);
     
-    var firstInner = innerType.inresponsener.first;
+    var firstInner = innerType.inner.first;
     expect(firstInner, isNotNull);
     expect(firstInner is NestedType, isTrue);
     expect(firstInner.inner is List<NestedType>, isTrue);
@@ -586,5 +587,34 @@ void main() {
       expect(results[i].element.startsWith('dart.core.Object.'), isTrue);
       expect(results[i].score, equals(results[1].score));
     }
+  });
+
+  // TODO(tmandel): Fix error here.
+  test('link_test', () {
+    // Annotation links
+    var currentMap = loadYaml(annotations);
+    var library = new Library(currentMap);
+
+    var variable = library.variables.content.first;
+    var firstAnnotation = variable.annotations.first;
+    var secondAnnotation = variable.annotations[1];
+    
+    var classA = library.classes.content.first;
+    classA.loadValues(loadYaml(clazzA));
+    var classB = library.abstractClasses.content.first;
+    classB.loadValues(loadYaml(clazzB));
+    
+    expect(pageIndex[firstAnnotation.link.location], equals(classB));
+    expect(pageIndex[secondAnnotation.link.location], equals(classA));
+    
+    expect(firstAnnotation.parameters.first, isNotNull);
+    expect(firstAnnotation.parameters[1], isNotNull);
+    
+    // Generic type links
+    
+    
+    // Markdown links
+    
+    
   });
 }
