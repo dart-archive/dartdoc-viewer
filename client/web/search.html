@@ -25,11 +25,12 @@ BSD-style license that can be found in the LICENSE file.
           <ul class="dropdown-menu pull-right" role="menu" 
             aria-labelledby="dropdownMenu">
             <template iterate="result in results">
-              <li data-ref-id="{{result.element}}"
-                  on-click="onSubmitCallback()">
-                <search-result id="search{{result.position}}" qualifiedname="{{result.element}}" tabindex="-1">
-                </search-result>
-              </li>
+               <li data-ref-id="{{result.element}}"
+                 on-click="onSubmitCallback()" tabindex="10"
+                 id="search{{result.position}}">
+               <search-result qualifiedname="{{result.element}}">
+               </search-result>
+             </li>
             </template>
           </ul>
         
