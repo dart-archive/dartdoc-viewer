@@ -3,19 +3,26 @@
     apply-author-styles>
   <template>
     <a id="{{item.name}}" on-click="app.viewer.changePage(item)">{{title}}</a>
+    <template if="item is Class">
+      <template if="item.previewComment != null">
+        <p class="description">
+          {{addComment('dartdoc-item', preview: true)}}
+        </p>
+      </template>
+    </template>
   </template>
   <script type="application/dart">
     import 'package:web_ui/web_ui.dart';
     import 'package:dartdoc_viewer/item.dart';
     import 'app.dart' as app;
+    import 'member.dart';
     
     /**
      * An HTML representation of a Item. 
      *
      * Used as a placeholder for an CategoryItem object. 
      */
-    class ItemElement extends WebComponent {
-      Item item;
+    class ItemElement extends MemberElement {
       
       String get title => item.decoratedName;
     }

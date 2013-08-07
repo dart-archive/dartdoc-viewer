@@ -28,10 +28,6 @@
           <dartdoc-category category="{{functions}}" class="accordion-group">
           </dartdoc-category>
         </template>
-        <template if="abstractClasses.content.isNotEmpty">
-          <dartdoc-category category="{{abstractClasses}}" 
-            class="accordion-group"></dartdoc-category>
-        </template>
         <template if="clazzes.content.isNotEmpty">
           <dartdoc-category category="{{clazzes}}" class="accordion-group">
           </dartdoc-category>
@@ -63,8 +59,6 @@
       Category get operators => item.operators;
 
       Category get functions => item.functions;
-
-      Category get abstractClasses => item.abstractClasses;
 
       Category get clazzes => item.classes;
       

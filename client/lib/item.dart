@@ -42,11 +42,11 @@ class Category extends Container {
   List<Container> content = [];
   Set<String> memberNames = new Set<String>();
   
-  Category.forClasses(List<String> locations, String name, 
+  Category.forClasses(List<Map> classes, String name, 
       {bool isAbstract: false}) : super(name) {
-    if (locations != null) {
-      locations.forEach((key) => 
-        content.add(new Class.forPlaceholder(key, isAbstract: isAbstract)));
+    if (classes != null) {
+      classes.forEach((clazz) => 
+        content.add(new Class.forPlaceholder(clazz['name'], clazz['preview'])));
     }
   }
   
@@ -201,7 +201,6 @@ abstract class LazyItem extends Item {
 class Library extends LazyItem {
   
   Category classes;
-  Category abstractClasses;
   Category errors;
   Category typedefs;
   Category variables;
@@ -219,7 +218,7 @@ class Library extends LazyItem {
   
   void addToHierarchy() {
     pageIndex[qualifiedName] = this;
-    [classes, abstractClasses, typedefs, errors, functions].forEach((category) {
+    [classes, typedefs, errors, functions].forEach((category) {
       category.content.forEach((clazz) {
         buildHierarchy(clazz, this);
       });
@@ -228,20 +227,16 @@ class Library extends LazyItem {
   
   void loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
-    var classes, abstractClasses, exceptions, typedefs;
+    var classes, exceptions, typedefs;
     var allClasses = yaml['classes'];
     if (allClasses != null) {
       classes = allClasses['class'];
-      abstractClasses = allClasses['abstract'];
       exceptions = allClasses['error'];
       typedefs = allClasses['typedef'];
     }
     this.typedefs = new Category.forTypedefs(typedefs);
     errors = new Category.forClasses(exceptions, 'Exceptions');
     this.classes = new Category.forClasses(classes, 'Classes');
-    this.abstractClasses =
-        new Category.forClasses(abstractClasses, 'Abstract Classes',
-            isAbstract: true);
     var setters, getters, methods, operators;
     var allFunctions = yaml['functions'];
     if (allFunctions != null) {
@@ -254,8 +249,8 @@ class Library extends LazyItem {
     functions = new Category.forFunctions(methods, 'Functions');
     this.operators = new Category.forFunctions(operators, 'Operators', 
         isOperator: true);
-    _sort([this.classes.content, this.abstractClasses.content, 
-           this.errors.content, this.typedefs.content, this.variables.content,
+    _sort([this.classes.content, this.errors.content, 
+           this.typedefs.content, this.variables.content,
            this.functions.content, this.operators.content]);
     isLoaded = true;
   }
@@ -272,18 +267,18 @@ class Class extends LazyItem {
   Category operators;
   LinkableType superClass;
   bool isAbstract;
+  String previewComment;
   List<Annotation> annotations;
   List<LinkableType> implements;
   List<LinkableType> subclasses;
   List<String> generics = [];
 
   /// Creates a [Class] placeholder object with null fields.
-  Class.forPlaceholder(String location, {bool this.isAbstract: false}) 
+  Class.forPlaceholder(String location, this.previewComment) 
       : super(location, location.split('.').last);
   
   /// Normal constructor for testing.
-  Class(Map yaml, {bool this.isAbstract: false}) 
-      : super(yaml['qualifiedName'], yaml['name']) {
+  Class(Map yaml) : super(yaml['qualifiedName'], yaml['name']) {
     loadValues(yaml);
   }
   
@@ -300,6 +295,7 @@ class Class extends LazyItem {
   
   void loadValues(Map yaml) {
     comment = _wrapComment(yaml['comment']);
+    isAbstract = yaml['isAbstract'] == 'true';
     superClass = new LinkableType(yaml['superclass']);
     subclasses = yaml['subclass'] == null ? [] :
       yaml['subclass'].map((item) => new LinkableType(item)).toList();

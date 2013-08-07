@@ -16,12 +16,14 @@ class MemberElement extends WebComponent {
   
   /// Adds [item]'s comment to the the [elementName] element with markdown
   /// links converted to working links.
-  void addComment(String elementName) {
-    if (item.comment != '' && item.comment != null) {
+  void addComment(String elementName, {preview: false}) {
+    var comment = item.comment;
+    if (preview) comment = item.previewComment;
+    if (comment != '' && comment != null) {
       var commentLocation = getShadowRoot(elementName).query('.description');
       commentLocation.children.clear();
-      var comment = new Element.html(item.comment);
-      var links = comment.queryAll('a');
+      var commentElement = new Element.html(comment);
+      var links = commentElement.queryAll('a');
       for (AnchorElement link in links) {
         if (link.href =='') {
           if (link.text.contains('#')) {
@@ -44,7 +46,7 @@ class MemberElement extends WebComponent {
           }
         }
       }
-      commentLocation.children.add(comment);
+      commentLocation.children.add(commentElement);
     }
   }
   
