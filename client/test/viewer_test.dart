@@ -32,7 +32,7 @@ String parameter =
 
 String variable =
 '''"name" : "variable"
-"qualifiedname" : "Library.variable"
+"qualifiedName" : "Library.variable"
 "comment" : "<p>This is a test comment</p>"
 "final" : "false"
 "static" : "false"
@@ -44,7 +44,7 @@ String variable =
 
 String method = 
 '''"name" : "getA"
-"qualifiedname" : "Library.getA"
+"qualifiedName" : "Library.getA"
 "comment" : ""
 "static" : "false"
 "constant" : "false"
@@ -67,7 +67,7 @@ String method =
 
 String clazz =
 '''"name" : "A"
-"qualifiedname" : "Library.A"
+"qualifiedName" : "Library.A"
 "comment" : "<p>This class is used for testing.</p>"
 "superclass" : "dart.core.Object"
 "implements" :
@@ -84,7 +84,7 @@ String clazz =
   "methods" :
     "doAction" :
       "name" : "doAction"
-      "qualifiedname" : "Library.A.doAction"
+      "qualifiedName" : "Library.A.doAction"
       "comment" : "<p>This is a test comment</p>."
       "static" : "true"
       "constant" : "false"
@@ -97,7 +97,7 @@ String clazz =
 
 String library =
 '''"name" : "Library"
-"qualifiedname" : "Library"
+"qualifiedName" : "Library"
 "comment" : "<p>This is a library.</p>"
 "variables" :
 "functions" :
@@ -112,13 +112,13 @@ String library =
 // A string of YAML with return types that are in scope for testing links.
 String dependencies = 
 '''"name" : "Library"
-"qualifiedname" : "Library"
+"qualifiedName" : "Library"
 "annotations" :
 "comment" : "<p>This is a library.</p>"
 "variables" :
   "variable" :
     "name" : "variable"
-    "qualifiedname" : "Library.variable"
+    "qualifiedName" : "Library.variable"
     "comment" : "<p>This is a test comment</p>"
     "final" : "false"
     "static" : "false"
@@ -135,7 +135,7 @@ String dependencies =
   "methods" :
     "changeA" :
       "name" : "changeA"
-      "qualifiedname" : "Library.changeA"
+      "qualifiedName" : "Library.changeA"
       "comment" : ""
       "constant" : "false"
       "static" : "false"
@@ -164,7 +164,7 @@ String dependencies =
 
 String clazzA =
 '''"name" : "A"
-"qualifiedname" : "Library.A"
+"qualifiedName" : "Library.A"
 "annotations" : 
 "generics" : 
 "comment" : ""
@@ -176,7 +176,7 @@ String clazzA =
 
 String clazzB =
 '''"name" : "B"
-"qualifiedname" : "Library.B"
+"qualifiedName" : "Library.B"
 "annotations" :
 "generics" : 
 "comment" : ""
@@ -187,7 +187,7 @@ String clazzB =
 
 String clazzC = 
 '''"name" : "C"
-"qualifiedname" : "Library.C"
+"qualifiedName" : "Library.C"
 "annotations" :
 "generics" : 
 "comment" : ""

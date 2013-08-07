@@ -212,7 +212,7 @@ class Library extends LazyItem {
   Library.forPlaceholder(String location) : super(location, location);
   
   /// Normal constructor for testing.
-  Library(Map yaml) : super(yaml['qualifiedname'], yaml['name']) {
+  Library(Map yaml) : super(yaml['qualifiedName'], yaml['name']) {
     loadValues(yaml);
     buildHierarchy(this, this);
   } 
@@ -283,7 +283,7 @@ class Class extends LazyItem {
   
   /// Normal constructor for testing.
   Class(Map yaml, {bool this.isAbstract: false}) 
-      : super(yaml['qualifiedname'], yaml['name']) {
+      : super(yaml['qualifiedName'], yaml['name']) {
     loadValues(yaml);
   }
   
@@ -326,8 +326,8 @@ class Class extends LazyItem {
         isOperator: true);
     constructs = new Category.forFunctions(constructors, 'Constructors', 
         isConstructor: true, className: this.name);
-    var inheritedMethods = yaml['inheritedmethods'];
-    var inheritedVariables = yaml['inheritedvariables'];
+    var inheritedMethods = yaml['inheritedMethods'];
+    var inheritedVariables = yaml['inheritedVariables'];
     if (inheritedMethods != null) {
       setters = inheritedMethods['setters'];
       getters = inheritedMethods['getters'];
@@ -349,8 +349,8 @@ class Class extends LazyItem {
     if (items != null) {
       items.values.forEach((item) {
         var object = new Variable(item, isSetter: isSetter, 
-            isGetter: isGetter, inheritedFrom: item['qualifiedname'],
-            commentFrom: item['commentfrom']);
+            isGetter: isGetter, inheritedFrom: item['qualifiedName'],
+            commentFrom: item['commentFrom']);
         variables.addInheritedItem(this, object);
       }); 
     }
@@ -361,8 +361,8 @@ class Class extends LazyItem {
     if (items != null) {
       items.values.forEach((item) {
         var object = new Method(item, isOperator: isOperator,
-            inheritedFrom: item['qualifiedname'],
-            commentFrom: item['commentfrom']);
+            inheritedFrom: item['qualifiedName'],
+            commentFrom: item['commentFrom']);
         var location = isOperator ? this.operators : this.functions;
         location.addInheritedItem(this, object);
       });
@@ -416,7 +416,7 @@ class Typedef extends Parameterized {
   LinkableType type;
   List<Annotation> annotations;
   
-  Typedef(Map yaml) : super(yaml['name'], yaml['qualifiedname'],
+  Typedef(Map yaml) : super(yaml['name'], yaml['qualifiedName'],
       _wrapComment(yaml['comment'])) {
     type = new LinkableType(yaml['return']);
     parameters = getParameters(yaml['parameters']);
@@ -444,7 +444,7 @@ class Method extends Parameterized {
   Method(Map yaml, {bool isConstructor: false, String className: '', 
       bool isOperator: false, String inheritedFrom: '',
       String commentFrom: ''}) 
-        : super(yaml['name'], yaml['qualifiedname'], 
+        : super(yaml['name'], yaml['qualifiedName'], 
             _wrapComment(yaml['comment'])) {
     this.isStatic = yaml['static'] == 'true';
     this.isAbstract = yaml['abstract'] == 'true';
@@ -452,7 +452,7 @@ class Method extends Parameterized {
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
     this.inheritedFrom = inheritedFrom;
-    this.commentFrom = commentFrom == '' ? yaml['commentfrom'] : commentFrom;
+    this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
     this.className = className;
@@ -530,12 +530,12 @@ class Variable extends Item {
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
       String inheritedFrom: '', String commentFrom: ''})
-      : super(yaml['name'], yaml['qualifiedname'], 
+      : super(yaml['name'], yaml['qualifiedName'], 
           _wrapComment(yaml['comment'])) {
     this.isGetter = isGetter;
     this.isSetter = isSetter;
     this.inheritedFrom = inheritedFrom;
-    this.commentFrom = commentFrom == '' ? yaml['commentfrom'] : commentFrom;
+    this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
     isFinal = yaml['final'] == 'true';
     isStatic = yaml['static'] == 'true';
     isConstant = yaml['constant'] == 'true';
