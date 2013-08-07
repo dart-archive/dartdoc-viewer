@@ -1,5 +1,5 @@
 "name" : "A"
-"qualifiedname" : "Library.A"
+"qualifiedName" : "Library.A"
 "comment" : "<p>This class is used for testing.</p>"
 "superclass" : "dart.core.Object"
 "implements" :
@@ -16,7 +16,7 @@
   "methods" :
     "doAction" :
       "name" : "doAction"
-      "qualifiedname" : "Library.A.doAction"
+      "qualifiedName" : "Library.A.doAction"
       "comment" : "<p>This is a test comment</p>."
       "static" : "true"
       "constant" : "false"

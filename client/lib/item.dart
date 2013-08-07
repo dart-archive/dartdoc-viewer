@@ -212,7 +212,7 @@ class Library extends LazyItem {
   Library.forPlaceholder(String location) : super(location, location);
   
   /// Normal constructor for testing.
-  Library(Map yaml) : super(yaml['qualifiedname'], yaml['name']) {
+  Library(Map yaml) : super(yaml['qualifiedName'], yaml['name']) {
     loadValues(yaml);
     buildHierarchy(this, this);
   } 
@@ -283,7 +283,7 @@ class Class extends LazyItem {
   
   /// Normal constructor for testing.
   Class(Map yaml, {bool this.isAbstract: false}) 
-      : super(yaml['qualifiedname'], yaml['name']) {
+      : super(yaml['qualifiedName'], yaml['name']) {
     loadValues(yaml);
   }
   
@@ -349,7 +349,7 @@ class Class extends LazyItem {
     if (items != null) {
       items.values.forEach((item) {
         var object = new Variable(item, isSetter: isSetter, 
-            isGetter: isGetter, inheritedFrom: item['qualifiedname'],
+            isGetter: isGetter, inheritedFrom: item['qualifiedName'],
             commentFrom: item['commentfrom']);
         variables.addInheritedItem(this, object);
       }); 
@@ -361,7 +361,7 @@ class Class extends LazyItem {
     if (items != null) {
       items.values.forEach((item) {
         var object = new Method(item, isOperator: isOperator,
-            inheritedFrom: item['qualifiedname'],
+            inheritedFrom: item['qualifiedName'],
             commentFrom: item['commentfrom']);
         var location = isOperator ? this.operators : this.functions;
         location.addInheritedItem(this, object);
@@ -416,7 +416,7 @@ class Typedef extends Parameterized {
   LinkableType type;
   List<Annotation> annotations;
   
-  Typedef(Map yaml) : super(yaml['name'], yaml['qualifiedname'],
+  Typedef(Map yaml) : super(yaml['name'], yaml['qualifiedName'],
       _wrapComment(yaml['comment'])) {
     type = new LinkableType(yaml['return']);
     parameters = getParameters(yaml['parameters']);
@@ -444,7 +444,7 @@ class Method extends Parameterized {
   Method(Map yaml, {bool isConstructor: false, String className: '', 
       bool isOperator: false, String inheritedFrom: '',
       String commentFrom: ''}) 
-        : super(yaml['name'], yaml['qualifiedname'], 
+        : super(yaml['name'], yaml['qualifiedName'], 
             _wrapComment(yaml['comment'])) {
     this.isStatic = yaml['static'] == 'true';
     this.isAbstract = yaml['abstract'] == 'true';
@@ -530,7 +530,7 @@ class Variable extends Item {
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
       String inheritedFrom: '', String commentFrom: ''})
-      : super(yaml['name'], yaml['qualifiedname'], 
+      : super(yaml['name'], yaml['qualifiedName'], 
           _wrapComment(yaml['comment'])) {
     this.isGetter = isGetter;
     this.isSetter = isSetter;
