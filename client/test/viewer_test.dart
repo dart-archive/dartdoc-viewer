@@ -419,6 +419,16 @@ dart.mirrors.Mirror class
 dart.dom.svg library
 dart.dom.svg.Number class''';
 
+String oneLibraryIndex =
+'''Library1
+Library1.function
+Library1.variable
+Library1.Class
+Library1.Class.method
+Library1.Class.variable
+Library1.Class.
+Library1.Class.from''';
+
 void main() {
   useHtmlEnhancedConfiguration();
     
@@ -734,10 +744,7 @@ void main() {
     expect(type.inner, isEmpty);
   });
   
-  test('markdown_links_test', () {
-    
-  });
-  
+  // Test that member paths are correct.
   test('breadcrumbs_test', () {
     var currentMap = loadYaml(dependencies);
     var library = new Library(currentMap);
@@ -776,6 +783,8 @@ void main() {
     expect(method.path[1], equals(method));
   });
   
+  // Test that methods, variables, and comments are inherited 
+  // correctly from public superclasses.
   test('inheritance_test', () {
     var currentMap = loadYaml(dependencies);
     var library = new Library(currentMap);
@@ -804,7 +813,46 @@ void main() {
     expect(inheritanceC.commentFrom, equals(inheritanceB.qualifiedName));
   });
   
-  test('search_autocomplete_test', () {
+  // Test searching with a single library in the index.
+  test('search_single_library_test', () {
+    index.addAll(oneLibraryIndex.split('\n'));
+    var results = lookupSearchResults('Class.from', 2);
+    expect(results[0].element, equals('Library1.Class.from'));
+    expect(results.length, equals(1));
+    
+    results = lookupSearchResults('Class', 6);
+    expect(results[0].element, equals('Library1.Class'));
+    expect(results[1].element, equals('Library1.Class.'));
+    expect(results.length, equals(5));
+    expect(results[2].score, equals(results[3].score));
+    expect(results[3].score, equals(results[4].score));
+    
+    results = lookupSearchResults('variable', 2);
+    expect(results[0].element, equals('Library1.variable'));
+    expect(results[1].element, equals('Library1.Class.variable'));
+    
+    results = lookupSearchResults('method', 2);
+    expect(results[0].element, equals('Library1.Class.method'));
+    expect(results.length, equals(1));
+    
+    results = lookupSearchResults('Library', 9);
+    expect(results[0].element, equals('Library1'));
+    // Expect the next best results to have Library1 as immediate owner
+    // and not Class.
+    for (int i = 1; i < 4; i++) 
+      expect(results[i].element.contains('Class.'), isFalse);
+    // Expect the best after immediate Library1 members to be Class members. 
+    for (int i = 4; i < 8; i++)
+      expect(results[i].element.contains('Library1.Class.'), isTrue);
+    expect(results.length, equals(8));
+  });  
+  
+  // Test searching with multiple libraries in index.
+  test('search_multiple_libraries_test', () {
+    
+  });
+  
+  test('markdown_links_test', () {
     
   });
 }
