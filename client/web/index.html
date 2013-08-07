@@ -18,7 +18,7 @@
 <title>{{viewer.currentPage.decoratedName}} - Dart API Reference</title>
 </template>
 <template 
-  if="!(viewer.currentPage != null && viewer.currentPage != viewer.homePage)">
+  if="viewer.currentPage == null || viewer.currentPage == viewer.homePage">
   <title>Dart API Reference</title>
 </template>
 
