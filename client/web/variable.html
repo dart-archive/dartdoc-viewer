@@ -8,29 +8,35 @@
     
     <a id="{{item.name}}"></a>
     
-    <template if="item.comment == '<span></span>' && item.annotations.isEmpty">
+    <template if="item.comment == '<span></span>' && item.annotations.isEmpty &&
+        !isInherited">
       <variable-heading item="{{item}}"  class="panel-title">
         </variable-heading>
     </template>
     <template
-      if="item.comment != '<span></span>' || item.annotations.isNotEmpty">
+      if="item.comment != '<span></span>' || item.annotations.isNotEmpty || 
+        isInherited">
       <variable-heading item="{{item}}" class="panel-heading">
         </variable-heading>
-      <template if="isInherited">
-        This property is inherited from 
-        <a on-click="app.viewer.handleLink(inheritedFrom.location)">
-          {{inheritedFrom.simpleType}}
-        </a>
-      </template>
+      <p class="text-right"><dfn>
+        <template if="isInherited">
+          This property is inherited from 
+          <a on-click="app.viewer.handleLink(inheritedFrom.location)">
+            {{inheritedFrom.simpleType}}
+          </a>
+        </template>
+      </dfn></p>
       <p class="description">
         {{addComment('dartdoc-variable')}}
       </p>
-      <template if="hasInheritedComment">
-        This documentation is inherited from 
-        <a on-click="app.viewer.handleLink(commentFrom.location)">
-          {{commentFrom.simpleType}}.
-        </a>
-      </template>
+      <p class="text-right"><dfn>
+        <template if="hasInheritedComment">
+          This documentation is inherited from 
+          <a on-click="app.viewer.handleLink(commentFrom.location)">
+            {{commentFrom.simpleType}}.
+          </a>
+        </template>
+      </dfn></p>
       <dartdoc-annotation annotations="{{item.annotations}}">
       </dartdoc-annotation>
     </template>

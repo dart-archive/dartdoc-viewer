@@ -31,25 +31,29 @@
            <!-- Parameters -->
           <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
         </h1>
+      </div>
 
+      <p class="text-right"><dfn>
         <template if="isInherited">
           This member is inherited from 
           <a on-click="viewer.handleLink(inheritedFrom.location)">
             {{inheritedFrom.simpleType}}
           </a>
         </template>
-    </div>
+      </dfn></p>
 
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-method')}}</section>
-    
-      <template if="hasInheritedComment">
-        This documentation is inherited from 
-        <a on-click="viewer.handleLink(commentFrom.location)">
-          {{commentFrom.simpleType}}
-        </a>
-      </template>
-    
+
+      <p class="text-right"><dfn>
+        <template if="hasInheritedComment">
+            This documentation is inherited from 
+            <a on-click="viewer.handleLink(commentFrom.location)">
+              {{commentFrom.simpleType}}
+            </a>
+        </template>
+      </dfn></p>
+
     </template>
   </template>
   

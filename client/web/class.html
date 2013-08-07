@@ -50,22 +50,23 @@
           {{superClass.simpleType}}
         </a>
       </p>
-
-      <!-- Subclasses -->
-      <template instantiate="if item.qualifiedName != 'dart.core.Object'">
-        <template if="subclasses.isNotEmpty">
-          Subclasses:
-        </template>
-        <template iterate="subclass in subclasses">
-          <a on-click="viewer.handleLink(subclass.location)">
-            {{subclass.simpleType}}
-          </a>
-          <template if="subclass != subclasses.last">
-            ,&nbsp;
+      <p>
+        <!-- Subclasses -->
+        <template instantiate="if item.qualifiedName != 'dart.core.Object'">
+          <template if="subclasses.isNotEmpty">
+            Subclasses:
+          </template>
+          <template iterate="subclass in subclasses">
+            <a on-click="viewer.handleLink(subclass.location)">
+              {{subclass.simpleType}}
+            </a>
+            <template if="subclass != subclasses.last">
+              ,&nbsp;
+            </template>
           </template>
         </template>
-      </template>
-    
+      </p>
+  
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-class')}}</section>
       

@@ -1,3 +1,8 @@
+/*
+TODO(janicejl): Rewrite this file using nested rules to simplify the CSS after 
+polymer stabilizes. 
+*/
+
 .header-logo {
   background-image: url('../dart-logo-small.png');
   width: 66px;

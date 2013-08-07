@@ -8,11 +8,11 @@
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" 
         data-parent="#accordion-grouping" 
-        href="#accordion-{{title.replaceAll(' ', '-')}}">
+        href="#accordion-{{stylizedName}}">
         {{title}}
       </a>
     </div>
-    <div id="accordion-{{title.replaceAll(' ', '-')}}" 
+    <div id="accordion-{{stylizedName}}" 
       class="accordion-body collapse"> 
       <div class="accordion-inner">
         <ul class="nav nav-pills nav-stacked">
@@ -45,6 +45,8 @@
       @observable Container category;
       
       String get title => category.name;
+
+      String get stylizedName => category.name.replaceAll(' ', '-');
     }
 
   </script>
