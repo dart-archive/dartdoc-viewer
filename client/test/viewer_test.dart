@@ -296,7 +296,31 @@ String clazzA =
 "superclass" : "Library.B"
 "implements" : 
   - "Library.B"
+"inheritedvariables" :
+  "inheritance" :
+    "name" : "inheritance"
+    "qualifiedname" : "Library.B.inheritance"
+    "comment" : "<p>Comment for Library.B.inheritance</p>"
+    "commentfrom" : ""
+    "final" : "false"
+    "static" : "false"
+    "constant" : "false"
+    "type" :
+      - "inner" :
+        "outer" : "dart.core.String"
+    "annotations" :
 "variables" : 
+  "inheritance" :
+    "name" : "inheritance"
+    "qualifiedname" : "Library.A.inheritance"
+    "comment" : ""
+    "final" : "false"
+    "static" : "false"
+    "constant" : "false"
+    "type" :
+      - "inner" :
+        "outer" : "dart.core.String"
+    "annotations" :
 "methods" :
   "constructors" :
   "getters" :
@@ -335,7 +359,18 @@ String clazzB =
 "comment" : ""
 "superclass" : "dart.core.Object"
 "implements" : 
-"variables" : 
+"variables" :
+  "inheritance" :
+    "name" : "inheritance"
+    "qualifiedname" : "Library.B.inheritance"
+    "comment" : "<p>Comment for Library.B.inheritance</p>"
+    "final" : "false"
+    "static" : "false"
+    "constant" : "false"
+    "type" :
+      - "inner" :
+        "outer" : "dart.core.String"
+    "annotations" :
 "methods" :''';
 
 String clazzC = 
@@ -347,6 +382,19 @@ String clazzC =
 "comment" : ""
 "superclass" : "Library.A"
 "implements" : 
+"inheritedvariables" :
+  "inheritance" :
+    "name" : "inheritance"
+    "qualifiedname" : "Library.A.inheritance"
+    "comment" : "<p>Comment for Library.B.inheritance</p>"
+    "commentfrom" : "Library.B.inheritance"
+    "final" : "false"
+    "static" : "false"
+    "constant" : "false"
+    "type" :
+      - "inner" :
+        "outer" : "dart.core.String"
+    "annotations" :
 "variables" : 
 "methods" :''';
 
@@ -729,7 +777,31 @@ void main() {
   });
   
   test('inheritance_test', () {
+    var currentMap = loadYaml(dependencies);
+    var library = new Library(currentMap);
     
+    var classA = library.classes.content.first;
+    classA.loadValues(loadYaml(clazzA));
+    buildHierarchy(classA, classA);
+    
+    var classB = library.abstractClasses.content.firstWhere((item) =>
+        item.name == 'B');
+    classB.loadValues(loadYaml(clazzB));
+    buildHierarchy(classB, classB);
+    
+    var classC = library.abstractClasses.content.firstWhere((item) =>
+        item.name == 'C');
+    classC.loadValues(loadYaml(clazzC));
+    buildHierarchy(classC, classC);
+    
+    var inheritanceA = classA.variables.content.first;
+    var inheritanceB = classB.variables.content.first;
+    var inheritanceC = classC.variables.content.first;
+    
+    expect(inheritanceA.comment, equals(inheritanceB.comment));
+    expect(inheritanceC.comment, equals(inheritanceB.comment));
+    
+    expect(inheritanceC.commentFrom, equals(inheritanceB.qualifiedName));
   });
   
   test('search_autocomplete_test', () {
