@@ -16,9 +16,21 @@
       if="item.comment != '<span></span>' || item.annotations.isNotEmpty">
       <variable-heading item="{{item}}" class="panel-heading">
         </variable-heading>
+      <template if="isInherited">
+        This property is inherited from 
+        <a on-click="app.viewer.handleLink(inheritedFrom.location)">
+          {{inheritedFrom.simpleType}}
+        </a>
+      </template>
       <p class="description">
         {{addComment('dartdoc-variable')}}
       </p>
+      <template if="hasInheritedComment">
+        This documentation is inherited from 
+        <a on-click="app.viewer.handleLink(commentFrom.location)">
+          {{commentFrom.simpleType}}.
+        </a>
+      </template>
       <dartdoc-annotation annotations="{{item.annotations}}">
       </dartdoc-annotation>
     </template>
@@ -33,6 +45,6 @@
     /**
      * An HTML representation of a Variable.
      */
-    class VariableElement extends MemberElement {}
+    class VariableElement extends InheritedElement {}
   </script>
 </element>

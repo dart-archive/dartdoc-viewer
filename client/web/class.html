@@ -11,7 +11,7 @@
     </template>
     <template if="item != null">
       
-      <dartdoc-annotation annotations="{{item.annotations}}">
+      <dartdoc-annotation annotations="{{annotations}}">
       </dartdoc-annotation>
      
       <div class="page-header"><h1>
@@ -50,6 +50,21 @@
           {{superClass.simpleType}}
         </a>
       </p>
+
+      <!-- Subclasses -->
+      <template instantiate="if item.qualifiedName != 'dart.core.Object'">
+        <template if="subclasses.isNotEmpty">
+          Subclasses:
+        </template>
+        <template iterate="subclass in subclasses">
+          <a on-click="viewer.handleLink(subclass.location)">
+            {{subclass.simpleType}}
+          </a>
+          <template if="subclass != subclasses.last">
+            ,&nbsp;
+          </template>
+        </template>
+      </template>
     
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-class')}}</section>
@@ -72,7 +87,7 @@
           </dartdoc-category>
         </template>
       </div>
-      
+
     </template>
   </template>
   
@@ -93,7 +108,11 @@
 
       Category get methods => item.functions;
       
+      List<LinkableType> get annotations => item.annotations;
+      
       List<LinkableType> get interfaces => item.implements;
+      
+      List<LinkableType> get subclasses => item.subclasses;
       
       LinkableType get superClass => item.superClass;
     }

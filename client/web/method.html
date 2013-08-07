@@ -32,12 +32,23 @@
           <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
         </h1>
 
-        
-       
-       
-      </div>
+        <template if="isInherited">
+          This member is inherited from 
+          <a on-click="viewer.handleLink(inheritedFrom.location)">
+            {{inheritedFrom.simpleType}}
+          </a>
+        </template>
+    </div>
+
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-method')}}</section>
+    
+      <template if="hasInheritedComment">
+        This documentation is inherited from 
+        <a on-click="viewer.handleLink(commentFrom.location)">
+          {{commentFrom.simpleType}}
+        </a>
+      </template>
     
     </template>
   </template>
@@ -51,7 +62,7 @@
     import 'app.dart';
     import 'member.dart';
     
-    class MethodElement extends MemberElement {
+    class MethodElement extends InheritedElement {
       List<Parameter> get parameters => item.parameters;
     }
   </script>
