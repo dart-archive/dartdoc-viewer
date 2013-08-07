@@ -326,8 +326,8 @@ class Class extends LazyItem {
         isOperator: true);
     constructs = new Category.forFunctions(constructors, 'Constructors', 
         isConstructor: true, className: this.name);
-    var inheritedMethods = yaml['inheritedmethods'];
-    var inheritedVariables = yaml['inheritedvariables'];
+    var inheritedMethods = yaml['inheritedMethods'];
+    var inheritedVariables = yaml['inheritedVariables'];
     if (inheritedMethods != null) {
       setters = inheritedMethods['setters'];
       getters = inheritedMethods['getters'];
@@ -350,7 +350,7 @@ class Class extends LazyItem {
       items.values.forEach((item) {
         var object = new Variable(item, isSetter: isSetter, 
             isGetter: isGetter, inheritedFrom: item['qualifiedName'],
-            commentFrom: item['commentfrom']);
+            commentFrom: item['commentFrom']);
         variables.addInheritedItem(this, object);
       }); 
     }
@@ -362,7 +362,7 @@ class Class extends LazyItem {
       items.values.forEach((item) {
         var object = new Method(item, isOperator: isOperator,
             inheritedFrom: item['qualifiedName'],
-            commentFrom: item['commentfrom']);
+            commentFrom: item['commentFrom']);
         var location = isOperator ? this.operators : this.functions;
         location.addInheritedItem(this, object);
       });
@@ -452,7 +452,7 @@ class Method extends Parameterized {
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
     this.inheritedFrom = inheritedFrom;
-    this.commentFrom = commentFrom == '' ? yaml['commentfrom'] : commentFrom;
+    this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
     this.className = className;
@@ -535,7 +535,7 @@ class Variable extends Item {
     this.isGetter = isGetter;
     this.isSetter = isSetter;
     this.inheritedFrom = inheritedFrom;
-    this.commentFrom = commentFrom == '' ? yaml['commentfrom'] : commentFrom;
+    this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
     isFinal = yaml['final'] == 'true';
     isStatic = yaml['static'] == 'true';
     isConstant = yaml['constant'] == 'true';
