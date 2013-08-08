@@ -4,7 +4,7 @@
 <link rel="import" href="parameters.html">
 <link rel="import" href="annotations.html">
 
-<element name="dartdoc-method" constructor="MethodElement" extends="article"
+<element name="dartdoc-method" constructor="DartdocMethod" extends="article"
     apply-author-styles>
   <template>
     <template if="item == null">
@@ -57,5 +57,9 @@
     </template>
   </template>
   
-  <script type="application/dart" src="member.dart"></script>
+  <script type="application/dart">
+    import 'member.dart';
+    
+    class DartdocMethod extends MethodElement {}
+  </script>
 </element>

@@ -4,7 +4,7 @@
 <link rel="import" href="parameters.html">
 <link rel="import" href="annotations.html">
 
-<element name="method-panel" constructor="MethodElement" extends="div"
+<element name="method-panel" constructor="MethodPanel" extends="div"
     apply-author-styles>
   <template>
     <template if="item == null">
@@ -58,5 +58,10 @@
     </template>
   </template>
   
-  <script type="application/dart" src="member.dart"></script>
+  <script type="application/dart">
+    import 'member.dart';
+    
+    class MethodPanel extends MethodElement {}
+  </script>
+
 </element>
