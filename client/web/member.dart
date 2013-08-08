@@ -106,3 +106,7 @@ class InheritedElement extends MemberElement {
     return new LinkableType(ownerName(qualifiedName));
   }
 }
+
+class MethodElement extends InheritedElement {
+  List<Parameter> get parameters => item.parameters;
+}
