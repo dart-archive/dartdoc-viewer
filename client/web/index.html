@@ -73,9 +73,11 @@
   </div>
 </div>
 
-<div class="pull-left">
-  <a on-click="viewer.togglePanel()">toggle library list</a>
-</div>
+<button type="button" class="btn btn-default pull-left" 
+  on-click="viewer.togglePanel()">
+  <template if="viewer.isPanel">Hide Libraries</template>
+  <template if="!viewer.isPanel">Show Libraries</template>
+</button>
 
 <div class="container main-body">
 
