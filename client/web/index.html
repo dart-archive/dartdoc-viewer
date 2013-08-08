@@ -73,11 +73,15 @@
   </div>
 </div>
 
-<button type="button" class="btn btn-default pull-left" 
-  on-click="viewer.togglePanel()">
-  <template if="viewer.isPanel">Hide Libraries</template>
-  <template if="!viewer.isPanel">Show Libraries</template>
-</button>
+<template instantiate="if viewer.currentPage != viewer.homePage">
+  <div class="affix pull-left clearfix" data-spy="affix" data-offset-top="200">
+    <button type="button" class="btn btn-primary btn-xs visible-lg" 
+      on-click="viewer.togglePanel()">
+      <template if="viewer.isPanel">Hide Libraries</template>
+      <template if="!viewer.isPanel">Show Libraries</template>
+    </button>
+  </div>
+</template>
 
 <div class="container main-body">
 
@@ -101,7 +105,7 @@
           </template>
         </template>
       </div>
-      <main class="col-12 col-lg-9">
+      <main class="col-12 col-lg-8">
         <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
       </main>
     </template>
