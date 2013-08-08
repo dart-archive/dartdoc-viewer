@@ -3,7 +3,9 @@ TODO(janicejl): Rewrite this file using nested rules to simplify the CSS after
 polymer stabilizes. 
 */
 
-.main-body { padding-top: 70px; }
+.main-body { 
+  padding-top: 70px; 
+}
 
 .header-logo {
   background-image: url('../dart-logo-small.png');
