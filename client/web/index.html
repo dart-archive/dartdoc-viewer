@@ -13,13 +13,13 @@
 <script type="text/javascript" src="static/js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
 
-<template 
-  if="viewer.currentPage != null && viewer.currentPage != viewer.homePage">
-<title>{{viewer.currentPage.decoratedName}} - Dart API Reference</title>
-</template>
-<template 
-  if="viewer.currentPage == null || viewer.currentPage == viewer.homePage">
-  <title>Dart API Reference</title>
+<template if="viewer.currentPage != null">
+  <template if="viewer.currentPage == viewer.homePage">
+    <title>Dart API Reference</title>
+  </template>
+  <template if="viewer.currentPage != viewer.homePage">
+    <title>{{viewer.currentPage.decoratedName}} - Dart API Reference</title>
+  </template>
 </template>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
