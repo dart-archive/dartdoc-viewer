@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-<link rel="stylesheet" href="static/css/pics.css">
 <link rel="stylesheet" href="static/css/bootstrap.css">
+<link rel="stylesheet" href="static/css/pics.css">
 <link rel="import" href="category.html">
 <link rel="import" href="item.html">
 <link rel="import" href="page.html">
@@ -26,8 +26,8 @@
 
 <a id='dartdoc-top'></a>
 
-<div class="navbar">
-  <div class="container">
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
     <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
     <button type="button" class="navbar-toggle" data-toggle="collapse" 
       data-target=".navbar-responsive-collapse">
@@ -73,7 +73,7 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container main-body">
   <template instantiate="if viewer.homePage != null">
     <template if="viewer.currentPage != viewer.homePage">
       <div class="list-group visible-lg col-lg-4" 
@@ -104,5 +104,4 @@
       </main>
     </template>
   </template>
-  
 </div>
