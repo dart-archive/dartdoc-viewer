@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<link rel="import" href="item.html">
+<link rel="import" href="category.html">
+<link rel="import" href="parameters.html">
+<link rel="import" href="annotations.html">
+
+<element name="method-panel" constructor="MethodElement" extends="div"
+    apply-author-styles>
+  <template>
+    <template if="item == null">
+      Loading...
+    </template>
+    <template if="item != null">
+      
+      <div class="panel-heading">
+        <dartdoc-annotation annotations="{{item.annotations}}">
+        </dartdoc-annotation>
+      
+      <!-- Return Type -->
+      <p>
+        <template instantiate="if !item.isConstructor">
+          <span class="type">
+            {{createType(item.type, 'method-panel', 'type')}}
+          </span>
+        </template>
+          <span>
+            <template if="item.isConstant">const</template>
+            <template if="item.isAbstract">abstract</template>
+            <template if="item.isStatic">static</template>
+            <b>{{item.decoratedName}}</b>
+             <!-- Parameters -->
+            <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
+          </span>
+        </p>
+      </div>
+
+      <p class="text-right"><dfn>
+        <template if="isInherited">
+          This member is inherited from 
+          <a on-click="viewer.handleLink(inheritedFrom.location)">
+            {{inheritedFrom.simpleType}}
+          </a>
+        </template>
+      </dfn></p>
+
+      <!-- Comment -->
+      <section class="description">{{addComment('method-panel')}}</section>
+
+      <p class="text-right"><dfn>
+        <template if="hasInheritedComment">
+            This documentation is inherited from 
+            <a on-click="viewer.handleLink(commentFrom.location)">
+              {{commentFrom.simpleType}}
+            </a>
+        </template>
+      </dfn></p>
+
+    </template>
+  </template>
+  
+  <script type="application/dart">
+    import 'dart:html';
+
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+
+    import 'app.dart';
+    import 'member.dart';
+
+    class MethodElement extends InheritedElement {
+      List<Parameter> get parameters => item.parameters;
+    }
+  </script>
+</element>

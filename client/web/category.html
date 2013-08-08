@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <link rel="import" href="item.html">
 <link rel="import" href="variable.html">
+<link rel="import" href="method-panel.html">
 
 <element name="dartdoc-category" constructor="CategoryElement" 
     extends="div" apply-author-styles>     
@@ -20,13 +21,18 @@
       <div class="accordion-inner">
         <ul class="nav nav-pills nav-stacked">
           <template iterate="item in category.content">
-            <template if="item is Item && item is! Variable">
+            <template if="item is Item && item is! Variable && item is! Method">
               <dartdoc-item item="{{item}}"></dartdoc-item>
             </template>
             
             <template if="item is Variable">
               <dartdoc-variable item="{{item}}" class="panel">
               </dartdoc-variable>
+            </template>
+
+            <template if="item is Method">
+              <dartdoc-item class="visible-sm" item="{{item}}"></dartdoc-item>
+              <method-panel class="panel hidden-sm" item="{{item}}"></method-panel>
             </template>
           </template>
         </ul>

@@ -9,7 +9,7 @@
     <template if="item.isAbstract">static</template>
     <template if="item.isConstant">const</template>
     <template if="item.isSetter">
-      void&nbsp;set&nbsp;{{name}}(
+      void&nbsp;set&nbsp;<b>{{name}}</b>(
       <dartdoc-annotation annotations="{{setterParameter.annotations}}">
       </dartdoc-annotation>
       <span class="setParam">
@@ -21,7 +21,7 @@
       <span class="type">
         {{createType(item.type, 'variable-heading', 'type')}}
       </span>
-      {{getter}}&nbsp;{{name}}
+      {{getter}}&nbsp;<b>{{name}}</b>
     </template>
   </template>
   <script type="application/dart">
