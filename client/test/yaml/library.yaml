@@ -5,8 +5,8 @@
 "functions" :
 "annotations" :
 "classes" :
-  "abstract" :
-    - "Library.A"
   "class" :
+    - "name" : "Library.A"
+      "preview" : "<p>This is a preview comment</p>"
   "error" :
   "typedef" :

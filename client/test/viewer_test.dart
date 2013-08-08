@@ -69,6 +69,7 @@ String clazz =
 '''"name" : "A"
 "qualifiedName" : "Library.A"
 "comment" : "<p>This class is used for testing.</p>"
+"isAbstract" : "false"
 "superclass" : "dart.core.Object"
 "implements" :
   - "Library.B"
@@ -103,9 +104,9 @@ String library =
 "functions" :
 "annotations" :
 "classes" :
-  "abstract" :
-    - "Library.A"
   "class" :
+    - "name" : "Library.A"
+      "preview" : "<p>This is a preview comment</p>"
   "error" :
   "typedef" :''';
 
@@ -157,14 +158,14 @@ String dependencies =
       "annotations" : 
 "classes" :
   "class" :
-    - "Library.A"
-  "abstract" :
-    - "Library.B"
-    - "Library.C"''';
+    - "name" : "Library.A"
+    - "name" : "Library.B"
+    - "name" : "Library.C"''';
 
 String clazzA =
 '''"name" : "A"
 "qualifiedName" : "Library.A"
+"isAbstract" : "false"
 "annotations" : 
 "generics" : 
 "comment" : ""
@@ -178,6 +179,7 @@ String clazzB =
 '''"name" : "B"
 "qualifiedName" : "Library.B"
 "annotations" :
+"isAbstract" : "true"
 "generics" : 
 "comment" : ""
 "superclass" : "dart.core.Object"
@@ -189,6 +191,7 @@ String clazzC =
 '''"name" : "C"
 "qualifiedName" : "Library.C"
 "annotations" :
+"isAbstract" : "true"
 "generics" : 
 "comment" : ""
 "superclass" : "Library.A"
@@ -225,6 +228,7 @@ void main() {
     retrieveFileContents('yaml/variable.yaml').then(expectAsync1((data) {
       expect(data, equals(variable));
     }));
+    
     var yaml = loadYaml(variable);
     var item = new Variable(yaml);
     expect(item is Variable, isTrue);
@@ -298,13 +302,12 @@ void main() {
     // TODO(tmandel): Should test for the same classes/functions/etc.
     
     expect(itemManual.classes is Category, isTrue);
-    expect(itemManual.abstractClasses is Category, isTrue);
     expect(itemManual.errors is Category, isTrue);
     expect(itemManual.variables is Category, isTrue);
     expect(itemManual.functions is Category, isTrue);
     expect(itemManual.operators is Category, isTrue);
 
-    var clazz = itemManual.abstractClasses.content.first;
+    var clazz = itemManual.classes.content.first;
     expect(clazz is Class, isTrue);
     clazz.loadValues(loadYaml(clazzA));
     
@@ -318,14 +321,13 @@ void main() {
     var library = new Library(currentMap);
 
     var classes = library.classes;
-    var abstractClasses = library.abstractClasses;
     var variables = library.variables;
     var functions = library.functions;
 
     var variable = variables.content.first;
-    var classA = classes.content.first;
-    var classB, classC;
-    abstractClasses.content.forEach((element) {
+    var classA, classB, classC;
+    classes.content.forEach((element) {
+      if (element.name == 'A') classA = element;
       if (element.name == 'B') classB = element;
       if (element.name == 'C') classC = element;
     });

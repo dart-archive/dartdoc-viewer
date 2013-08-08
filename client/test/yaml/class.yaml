@@ -1,6 +1,7 @@
 "name" : "A"
 "qualifiedName" : "Library.A"
 "comment" : "<p>This class is used for testing.</p>"
+"isAbstract" : "false"
 "superclass" : "dart.core.Object"
 "implements" :
   - "Library.B"
