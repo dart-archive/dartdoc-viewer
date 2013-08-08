@@ -21,7 +21,7 @@
       "constant" : "false"
       "name" : ""
       "parameters" :
-      "qualifiedname" : "Library.A."
+      "qualifiedName" : "Library.A."
       "return" :
         - "inner" :
           "outer" : "Library.A"

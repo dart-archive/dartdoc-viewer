@@ -45,7 +45,7 @@ String variable =
 
 String genericOneLevelVariable =
 '''"name" : "generic"
-"qualifiedname" : "Library.generic"
+"qualifiedName" : "Library.generic"
 "comment" : "<p>This is a test comment for generic types</p>"
 "final" : "false"
 "static" : "false"
@@ -59,7 +59,7 @@ String genericOneLevelVariable =
 
 String genericTwoLevelVariable =
 '''"name" : "generic"
-"qualifiedname" : "Library.generic"
+"qualifiedName" : "Library.generic"
 "comment" : "<p>This is a test comment for generic types</p>"
 "final" : "false"
 "static" : "false"
@@ -93,7 +93,7 @@ String setter =
       - "inner" : 
         "outer" : "dart.core.int"
     "value" : "null"
-"qualifiedname" : "Library.Class.length="
+"qualifiedName" : "Library.Class.length="
 "return" : 
   - "inner" :
     "outer" : "void"
@@ -146,7 +146,7 @@ String clazz =
       "constant" : "false"
       "name" : ""
       "parameters" :
-      "qualifiedname" : "Library.A."
+      "qualifiedName" : "Library.A."
       "return" :
         - "inner" :
           "outer" : "Library.A"
@@ -234,12 +234,12 @@ String dependencies =
 
 String annotationsAndGenerics =
 '''"name" : "Library"
-"qualifiedname" : "Library"
+"qualifiedName" : "Library"
 "comment" : "<p>This is an annotation test</p>"
 "variables" :
   "generic" :
     "name" : "generic"
-    "qualifiedname" : "Library.generic"
+    "qualifiedName" : "Library.generic"
     "comment" : "<p>This is a test comment for generic types</p>"
     "final" : "false"
     "static" : "false"
@@ -256,7 +256,7 @@ String annotationsAndGenerics =
     "annotations" :
   "variable" :
     "name" : "variable"
-    "qualifiedname" : "Library.variable"
+    "qualifiedName" : "Library.variable"
     "comment" : ""
     "final" : "false"
     "static" : "false"
@@ -279,10 +279,9 @@ String annotationsAndGenerics =
   "methods" :
 "classes" :
   "class" :
-    - "Library.A"
-  "abstract" :
-    - "Library.B"
-    - "Library.C"
+    - "name" : "Library.A"
+    - "name" : "Library.B"
+    - "name" : "Library.C"
   "error" :
   "typedef" :''';
 
@@ -296,12 +295,12 @@ String clazzA =
 "superclass" : "Library.B"
 "implements" : 
   - "Library.B"
-"inheritedvariables" :
+"inheritedVariables" :
   "inheritance" :
     "name" : "inheritance"
-    "qualifiedname" : "Library.B.inheritance"
+    "qualifiedName" : "Library.B.inheritance"
     "comment" : "<p>Comment for Library.B.inheritance</p>"
-    "commentfrom" : ""
+    "commentFrom" : ""
     "final" : "false"
     "static" : "false"
     "constant" : "false"
@@ -312,7 +311,7 @@ String clazzA =
 "variables" : 
   "inheritance" :
     "name" : "inheritance"
-    "qualifiedname" : "Library.A.inheritance"
+    "qualifiedName" : "Library.A.inheritance"
     "comment" : ""
     "final" : "false"
     "static" : "false"
@@ -327,7 +326,7 @@ String clazzA =
   "methods" :
     "getA" :
       "name" : "getA"
-      "qualifiedname" : "Library.A.getA"
+      "qualifiedName" : "Library.A.getA"
       "comment" : ""
       "static" : "false"
       "constant" : "false"
@@ -362,7 +361,7 @@ String clazzB =
 "variables" :
   "inheritance" :
     "name" : "inheritance"
-    "qualifiedname" : "Library.B.inheritance"
+    "qualifiedName" : "Library.B.inheritance"
     "comment" : "<p>Comment for Library.B.inheritance</p>"
     "final" : "false"
     "static" : "false"
@@ -382,12 +381,12 @@ String clazzC =
 "comment" : ""
 "superclass" : "Library.A"
 "implements" : 
-"inheritedvariables" :
+"inheritedVariables" :
   "inheritance" :
     "name" : "inheritance"
-    "qualifiedname" : "Library.A.inheritance"
+    "qualifiedName" : "Library.A.inheritance"
     "comment" : "<p>Comment for Library.B.inheritance</p>"
-    "commentfrom" : "Library.B.inheritance"
+    "commentFrom" : "Library.B.inheritance"
     "final" : "false"
     "static" : "false"
     "constant" : "false"
@@ -626,8 +625,8 @@ void main() {
     // Test that the same results are produced.
     expect(itemAutomatic.name, equals(itemManual.name));
     expect(itemAutomatic.comment, equals(itemManual.comment));
-    expect(itemAutomatic.abstractClasses.content.length, 
-        equals(itemManual.abstractClasses.content.length));
+    expect(itemAutomatic.classes.content.length, 
+        equals(itemManual.classes.content.length));
     
     expect(itemManual.classes is Category, isTrue);
     expect(itemManual.errors is Category, isTrue);
@@ -723,9 +722,12 @@ void main() {
     var firstAnnotation = variable.annotations.first;
     var secondAnnotation = variable.annotations[1];
     
-    var classA = library.classes.content.first;
+    var classA, classB, classC;
+    library.classes.content.forEach((element) {
+      if (element.name == 'A') classA = element;
+      if (element.name == 'B') classB = element;
+    });
     classA.loadValues(loadYaml(clazzA));
-    var classB = library.abstractClasses.content.first;
     classB.loadValues(loadYaml(clazzB));
     
     expect(pageIndex[firstAnnotation.link.location], equals(classB));
@@ -744,11 +746,12 @@ void main() {
         item.name == 'generic');
     var type = variable.type;
     
-    var classA = library.classes.content.first;
-    var classB = library.abstractClasses.content.firstWhere((item) =>
-        item.name == 'B');
-    var classC = library.abstractClasses.content.firstWhere((item) =>
-        item.name == 'C');
+    var classA, classB, classC;
+    library.classes.content.forEach((element) {
+      if (element.name == 'A') classA = element;
+      if (element.name == 'B') classB = element;
+      if (element.name == 'C') classC = element;
+    });
     
     var outer = type.outer;
     expect(pageIndex[outer.location], equals(classC));
@@ -772,7 +775,12 @@ void main() {
     expect(library.path[0], equals(library));
     expect(library.path.length, equals(1));
     
-    var classA = library.classes.content.first;
+    var classA, classB, classC;
+    library.classes.content.forEach((element) {
+      if (element.name == 'A') classA = element;
+      if (element.name == 'B') classB = element;
+      if (element.name == 'C') classC = element;
+    });
     classA.loadValues(loadYaml(clazzA));
     buildHierarchy(classA, classA);
     
@@ -785,14 +793,8 @@ void main() {
     expect(method.path[1], equals(classA));
     expect(method.path[2], equals(method));
     
-    var classB = library.abstractClasses.content.firstWhere((item) =>
-        item.name == 'B');
-    
     expect(classB.path[0], equals(library));
     expect(classB.path[1], equals(classB));
-    
-    var classC = library.abstractClasses.content.firstWhere((item) =>
-        item.name == 'C');
     
     expect(classC.path[0], equals(library));
     expect(classC.path[1], equals(classC));
@@ -809,17 +811,18 @@ void main() {
     var currentMap = loadYaml(dependencies);
     var library = new Library(currentMap);
     
-    var classA = library.classes.content.first;
+    var classA, classB, classC;
+    library.classes.content.forEach((element) {
+      if (element.name == 'A') classA = element;
+      if (element.name == 'B') classB = element;
+      if (element.name == 'C') classC = element;
+    });
     classA.loadValues(loadYaml(clazzA));
     buildHierarchy(classA, classA);
     
-    var classB = library.abstractClasses.content.firstWhere((item) =>
-        item.name == 'B');
     classB.loadValues(loadYaml(clazzB));
     buildHierarchy(classB, classB);
     
-    var classC = library.abstractClasses.content.firstWhere((item) =>
-        item.name == 'C');
     classC.loadValues(loadYaml(clazzC));
     buildHierarchy(classC, classC);
     
