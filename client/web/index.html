@@ -73,10 +73,15 @@
   </div>
 </div>
 
+<div class="pull-left">
+  <a on-click="viewer.togglePanel()">toggle library list</a>
+</div>
+
 <div class="container main-body">
+
   <template instantiate="if viewer.homePage != null">
-    <template if="viewer.currentPage != viewer.homePage">
-      <div class="list-group visible-lg col-lg-4" 
+    <template if="viewer.currentPage != viewer.homePage && viewer.isPanel">
+      <div class="list-group visible-lg col-lg-3" 
         data-spy="affix" data-offset-top="200">
         <template iterate="library in viewer.homePage.libraries">
           <template 
@@ -94,11 +99,11 @@
           </template>
         </template>
       </div>
-      <main class="col-12 col-lg-8">
+      <main class="col-12 col-lg-9">
         <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
       </main>
     </template>
-    <template if="viewer.currentPage == viewer.homePage">
+    <template if="viewer.currentPage == viewer.homePage || !viewer.isPanel">
       <main class="col-12">
         <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
       </main>
