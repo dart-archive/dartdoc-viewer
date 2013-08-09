@@ -240,7 +240,6 @@ void main() {
     }));
     
     var currentMap = loadYaml(parameter);
-    // Removes 'dart' from list of segments to avoid penalizing it later on.
     var item = new Parameter(currentMap['name'], currentMap);
     expect(item is Parameter, isTrue);
     expect(item.type is NestedType, isTrue);

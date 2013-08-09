@@ -21,19 +21,18 @@ BSD-style license that can be found in the LICENSE file.
             on-key-up="updateResults()">
       </form>
       <template if="!searchQuery.isEmpty && isFocused">
-          <ul class="dropdown-menu pull-right" role="menu" 
+        <ul class="dropdown-menu pull-right" role="menu"
             aria-labelledby="dropdownMenu">
-            <template iterate="result in results">
-               <li data-ref-id="{{result.element}}"
-                 on-click="onSubmitCallback()" tabindex="10"
-                 id="search{{result.position}}">
-               <search-result qualifiedname="{{result.element}}"
-                   membertype="{{result.type}}">
-               </search-result>
-             </li>
-            </template>
-          </ul>
-        
+          <template iterate="result in results">
+            <li data-ref-id="{{result.element}}"
+                on-click="onSubmitCallback()" tabindex="10"
+                id="search{{result.position}}">
+              <search-result qualifiedname="{{result.element}}"
+                  membertype="{{result.type}}">
+              </search-result>
+            </li>
+          </template>
+        </ul>
       </template>
     </template>
    
