@@ -22,11 +22,15 @@ import 'package:web_ui/web_ui.dart';
 // Path to the YAML file being read in. 
 const sourcePath = '../../docs/library_list.txt';
 
+const int desktopSizeBoundary = 1006;
+
 /// The [Viewer] object being displayed.
 Viewer viewer;
 
 /// The Dartdoc Viewer application state.
 class Viewer {
+  
+  @observable bool isDesktop = window.innerWidth > desktopSizeBoundary;
   
   Future finished;
 
@@ -214,6 +218,10 @@ void startHistory() {
 
 /// Handles browser navigation.
 main() {
+  window.onResize.listen((event) {
+    viewer.isDesktop = window.innerWidth > desktopSizeBoundary;
+  });
+
   startHistory();
   viewer = new Viewer._();
   // If a user navigates to a page other than the homepage, the viewer

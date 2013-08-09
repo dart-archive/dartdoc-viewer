@@ -6,14 +6,16 @@
     extends="div" apply-author-styles>     
   <template>
     <div class="accordion-heading">
-      <a class="accordion-toggle" data-toggle="collapse" 
-        data-parent="#accordion-grouping" 
+      <a class="accordion-toggle {{app.viewer.isDesktop ? '' : 'collapsed'}}" 
+        data-toggle="collapse" 
+        data-parent="{{app.viewer.isDesktop ? '#' : '#accordion-grouping'}}" 
         href="#accordion-{{stylizedName}}">
         {{title}}
       </a>
     </div>
     <div id="accordion-{{stylizedName}}" 
-      class="accordion-body collapse"> 
+      class="accordion-body collapse {{app.viewer.isDesktop ? 'in' : 'collapse'}}"
+      style="height:{{app.viewer.isDesktop ? 'auto':'0px'}}"> 
       <div class="accordion-inner">
         <ul class="nav nav-pills nav-stacked">
           <template iterate="item in category.content">
