@@ -56,12 +56,46 @@
           <template if="subclasses.isNotEmpty">
             Subclasses:
           </template>
-          <template iterate="subclass in subclasses">
+          <template if="subclasses.length > 3"> 
             <a on-click="viewer.handleLink(subclass.location)">
-              {{subclass.simpleType}}
+              {{subclasses[0].simpleType}}
             </a>
-            <template if="subclass != subclasses.last">
+            ,&nbsp;
+            <a on-click="viewer.handleLink(subclass.location)">
+              {{subclasses[1].simpleType}}
+            </a>
+            ,&nbsp;
+            <a on-click="viewer.handleLink(subclass.location)">
+              {{subclasses[2].simpleType}}
+            </a>
+            <a class="btn btn-link btn-xs" id="{{item.name}}-subclass-button"
+              on-click="showSubclass()">
+              ...
+            </a>
+            <span id="{{item.name}}-subclass-hidden" class="hidden">
               ,&nbsp;
+              <template iterate="subclass in subclasses">
+                <template if="subclass != subclasses[0] && 
+                  subclass != subclasses[1] && subclass != subclasses[2]">
+                  <a on-click="viewer.handleLink(subclass.location)">
+                    {{subclass.simpleType}}
+                  </a>
+                  <template if="subclass != subclasses.last">
+                    ,&nbsp;
+                  </template>
+                </template>
+              </template>
+            </span>
+          </template>
+
+          <template if="subclasses.length <= 3">
+            <template iterate="subclass in subclasses">
+              <a on-click="viewer.handleLink(subclass.location)">
+                {{subclass.simpleType}}
+              </a>
+              <template if="subclass != subclasses.last">
+                ,&nbsp;
+              </template>
             </template>
           </template>
         </template>
@@ -116,6 +150,12 @@
       List<LinkableType> get subclasses => item.subclasses;
       
       LinkableType get superClass => item.superClass;
+
+      void showSubclass() {
+        document.query('#${item.name}-subclass-hidden').classes
+          .remove('hidden');
+        document.query('#${item.name}-subclass-button').classes.add('hidden');
+      }
     }
   </script>
 </element>
