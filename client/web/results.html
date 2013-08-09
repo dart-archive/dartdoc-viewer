@@ -2,13 +2,16 @@
 <element name="search-result" constructor="Result" extends="a"  
     apply-author-styles>
   <template>
-    <strong>{{qualifiedname}}</strong><br/>
-    <i>{{descriptiveType}}</i>
-    <i>{{outerLibrary}}</i>
+    <strong>{{descriptiveName}}</strong><br/>
+    <span>{{descriptiveType}}</span>
+    <span>----------</span>
+    <span>{{outerLibrary}}</span>
     
   </template>
   <script type="application/dart">
     import 'package:dartdoc_viewer/data.dart';
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:dartdoc_viewer/search.dart';
     import 'package:web_ui/web_ui.dart';
     
     /**
@@ -16,17 +19,35 @@
      */
     class Result extends WebComponent {
       String membertype;
-      String owner;
       String qualifiedname;
+      
+      String get descriptiveName {
+        var name = qualifiedname.split('.');
+        if (membertype == 'library') {
+          if (name.first == 'dart') {
+            return 'dart:${name.last}';
+          }
+        } else if (membertype == 'constructor') {
+          print('constructor');
+          if (name.last == '') return name[name.length - 2];
+          return '${name[name.length - 2]}.${name.last}';
+        }
+        return name.last;
+      }
       
       String get descriptiveType {
         if (membertype == 'class' || membertype == 'library') 
           return membertype;
-        
+        var owner = ownerName(qualifiedname);
+        var ownerName = owner.split('.').last;
+        var ownerType = index[owner];
+        if (ownerType == 'class')
+          return '$membertype in $ownerName';
+        return membertype;
       }
       
       String get outerLibrary {
-        if (owner == null) return '';
+        if (membertype == 'library') return '';
         var nameWithLibrary = findLibraryName(qualifiedname);
         var libraryName = nameWithLibrary.split('.').first;
         libraryName = libraryName.replaceAll('-', ':');

@@ -237,7 +237,7 @@ main() {
       var elements = list.split('\n');
       elements.forEach((element) {
         var splitName = element.split(' ');
-        index[splitName[0]] = [splitName[1], splitName[2]];
+        index[splitName[0]] = splitName[1];
       });
     });
   });

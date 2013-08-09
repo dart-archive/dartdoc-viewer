@@ -4,7 +4,7 @@
 library search;
 
 /** Search Index */
-Map<String, List<String>> index = {};
+Map<String, String> index = {};
 
 class SearchResult implements Comparable {
 
@@ -13,9 +13,6 @@ class SearchResult implements Comparable {
   
   /** This element's member type. */
   String type;
- 
-  /** The type of this element's owner */
-  String owner;
 
   /** Score of the search result match. Higher is better. */
   int score;
@@ -28,7 +25,7 @@ class SearchResult implements Comparable {
    */
   int compareTo(SearchResult other) => other.score.compareTo(score);
 
-  SearchResult(this.element, this.type, this.owner, this.score);
+  SearchResult(this.element, this.type, this.score);
 }
 
 Map<String, int> value = {
@@ -58,8 +55,7 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
   for (var r in resultSet) {
     int score = 0;
     var lowerCaseResult = r.toLowerCase();
-    var type = index[r][0];
-    var owner = index[r][1];
+    var type = index[r];
     
     var splitDotQueries = [];
     // If the search was for a named constructor (Map.fromIterable), give it a
@@ -115,7 +111,7 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
       }
     });
 
-    scoredResults.add(new SearchResult(r, type, owner, score));
+    scoredResults.add(new SearchResult(r, type, score));
   }
   scoredResults.sort();
   updatePositions(scoredResults);
