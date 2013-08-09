@@ -23,6 +23,8 @@ import 'package:web_ui/web_ui.dart';
 const sourcePath = '../../docs/library_list.txt';
 
 /// This is the cut off point between mobile and desktop in pixels. 
+// TODO(janicejl): Use pixel desity rather than how many pixels. Look at:
+// http://www.mobilexweb.com/blog/ipad-mini-detection-for-html5-user-agent
 const int desktopSizeBoundary = 1006;
 
 /// The [Viewer] object being displayed.
