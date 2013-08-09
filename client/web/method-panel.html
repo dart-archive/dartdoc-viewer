@@ -44,7 +44,13 @@
       </dfn></p>
 
       <!-- Comment -->
-      <section class="description">{{addComment('method-panel')}}</section>
+      <section class="description">
+        {{addComment('method-panel', preview: !isExpanded)}}
+      </section>
+
+      <template if="!isExpanded">
+        <a on-click="expandComment()" class="btn-link">...Show more</a>
+      </template>
 
       <p class="text-right"><dfn>
         <template if="hasInheritedComment">
@@ -61,7 +67,19 @@
   <script type="application/dart">
     import 'member.dart';
     
-    class MethodPanel extends MethodElement {}
+    class MethodPanel extends MethodElement {
+      bool isExpanded = false;
+
+      void inserted() {
+        var index = item.comment.indexOf('</p>');
+        if (index == -1) isExpanded = !isInherited;
+        else {
+          index = item.comment.indexOf('</p>', index + 1);
+          if (index == -1) isExpanded = true;
+          else isExpanded = false;
+        }
+      }
+    }
   </script>
 
 </element>
