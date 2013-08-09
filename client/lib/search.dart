@@ -3,17 +3,19 @@
  */
 library search;
 
-import 'package:web_ui/web_ui.dart';
-import 'package:dartdoc_viewer/read_yaml.dart';
-import 'package:dartdoc_viewer/data.dart';
-
 /** Search Index */
-Map<String, String> index = {};
+Map<String, List<String>> index = {};
 
 class SearchResult implements Comparable {
 
   /** Qualified name of this search result references. */
   String element;
+  
+  /** This element's member type. */
+  String type;
+ 
+  /** The type of this element's owner */
+  String owner;
 
   /** Score of the search result match. Higher is better. */
   int score;
@@ -26,7 +28,7 @@ class SearchResult implements Comparable {
    */
   int compareTo(SearchResult other) => other.score.compareTo(score);
 
-  SearchResult(this.element, this.score);
+  SearchResult(this.element, this.type, this.owner, this.score);
 }
 
 Map<String, int> value = {
@@ -34,7 +36,8 @@ Map<String, int> value = {
   'class' : 2,
   'typedef' : 3,
   'method' : 4,
-  'variable' : 4
+  'variable' : 4,
+  'constructor' : 4
 };
 
 /**
@@ -55,6 +58,8 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
   for (var r in resultSet) {
     int score = 0;
     var lowerCaseResult = r.toLowerCase();
+    var type = index[r][0];
+    var owner = index[r][1];
     
     var splitDotQueries = [];
     // If the search was for a named constructor (Map.fromIterable), give it a
@@ -67,17 +72,24 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
     });
     queryList.addAll(splitDotQueries);
     
+    if (lowerCaseResult.contains('.dom.')) {
+      lowerCaseResult = lowerCaseResult.replaceFirst('.dom.', '.');
+    }
     var qualifiedNameParts = lowerCaseResult.split('.');
     qualifiedNameParts.forEach((q) => q.trim());
-
+    
     queryList.forEach((q) {
       // If it is a direct match to the last segment of the qualified name, 
       // give score an extra point boost proportional to the number of segments.
       if (qualifiedNameParts.last == q) {
-        score += 500 - (qualifiedNameParts.length * 100);
+        score += 1000 ~/ value[type];
+      } else if (qualifiedNameParts.last.startsWith(q)) {
+        score += 750 ~/ value[type];
+      } else if (qualifiedNameParts.last.contains(q)) {
+        score += 500 ~/ value[type];
       }
 
-      for (int i = 0; i < qualifiedNameParts.length; i++) {
+      for (int i = 0; i < qualifiedNameParts.length - 1; i++) {
         // If it is a direct match to any segment of the qualified name, give 
         // score proportional to how far away it is from the library level
         // divied by the overall length of the qualified name. 
@@ -87,13 +99,13 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
         // also inversely proportional to how far away it is from the library 
         // level. 
         if (qualifiedNameParts[i] == q) {
-          score += (1000) ~/ value[lowerCaseResult];
+          score += 300 ~/ value[type];
         } else if (qualifiedNameParts[i].startsWith(q)) {
           var percent = q.length / qualifiedNameParts[i].length;
-          score += ((1000 * percent) / value[lowerCaseResult]).toInt();
+          score += (300 * percent) ~/ value[type];
         } else if (qualifiedNameParts[i].contains(q)) {
           var percent = q.length / qualifiedNameParts[i].length;
-          score += ((500 * percent) / value[lowerCaseResult]).toInt();
+          score += (150 * percent) ~/ value[type];
         }
       }
       
@@ -103,7 +115,7 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
       }
     });
 
-    scoredResults.add(new SearchResult(r, score));
+    scoredResults.add(new SearchResult(r, type, owner, score));
   }
   scoredResults.sort();
   updatePositions(scoredResults);

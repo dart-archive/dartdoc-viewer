@@ -201,25 +201,25 @@ String clazzC =
 "methods" :''';
 
 String manyLibrariesIndex =
-'''dart.core/library
-dart.core.Object/class
-dart.core.Object.toString/method
-dart.core.Object.runtimeType/variable
-dart.core.Object.hashCode/method
-dart.core.List/class
-dart.core.int/class
-dart.core.String/class
-dart.core.num/class
-dart.core.num.isNaN/variable
-dart.core.num.isNegative/variable
-dart.collection/library
-dart.collection.LinkedList/class
-dart.collection.LinkedList.forEach/method
-dart.collection.HashSet/class
-dart.mirrors/library
-dart.mirrors.Mirror/class
-dart.dom.svg/library
-dart.dom.svg.Number/class''';
+'''dart.core library
+dart.core.Object class
+dart.core.Object.toString method
+dart.core.Object.runtimeType variable
+dart.core.Object.hashCode method
+dart.core.List class
+dart.core.int class
+dart.core.String class
+dart.core.num class
+dart.core.num.isNaN variable
+dart.core.num.isNegative variable
+dart.collection library
+dart.collection.LinkedList class
+dart.collection.LinkedList.forEach method
+dart.collection.HashSet class
+dart.mirrors library
+dart.mirrors.Mirror class
+dart.dom.svg library
+dart.dom.svg.Number class''';
 
 void main() {
   useHtmlEnhancedConfiguration();
@@ -388,15 +388,16 @@ void main() {
     index = {};
     var members = manyLibrariesIndex.split('\n');
     members.forEach((element) {
-      var splitElements = element.split('/');
+      var splitElements = element.split(' ');
+      print(element);
       index[splitElements[0]] = splitElements[1];
     });
     
     var results = lookupSearchResults('dart', 10);
     // Expect the top 3 results to be libraries.
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       print('${results[i].element}: ${results[i].score}'); 
-      expect(results[i].element.split('.').length, equals(2));
+      expect(index[results[i].element], equals('library'));
     }
     results = lookupSearchResults('object', 10);
     expect(results[0].element, equals('dart.core.Object'));

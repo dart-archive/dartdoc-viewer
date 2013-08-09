@@ -236,8 +236,8 @@ main() {
     retrieveFileContents('../../docs/index.txt').then((String list) {
       var elements = list.split('\n');
       elements.forEach((element) {
-        var splitName = element.split('/');
-        index[splitName[0]] = splitName[1];
+        var splitName = element.split(' ');
+        index[splitName[0]] = [splitName[1], splitName[2]];
       });
     });
   });
