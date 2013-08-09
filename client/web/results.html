@@ -4,7 +4,6 @@
   <template>
     <strong>{{descriptiveName}}</strong><br/>
     <span>{{descriptiveType}}</span>
-    <span>----------</span>
     <span>{{outerLibrary}}</span>
     
   </template>
@@ -21,6 +20,7 @@
       String membertype;
       String qualifiedname;
       
+      /// The name of this member.
       String get descriptiveName {
         var name = qualifiedname.split('.');
         if (membertype == 'library') {
@@ -28,13 +28,13 @@
             return 'dart:${name.last}';
           }
         } else if (membertype == 'constructor') {
-          print('constructor');
           if (name.last == '') return name[name.length - 2];
           return '${name[name.length - 2]}.${name.last}';
         }
         return name.last;
       }
       
+      /// The type of this member.
       String get descriptiveType {
         if (membertype == 'class' || membertype == 'library') 
           return membertype;
@@ -46,6 +46,7 @@
         return membertype;
       }
       
+      /// The library containing this member.
       String get outerLibrary {
         if (membertype == 'library') return '';
         var nameWithLibrary = findLibraryName(qualifiedname);
