@@ -3,27 +3,36 @@
     apply-author-styles>
   <template>
     <strong>{{qualifiedname}}</strong><br/>
-    <i>{{type}}</i>
-    <i>{{owner}}</i>
+    <i>{{descriptiveType}}</i>
+    <i>{{outerLibrary}}</i>
     
   </template>
   <script type="application/dart">
-    import 'package:dartdoc_viewer/item.dart';
+    import 'package:dartdoc_viewer/data.dart';
     import 'package:web_ui/web_ui.dart';
     
     /**
      * An HTML representation of a Search Result. 
      */
     class Result extends WebComponent {
-      String type;
+      String membertype;
       String owner;
       String qualifiedname;
       
+      String get descriptiveType {
+        if (membertype == 'class' || membertype == 'library') 
+          return membertype;
+        
+      }
+      
       String get outerLibrary {
         if (owner == null) return '';
-        var outerName = ownerName(owner);
-        
-      
+        var nameWithLibrary = findLibraryName(qualifiedname);
+        var libraryName = nameWithLibrary.split('.').first;
+        libraryName = libraryName.replaceAll('-', ':');
+        if (libraryName.contains(':dom:')) 
+          libraryName = libraryName.replaceFirst(':dom:', ':');
+        return 'library $libraryName';
       }
     }
   </script>
