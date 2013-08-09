@@ -428,26 +428,6 @@ Library1.Class.variable
 Library1.Class.
 Library1.Class.from''';
 
-String manyLibrariesIndex =
-'''dart.math
-dart.math.PI
-dart.math.E
-dart.math.Random
-dart.math.Random.
-dart.core
-dart.core.Object
-dart.core.Object.
-dart.core.Object.hashCode
-dart.chrome
-dart.chrome.Event
-dart.chrome.Event.
-dart.dom.html
-dart.dom.html.Event
-dart.html.Event.
-dart.dom.html.Element
-dart.dom.html.Element.title
-dart.dom.html.Element.hashCode''';
-
 void main() {
   useHtmlEnhancedConfiguration();
     
@@ -837,6 +817,7 @@ void main() {
   });
   
   // Test searching with a single library in the index.
+  // TODO(tmandel): Update this test for newer index.
   test('search_single_library_test', () {
     index = []
       ..addAll(oneLibraryIndex.split('\n'));
@@ -870,17 +851,4 @@ void main() {
       expect(results[i].element.contains('Library1.Class.'), isTrue);
     expect(results.length, equals(8));
   });  
-  
-  // Test searching with multiple libraries in index.
-  test('search_multiple_libraries_test', () {
-    index = []
-      ..addAll(manyLibrariesIndex.split('\n'));
-    var results = lookupSearchResults('dart:core', 20);
-    // All results should have the same score.
-    results.forEach((result) => print('${result.element}: ${result.score}'));
-  });
-  
-  test('markdown_links_test', () {
-    
-  });
 }
