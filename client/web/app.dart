@@ -22,6 +22,7 @@ import 'package:web_ui/web_ui.dart';
 // Path to the YAML file being read in. 
 const sourcePath = '../../docs/library_list.txt';
 
+/// This is the cut off point between mobile and desktop in pixels. 
 const int desktopSizeBoundary = 1006;
 
 /// The [Viewer] object being displayed.
