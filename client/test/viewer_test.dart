@@ -204,14 +204,14 @@ String manyLibrariesIndex =
 '''dart.core library
 dart.core.Object class
 dart.core.Object.toString method
-dart.core.Object.runtimeType variable
+dart.core.Object.runtimeType getter
 dart.core.Object.hashCode method
 dart.core.List class
 dart.core.int class
 dart.core.String class
 dart.core.num class
-dart.core.num.isNaN variable
-dart.core.num.isNegative variable
+dart.core.num.isNaN getter
+dart.core.num.isNegative getter
 dart.collection library
 dart.collection.LinkedList class
 dart.collection.LinkedList.forEach method
@@ -384,6 +384,7 @@ void main() {
     expect(location, equals(classA));
   });
   
+  // Test that search returns the desired members 
   test('many_library_index_search_test', () {
     index = {};
     var members = manyLibrariesIndex.split('\n');
@@ -394,21 +395,16 @@ void main() {
     });
     
     var results = lookupSearchResults('dart', 10);
-    // Expect the top 3 results to be libraries.
+    // Expect the top 4 results to be libraries.
     for (int i = 0; i < 4; i++) {
-      print('${results[i].element}: ${results[i].score}'); 
       expect(index[results[i].element], equals('library'));
     }
+    
     results = lookupSearchResults('object', 10);
     expect(results[0].element, equals('dart.core.Object'));
     for (int i = 1; i < 4; i++) {
-      print('${results[i].element}: ${results[i].score}');
       expect(results[i].element.startsWith('dart.core.Object.'), isTrue);
       expect(results[i].score, equals(results[1].score));
     }
-    
-    results = lookupSearchResults('num', 10);
-    results.forEach((result) => print('${result.element}: ${result.score}'));
-    
   });
 }

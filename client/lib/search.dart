@@ -28,12 +28,16 @@ class SearchResult implements Comparable {
   SearchResult(this.element, this.type, this.score);
 }
 
+/// The value of each type of member.
 Map<String, int> value = {
   'library' : 1,
   'class' : 2,
   'typedef' : 3,
   'method' : 4,
-  'variable' : 4,
+  'getter' : 4,
+  'setter' : 4,
+  'operator' : 4,
+  'property' : 4,
   'constructor' : 4
 };
 
@@ -62,21 +66,21 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
     // score boost of 200. 
     queryList.forEach((q) {
       if (q.contains('.') && lowerCaseResult.endsWith(q)) {
-        score += 200;
+        score += 100;
         splitDotQueries = q.split('.');
       }
     });
     queryList.addAll(splitDotQueries);
     
     if (lowerCaseResult.contains('.dom.')) {
-      lowerCaseResult = lowerCaseResult.replaceFirst('.dom.', '.');
+      lowerCaseResult = lowerCaseResult.replaceFirst('.dom', '');
     }
     var qualifiedNameParts = lowerCaseResult.split('.');
     qualifiedNameParts.forEach((q) => q.trim());
     
     queryList.forEach((q) {
       // If it is a direct match to the last segment of the qualified name, 
-      // give score an extra point boost proportional to the number of segments.
+      // give score an extra point boost depending on the member type.
       if (qualifiedNameParts.last == q) {
         score += 1000 ~/ value[type];
       } else if (qualifiedNameParts.last.startsWith(q)) {
@@ -87,13 +91,12 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
 
       for (int i = 0; i < qualifiedNameParts.length - 1; i++) {
         // If it is a direct match to any segment of the qualified name, give 
-        // score proportional to how far away it is from the library level
-        // divied by the overall length of the qualified name. 
-        // If it starts with the search query, give it a score boost inversely 
-        // proportional to how far away it is from the library level. 
-        // if it contains the search query, give it an even smaller score boost,
-        // also inversely proportional to how far away it is from the library 
-        // level. 
+        // score boost depending on the member type.
+        // If it starts with the search query, give it aboost depending on
+        // the member type and the percentage of the segment the query fills. 
+        // If it contains the search query, give it an even smaller score boost
+        // also depending on the member type and the percentage of the segment
+        // the query fills.
         if (qualifiedNameParts[i] == q) {
           score += 300 ~/ value[type];
         } else if (qualifiedNameParts[i].startsWith(q)) {
@@ -105,14 +108,14 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
         }
       }
       
-      // If the result item is part of the dart library, give it a 50 point boost. 
+      // If the result item is part of the dart library, give it a small boost.
       if (qualifiedNameParts.first == 'dart') {
         score += 50;
       }
     });
-
     scoredResults.add(new SearchResult(r, type, score));
   }
+  
   scoredResults.sort();
   updatePositions(scoredResults);
   if (scoredResults.length > maxResults) {
