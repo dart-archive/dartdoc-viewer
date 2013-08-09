@@ -6,8 +6,6 @@
     apply-author-styles>
   <template>
     
-    <a id="{{item.name}}"></a>
-    
     <template if="item.comment == '<span></span>' && item.annotations.isEmpty &&
         !isInherited">
       <variable-heading item="{{item}}"  class="panel-title">
