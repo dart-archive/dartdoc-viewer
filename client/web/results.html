@@ -8,6 +8,7 @@
     
   </template>
   <script type="application/dart">
+    import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
     
     /**
@@ -17,6 +18,13 @@
       String type;
       String owner;
       String qualifiedname;
+      
+      String get outerLibrary {
+        if (owner == null) return '';
+        var outerName = ownerName(owner);
+        
+      
+      }
     }
   </script>
 </element>
