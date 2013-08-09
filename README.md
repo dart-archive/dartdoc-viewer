@@ -51,7 +51,9 @@ There are two ways to run the viewer locally:
  2. Using the Google App Engine development server from the
  [Google App Engine SDK for Python][GAE], the viewer can be run by running
  `dev_appserver.py <folder containing app.yaml>`.
-   - Note that this will only work in Dartium unless the viewer is first compiled
+   - When running the viewer on the development server, you must rename your
+   'docs' directory to 'local' for the server to correctly retrieve your files.
+   - The viewer will only work in Dartium unless it is first compiled
    to JavaScript. This can be done by running `sdk/bin/dart2js` from the Dart
    repository on `client/web/app.dart`.
 
