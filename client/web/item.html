@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<element name="dartdoc-item" constructor="ItemElement" extends="li"  
+<element name="dartdoc-item" constructor="ItemElement" extends="div"  
     apply-author-styles>
   <template>
-    <a id="{{item.name}}" on-click="app.viewer.changePage(item)">{{title}}</a>
+    <ul class="nav nav-pills nav-stacked">
+      <li>
+        <a class="btn-link" id="{{item.name}}" on-click="app.viewer.changePage(item)">
+          {{title}}
+        </a>
+      </li>
+    </ul>
     <template if="item is Class">
       <template if="item.previewComment != null">
+        <hr/>
         <p class="description">
           {{addComment('dartdoc-item', preview: true)}}
         </p>
