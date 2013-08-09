@@ -8,10 +8,10 @@
       <li>
         <a class="btn-link" id="{{item.name}}" 
             on-click="app.viewer.changePage(item)">
-          <template if="item is! Method">
+          <template instantiate="if item is! Method">
               {{title}}
           </template>
-          <template if="item is Method">
+          <template instantiate="if item is Method">
             <template instantiate="if !item.isConstructor">
               <span class="type">
                 {{createType(item.type, 'dartdoc-item', 'type')}}
