@@ -18,7 +18,12 @@ class MemberElement extends WebComponent {
   /// links converted to working links.
   void addComment(String elementName, {preview: false}) {
     var comment = item.comment;
-    if (preview) comment = item.previewComment;
+    if (preview && item is Class) comment = item.previewComment;
+    if (preview && item is Method) {
+      var index = item.comment.indexOf('</p>');
+      if (index == -1) comment = '<span></span>';
+      else comment = item.comment.substring(0, index) + '</p></span>';
+    }
     if (comment != '' && comment != null) {
       var commentLocation = getShadowRoot(elementName).query('.description');
       commentLocation.children.clear();

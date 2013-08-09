@@ -4,7 +4,8 @@
   <template>
     <ul class="nav nav-pills nav-stacked">
       <li>
-        <a class="btn-link" id="{{item.name}}" on-click="app.viewer.changePage(item)">
+        <a class="btn-link" id="{{item.name}}" 
+          on-click="app.viewer.changePage(item)">
           {{title}}
         </a>
       </li>
@@ -17,6 +18,16 @@
         </p>
       </template>
     </template>
+
+    <template if="item is Method">
+      <template if="item.comment != '<span></span>'">
+        <hr/>
+        <p class="description" id="{{item.name}}-method-comment">
+          {{addComment('dartdoc-item', preview: true)}}
+        </p>
+      </template>
+    </template>
+
   </template>
   <script type="application/dart">
     import 'package:web_ui/web_ui.dart';
@@ -32,6 +43,12 @@
     class ItemElement extends MemberElement {
       
       String get title => item.decoratedName;
+
+      void expandComment() {
+        print("CLICKED");
+        var comment = document.query('#${item.name}-method-comment');
+        comment.innerText = addComment('dartdoc-item', preview: false);
+      }
     }
   </script>
 </element>
