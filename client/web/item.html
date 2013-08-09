@@ -1,12 +1,33 @@
 <!DOCTYPE html>
+<link rel="import" href="parameters.html">
+
 <element name="dartdoc-item" constructor="ItemElement" extends="div"  
     apply-author-styles>
   <template>
     <ul class="nav nav-pills nav-stacked">
       <li>
         <a class="btn-link" id="{{item.name}}" 
-          on-click="app.viewer.changePage(item)">
-          {{title}}
+            on-click="app.viewer.changePage(item)">
+          <template if="item is! Method">
+              {{title}}
+          </template>
+          <template if="item is Method">
+            <template instantiate="if !item.isConstructor">
+              <span class="type">
+                {{createType(item.type, 'dartdoc-item', 'type')}}
+              </span>
+            </template>
+          
+            <span>
+              <template if="item.isConstant">const</template>
+              <template if="item.isAbstract">abstract</template>
+              <template if="item.isStatic">static</template>
+              <b>{{item.decoratedName}}</b>
+               <!-- Parameters -->
+              <dartdoc-parameter parameters="{{item.parameters}}">
+              </dartdoc-parameter>
+            </span>
+          </template>
         </a>
       </li>
     </ul>
@@ -43,12 +64,6 @@
     class ItemElement extends MemberElement {
       
       String get title => item.decoratedName;
-
-      void expandComment() {
-        print("CLICKED");
-        var comment = document.query('#${item.name}-method-comment');
-        comment.innerText = addComment('dartdoc-item', preview: false);
-      }
     }
   </script>
 </element>

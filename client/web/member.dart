@@ -21,6 +21,9 @@ class MemberElement extends WebComponent {
     if (preview && item is Class) comment = item.previewComment;
     if (preview && item is Method) {
       var index = item.comment.indexOf('</p>');
+      // All comments when read in from the YAML is surrounded by a <span> tag.
+      // This finds the first paragraph, and surrounds it with a span tag for
+      // use as the snippet. 
       if (index == -1) comment = '<span></span>';
       else comment = item.comment.substring(0, index) + '</p></span>';
     }
