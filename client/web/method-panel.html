@@ -12,10 +12,10 @@
     </template>
     <template if="item != null">
       
-      <div class="panel-heading">
-        <dartdoc-annotation annotations="{{item.annotations}}">
-        </dartdoc-annotation>
-      
+    <div class="panel-heading">
+      <dartdoc-annotation annotations="{{item.annotations}}">
+      </dartdoc-annotation>
+    
       <!-- Return Type -->
       <p>
         <template instantiate="if !item.isConstructor">
