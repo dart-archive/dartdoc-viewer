@@ -7,39 +7,41 @@
   <template>
     
     <a id="{{item.name}}"></a>
-    
-    <template if="item.comment == '<span></span>' && item.annotations.isEmpty &&
-        !isInherited">
-      <variable-heading item="{{item}}"  class="panel-title">
-        </variable-heading>
-    </template>
-    <template
-      if="item.comment != '<span></span>' || item.annotations.isNotEmpty || 
-        isInherited">
-      <variable-heading item="{{item}}" class="panel-heading">
-        </variable-heading>
-      <p class="text-right"><dfn>
-        <template if="isInherited">
-          This property is inherited from 
-          <a on-click="app.viewer.handleLink(inheritedFrom.location)">
-            {{inheritedFrom.simpleType}}
-          </a>
-        </template>
-      </dfn></p>
-      <p class="description">
-        {{addComment('dartdoc-variable')}}
-      </p>
-      <p class="text-right"><dfn>
-        <template if="hasInheritedComment">
-          This documentation is inherited from 
-          <a on-click="app.viewer.handleLink(commentFrom.location)">
-            {{commentFrom.simpleType}}.
-          </a>
-        </template>
-      </dfn></p>
+ 
+    <div class="panel-heading">
       <dartdoc-annotation annotations="{{item.annotations}}">
       </dartdoc-annotation>
+      <variable-heading item="{{item}}">
+      </variable-heading>
+    </div>
+
+    <p class="text-right"><dfn>
+      <template if="isInherited && isExpanded">
+        This property is inherited from 
+        <a on-click="app.viewer.handleLink(inheritedFrom.location)">
+          {{inheritedFrom.simpleType}}
+        </a>
+      </template>
+    </dfn></p>
+    <p class="description">
+      {{addComment('dartdoc-variable', preview: !isExpanded)}}
+    </p>
+
+    <template if="!isExpanded">
+      <a on-click="expandComment()" class="btn-link">
+        ...Show more
+      </a>
     </template>
+
+    <p class="text-right"><dfn>
+      <template if="hasInheritedComment && isExpanded">
+        This documentation is inherited from 
+        <a on-click="app.viewer.handleLink(commentFrom.location)">
+          {{commentFrom.simpleType}}.
+        </a>
+      </template>
+    </dfn></p>
+    
   </template>
   <script type="application/dart">
     import 'dart:html';
@@ -51,6 +53,23 @@
     /**
      * An HTML representation of a Variable.
      */
-    class VariableElement extends InheritedElement {}
+    class VariableElement extends InheritedElement {
+      @observable bool isExpanded = false;
+
+      inserted() {
+        super.inserted();
+        var index = item.comment.indexOf('</p>');
+        if (index == -1) isExpanded = true;
+        else {
+          index = item.comment.indexOf('</p>', index + 1);
+          if (index == -1) isExpanded = true;
+          else isExpanded = false;
+        }
+      }
+
+      void expandComment() {
+        isExpanded = true;
+      }
+    }
   </script>
 </element>
