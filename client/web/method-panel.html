@@ -35,7 +35,7 @@
       </div>
 
       <p class="text-right"><dfn>
-        <template if="isInherited">
+        <template if="isInherited && isExpanded">
           This member is inherited from 
           <a on-click="viewer.handleLink(inheritedFrom.location)">
             {{inheritedFrom.simpleType}}
@@ -49,11 +49,13 @@
       </section>
 
       <template if="!isExpanded">
-        <a on-click="expandComment()" class="btn-link">...Show more</a>
+        <a on-click="expandComment()" class="btn-link">
+          ...Show more
+        </a>
       </template>
 
       <p class="text-right"><dfn>
-        <template if="hasInheritedComment">
+        <template if="hasInheritedComment && isExpanded">
             This documentation is inherited from 
             <a on-click="viewer.handleLink(commentFrom.location)">
               {{commentFrom.simpleType}}
@@ -66,11 +68,13 @@
   
   <script type="application/dart">
     import 'member.dart';
+    import 'package:web_ui/web_ui.dart';
     
     class MethodPanel extends MethodElement {
-      bool isExpanded = false;
+      @observable bool isExpanded = false;
 
-      void inserted() {
+      inserted() {
+        super.inserted();
         var index = item.comment.indexOf('</p>');
         if (index == -1) isExpanded = !isInherited;
         else {
@@ -78,6 +82,10 @@
           if (index == -1) isExpanded = true;
           else isExpanded = false;
         }
+      }
+
+      void expandComment() {
+        isExpanded = true;
       }
     }
   </script>
