@@ -870,13 +870,11 @@ void main() {
     
     results = lookupSearchResults('Library', 9);
     expect(results[0].element, equals('Library1'));
-    // Expect the next best results to have Library1 as immediate owner
-    // and not Class.
-    for (int i = 1; i < 4; i++) 
-      expect(results[i].element.contains('Class.'), isFalse);
-    // Expect the best after immediate Library1 members to be Class members. 
-    for (int i = 4; i < 8; i++)
-      expect(results[i].element.contains('Library1.Class.'), isTrue);
+    expect(results[1].element, equals('Library1.Class'));
+    // The remaining results should all have the same score.
+    for (int i = 3; i < results.length; i++) {
+      expect(results[i].score, equals(results[2].score));
+    }
     expect(results.length, equals(8));
   });  
 }
