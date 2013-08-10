@@ -71,12 +71,12 @@
       <section class="description">{{addComment('dartdoc-class')}}</section>
       
       <div class="accordion" id="accordion-grouping">
-        <template instantiate="if variables.content.isNotEmpty">
-          <dartdoc-category category="{{variables}}" class="accordion-group">
-          </dartdoc-category>
-        </template>
         <template instantiate="if operators.content.isNotEmpty">
           <dartdoc-category category="{{operators}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template instantiate="if variables.content.isNotEmpty">
+          <dartdoc-category category="{{variables}}" class="accordion-group">
           </dartdoc-category>
         </template>
         <template instantiate="if constructors.content.isNotEmpty">

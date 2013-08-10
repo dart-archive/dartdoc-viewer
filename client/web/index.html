@@ -106,21 +106,21 @@
               {{viewer.currentPage.name}} Library
             </a></li>
             <template 
-              instantiate="if viewer.currentPage.variables.content.isNotEmpty">
-              <li><a href="#properties">Properties</a></li>
-              <ul>
-                <template 
-                  iterate="item in viewer.currentPage.variables.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
               instantiate="if viewer.currentPage.operators.content.isNotEmpty">
               <li><a href="#operators">Operators</a></li>
               <ul>
                 <template 
                   iterate="item in viewer.currentPage.operators.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.variables.content.isNotEmpty">
+              <li><a href="#properties">Properties</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.variables.content">
                   <li><a href="#{{item.name}}">{{item.name}}</a></li>
                 </template>
               </ul>
@@ -172,21 +172,21 @@
               {{viewer.currentPage.name}} Class
             </a></li>
             <template 
-              instantiate="if viewer.currentPage.variables.content.isNotEmpty">
-              <li><a href="#properties">Properties</a></li>
-              <ul>
-                <template 
-                  iterate="item in viewer.currentPage.variables.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
               instantiate="if viewer.currentPage.operators.content.isNotEmpty">
               <li><a href="#operators">Operators</a></li>
               <ul>
                 <template 
                   iterate="item in viewer.currentPage.operators.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.variables.content.isNotEmpty">
+              <li><a href="#properties">Properties</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.variables.content">
                   <li><a href="#{{item.name}}">{{item.name}}</a></li>
                 </template>
               </ul>
