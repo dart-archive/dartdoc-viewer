@@ -28,6 +28,8 @@
             return 'dart:${name.last}';
           }
         } else if (membertype == 'constructor') {
+          // Non-named constructors have an empty string for the last element
+          // of the qualified name, so we display the class name instead.
           if (name.last == '') return name[name.length - 2];
           return '${name[name.length - 2]}.${name.last}';
         }

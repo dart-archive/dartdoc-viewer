@@ -1,5 +1,12 @@
 /**
  * A library for searching and filtering documentation.
+ * 
+ * Given a search query, a set of ranked results is created to determine the
+ * best member to match that query. Priority is given in the following order:
+ * library, class, typedef, and class member or top-level library member. 
+ * Results with matches in the last section of their qualified names are
+ * given a higher rank than those with matches in inner members of the
+ * qualified name. 
  */
 library search;
 
