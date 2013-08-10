@@ -80,7 +80,16 @@ class Viewer {
     } else {
       Timer.run(() {
         var e = document.query('$hash');
-        if (e != null) e.scrollIntoView(ScrollAlignment.TOP);
+        if (e != null) {
+          var category = e.parent;
+          while (!category.classes.contains('accordion-body') 
+              && category != null) {
+            category = category.parent;
+          }
+          if (category != null && !category.classes.contains('in'))
+            category.classes.add('in');
+          e.scrollIntoView(ScrollAlignment.TOP);
+        }
       });
     }
   }
