@@ -67,21 +67,31 @@
             </template>
           </template>
         </template>
+        
       </ul>  
-      <search-box></search-box>
+
+      <ul class="nav navbar-nav pull-right">
+        
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">
+            Options <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <template instantiate="if viewer.currentPage != viewer.homePage">
+              <li class="visible-lg"><a on-click="viewer.togglePanel()">
+                <template if="viewer.isPanel">Hide Libraries</template>
+                <template if="!viewer.isPanel">Show Libraries</template>
+              </a></li>
+            </template>
+            <li><a href="#">Inherited?</a></li>
+          </ul>
+        </li>
+
+        <li><search-box></search-box></li>
+      </ul>
     </div>
   </div>
 </div>
-
-<template instantiate="if viewer.currentPage != viewer.homePage">
-  <div class="affix pull-left clearfix" data-spy="affix" data-offset-top="200">
-    <button type="button" class="btn btn-primary btn-xs visible-lg" 
-      on-click="viewer.togglePanel()">
-      <template if="viewer.isPanel">Hide Libraries</template>
-      <template if="!viewer.isPanel">Show Libraries</template>
-    </button>
-  </div>
-</template>
 
 <div class="container main-body">
 
