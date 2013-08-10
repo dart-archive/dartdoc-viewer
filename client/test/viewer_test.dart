@@ -9,6 +9,7 @@ import 'dart:html';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
+import 'package:dartdoc_viewer/search.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:unittest/unittest.dart';
 import 'package:yaml/yaml.dart';
@@ -199,6 +200,27 @@ String clazzC =
 "variables" : 
 "methods" :''';
 
+String manyLibrariesIndex =
+'''dart.core library
+dart.core.Object class
+dart.core.Object.toString method
+dart.core.Object.runtimeType getter
+dart.core.Object.hashCode method
+dart.core.List class
+dart.core.int class
+dart.core.String class
+dart.core.num class
+dart.core.num.isNaN getter
+dart.core.num.isNegative getter
+dart.collection library
+dart.collection.LinkedList class
+dart.collection.LinkedList.forEach method
+dart.collection.HashSet class
+dart.mirrors library
+dart.mirrors.Mirror class
+dart.dom.svg library
+dart.dom.svg.Number class''';
+
 void main() {
   useHtmlEnhancedConfiguration();
     
@@ -359,5 +381,29 @@ void main() {
     var superClass = classC.superClass;
     location = pageIndex[superClass.location];
     expect(location, equals(classA));
+  });
+  
+  // Test that search returns the desired members 
+  test('many_library_index_search_test', () {
+    index = {};
+    var members = manyLibrariesIndex.split('\n');
+    members.forEach((element) {
+      var splitElements = element.split(' ');
+      print(element);
+      index[splitElements[0]] = splitElements[1];
+    });
+    
+    var results = lookupSearchResults('dart', 10);
+    // Expect the top 4 results to be libraries.
+    for (int i = 0; i < 4; i++) {
+      expect(index[results[i].element], equals('library'));
+    }
+    
+    results = lookupSearchResults('object', 10);
+    expect(results[0].element, equals('dart.core.Object'));
+    for (int i = 1; i < 4; i++) {
+      expect(results[i].element.startsWith('dart.core.Object.'), isTrue);
+      expect(results[i].score, equals(results[1].score));
+    }
   });
 }

@@ -22,7 +22,7 @@
         <ul class="nav nav-pills nav-stacked">
           <template iterate="item in category.content">
             <template if="item is Item && item is! Variable && item is! Method">
-              <dartdoc-item item="{{item}}"></dartdoc-item>
+              <dartdoc-item class="panel"item="{{item}}"></dartdoc-item>
             </template>
             
             <template if="item is Variable">

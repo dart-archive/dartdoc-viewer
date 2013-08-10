@@ -26,7 +26,8 @@ class Search extends WebComponent {
   void updateResults() {
     currentIndex = -1;
     results.clear();
-    results.addAll(lookupSearchResults(searchQuery, 30));
+    // TODO(tmandel): Show fewer results on mobile than on desktop.
+    results.addAll(lookupSearchResults(searchQuery, 15));
   }
 
   void onBlurCallback(_) {

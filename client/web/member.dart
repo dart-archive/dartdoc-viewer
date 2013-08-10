@@ -18,7 +18,15 @@ class MemberElement extends WebComponent {
   /// links converted to working links.
   void addComment(String elementName, {preview: false}) {
     var comment = item.comment;
-    if (preview) comment = item.previewComment;
+    if (preview && item is Class) comment = item.previewComment;
+    if (preview && item is Method) {
+      var index = item.comment.indexOf('</p>');
+      // All comments when read in from the YAML is surrounded by a <span> tag.
+      // This finds the first paragraph, and surrounds it with a span tag for
+      // use as the snippet. 
+      if (index == -1) comment = '<span></span>';
+      else comment = item.comment.substring(0, index) + '</p></span>';
+    }
     if (comment != '' && comment != null) {
       var commentLocation = getShadowRoot(elementName).query('.description');
       commentLocation.children.clear();
@@ -34,7 +42,7 @@ class MemberElement extends WebComponent {
             var index = link.text.indexOf('#');
             var newName = link.text.substring(index + 1, link.text.length);
             link.replaceWith(new Element.html('<i>$newName</i>'));
-          } else if (!index.contains(link.text)) {
+          } else if (!index.keys.contains(link.text)) {
             // If markdown links to private or otherwise unknown members are
             // found, make them <i> tags instead of <a> tags for CSS.
             link.replaceWith(new Element.html('<i>${link.text}</i>'));
@@ -53,7 +61,7 @@ class MemberElement extends WebComponent {
   /// Creates an HTML element for a parameterized type.  
   static Element createInner(NestedType type) {
     var span = new SpanElement();
-    if (!index.contains(type.outer.simpleType)) {
+    if (!index.keys.contains(type.outer.simpleType)) {
       var outer = new AnchorElement()
         ..text = type.outer.simpleType
         ..onClick.listen((_) => app.viewer.handleLink(type.outer.location));

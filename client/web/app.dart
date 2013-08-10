@@ -234,7 +234,11 @@ main() {
       viewer._handleLinkWithoutState(location);
     }
     retrieveFileContents('../../docs/index.txt').then((String list) {
-      index.addAll(list.split('\n'));
+      var elements = list.split('\n');
+      elements.forEach((element) {
+        var splitName = element.split(' ');
+        index[splitName[0]] = splitName[1];
+      });
     });
   });
 }
