@@ -76,7 +76,7 @@
 <div class="container">
   <template instantiate="if viewer.homePage != null">
     <template if="viewer.currentPage != viewer.homePage">
-      <div class="list-group visible-lg col-lg-4" 
+      <div class="list-group visible-lg col-lg-3" 
         data-spy="affix" data-offset-top="200">
         <template iterate="library in viewer.homePage.libraries">
           <template 
@@ -94,9 +94,126 @@
           </template>
         </template>
       </div>
-      <main class="col-12 col-lg-8">
+      <main class="col-12 col-lg-6">
         <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
       </main>
+
+      <!-- Minimap -->
+      <div class="visible-lg col-lg-3">
+        <ul>
+          <template instantiate="if viewer.currentPage is Library">
+            <li><a href="#dartdoc-top">
+              {{viewer.currentPage.name}} Library
+            </a></li>
+            <template 
+              instantiate="if viewer.currentPage.variables.content.isNotEmpty">
+              <li><a href="#properties">Properties</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.variables.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.operators.content.isNotEmpty">
+              <li><a href="#operators">Operators</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.operators.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.functions.content.isNotEmpty">
+              <li><a href="#functions">Functions</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.functions.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.classes.content.isNotEmpty">
+              <li><a href="#classes">Classes</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.classes.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.typedefs.content.isNotEmpty">
+              <li><a href="#typedefs">Typedefs</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.typedefs.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.errors.content.isNotEmpty">
+              <li><a href="#exceptions">Exceptions</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.errors.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+          </template>
+          <template 
+            instantiate="if viewer.currentPage is Class">
+            <li><a href="#dartdoc-top">
+              {{viewer.currentPage.name}} Class
+            </a></li>
+            <template 
+              instantiate="if viewer.currentPage.variables.content.isNotEmpty">
+              <li><a href="#properties">Properties</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.variables.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.operators.content.isNotEmpty">
+              <li><a href="#operators">Operators</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.operators.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.constructs.content.isNotEmpty">
+              <li><a href="#constructors">Constructors</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.constructs.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+            <template 
+              instantiate="if viewer.currentPage.functions.content.isNotEmpty">
+              <li><a href="#functions">Functions</a></li>
+              <ul>
+                <template 
+                  iterate="item in viewer.currentPage.functions.content">
+                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                </template>
+              </ul>
+            </template>
+          </template>
+        </ul>
+      </div>
     </template>
     <template if="viewer.currentPage == viewer.homePage">
       <main class="col-12">
@@ -104,5 +221,4 @@
       </main>
     </template>
   </template>
-  
 </div>
