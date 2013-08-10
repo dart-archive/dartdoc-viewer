@@ -88,6 +88,8 @@ background-image: url('../method_private.png');
 
 #minimap {
   padding-left: 10px;
+  max-height: 80%;
+  overflow: auto;
 }
 
 #minimap ul {
@@ -104,6 +106,7 @@ background-image: url('../method_private.png');
 }
 
 .affix {
-  top: 100px;
+  top: 70px;
   position: fixed;
+  right: 10px;
 }

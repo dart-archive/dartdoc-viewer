@@ -101,8 +101,8 @@
 
       <!-- Minimap -->
       <template instantiate="if viewer.currentPage is Library">
-        <div class="visible-lg col-lg-3 well well-sm nav" id="minimap" 
-          data-spy="affix" data-offset-top="200">
+        <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
+          id="minimap" data-spy="affix" data-offset-top="200">
           <a href="#dartdoc-top">
             {{viewer.currentPage.name}} Library
           </a>
@@ -184,8 +184,8 @@
       </template>
 
         <template instantiate="if viewer.currentPage is Class">
-          <div class="visible-lg col-lg-3 well well-sm nav" id="minimap"
-            data-spy="affix" data-offset-top="200">
+          <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
+            id="minimap" data-spy="affix" data-offset-top="200">
             <a href="#dartdoc-top">
               {{viewer.currentPage.name}} Class
             </a>
