@@ -110,7 +110,7 @@ background-image: url('../method_private.png');
 }
 
 .affix {
-  top: 70px;
+  top: 60px;
   position: fixed;
   right: 10px;
 }
