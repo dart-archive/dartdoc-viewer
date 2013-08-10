@@ -26,8 +26,8 @@
 
 <a id='dartdoc-top'></a>
 
-<div class="navbar">
-  <div class="container">
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
     <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
     <button type="button" class="navbar-toggle" data-toggle="collapse" 
       data-target=".navbar-responsive-collapse">
@@ -73,7 +73,7 @@
   </div>
 </div>
 
-<div class="container"> 
+<div class="container main-body">
   <template instantiate="if viewer.homePage != null">
     <template if="viewer.currentPage != viewer.homePage">
       <div class="list-group visible-lg col-lg-3" 
@@ -243,6 +243,7 @@
       </template>
     </template>
   </template>
+  
   <template if="viewer.currentPage == viewer.homePage">
     <main class="col-12">
       <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
