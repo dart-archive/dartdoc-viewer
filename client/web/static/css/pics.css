@@ -87,7 +87,7 @@ background-image: url('../method_private.png');
 }
 
 #minimap {
-  padding-left: 5px;
+  padding-left: 10px;
 }
 
 #minimap ul {
@@ -96,4 +96,14 @@ background-image: url('../method_private.png');
 
 #minimap ul ul {
   list-style: disc url('../smallcorner.png');
+}
+
+#minimap li.active a {
+  font-weight: bolder;
+  color: #333;
+}
+
+.affix {
+  top: 100px;
+  position: fixed;
 }
