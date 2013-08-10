@@ -419,14 +419,14 @@ dart.dom.svg library
 dart.dom.svg.Number class''';
 
 String oneLibraryIndex =
-'''Library1
-Library1.function
-Library1.variable
-Library1.Class
-Library1.Class.method
-Library1.Class.variable
-Library1.Class.
-Library1.Class.from''';
+'''Library1 library
+Library1.function method
+Library1.variable property
+Library1.Class class
+Library1.Class.method method
+Library1.Class.variable property
+Library1.Class. constructor
+Library1.Class.from constructor''';
 
 void main() {
   useHtmlEnhancedConfiguration();
@@ -816,11 +816,38 @@ void main() {
     expect(inheritanceC.commentFrom, equals(inheritanceB.qualifiedName));
   });
   
+  // Test that search returns the desired members 
+  test('many_library_index_search_test', () {
+    index = {};
+    var members = manyLibrariesIndex.split('\n');
+    members.forEach((element) {
+      var splitElements = element.split(' ');
+      index[splitElements[0]] = splitElements[1];
+    });
+    
+    var results = lookupSearchResults('dart', 10);
+    // Expect the top 4 results to be libraries.
+    for (int i = 0; i < 4; i++) {
+      expect(index[results[i].element], equals('library'));
+    }
+    
+    results = lookupSearchResults('object', 10);
+    expect(results[0].element, equals('dart.core.Object'));
+    for (int i = 1; i < 4; i++) {
+      expect(results[i].element.startsWith('dart.core.Object.'), isTrue);
+      expect(results[i].score, equals(results[1].score));
+    }
+  });
+  
   // Test searching with a single library in the index.
-  // TODO(tmandel): Update this test for newer index.
   test('search_single_library_test', () {
-    index = []
-      ..addAll(oneLibraryIndex.split('\n'));
+    index = {};
+    var members = oneLibraryIndex.split('\n');
+    members.forEach((element) {
+      var splitElements = element.split(' ');
+      index[splitElements[0]] = splitElements[1];
+    });
+    
     var results = lookupSearchResults('Class.from', 2);
     expect(results[0].element, equals('Library1.Class.from'));
     expect(results.length, equals(1));
@@ -833,8 +860,9 @@ void main() {
     expect(results[3].score, equals(results[4].score));
     
     results = lookupSearchResults('variable', 2);
-    expect(results[0].element, equals('Library1.variable'));
-    expect(results[1].element, equals('Library1.Class.variable'));
+    var expected = ['Library1.variable', 'Library1.Class.variable'];
+    expect(expected.contains(results[0].element), isTrue);
+    expect(expected.contains(results[1].element), isTrue);
     
     results = lookupSearchResults('method', 2);
     expect(results[0].element, equals('Library1.Class.method'));
