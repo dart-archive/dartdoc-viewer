@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-<link rel="stylesheet" href="static/css/pics.css">
 <link rel="stylesheet" href="static/css/bootstrap.css">
+<link rel="stylesheet" href="static/css/pics.css">
 <link rel="import" href="category.html">
 <link rel="import" href="item.html">
 <link rel="import" href="page.html">
@@ -99,10 +99,10 @@
       </main>
 
       <!-- Minimap -->
-      <div class="visible-lg col-lg-3">
+      <div class="visible-lg col-lg-3 well well-sm nav" id="minimap">
         <ul>
           <template instantiate="if viewer.currentPage is Library">
-            <li><a href="#dartdoc-top">
+            <li class="active"><a href="#dartdoc-top">
               {{viewer.currentPage.name}} Library
             </a></li>
             <template 
@@ -168,7 +168,7 @@
           </template>
           <template 
             instantiate="if viewer.currentPage is Class">
-            <li><a href="#dartdoc-top">
+            <li class="active"><a href="#dartdoc-top">
               {{viewer.currentPage.name}} Class
             </a></li>
             <template 
