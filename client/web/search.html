@@ -13,16 +13,13 @@ BSD-style license that can be found in the LICENSE file.
   <body>
   <element name="search-box" constructor="Search" extends="div">
     <template>
-      <form class="navbar-form pull-right dropdown-toggle" id="search-box" 
-        data-toggle="dropdown">
-        <input type="search" name="q" id="q" autocomplete="off"
-            class="form-control" placeholder="Search API"
-            bind-value="searchQuery" on-key-press="updateResults()" 
-            on-key-up="updateResults()">
-      </form>
-      
-        <div class="dropdown 
+              <div class="navbar-form pull-right dropdown 
           {{!searchQuery.isEmpty && isFocused ? 'open' : ''}}">
+        <input type="search" name="q" id="q" autocomplete="off"
+            class="input-sm dropdown-toggle" placeholder="Search API"
+            bind-value="searchQuery" on-key-press="updateResults()" 
+            on-key-up="updateResults()" data-toggle="dropdown">
+      
           <ul class="dropdown-menu pull-right" role="menu"
               aria-labelledby="dropdownMenu">
             <template iterate="result in results">
