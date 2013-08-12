@@ -43,25 +43,26 @@ file by running `python gsutil cat gs://dartlang-docgen/VERSION`.
 
 There are two ways to run the viewer locally:
 
- 1. In the Dart Editor, the viewer can be run by running 
+ 1. The `dartdoc.py` script in the `pkg/docgen/bin` directory of the Dart
+ repository is a useful tool for generating documentation and running the 
+ viewer. Checkout the docgen README for more information on how to run it.
+ The script makes use of the [Google App Engine SDK for Python][GAE]'s
+ development server. This can be used manually without the script by running
+ `dev_appserver.py <folder containing app.yaml>`, but first act on the 
+ following:
+   - When running the viewer on the development server, YAML files are retrieved
+   from the client/local folder instead of the client/docs folder. You must 
+   manually rename your 'docs' directory to 'local' for the server to correctly 
+   retrieve your files.
+   - If you intend to view documentation in a browser other than Dartium, you 
+   will first have to compile the viewer to JavaScript. This can be done by 
+   running `sdk/bin/dart2js` from the Dart repository on `client/web/app.dart`.
+ 2. In the Dart Editor, the viewer can be run by running 
  `dart client/build.dart` and then running `index.html` from the 
  `client/web/out/` folder. Be sure to have a working version of YAML 
  documentation from [Generating YAML Files](#generation). These files 
  should be put in a folder named 'docs' located in the client/ folder.
- 2. Using the Google App Engine development server from the
- [Google App Engine SDK for Python][GAE], the viewer can be run by running
- `dev_appserver.py <folder containing app.yaml>`. This task can also be
- completed without the following details by using the `dartdoc.py` script at 
- `pkg/docgen/bin/dartdoc.py` in the Dart repository.
-   - When running the viewer on the development server, YAML files are retrieved
-   from the client/local folder instead of the client/docs folder. If you are 
-   not using `dartdoc.py` to view your documentation, you must manually rename 
-   your 'docs' directory to 'local' for the server to correctly retrieve your 
-   files.
-   - If you intend to view documentation in a browser other than Dartium and you
-   are not using `dartdoc.py`, you will first have to compile the viewer to 
-   JavaScript. This can be done by running `sdk/bin/dart2js` from the Dart 
-   repository on `client/web/app.dart`.
+   
 
 ### Pushing to App Engine
 
