@@ -12,17 +12,17 @@
     </template>
     <template if="item != null">
       
-    <div class="panel-heading">
-      <dartdoc-annotation annotations="{{item.annotations}}">
-      </dartdoc-annotation>
-    
-      <!-- Return Type -->
-      <p>
-        <template instantiate="if !item.isConstructor">
-          <span class="type">
-            {{createType(item.type, 'method-panel', 'type')}}
-          </span>
-        </template>
+      <div class="panel-heading">
+        <dartdoc-annotation annotations="{{item.annotations}}">
+        </dartdoc-annotation>
+      
+        <!-- Return Type -->
+        <p>
+          <template instantiate="if !item.isConstructor">
+            <span class="type">
+              {{createType(item.type, 'method-panel', 'type')}}
+            </span>
+          </template>
           <span>
             <template if="item.isConstant">const</template>
             <template if="item.isAbstract">abstract</template>
@@ -76,8 +76,9 @@
       inserted() {
         super.inserted();
         var index = item.comment.indexOf('</p>');
-        if (index == -1) isExpanded = !isInherited;
-        else {
+        if (index == -1) {
+          isExpanded = !isInherited;
+        } else {
           index = item.comment.indexOf('</p>', index + 1);
           if (index == -1) isExpanded = true;
           else isExpanded = false;

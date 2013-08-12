@@ -57,8 +57,9 @@
       inserted() {
         super.inserted();
         var index = item.comment.indexOf('</p>');
-        if (index == -1) isExpanded = true;
-        else {
+        if (index == -1) {
+          isExpanded = true;
+        } else {
           index = item.comment.indexOf('</p>', index + 1);
           if (index == -1) isExpanded = true;
           else isExpanded = false;
