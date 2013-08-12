@@ -2,11 +2,11 @@
 <element name="search-result" constructor="Result" extends="a"  
     apply-author-styles>
   <template>
-    <ul class="list-unstyled">
-      <li><strong>{{descriptiveName}}</strong></li>
+    <ul class="list-unstyled small">
+      <li id="result-name"><strong>{{descriptiveName}}</strong></li>
       <li class="text-right text-muted small">{{descriptiveType}}</li>
       <li class="text-right text-muted small">{{outerLibrary}}</li>
-    </div>
+    </ul>
     
   </template>
   <script type="application/dart">
