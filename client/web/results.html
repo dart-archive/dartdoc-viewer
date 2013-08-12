@@ -2,11 +2,10 @@
 <element name="search-result" constructor="Result" extends="a"  
     apply-author-styles>
   <template>
-    <div class="border-top-bottom">
-      <strong>{{descriptiveName}}</strong>
-      <span class="pull-right">{{outerLibrary}}</span>
-      <br/>
-      <span>{{descriptiveType}}</span>
+    <ul>
+      <li><strong>{{descriptiveName}}</strong></li>
+      <li class="text-right text-muted small">{{descriptiveType}}</li>
+      <li class="text-right text-muted small">{{outerLibrary}}</li>
     </div>
     
   </template>
