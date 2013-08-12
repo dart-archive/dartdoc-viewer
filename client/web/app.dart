@@ -81,11 +81,13 @@ class Viewer {
       Timer.run(() {
         var e = document.query('$hash');
         if (e != null) {
+          // First find the parent category element to make sure it is open.
           var category = e.parent;
-          while (!category.classes.contains('accordion-body') 
-              && category != null) {
+          while (category != null && 
+              !category.classes.contains('accordion-body')) {
             category = category.parent;
           }
+          // Open the category if it is not open.
           if (category != null && !category.classes.contains('in'))
             category.classes.add('in');
           e.scrollIntoView(ScrollAlignment.TOP);
