@@ -66,13 +66,17 @@ class Viewer {
   List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
   
   /// Scrolls the screen to the correct member if necessary.
-  void _scrollScreen(String hash, Item destination) {
-    if (hash == null) hash = '#dartdoc-top';
-    Timer.run(() {
-      
-      var e = document.query('$hash');
-      e.scrollIntoView();
-    });
+  void _scrollScreen(String hash) {
+    if (hash == null || hash == '') {
+      Timer.run(() {
+        window.scrollTo(0, 0);
+      });
+    } else {
+      Timer.run(() {
+        var e = document.query('$hash');
+        if (e != null) e.scrollIntoView(ScrollAlignment.TOP);
+      });
+    }
   }
   
   /// Updates [currentPage] to be [page].
@@ -80,7 +84,7 @@ class Viewer {
     if (page != null) {
       _hash = hash;
       currentPage = page;
-      _scrollScreen(hash, page);
+      _scrollScreen(hash);
     }
   }
   
