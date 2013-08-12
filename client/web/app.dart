@@ -45,6 +45,9 @@ class Viewer {
 
   /// State for whether or not the library list panel should be shown. 
   @observable bool isPanel = true;
+
+  /// State for whether or not the minimap panel should be shown. 
+  @observable bool isMinimap = true;
   
   /// The current element on the current page being shown (e.g. #dartdoc-top).
   String _hash;
@@ -214,6 +217,11 @@ class Viewer {
   /// Toggles the library panel
   void togglePanel() {
     isPanel = !isPanel;
+  }
+
+  /// Toggles the minimap panel
+  void toggleMinimap() {
+    isMinimap = !isMinimap;
   }
 }
 

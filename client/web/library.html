@@ -16,12 +16,12 @@
       <section class="description">{{addComment('dartdoc-library')}}</section>
 
       <div class="accordion" id="accordion-grouping">
-        <template if="variables.content.isNotEmpty">
-          <dartdoc-category category="{{variables}}" class="accordion-group">
-          </dartdoc-category>
-        </template>
         <template if="operators.content.isNotEmpty">
           <dartdoc-category category="{{operators}}" class="accordion-group">
+          </dartdoc-category>
+        </template>
+        <template if="variables.content.isNotEmpty">
+          <dartdoc-category category="{{variables}}" class="accordion-group">
           </dartdoc-category>
         </template>
         <template if="functions.content.isNotEmpty">
