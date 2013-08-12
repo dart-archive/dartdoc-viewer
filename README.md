@@ -54,9 +54,10 @@ There are two ways to run the viewer locally:
  completed without the following details by using the `dartdoc.py` script at 
  `pkg/docgen/bin/dartdoc.py` in the Dart repository.
    - When running the viewer on the development server, YAML files are retrieved
-   from the client/local folder instead of the client/docs folder. If you are not 
-   using `dartdoc.py` to view your documentation, you must manually rename your 
-   'docs' directory to 'local' for the server to correctly retrieve your files.
+   from the client/local folder instead of the client/docs folder. If you are 
+   not using `dartdoc.py` to view your documentation, you must manually rename 
+   your 'docs' directory to 'local' for the server to correctly retrieve your 
+   files.
    - If you intend to view documentation in a browser other than Dartium and you
    are not using `dartdoc.py`, you will first have to compile the viewer to 
    JavaScript. This can be done by running `sdk/bin/dart2js` from the Dart 
