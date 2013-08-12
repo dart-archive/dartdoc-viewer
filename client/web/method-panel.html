@@ -11,7 +11,7 @@
       Loading...
     </template>
     <template if="item != null">
-      
+      <a id="{{item.name == '' ? item.decoratedName : item.name}}"></a>
       <div class="panel-heading">
         <dartdoc-annotation annotations="{{item.annotations}}">
         </dartdoc-annotation>

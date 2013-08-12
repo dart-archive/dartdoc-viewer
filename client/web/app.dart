@@ -67,7 +67,8 @@ class Viewer {
   
   /// Links to members within [currentPage].
   void miniMapLink(Item item) {
-    _updatePage(currentPage, '#${item.name}');
+    var hash = item.name == '' ? item.decoratedName : item.name;
+    _updatePage(currentPage, '#$hash');
     _updateState(currentPage);
   }
   
@@ -85,7 +86,12 @@ class Viewer {
       });
     } else {
       Timer.run(() {
-        var e = document.query('$hash');
+        var e;
+        try {
+          e = document.query(hash);
+        } catch (exception) {
+          // TODO(tmandel): Find a way to link to operators.
+        }
         if (e != null) {
           // First find the parent category element to make sure it is open.
           var category = e.parent;

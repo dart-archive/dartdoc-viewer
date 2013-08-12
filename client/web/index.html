@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="static/css/pics.css">
 <link rel="import" href="category.html">
 <link rel="import" href="item.html">
+<link rel="import" href="minimap-element.html">
 <link rel="import" href="page.html">
 <link rel="import" href="search.html">
 
@@ -126,7 +127,8 @@
             </template>
             <template 
               if="library.decoratedName != viewer.breadcrumbs[1].decoratedName">
-              <a on-click="viewer.changePage(library)" class="list-group-item btn-link">
+              <a on-click="viewer.changePage(library)" 
+                class="list-group-item btn-link">
                 {{library.decoratedName}}
               </a>
             </template>
@@ -156,12 +158,9 @@
                   Operators<b class="caret"></b>
                 </a></li>
                 <ul id="operators" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.operators.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap 
+                    items="{{viewer.currentPage.operators.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
               <template 
@@ -171,12 +170,9 @@
                   Properties<b class="caret"></b>
                 </a></li>
                 <ul id="properties" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.variables.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap
+                    items="{{viewer.currentPage.variables.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
               <template 
@@ -186,12 +182,9 @@
                   Functions<b class="caret"></b>
                 </a></li>
                 <ul id="functions" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.functions.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap 
+                    items="{{viewer.currentPage.functions.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
               <template 
@@ -200,12 +193,9 @@
                   Classes<b class="caret"></b>
                 </a></li>
                 <ul id="classes" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.classes.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap 
+                    items="{{viewer.currentPage.classes.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
               <template 
@@ -214,12 +204,9 @@
                   Typedefs<b class="caret"></b>
                 </a></li>
                 <ul id="typedefs" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.typedefs.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap 
+                    items="{{viewer.currentPage.typedefs.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
               <template 
@@ -228,12 +215,9 @@
                   Exceptions<b class="caret"></b>
                 </a></li>
                 <ul id="exceptions" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.errors.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap 
+                    items="{{viewer.currentPage.errors.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
             </ul>
@@ -254,12 +238,9 @@
                   Operators<b class="caret"></b>
                 </a></li>
                 <ul id="operators" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.operators.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap 
+                    items="{{viewer.currentPage.operators.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
               <template 
@@ -269,12 +250,9 @@
                   Properties<b class="caret"></b>
                 </a></li>
                 <ul id="properties" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.variables.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap 
+                    items="{{viewer.currentPage.variables.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
               <template 
@@ -284,12 +262,9 @@
                   Constructors<b class="caret"></b>
                 </a></li>
                 <ul id="constructors" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.constructs.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap 
+                    items="{{viewer.currentPage.constructs.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
               <template 
@@ -299,12 +274,9 @@
                   Functions<b class="caret"></b>
                 </a></li>
                 <ul id="functions" class="collapse">
-                  <template 
-                    iterate="item in viewer.currentPage.functions.content">
-                    <li><a on-click="viewer.miniMapLink(item)">
-                      {{item.name}}
-                    </a></li>
-                  </template>
+                  <dartdoc-minimap 
+                    items="{{viewer.currentPage.functions.content}}">
+                  </dartdoc-minimap>
                 </ul>
               </template>
             </ul>
