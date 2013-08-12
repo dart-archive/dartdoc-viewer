@@ -34,8 +34,15 @@ String ownerName(String qualifiedName) {
   return index != -1 ? qualifiedName.substring(0, index) : '';
 }
 
-/// Returns a valid String for handleLink from the input [Item].
-String linkName(Item item) => findLibraryName(item.qualifiedName);
+/// Returns a name that maps all characters in [name] based in [idMap].
+String getIdName(String name) {
+  StringBuffer newName = new StringBuffer();
+  for (int i = 0; i < name.length; i++) {
+    var newChar = idMap[name[i]];
+    newName.write(newChar == null ? name[i] : newChar);
+  }
+  return newName.toString();
+}
 
 /**
  * A [Container] that contains other [Container]s to be displayed.

@@ -13,6 +13,9 @@ import 'app.dart' as app;
 /// display, so this class handles those two aspects shared by all members.
 class MemberElement extends WebComponent {
   @observable Item item;
+ 
+  /// A valid string for an HTML id made from this [Item]'s name.
+  String get idName => 'dartdoc_${getIdName(item.name)}';
   
   /// Adds [item]'s comment to the the [elementName] element with markdown
   /// links converted to working links.

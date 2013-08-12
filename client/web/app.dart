@@ -86,12 +86,8 @@ class Viewer {
       });
     } else {
       Timer.run(() {
-        var e;
-        try {
-          e = document.query(hash);
-        } catch (exception) {
-          // TODO(tmandel): Find a way to link to operators.
-        }
+        hash = hash.substring(1, hash.length);
+        var e = document.query('#dartdoc_${getIdName(hash)}');
         if (e != null) {
           // First find the parent category element to make sure it is open.
           var category = e.parent;

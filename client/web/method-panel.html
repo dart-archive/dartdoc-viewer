@@ -11,22 +11,25 @@
       Loading...
     </template>
     <template if="item != null">
-      <a id="{{item.name == '' ? item.decoratedName : item.name}}"></a>
+      <a id="{{idName == '' ? 'dartdoc_${item.decoratedName}' : idName}}"></a>
       <div class="panel-heading">
+        
         <dartdoc-annotation annotations="{{item.annotations}}">
         </dartdoc-annotation>
       
         <!-- Return Type -->
         <p>
-          <template instantiate="if !item.isConstructor">
-            <span class="type">
-              {{createType(item.type, 'method-panel', 'type')}}
-            </span>
-          </template>
           <span>
             <template if="item.isConstant">const</template>
             <template if="item.isAbstract">abstract</template>
             <template if="item.isStatic">static</template>
+            
+            <template instantiate="if !item.isConstructor">
+              <span class="type">
+                {{createType(item.type, 'method-panel', 'type')}}
+              </span>
+            </template>
+            <template if="item.isOperator">operator</template>
             <b>{{item.decoratedName}}</b>
              <!-- Parameters -->
             <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
