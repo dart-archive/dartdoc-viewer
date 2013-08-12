@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<element name="dartdoc-minimap" constructor="MinimapElement" extends="article"
+    apply-author-styles>
+  <template>
+    <template iterate="item in items">
+      <li>
+        <a class="btn-link" on-click="viewer.miniMapLink(item)">
+          {{item.decoratedName}}
+        </a>
+      </li>
+    </template>
+  </template>
+  
+  <script type="application/dart">
+    
+    import 'package:dartdoc_viewer/item.dart';
+    import 'package:web_ui/web_ui.dart';
+    import 'app.dart';
+    
+    /// An element in a page's minimap displayed on the right of the page.
+    class MinimapElement extends WebComponent {
+      @observable List<Item> items;
+    }
+  </script>
+</element>
