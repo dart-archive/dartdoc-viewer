@@ -6,7 +6,7 @@
   <template>
     <ul class="nav nav-pills nav-stacked">
       <li>
-        <a class="btn-link" id="{{item.name}}" 
+        <a class="btn-link" id="{{idName}}" 
             on-click="app.viewer.changePage(item)">
           <template instantiate="if item is! Method">
               {{title}}

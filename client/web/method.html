@@ -17,16 +17,17 @@
       
       <!-- Return Type -->
       <div class="page-header">
-        <template instantiate="if !item.isConstructor">
-          <span class="type">
-            {{createType(item.type, 'dartdoc-method', 'type')}}
-          </span>
-        </template>
-        
         <h1>
           <template if="item.isConstant">const</template>
           <template if="item.isAbstract">abstract</template>
           <template if="item.isStatic">static</template>
+          
+          <template instantiate="if !item.isConstructor">
+            <span class="type">
+              {{createType(item.type, 'dartdoc-method', 'type')}}
+            </span>
+          </template>
+          <template if="item.isOperator">operator</template>
           {{item.decoratedName}}
            <!-- Parameters -->
           <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>

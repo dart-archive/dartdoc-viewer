@@ -4,7 +4,7 @@
 <element name="variable-heading" constructor="VariableHeading" 
   extends="p" apply-author-styles>
   <template>
-    <a id="{{item.name}}"></a>
+    <a id="{{idName}}"></a>
     <template if="item.isFinal">final</template>
     <template if="item.isStatic">static</template>
     <template if="item.isAbstract">static</template>
