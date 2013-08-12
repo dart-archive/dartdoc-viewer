@@ -4,6 +4,7 @@
 <link rel="import" href="parameters.html">
 <link rel="import" href="annotations.html">
 
+<!-- TODO(tmandel): Reduce redundancy here and in method.html -->
 <element name="method-panel" constructor="MethodPanel" extends="div"
     apply-author-styles>
   <template>
@@ -11,7 +12,7 @@
       Loading...
     </template>
     <template if="item != null">
-      <a id="{{idName == '' ? 'dartdoc_${item.decoratedName}' : idName}}"></a>
+      <a id="{{item.name == '' ? 'dartdoc_${item.decoratedName}' : idName}}"></a>
       <div class="panel-heading">
         
         <dartdoc-annotation annotations="{{item.annotations}}">
@@ -19,7 +20,6 @@
       
         <!-- Return Type -->
         <p>
-          <!-- TODO(tmandel): Reduce redundancy here and in method.html -->
           <span>
             <template if="item.isConstant">const</template>
             <template if="item.isAbstract">abstract</template>
