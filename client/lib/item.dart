@@ -34,6 +34,9 @@ String ownerName(String qualifiedName) {
   return index != -1 ? qualifiedName.substring(0, index) : '';
 }
 
+/// Returns a valid String for handleLink from the input [Item].
+String linkName(Item item) => findLibraryName(item.qualifiedName);
+
 /**
  * A [Container] that contains other [Container]s to be displayed.
  */
