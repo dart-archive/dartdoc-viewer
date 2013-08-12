@@ -42,7 +42,6 @@ class Viewer {
   
   /// The current page being shown.
   @observable Item currentPage;
-  
 
   /// State for whether or not the library list panel should be shown. 
   @observable bool isPanel = true;
