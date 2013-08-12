@@ -50,7 +50,8 @@ class MemberElement extends WebComponent {
             var linkable = new LinkableType(link.text);
             link
               ..onClick.listen((_) => app.viewer.handleLink(linkable.location))
-              ..text = linkable.simpleType;
+              ..text = linkable.simpleType
+              ..attributes['class'] = 'btn-link';
           }
         }
       }
@@ -64,7 +65,8 @@ class MemberElement extends WebComponent {
     if (!index.keys.contains(type.outer.simpleType)) {
       var outer = new AnchorElement()
         ..text = type.outer.simpleType
-        ..onClick.listen((_) => app.viewer.handleLink(type.outer.location));
+        ..onClick.listen((_) => app.viewer.handleLink(type.outer.location))
+        ..attributes['class'] = 'btn-link';
       span.append(outer);
     } else {
       span.appendText(type.outer.simpleType);

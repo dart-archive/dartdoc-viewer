@@ -120,13 +120,13 @@
             <template 
               if="library.decoratedName == viewer.breadcrumbs[1].decoratedName">
               <a on-click="viewer.changePage(library)" 
-                class="list-group-item active">
+                class="list-group-item active btn-link">
                 {{library.decoratedName}}
               </a>
             </template>
             <template 
               if="library.decoratedName != viewer.breadcrumbs[1].decoratedName">
-              <a on-click="viewer.changePage(library)" class="list-group-item">
+              <a on-click="viewer.changePage(library)" class="list-group-item btn-link">
                 {{library.decoratedName}}
               </a>
             </template>
