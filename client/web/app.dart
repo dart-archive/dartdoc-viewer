@@ -42,6 +42,9 @@ class Viewer {
   
   /// The current page being shown.
   @observable Item currentPage;
+
+  /// State for whether or not the library list panel should be shown. 
+  @observable bool isPanel = true;
   
   /// The current element on the current page being shown (e.g. #dartdoc-top).
   String _hash;
@@ -206,6 +209,11 @@ class Viewer {
     }
     if (_hash != null) url = '$url$_hash';
     window.history.pushState(url, url.replaceAll('/', '->'), url);
+  }
+
+  /// Toggles the library panel
+  void togglePanel() {
+    isPanel = !isPanel;
   }
 }
 
