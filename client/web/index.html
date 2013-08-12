@@ -67,16 +67,37 @@
             </template>
           </template>
         </template>
+        
       </ul>  
-      <search-box></search-box>
+
+      <ul class="nav navbar-nav pull-right">
+        
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">
+            Options <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <template instantiate="if viewer.currentPage != viewer.homePage">
+              <li class="visible-lg"><a on-click="viewer.togglePanel()">
+                <template if="viewer.isPanel">Hide Libraries</template>
+                <template if="!viewer.isPanel">Show Libraries</template>
+              </a></li>
+            </template>
+            <li><a href="#">Hide Inherited</a></li>
+          </ul>
+        </li>
+
+        <li><search-box></search-box></li>
+      </ul>
     </div>
   </div>
 </div>
 
 <div class="container main-body">
+
   <template instantiate="if viewer.homePage != null">
-    <template if="viewer.currentPage != viewer.homePage">
-      <div class="list-group visible-lg col-lg-4" 
+    <template if="viewer.currentPage != viewer.homePage && viewer.isPanel">
+      <div class="list-group visible-lg col-lg-3" 
         data-spy="affix" data-offset-top="200">
         <template iterate="library in viewer.homePage.libraries">
           <template 
@@ -98,7 +119,7 @@
         <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
       </main>
     </template>
-    <template if="viewer.currentPage == viewer.homePage">
+    <template if="viewer.currentPage == viewer.homePage || !viewer.isPanel">
       <main class="col-12">
         <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
       </main>
