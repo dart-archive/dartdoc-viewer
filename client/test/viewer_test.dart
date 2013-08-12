@@ -389,7 +389,6 @@ void main() {
     var members = manyLibrariesIndex.split('\n');
     members.forEach((element) {
       var splitElements = element.split(' ');
-      print(element);
       index[splitElements[0]] = splitElements[1];
     });
     
