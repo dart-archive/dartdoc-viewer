@@ -21,7 +21,8 @@ BSD-style license that can be found in the LICENSE file.
             on-key-up="updateResults()">
       </form>
       
-        <div class="dropdown {{!searchQuery.isEmpty && isFocused ? 'open' : ''}}">
+        <div class="dropdown 
+          {{!searchQuery.isEmpty && isFocused ? 'open' : ''}}">
           <ul class="dropdown-menu pull-right" role="menu"
               aria-labelledby="dropdownMenu">
             <template iterate="result in results">
