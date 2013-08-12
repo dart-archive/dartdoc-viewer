@@ -20,21 +20,23 @@ BSD-style license that can be found in the LICENSE file.
             bind-value="searchQuery" on-key-press="updateResults()" 
             on-key-up="updateResults()">
       </form>
-      <template if="!searchQuery.isEmpty && isFocused">
-        <ul class="dropdown-menu pull-right" role="menu"
-            aria-labelledby="dropdownMenu">
-          <template iterate="result in results">
-            <!-- A tabIndex of 0 allows for tab navigation through results -->
-            <li data-ref-id="{{result.element}}"
-                on-click="onSubmitCallback()" tabindex="0"
-                id="search{{result.position}}">
-              <search-result qualifiedname="{{result.element}}"
-                  membertype="{{result.type}}">
-              </search-result>
-            </li>
-          </template>
-        </ul>
-      </template>
+      
+        <div class="dropdown {{!searchQuery.isEmpty && isFocused ? 'open' : ''}}">
+          <ul class="dropdown-menu pull-right" role="menu"
+              aria-labelledby="dropdownMenu">
+            <template iterate="result in results">
+              <!-- A tabIndex of 0 allows for tab navigation through results -->
+              <li data-ref-id="{{result.element}}"
+                  on-click="onSubmitCallback()" tabindex="0"
+                  id="search{{result.position}}">
+                <search-result qualifiedname="{{result.element}}"
+                    membertype="{{result.type}}">
+                </search-result>
+              </li>
+            </template>
+          </ul>
+        </div>
+    
     </template>
    
     
