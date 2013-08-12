@@ -28,7 +28,7 @@
   <div class="navbar-inner">
     <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
     <button type="button" class="navbar-toggle" data-toggle="collapse" 
-      data-target=".navbar-responsive-collapse">
+      data-target=".navbar-responsive-collapse" id="nav-collapse-button">
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
@@ -41,7 +41,8 @@
       Dart API Reference
     </a>
 
-    <div class="nav-collapse collapse navbar-responsive-collapse">
+    <div class="nav-collapse collapse navbar-responsive-collapse" 
+      id="nav-collapse-content">
       <ul class="nav navbar-nav">
         <template if="viewer.currentPage != null">
           <template iterate="item in viewer.breadcrumbs">

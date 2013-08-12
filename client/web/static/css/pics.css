@@ -114,3 +114,22 @@ background-image: url('../method_private.png');
   position: fixed;
   right: 10px;
 }
+
+#search {
+  width: 280px;
+}
+
+.search-result {
+  width: 280px;
+  font-size: 12px;
+}
+
+.search-result:focus,
+.search-result:hover {
+  background-color: #357ebd;
+}
+
+.search-result:focus #result-name,
+.search-result:hover #result-name {
+  color: #ffffff;
+}

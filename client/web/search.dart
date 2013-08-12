@@ -27,7 +27,7 @@ class Search extends WebComponent {
     currentIndex = -1;
     results.clear();
     // TODO(tmandel): Show fewer results on mobile than on desktop.
-    results.addAll(lookupSearchResults(searchQuery, viewer.isDesktop ? 15 : 5));
+    results.addAll(lookupSearchResults(searchQuery, viewer.isDesktop ? 10 : 5));
   }
 
   void onBlurCallback(_) {
@@ -55,6 +55,11 @@ class Search extends WebComponent {
       }
       viewer.handleLink(new LinkableType(refId).location);
       searchQuery = "";
+      results.clear();
+      document.query('#nav-collapse-button').classes.add('collapsed');
+      document.query('#nav-collapse-content').classes.remove('in');
+      document.query('#nav-collapse-content').classes.add('collapse');
+      document.body.focus();
       watchers.dispatch();
     }
   }
