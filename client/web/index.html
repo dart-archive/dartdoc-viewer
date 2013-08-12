@@ -137,150 +137,157 @@
       </main>
 
       <template if="viewer.isMinimap">
-      <!-- Minimap -->
-      <template instantiate="if viewer.currentPage is Library">
-        <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
-          id="minimap" data-spy="affix" data-offset-top="200">
-          <a href="#dartdoc-top">
-            {{viewer.currentPage.name}} Library
-          </a>
-          <ul>
-            <template 
-              instantiate="if viewer.currentPage.operators.content.isNotEmpty">
-              <li><a href="#operators" data-toggle="collapse">
-                Operators<b class="caret"></b>
-              </a></li>
-              <ul id="operators" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.operators.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
-              instantiate="if viewer.currentPage.variables.content.isNotEmpty">
-              <li><a href="#properties" data-toggle="collapse">
-                Properties<b class="caret"></b>
-              </a></li>
-              <ul id="properties" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.variables.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
-              instantiate="if viewer.currentPage.functions.content.isNotEmpty">
-              <li><a href="#functions" data-toggle="collapse">
-                Functions<b class="caret"></b>
-              </a></li>
-              <ul id="functions" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.functions.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
-              instantiate="if viewer.currentPage.classes.content.isNotEmpty">
-              <li><a href="#classes" data-toggle="collapse">
-                Classes<b class="caret"></b>
-              </a></li>
-              <ul id="classes" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.classes.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
-              instantiate="if viewer.currentPage.typedefs.content.isNotEmpty">
-              <li><a href="#typedefs" data-toggle="collapse">
-                Typedefs<b class="caret"></b>
-              </a></li>
-              <ul id="typedefs" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.typedefs.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
-              instantiate="if viewer.currentPage.errors.content.isNotEmpty">
-              <li><a href="#exceptions" data-toggle="collapse">
-                Exceptions<b class="caret"></b>
-              </a></li>
-              <ul id="exceptions" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.errors.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-          </ul>
+        <!-- Minimap -->
+        <template instantiate="if viewer.currentPage is Library">
+          <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
+            id="minimap" data-spy="affix" data-offset-top="200">
+            <a href="#dartdoc-top">
+              {{viewer.currentPage.name}} Library
+            </a>
+            <ul>
+              <template 
+                instantiate="if 
+                  viewer.currentPage.operators.content.isNotEmpty">
+                <li><a href="#operators" data-toggle="collapse">
+                  Operators<b class="caret"></b>
+                </a></li>
+                <ul id="operators" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.operators.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+              <template 
+                instantiate="if 
+                  viewer.currentPage.variables.content.isNotEmpty">
+                <li><a href="#properties" data-toggle="collapse">
+                  Properties<b class="caret"></b>
+                </a></li>
+                <ul id="properties" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.variables.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+              <template 
+                instantiate="if 
+                  viewer.currentPage.functions.content.isNotEmpty">
+                <li><a href="#functions" data-toggle="collapse">
+                  Functions<b class="caret"></b>
+                </a></li>
+                <ul id="functions" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.functions.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+              <template 
+                instantiate="if viewer.currentPage.classes.content.isNotEmpty">
+                <li><a href="#classes" data-toggle="collapse">
+                  Classes<b class="caret"></b>
+                </a></li>
+                <ul id="classes" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.classes.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+              <template 
+                instantiate="if viewer.currentPage.typedefs.content.isNotEmpty">
+                <li><a href="#typedefs" data-toggle="collapse">
+                  Typedefs<b class="caret"></b>
+                </a></li>
+                <ul id="typedefs" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.typedefs.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+              <template 
+                instantiate="if viewer.currentPage.errors.content.isNotEmpty">
+                <li><a href="#exceptions" data-toggle="collapse">
+                  Exceptions<b class="caret"></b>
+                </a></li>
+                <ul id="exceptions" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.errors.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+            </ul>
+          </div>
+        </template>
+
+        <template instantiate="if viewer.currentPage is Class">
+          <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
+            id="minimap" data-spy="affix" data-offset-top="200px">
+            <a href="#dartdoc-top">
+              {{viewer.currentPage.name}} Class
+            </a>
+            <ul>
+              <template 
+                instantiate="if 
+                  viewer.currentPage.operators.content.isNotEmpty">
+                <li><a href="#operators" data-toggle="collapse">
+                  Operators<b class="caret"></b>
+                </a></li>
+                <ul id="operators" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.operators.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+              <template 
+                instantiate="if 
+                  viewer.currentPage.variables.content.isNotEmpty">
+                <li><a href="#properties" data-toggle="collapse">
+                  Properties<b class="caret"></b>
+                </a></li>
+                <ul id="properties" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.variables.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+              <template 
+                instantiate="if 
+                  viewer.currentPage.constructs.content.isNotEmpty">
+                <li><a href="#constructors" data-toggle="collapse">
+                  Constructors<b class="caret"></b>
+                </a></li>
+                <ul id="constructors" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.constructs.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+              <template 
+                instantiate="if 
+                  viewer.currentPage.functions.content.isNotEmpty">
+                <li><a href="#functions" data-toggle="collapse">
+                  Functions<b class="caret"></b>
+                </a></li>
+                <ul id="functions" class="collapse">
+                  <template 
+                    iterate="item in viewer.currentPage.functions.content">
+                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                  </template>
+                </ul>
+              </template>
+            </ul>
         </div>
       </template>
-
-      <template instantiate="if viewer.currentPage is Class">
-        <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
-          id="minimap" data-spy="affix" data-offset-top="200">
-          <a href="#dartdoc-top">
-            {{viewer.currentPage.name}} Class
-          </a>
-          <ul>
-            <template 
-              instantiate="if viewer.currentPage.operators.content.isNotEmpty">
-              <li><a href="#operators" data-toggle="collapse">
-                Operators<b class="caret"></b>
-              </a></li>
-              <ul id="operators" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.operators.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
-              instantiate="if viewer.currentPage.variables.content.isNotEmpty">
-              <li><a href="#properties" data-toggle="collapse">
-                Properties<b class="caret"></b>
-              </a></li>
-              <ul id="properties" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.variables.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
-              instantiate="if viewer.currentPage.constructs.content.isNotEmpty">
-              <li><a href="#constructors" data-toggle="collapse">
-                Constructors<b class="caret"></b>
-              </a></li>
-              <ul id="constructors" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.constructs.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-            <template 
-              instantiate="if viewer.currentPage.functions.content.isNotEmpty">
-              <li><a href="#functions" data-toggle="collapse">
-                Functions<b class="caret"></b>
-              </a></li>
-              <ul id="functions" class="collapse">
-                <template 
-                  iterate="item in viewer.currentPage.functions.content">
-                  <li><a href="#{{item.name}}">{{item.name}}</a></li>
-                </template>
-              </ul>
-            </template>
-          </ul>
-      </div>
     </template>
   </template>
-</template>
 </template>
   
 </div>
