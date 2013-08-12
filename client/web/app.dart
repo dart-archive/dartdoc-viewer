@@ -86,10 +86,12 @@ class Viewer {
       });
     } else {
       Timer.run(() {
+        // All ids are created using getIdName to avoid creating an invalid
+        // HTML id from an operator or setter.
         hash = hash.substring(1, hash.length);
-        var e = document.query('#dartdoc_${getIdName(hash)}');
+        var e = document.query('#${getIdName(hash)}');
         if (e != null) {
-          // First find the parent category element to make sure it is open.
+          // Find the parent category element to make sure it is open.
           var category = e.parent;
           while (category != null && 
               !category.classes.contains('accordion-body')) {
@@ -99,6 +101,8 @@ class Viewer {
           if (category != null && !category.classes.contains('in'))
             category.classes.add('in');
           e.scrollIntoView(ScrollAlignment.TOP);
+          // The navigation bar at the top of the page is 60px wide,
+          // so scroll down 60px once the browser scrolls to the member.
           window.scrollBy(0, -60);
         }
       });
@@ -108,6 +112,8 @@ class Viewer {
   /// Updates [currentPage] to be [page].
   void _updatePage(Item page, String hash) {
     if (page != null) {
+      // Since currentPage is observable, if it changes the page reloads.
+      // This avoids reloading the page when it isn't necessary.
       if (page != currentPage) currentPage = page;
       _hash = hash;
       _scrollScreen(hash);
