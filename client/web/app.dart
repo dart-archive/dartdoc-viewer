@@ -42,6 +42,7 @@ class Viewer {
   
   /// The current page being shown.
   @observable Item currentPage;
+  
 
   /// State for whether or not the library list panel should be shown. 
   @observable bool isPanel = true;
@@ -63,6 +64,12 @@ class Viewer {
       currentPage = new Home(libraries);
       homePage = currentPage;
     });
+  }
+  
+  /// Links to members within [currentPage].
+  void miniMapLink(Item item) {
+    _updatePage(currentPage, '#${item.name}');
+    _updateState(currentPage);
   }
   
   /// The title of the current page.
@@ -91,6 +98,7 @@ class Viewer {
           if (category != null && !category.classes.contains('in'))
             category.classes.add('in');
           e.scrollIntoView(ScrollAlignment.TOP);
+          window.scrollBy(0, -60);
         }
       });
     }
@@ -99,8 +107,8 @@ class Viewer {
   /// Updates [currentPage] to be [page].
   void _updatePage(Item page, String hash) {
     if (page != null) {
+      if (page != currentPage) currentPage = page;
       _hash = hash;
-      currentPage = page;
       _scrollScreen(hash);
     }
   }

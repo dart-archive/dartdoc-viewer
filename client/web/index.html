@@ -145,8 +145,8 @@
         <template instantiate="if viewer.currentPage is Library">
           <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
             id="minimap" data-spy="affix" data-offset-top="200">
-            <a href="#dartdoc-top">
-              {{viewer.currentPage.name}} Library
+            <a on-click="viewer.changePage(library)">
+              {{viewer.currentPage.name}} library
             </a>
             <ul>
               <template 
@@ -158,7 +158,9 @@
                 <ul id="operators" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.operators.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
@@ -171,7 +173,9 @@
                 <ul id="properties" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.variables.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
@@ -184,7 +188,9 @@
                 <ul id="functions" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.functions.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
@@ -196,7 +202,9 @@
                 <ul id="classes" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.classes.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
@@ -208,7 +216,9 @@
                 <ul id="typedefs" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.typedefs.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
@@ -220,7 +230,9 @@
                 <ul id="exceptions" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.errors.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
@@ -244,7 +256,9 @@
                 <ul id="operators" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.operators.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
@@ -257,7 +271,9 @@
                 <ul id="properties" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.variables.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
@@ -270,7 +286,9 @@
                 <ul id="constructors" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.constructs.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
@@ -283,7 +301,9 @@
                 <ul id="functions" class="collapse">
                   <template 
                     iterate="item in viewer.currentPage.functions.content">
-                    <li><a href="#{{item.name}}">{{item.name}}</a></li>
+                    <li><a on-click="viewer.miniMapLink(item)">
+                      {{item.name}}
+                    </a></li>
                   </template>
                 </ul>
               </template>
