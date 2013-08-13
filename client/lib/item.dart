@@ -160,9 +160,11 @@ class Home extends Item {
   
   /// The constructor parses the [libraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
-  Home(List libraries) : super('Dart API Reference', 'home') {
-    for (String library in libraries) {
-      libraryNames[library] = library.replaceAll('.', '-');
+  Home(Map libraries) : super('Dart API Reference', 'home') {
+    var libraryList = libraries['libraries'];
+    for (Map library in libraryList) {
+      var libraryName = library['name'];
+      libraryNames[libraryName] = libraryName.replaceAll('.', '-');
       this.libraries.add(new Library.forPlaceholder(library));
     };
     _sort([this.libraries]);
@@ -193,9 +195,10 @@ void buildHierarchy(Item page, Item previous) {
 abstract class LazyItem extends Item {
   
   bool isLoaded = false;
+  String previewComment;
   
-  LazyItem(String qualifiedName, String name, [String comment]) 
-      : super(name, qualifiedName, comment);
+  LazyItem(String qualifiedName, String name, this.previewComment, 
+      [String comment]) : super(name, qualifiedName, comment);
   
   /// Loads this [Item]'s data and populates all fields.
   Future load() {
@@ -224,10 +227,11 @@ class Library extends LazyItem {
   Category operators;
 
   /// Creates a [Library] placeholder object with null fields.
-  Library.forPlaceholder(String location) : super(location, location);
+  Library.forPlaceholder(Map library)
+    : super(library['name'], library['name'], library['preview']);
   
   /// Normal constructor for testing.
-  Library(Map yaml) : super(yaml['qualifiedName'], yaml['name']) {
+  Library(Map yaml) : super(yaml['qualifiedName'], yaml['name'], '') {
     loadValues(yaml);
     buildHierarchy(this, this);
   } 
@@ -270,6 +274,15 @@ class Library extends LazyItem {
            this.functions.content, this.operators.content]);
     isLoaded = true;
   }
+  
+  String get decoratedName {
+    var parts = qualifiedName.split('.');
+    if (parts.length > 1) {
+      return '${parts.first}:${parts.last}';
+    } else {
+      return name;
+    }
+  }
 }
 
 /**
@@ -283,18 +296,17 @@ class Class extends LazyItem {
   Category operators;
   LinkableType superClass;
   bool isAbstract;
-  String previewComment;
   List<Annotation> annotations;
   List<LinkableType> implements;
   List<LinkableType> subclasses;
   List<String> generics = [];
 
   /// Creates a [Class] placeholder object with null fields.
-  Class.forPlaceholder(String location, this.previewComment) 
-      : super(location, location.split('.').last);
+  Class.forPlaceholder(String location, String previewComment) 
+      : super(location, location.split('.').last, previewComment);
   
   /// Normal constructor for testing.
-  Class(Map yaml) : super(yaml['qualifiedName'], yaml['name']) {
+  Class(Map yaml) : super(yaml['qualifiedName'], yaml['name'], '') {
     loadValues(yaml);
   }
   

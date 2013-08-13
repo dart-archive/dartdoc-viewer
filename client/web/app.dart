@@ -17,10 +17,11 @@ import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:web_ui/web_ui.dart';
+import 'package:yaml/yaml.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the YAML file being read in. 
-const sourcePath = '../../docs/library_list.txt';
+const sourcePath = '../../docs/library_list.yaml';
 
 /// This is the cut off point between mobile and desktop in pixels. 
 // TODO(janicejl): Use pixel desity rather than how many pixels. Look at:
@@ -59,7 +60,7 @@ class Viewer {
   Viewer._() {
     var manifest = retrieveFileContents(sourcePath);
     finished = manifest.then((response) {
-      var libraries = response.split('\n');
+      var libraries = loadYaml(response);
       currentPage = new Home(libraries);
       homePage = currentPage;
     });

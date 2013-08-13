@@ -21,7 +21,8 @@ class MemberElement extends WebComponent {
   /// links converted to working links.
   void addComment(String elementName, {preview: false}) {
     var comment = item.comment;
-    if (preview && item is Class) comment = item.previewComment;
+    if (preview && (item is Class || item is Library)) 
+      comment = item.previewComment;
     if (preview && (item is Method || item is Variable)) {
       var index = item.comment.indexOf('</p>');
       // All comments when read in from the YAML is surrounded by a <span> tag.
