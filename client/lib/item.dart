@@ -41,6 +41,8 @@ class Category extends Container {
   
   List<Container> content = [];
   Set<String> memberNames = new Set<String>();
+  int inheritedCounter = 0;
+  int memberCounter = 0;
   
   Category.forClasses(List<Map> classes, String name, 
       {bool isAbstract: false}) : super(name) {
@@ -55,18 +57,21 @@ class Category extends Container {
     if (variables != null) {
       variables.keys.forEach((key) {
         memberNames.add(key);
+        memberCounter++;
         content.add(new Variable(variables[key]));
       });
     }
     if (getters != null) {
       getters.keys.forEach((key) {
         memberNames.add(key);
+        memberCounter++;
         content.add(new Variable(getters[key], isGetter: true));
       });
     }
     if (setters != null) {
       setters.keys.forEach((key) {
         memberNames.add(key);
+        memberCounter++;
         content.add(new Variable(setters[key], isSetter: true));
       });
     }
@@ -77,6 +82,7 @@ class Category extends Container {
     if (yaml != null) {
       yaml.keys.forEach((key) {
         memberNames.add(key);
+        memberCounter++;
         content.add(new Method(yaml[key], isConstructor: isConstructor, 
             className: className, isOperator: isOperator));
       });
@@ -93,6 +99,8 @@ class Category extends Container {
   /// [destination] and handles inherited comments.
   void addInheritedItem(Class clazz, Item item) {
     if (!memberNames.contains(item.name)) {
+      memberCounter++;
+      inheritedCounter++;
       pageIndex['${clazz.qualifiedName}.${item.name}'] = item;
       content.add(item);
     } else {
@@ -101,6 +109,9 @@ class Category extends Container {
       member.addInheritedComment(item);
     }
   }
+  
+  bool get hasNonInherited => inheritedCounter < memberCounter;
+  
 }
 
 /**
@@ -467,6 +478,8 @@ class Method extends Parameterized {
     }
   }
   
+  bool get isInherited => inheritedFrom != '' && inheritedFrom != null;
+  
   String get decoratedName => isConstructor ? 
       (name != '' ? '$className.$name' : className) : name;
 }
@@ -557,6 +570,8 @@ class Variable extends Item {
       commentFrom = item.commentFrom;
     }
   }
+  
+  bool get isInherited => inheritedFrom != '' && inheritedFrom != null;
   
   void addToHierarchy() {
     if (inheritedFrom != '') pageIndex[qualifiedName] = this;

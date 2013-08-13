@@ -85,7 +85,10 @@
                 <template if="!viewer.isMinimap">Show Minimap</template>
               </a></li>
             </template>
-            <li><a href="#">Hide Inherited</a></li>
+            <li><a on-click="viewer.toggleInherited()">
+              <template if="viewer.isInherited">Hide Inherited</template>
+              <template if="!viewer.isInherited">Show Inherited</template>
+            </a></li>
           </ul>
         </li>
 

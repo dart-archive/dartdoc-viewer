@@ -14,16 +14,20 @@
     </div>
 
     <p class="text-right"><dfn>
-      <template if="isInherited && isExpanded">
+      <template if="isInherited">
         This property is inherited from 
         <a on-click="app.viewer.handleLink(inheritedFrom.location)">
           {{inheritedFrom.simpleType}}
         </a>
       </template>
     </dfn></p>
-    <p class="description">
-      {{addComment('dartdoc-variable', preview: !isExpanded)}}
-    </p>
+    
+          <!-- Comment -->
+    <template if="app.viewer.isInherited || !hasInheritedComment">
+      <p class="description">
+        {{addComment('dartdoc-variable', preview: !isExpanded)}}
+      </p>
+    </template>
 
     <template if="!isExpanded">
       <a on-click="expandComment()" class="btn-link">
@@ -33,10 +37,12 @@
 
     <p class="text-right"><dfn>
       <template if="hasInheritedComment && isExpanded">
-        This documentation is inherited from 
-        <a on-click="app.viewer.handleLink(commentFrom.location)">
-          {{commentFrom.simpleType}}.
-        </a>
+        <template if="app.viewer.isInherited">
+          This documentation is inherited from 
+          <a on-click="app.viewer.handleLink(commentFrom.location)">
+            {{commentFrom.simpleType}}.
+          </a>
+        </template>
       </template>
     </dfn></p>
     
