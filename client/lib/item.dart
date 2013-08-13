@@ -296,7 +296,8 @@ class Class extends LazyItem {
   Category operators;
   LinkableType superClass;
   bool isAbstract;
-  List<Annotation> annotations;
+  String previewComment;
+  AnnotationGroup annotations;
   List<LinkableType> implements;
   List<LinkableType> subclasses;
   List<String> generics = [];
@@ -327,8 +328,7 @@ class Class extends LazyItem {
     superClass = new LinkableType(yaml['superclass']);
     subclasses = yaml['subclass'] == null ? [] :
       yaml['subclass'].map((item) => new LinkableType(item)).toList();
-    annotations = yaml['annotations'] == null ? [] :
-        yaml['annotations'].map((item) => new Annotation(item)).toList();
+    annotations = new AnnotationGroup(yaml['annotations']);
     implements = yaml['implements'] == null ? [] :
         yaml['implements'].map((item) => new LinkableType(item)).toList();
     var genericValues = yaml['generics'];
@@ -395,6 +395,27 @@ class Class extends LazyItem {
 }
 
 /**
+ * A collection of [Annotation]s.
+ */
+class AnnotationGroup {
+  
+  List<String> supportedBrowsers = [];
+  List<Annotation> annotations = [];
+  
+  AnnotationGroup(List annotes) {
+    if (annotes != null) {
+      annotes.forEach((annotation) {
+        if (annotation['name'] == 'metadata.SupportedBrowser') {
+          supportedBrowsers.addAll(annotation['parameters']);
+        } else {
+          annotations.add(new Annotation(annotation));
+        }
+      });
+    }
+  }
+}
+
+/**
  * A single annotation to an [Item].
  */
 class Annotation {
@@ -438,14 +459,13 @@ class Parameterized extends Item {
 class Typedef extends Parameterized {
   
   LinkableType type;
-  List<Annotation> annotations;
+  AnnotationGroup annotations;
   
   Typedef(Map yaml) : super(yaml['name'], yaml['qualifiedName'],
       _wrapComment(yaml['comment'])) {
     type = new LinkableType(yaml['return']);
     parameters = getParameters(yaml['parameters']);
-    annotations = yaml['annotations'] == null ? [] :
-      yaml['annotations'].map((item) => new Annotation(item)).toList();
+    annotations = new AnnotationGroup(yaml['annotations']);
   }
 }
 
@@ -462,7 +482,7 @@ class Method extends Parameterized {
   String commentFrom;
   String className;
   bool isOperator;
-  List<LinkableType> annotations;
+  AnnotationGroup annotations;
   NestedType type;
 
   Method(Map yaml, {bool isConstructor: false, String className: '', 
@@ -480,8 +500,7 @@ class Method extends Parameterized {
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
     this.className = className;
-    this.annotations = yaml['annotations'] == null ? [] :
-      yaml['annotations'].map((item) => new Annotation(item)).toList();
+    annotations = new AnnotationGroup(yaml['annotations']);
   }
 
   void addToHierarchy() {
@@ -512,7 +531,7 @@ class Parameter {
   bool hasDefault;
   NestedType type;
   String defaultValue;
-  List<Annotation> annotations;
+  AnnotationGroup annotations;
   
   Parameter(this.name, Map yaml) {
     this.isOptional = yaml['optional'] == 'true';
@@ -520,8 +539,7 @@ class Parameter {
     this.hasDefault = yaml['default'] == 'true';
     this.type = new NestedType(yaml['type'].first);
     this.defaultValue = yaml['value'];
-    this.annotations = yaml['annotations'] == null ? [] :
-      yaml['annotations'].map((item) => new Annotation(item)).toList();
+    annotations = new AnnotationGroup(yaml['annotations']);
   }
   
   String get decoratedName {
@@ -552,7 +570,7 @@ class Variable extends Item {
   String commentFrom;
   Parameter setterParameter;
   NestedType type;
-  List<Annotation> annotations;
+  AnnotationGroup annotations;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
       String inheritedFrom: '', String commentFrom: ''})
@@ -577,8 +595,7 @@ class Variable extends Item {
     } else {
       type = new NestedType(yaml['type'].first);
     }
-    this.annotations = yaml['annotations'] == null ? [] :
-      yaml['annotations'].map((item) => new Annotation(item)).toList();
+    annotations = new AnnotationGroup(yaml['annotations']);
   }
   
   void addInheritedComment(Item item) {

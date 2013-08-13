@@ -7,7 +7,7 @@
   <template>
     <template instantiate="if annotations.isNotEmpty">
       
-      <template iterate="annotation in annotations">
+      <template iterate="annotation in annotations.annotations">
         <a on-click="viewer.handleLink(annotation.link.location)">
           @{{annotation.link.simpleType}}
         </a>
@@ -39,7 +39,7 @@
     import 'app.dart';
     
     class AnnotationElement extends WebComponent {
-      @observable List<Annotation> annotations;
+      @observable AnnotationGroup annotations;
     }
   </script>
 </element>
