@@ -10,8 +10,14 @@
  */
 library search;
 
+import 'dart:async';
+import 'package:web_ui/web_ui.dart';
+
 /** Search Index */
 Map<String, String> index = {};
+
+/** Search query. */
+@observable String searchQuery = "";
 
 class SearchResult implements Comparable {
 
@@ -55,15 +61,20 @@ Map<String, int> value = {
  * A score is given to each potential search result based off how likely it is
  * the appropriate qualified name to return for the search query. 
  */
-List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
-
+List<SearchResult> lookupSearchResults(String query, int maxResults) {  
+  
+  var stopwatch = new Stopwatch()..start();
+  
   var scoredResults = <SearchResult>[];
   var resultSet = new Set<String>();
-  var queryList = searchQuery.trim().toLowerCase().split(' ');
+  var queryList = query.trim().toLowerCase().split(' ');
   queryList.forEach((q) => resultSet.addAll(index.keys.where((e) =>
     e.toLowerCase().contains(q))));
   
-  for (var r in resultSet) {
+  for (var r in resultSet) {    
+    if (stopwatch.elapsedMilliseconds > 500) {
+      return [];
+    }
     int score = 0;
     var lowerCaseResult = r.toLowerCase();
     var type = index[r];
@@ -123,6 +134,9 @@ List<SearchResult> lookupSearchResults(String searchQuery, int maxResults) {
     scoredResults.add(new SearchResult(r, type, score));
   }
   
+  if (stopwatch.elapsedMilliseconds > 500) {
+    return [];
+  }
   scoredResults.sort();
   updatePositions(scoredResults);
   if (scoredResults.length > maxResults) {

@@ -15,8 +15,7 @@ import 'package:web_ui/watcher.dart' as watchers;
  * Component implementing the Dartdoc_viewer search.
  */
 class Search extends WebComponent {
-  /** Search query. */
-  @observable String searchQuery = "";
+
   List<SearchResult> results = toObservable(<SearchResult>[]);
   String _lastQuery;
   @observable bool isFocused = false;
@@ -26,8 +25,9 @@ class Search extends WebComponent {
   void updateResults() {
     currentIndex = -1;
     results.clear();
+    var currentSearch = searchQuery;
     // TODO(tmandel): Show fewer results on mobile than on desktop.
-    results.addAll(lookupSearchResults(searchQuery, viewer.isDesktop ? 10 : 5));
+    results.addAll(lookupSearchResults(currentSearch, viewer.isDesktop ? 10 : 5));
   }
 
   void onBlurCallback(_) {
