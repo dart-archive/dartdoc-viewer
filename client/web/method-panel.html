@@ -12,7 +12,8 @@
       Loading...
     </template>
     <template if="item != null">
-      <a id="{{item.name == '' ? 'dartdoc_${item.decoratedName}' : idName}}"></a>
+      <a id="{{item.name == '' ? 'dartdoc_${item.decoratedName}' : idName}}">
+      </a>
       <div class="panel-heading">
         
         <dartdoc-annotation annotations="{{item.annotations}}">
