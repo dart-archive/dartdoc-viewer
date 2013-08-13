@@ -26,15 +26,19 @@
             </template>
             
             <template if="item is Variable">
-              <dartdoc-variable item="{{item}}" class="panel">
-              </dartdoc-variable>
+              <template if="!item.isInherited || app.viewer.isInherited">
+                <dartdoc-variable item="{{item}}" class="panel">
+                </dartdoc-variable>
+              </template>
             </template>
 
             <template if="item is Method">
-              <method-panel class="panel hidden-sm" item="{{item}}">
-              </method-panel>
-              <dartdoc-item class="visible-sm panel" item="{{item}}">
-              </dartdoc-item>
+              <template if="!item.isInherited || app.viewer.isInherited">
+                <method-panel class="panel hidden-sm" item="{{item}}">
+                </method-panel>
+                <dartdoc-item class="visible-sm panel" item="{{item}}">
+                </dartdoc-item>
+              </template>
             </template>
           </template>
         </ul>

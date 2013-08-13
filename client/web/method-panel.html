@@ -35,7 +35,7 @@
       </div>
 
       <p class="text-right"><dfn>
-        <template if="isInherited && isExpanded">
+        <template if="isInherited">
           This member is inherited from 
           <a on-click="viewer.handleLink(inheritedFrom.location)">
             {{inheritedFrom.simpleType}}
@@ -44,22 +44,28 @@
       </dfn></p>
 
       <!-- Comment -->
-      <section class="description">
-        {{addComment('method-panel', preview: !isExpanded)}}
-      </section>
+      <template if="viewer.isInherited || !hasInheritedComment">
+        <section class="description">
+          {{addComment('method-panel', preview: !isExpanded)}}
+        </section>
+      </template>
 
       <template if="!isExpanded">
-        <a on-click="expandComment()" class="btn-link">
-          ...Show more
-        </a>
+        <template if="!hasInheritedComment || viewer.isInherited">
+          <a on-click="expandComment()" class="btn-link">
+            ...Show more
+          </a>
+        </template>
       </template>
 
       <p class="text-right"><dfn>
         <template if="hasInheritedComment && isExpanded">
+          <template if="viewer.isInherited">
             This documentation is inherited from 
             <a on-click="viewer.handleLink(commentFrom.location)">
               {{commentFrom.simpleType}}
             </a>
+          </template>
         </template>
       </dfn></p>
 
@@ -69,6 +75,7 @@
   <script type="application/dart">
     import 'member.dart';
     import 'package:web_ui/web_ui.dart';
+    import 'app.dart';
     
     class MethodPanel extends MethodElement {
       @observable bool isExpanded = false;

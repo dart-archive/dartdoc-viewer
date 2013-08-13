@@ -49,6 +49,9 @@ class Viewer {
   /// State for whether or not the minimap panel should be shown. 
   @observable bool isMinimap = true;
   
+  /// State for whether or not inherited members should be shown.
+  @observable bool isInherited = true;
+  
   /// The current element on the current page being shown (e.g. #dartdoc-top).
   String _hash;
 
@@ -222,6 +225,11 @@ class Viewer {
   /// Toggles the minimap panel
   void toggleMinimap() {
     isMinimap = !isMinimap;
+  }
+  
+  /// Toggles showing inherited members.
+  void toggleInherited() {
+    isInherited = !isInherited;
   }
 }
 

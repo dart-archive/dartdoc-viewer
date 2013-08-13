@@ -43,14 +43,18 @@
       </dfn></p>
 
       <!-- Comment -->
-      <section class="description">{{addComment('dartdoc-method')}}</section>
+      <template if="viewer.isInherited || !hasInheritedComment">
+        <section class="description">{{addComment('dartdoc-method')}}</section>
+      </template>
 
       <p class="text-right"><dfn>
         <template if="hasInheritedComment">
+          <template if="viewer.isInherited">
             This documentation is inherited from 
             <a on-click="viewer.handleLink(commentFrom.location)">
               {{commentFrom.simpleType}}
             </a>
+          </template>
         </template>
       </dfn></p>
 
@@ -59,6 +63,7 @@
   
   <script type="application/dart">
     import 'member.dart';
+    import 'app.dart';
     
     class DartdocMethod extends MethodElement {}
   </script>

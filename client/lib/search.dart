@@ -72,6 +72,8 @@ List<SearchResult> lookupSearchResults(String query, int maxResults) {
     e.toLowerCase().contains(q))));
   
   for (var r in resultSet) {    
+    /// If it is taking too long to compute the search results, time out and
+    /// return an empty list of results.
     if (stopwatch.elapsedMilliseconds > 500) {
       return [];
     }
@@ -134,6 +136,8 @@ List<SearchResult> lookupSearchResults(String query, int maxResults) {
     scoredResults.add(new SearchResult(r, type, score));
   }
   
+  /// If it is taking too long to compute the search results, time out and
+  /// return an empty list of results.
   if (stopwatch.elapsedMilliseconds > 500) {
     return [];
   }
