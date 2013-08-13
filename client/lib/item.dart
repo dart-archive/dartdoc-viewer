@@ -35,14 +35,9 @@ String ownerName(String qualifiedName) {
 }
 
 /// Maps all characters in [name] based on [idMap] to make a valid HTML id.
-String getIdName(String name) {
-  StringBuffer newName = new StringBuffer();
-  for (int i = 0; i < name.length; i++) {
-    var newChar = idMap[name[i]];
-    newName.write(newChar == null ? name[i] : newChar);
-  }
-  return 'dartdoc_${newName.toString()}';
-}
+String escaped(String name) => 
+  'dartdoc_' + 
+    name.split('').map((c) => idMap[c] == null ? c : idMap[c]).join();
 
 /**
  * A [Container] that contains other [Container]s to be displayed.

@@ -89,7 +89,7 @@ class Viewer {
         // All ids are created using getIdName to avoid creating an invalid
         // HTML id from an operator or setter.
         hash = hash.substring(1, hash.length);
-        var e = document.query('#${getIdName(hash)}');
+        var e = document.query('#${escaped(hash)}');
         if (e != null) {
           // Find the parent category element to make sure it is open.
           var category = e.parent;

@@ -17,7 +17,7 @@ Map<String, String> libraryNames = {};
 // Linking to operators and setters fails because HTML ids are limited to 
 // a-z, A-Z, digits, hyphens, underscores, colons, and periods. This map
 // maps invalid id characters to valid id strings.
-Map<String, String> idMap = {
+Map<String, String> idMap = const {
   '+' : '-plus-',
   '-' : '-minus-',
   '[' : '-leftb-',

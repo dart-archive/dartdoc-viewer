@@ -15,7 +15,7 @@ class MemberElement extends WebComponent {
   @observable Item item;
  
   /// A valid string for an HTML id made from this [Item]'s name.
-  String get idName => getIdName(item.name);
+  String get idName => escaped(item.name);
   
   /// Adds [item]'s comment to the the [elementName] element with markdown
   /// links converted to working links.
