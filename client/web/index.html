@@ -15,12 +15,11 @@
 <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
 
 <template if="viewer.currentPage != null">
-  <template if="viewer.currentPage == viewer.homePage">
-    <title>Dart API Reference</title>
-  </template>
-  <template if="viewer.currentPage != viewer.homePage">
-    <title>{{viewer.currentPage.decoratedName}} - Dart API Reference</title>
-  </template>
+    <title>
+      {{viewer.currentPage.decoratedName}}
+      {{viewer.currentPage.decoratedName == '' ? '' : ' - '}}
+      Dart API Reference
+    </title>
 </template>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,7 +50,7 @@
               <template if="item != viewer.breadcrumbs.last">
                 <li>
                   <template instantiate="if item != null">
-                    <a on-click="viewer.changePage(item)">
+                    <a href="#{{item.linkHref}}">
                       {{item.decoratedName}}
                     </a>
                   </template>
@@ -101,7 +100,7 @@
 </div>
 
 <div class="container main-body">
-
+  <a id="dartdoc-top"></a>
   <template if="viewer.currentPage == viewer.homePage ||
     (!viewer.isPanel && !viewer.isMinimap)">
     <main class="col-12">
@@ -111,7 +110,7 @@
 
 
 
-  <template instantiate="if viewer.homePage != null">
+  <template instantiate="if viewer.currentPage != null">
     <template if="viewer.currentPage != viewer.homePage">
 
       <template if="viewer.isPanel">
@@ -120,15 +119,15 @@
           <template iterate="library in viewer.homePage.libraries">
             <template 
               if="library.decoratedName == viewer.breadcrumbs[1].decoratedName">
-              <a on-click="viewer.changePage(library)" 
-                class="list-group-item active btn-link">
+              <a href="#{{library.linkHref}}"
+                class="list-group-item active">
                 {{library.decoratedName}}
               </a>
             </template>
             <template 
               if="library.decoratedName != viewer.breadcrumbs[1].decoratedName">
-              <a on-click="viewer.changePage(library)" 
-                class="list-group-item btn-link">
+              <a href="#{{library.linkHref}}" 
+                class="list-group-item">
                 {{library.decoratedName}}
               </a>
             </template>
@@ -147,7 +146,7 @@
         <template instantiate="if viewer.currentPage is Library">
           <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
             id="minimap" data-spy="affix" data-offset-top="200">
-            <a on-click="viewer.changePage(library)">
+            <a href="#{{viewer.currentPage.linkHref}}">
               {{viewer.currentPage.name}} library
             </a>
             <ul>

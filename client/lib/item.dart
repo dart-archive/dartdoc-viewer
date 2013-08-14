@@ -140,6 +140,10 @@ class Item extends Container {
   
   /// Adds the comment from [item] to [this].
   void addInheritedComment(Item item) {}
+  
+  /// Creates a link for the href attribute of an [AnchorElement].
+  String get linkHref => 
+    findLibraryName(qualifiedName).replaceAll('.', '/');
 }
 
 /// Sorts each inner [List] by qualified names.
@@ -160,7 +164,7 @@ class Home extends Item {
   
   /// The constructor parses the [libraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
-  Home(Map libraries) : super('Dart API Reference', 'home') {
+  Home(Map libraries) : super('', 'home') {
     var libraryList = libraries['libraries'];
     for (Map library in libraryList) {
       var libraryName = library['name'];

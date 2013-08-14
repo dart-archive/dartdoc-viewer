@@ -34,7 +34,7 @@
         <template if="interfaces.isNotEmpty">
           Implements:&nbsp;
           <template iterate="interface in interfaces">
-            <a on-click="viewer.handleLink(interface.location)">
+            <a href="#{{interface.location}}">
               {{interface.simpleType}}
             </a>
             <template if="interface != interfaces.last">
@@ -46,7 +46,7 @@
           </template>
         </template>
         Extends:&nbsp;
-        <a on-click="viewer.handleLink(superClass.location)">
+        <a href="#{{superClass.location}}">
           {{superClass.simpleType}}
         </a>
       </p>
@@ -58,15 +58,15 @@
           </template>
           <!-- Limit initial display to 3 items to not overwhelm the user. --> 
           <template if="subclasses.length > 3"> 
-            <a on-click="viewer.handleLink(subclass.location)">
+            <a href="#{{subclasses[0].location}}">
               {{subclasses[0].simpleType}}
             </a>
             ,&nbsp;
-            <a on-click="viewer.handleLink(subclass.location)">
+            <a href="#{{subclasses[1].location}}">
               {{subclasses[1].simpleType}}
             </a>
             ,&nbsp;
-            <a on-click="viewer.handleLink(subclass.location)">
+            <a href="#{{subclasses[2].location}}">
               {{subclasses[2].simpleType}}
             </a>
             <a class="btn btn-link btn-xs" id="{{item.name}}-subclass-button"
@@ -78,7 +78,7 @@
               <template iterate="subclass in subclasses">
                 <template if="subclass != subclasses[0] && 
                   subclass != subclasses[1] && subclass != subclasses[2]">
-                  <a on-click="viewer.handleLink(subclass.location)">
+                  <a href="#{{subclass.location}}">
                     {{subclass.simpleType}}
                   </a>
                   <template if="subclass != subclasses.last">
@@ -91,7 +91,7 @@
 
           <template if="subclasses.length <= 3">
             <template iterate="subclass in subclasses">
-              <a on-click="viewer.handleLink(subclass.location)">
+              <a href="#{{subclass.location}}">
                 {{subclass.simpleType}}
               </a>
               <template if="subclass != subclasses.last">

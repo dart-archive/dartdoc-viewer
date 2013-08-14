@@ -61,23 +61,16 @@ class Viewer {
     var manifest = retrieveFileContents(sourcePath);
     finished = manifest.then((response) {
       var libraries = loadYaml(response);
-      currentPage = new Home(libraries);
-      homePage = currentPage;
+      homePage = new Home(libraries);
     });
-  }
-  
-  /// Links to members within [currentPage].
-  void miniMapLink(Item item) {
-    var hash = item.name == '' ? item.decoratedName : item.name;
-    _updatePage(currentPage, '#$hash');
-    _updateState(currentPage);
   }
   
   /// The title of the current page.
   String get title => currentPage == null ? '' : currentPage.decoratedName;
   
   /// Creates a list of [Item] objects describing the path to [currentPage].
-  List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
+  List<Item> get breadcrumbs => [homePage]
+    ..addAll(currentPage == null ? [] : currentPage.path);
   
   /// Scrolls the screen to the correct member if necessary.
   void _scrollScreen(String hash) {
@@ -284,18 +277,21 @@ main() {
     viewer.isDesktop = window.innerWidth > desktopSizeBoundary;
   });
   
+  // Handle clicks and redirect.
   window.onClick.listen((Event e) {
     if (e.target is AnchorElement) {
       var anchor = e.target;
       if (anchor.host == window.location.host) {
-        e.preventDefault();
-        // navigate here: push state or set fragment
-        var hashIndex = anchor.href.indexOf('#');
-        var location = 'home';
-        if (hashIndex != -1) 
-          location = anchor.href.substring(hashIndex + 1, anchor.href.length);
-        print(location);
-        viewer.handleLink(location);
+        // Allow for CTRL+click to open in a new tab.
+        if (!e.ctrlKey) { 
+          e.preventDefault();
+          // navigate here: push state or set fragment
+          var hashIndex = anchor.href.indexOf('#');
+          var location = 'home';
+          if (hashIndex != -1) 
+            location = anchor.href.substring(hashIndex + 1, anchor.href.length);
+          viewer.handleLink(location);
+        }
       }
     }
   });
@@ -307,6 +303,8 @@ main() {
   viewer.finished.then((_) {
     if (location != null && location != '') {
       viewer._handleLinkWithoutState(location);
+    } else {
+      viewer.currentPage = viewer.homePage;
     }
     retrieveFileContents('../../docs/index.txt').then((String list) {
       var elements = list.split('\n');

@@ -16,7 +16,7 @@
     <p class="text-right"><dfn>
       <template if="isInherited">
         This property is inherited from 
-        <a on-click="app.viewer.handleLink(inheritedFrom.location)">
+        <a href="#{{inheritedFrom.location}}">
           {{inheritedFrom.simpleType}}
         </a>
       </template>
@@ -39,7 +39,7 @@
       <template if="hasInheritedComment && isExpanded">
         <template if="app.viewer.isInherited">
           This documentation is inherited from 
-          <a on-click="app.viewer.handleLink(commentFrom.location)">
+          <a href="#{{commentFrom.location}}">
             {{commentFrom.simpleType}}.
           </a>
         </template>
