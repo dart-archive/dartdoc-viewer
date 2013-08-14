@@ -150,7 +150,7 @@ class Item extends Container {
 void _sort(List<List<Item>> items) {
   items.forEach((item) {
     item.sort((Item a, Item b) =>
-      a.qualifiedName.compareTo(b.qualifiedName));
+      a.decoratedName.compareTo(b.decoratedName));
   });
 }
 

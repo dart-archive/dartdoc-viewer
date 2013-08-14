@@ -37,7 +37,7 @@
     
     <a href="http://www.dartlang.org/" class="navbar-brand header-logo"></a>
     <a on-click="viewer.changePage(viewer.homePage)" 
-      class="navbar-brand">
+      class="navbar-brand btn-link">
       Dart API Reference
     </a>
 
@@ -50,7 +50,7 @@
               <template if="item != viewer.breadcrumbs.last">
                 <li>
                   <template instantiate="if item != null">
-                    <a href="#{{item.linkHref}}">
+                    <a class="btn-link" href="#{{item.linkHref}}">
                       {{item.decoratedName}}
                     </a>
                   </template>
@@ -59,7 +59,7 @@
               <template if="item == viewer.breadcrumbs.last">
                 <li class="active">
                   <template instantiate="if item != null">
-                    <a>{{item.decoratedName}}</a>
+                    <a class="btn-link">{{item.decoratedName}}</a>
                   </template>
                 </li>
               </template>
