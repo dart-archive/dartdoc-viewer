@@ -48,7 +48,7 @@
         elements.forEach((element) {
           // Since a dartdoc-annotation cannot be instantiated from Dart code,
           // the annotations must be built manually.
-          element.annotations.forEach((annotation) {
+          element.annotations.annotations.forEach((annotation) {
             var anchor = new AnchorElement()
               ..text = '@${annotation.simpleType}'
               ..onClick.listen((_) => viewer.handleLink(annotation.location));

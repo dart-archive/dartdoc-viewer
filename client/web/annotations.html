@@ -5,12 +5,11 @@
 <element name="dartdoc-annotation" constructor="AnnotationElement" 
     extends="span" apply-author-styles>
   <template>
-    <template instantiate="if annotations.isNotEmpty">
-      
+    <template instantiate="if annotations.annotations.isNotEmpty">
       <template iterate="annotation in annotations.annotations">
-        <a on-click="viewer.handleLink(annotation.link.location)">
-          @{{annotation.link.simpleType}}
-        </a>
+        <i><a on-click="viewer.handleLink(annotation.link.location)">
+          {{annotation.link.simpleType}}
+        </a></i>
         
         <template if="annotation.parameters.isNotEmpty">
           (
@@ -23,11 +22,21 @@
           )
         </template>
         
-        <template if="annotation != annotations.last">
-          <br/>
+        <template if="annotation != annotations.annotations.last">
+          ,&nbsp;
         </template>
       </template>
       
+    </template>
+    <template if="annotations.supportedBrowsers.isNotEmpty">
+      <br/><i>Supported on:
+        <template iterate="browser in annotations.supportedBrowsers">
+          {{browser}}
+          <template if="browser != annotations.supportedBrowsers.last">
+            ,&nbsp;
+          </template>
+        </template>
+      </i><br/>
     </template>
   </template>
   

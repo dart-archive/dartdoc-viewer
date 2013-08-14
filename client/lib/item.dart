@@ -401,12 +401,15 @@ class AnnotationGroup {
   
   List<String> supportedBrowsers = [];
   List<Annotation> annotations = [];
+  String domName;
   
   AnnotationGroup(List annotes) {
     if (annotes != null) {
       annotes.forEach((annotation) {
         if (annotation['name'] == 'metadata.SupportedBrowser') {
-          supportedBrowsers.addAll(annotation['parameters']);
+          supportedBrowsers.add(annotation['parameters'].toList().join(' '));
+        } else if (annotation['name'] == 'metadata.DomName') {
+          domName = annotation['parameters'].first;
         } else {
           annotations.add(new Annotation(annotation));
         }
