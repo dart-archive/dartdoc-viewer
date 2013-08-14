@@ -66,7 +66,7 @@ class MemberElement extends WebComponent {
   /// Creates an HTML element for a parameterized type.  
   static Element createInner(NestedType type) {
     var span = new SpanElement();
-    if (!index.keys.contains(type.outer.simpleType)) {
+    if (index.keys.contains(type.outer.qualifiedName)) {
       var outer = new AnchorElement()
         ..text = type.outer.simpleType
         ..onClick.listen((_) => app.viewer.handleLink(type.outer.location))

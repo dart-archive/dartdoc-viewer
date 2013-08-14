@@ -641,11 +641,12 @@ class LinkableType {
 
   /// The resolved qualified name of the type this [LinkableType] represents.
   String type;
+  String qualifiedName;
   
   /// The constructor resolves the library name by finding the correct library
   /// from [libraryNames] and changing [type] to match.
   LinkableType(String type) {
-    var current = type;
+    qualifiedName = type;
     this.type = findLibraryName(type);
   }
 

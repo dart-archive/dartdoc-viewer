@@ -35,7 +35,8 @@ Map<String, String> idMap = const {
   ':' : '-colon-',
   '.' : '-dot-',
   '=' : '-equals-',
-  '/' : '-slash-'
+  '/' : '-slash-',
+  '\$' : '-dollar-'
 };
 
 String findLibraryName(String type) {

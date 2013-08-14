@@ -124,6 +124,7 @@ class Viewer {
   /// Loads the [className] class and updates the current page to the
   /// class's member described by [location].
   Future _updateToClassMember(Class clazz, String location, String hash) {
+    var variable = location.split('.').last;
     if (!clazz.isLoaded) {
       return clazz.load().then((_) {
         var destination = pageIndex[location];
@@ -131,11 +132,13 @@ class Viewer {
           _updatePage(destination, hash);
         } else {
           // If the destination is null, then it is a variable in this class.
-          var variable = location.split('.').last;
           _updatePage(clazz, '#$variable');
         }
         return true;
       });
+    } else {
+      // It is a variable in this class.
+      _updatePage(clazz, '#$variable');
     }
     return new Future.value(false);
   }
@@ -155,6 +158,7 @@ class Viewer {
       } else {
         var clazz = pageIndex[className];
         if (clazz != null) {
+          // The location is a member of a class.
           return _updateToClassMember(clazz, location, hash);
         } else {
           // The location is of a top-level variable in a library.
