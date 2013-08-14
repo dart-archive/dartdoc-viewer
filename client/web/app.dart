@@ -283,6 +283,16 @@ main() {
   window.onResize.listen((event) {
     viewer.isDesktop = window.innerWidth > desktopSizeBoundary;
   });
+  
+  window.onClick.listen((Event e) {
+    if (e.target is AnchorElement) {
+      var anchor = e.target;
+      if (anchor.host == window.location.host) {
+        e.preventDefault();
+        // navigate here: push state or set fragment
+      }
+    }
+  });
 
   startHistory();
   viewer = new Viewer._();
