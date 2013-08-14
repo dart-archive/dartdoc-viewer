@@ -290,6 +290,12 @@ main() {
       if (anchor.host == window.location.host) {
         e.preventDefault();
         // navigate here: push state or set fragment
+        var hashIndex = anchor.href.indexOf('#');
+        var location = 'home';
+        if (hashIndex != -1) 
+          location = anchor.href.substring(hashIndex + 1, anchor.href.length);
+        print(location);
+        viewer.handleLink(location);
       }
     }
   });
