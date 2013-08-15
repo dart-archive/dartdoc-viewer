@@ -291,15 +291,11 @@ main() {
   window.onClick.listen((Event e) {
     if (e.target is AnchorElement) {
       var anchor = e.target;
-      if (anchor.host == window.location.host) {
-        if (anchor.pathname == _pathname) {
-          // Allow for CTRL+click to open in a new tab.
-          if (!e.ctrlKey) {
-            e.preventDefault();
-            var location = anchor.hash.substring(1, anchor.hash.length);
-            viewer.handleLink(location);
-          }
-        }
+      if (anchor.host == window.location.host 
+          && anchor.pathname == _pathname && !e.ctrlKey) {
+        e.preventDefault();
+        var location = anchor.hash.substring(1, anchor.hash.length);
+        viewer.handleLink(location);
       }
     }
   });

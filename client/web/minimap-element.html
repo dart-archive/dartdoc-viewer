@@ -25,8 +25,7 @@
       /// Creates a proper href String for an [Item].
       String link(item) {
        var hash = item.name == '' ? item.decoratedName : item.name;
-       var name = '${viewer.currentPage.linkHref}#${viewer.toHash(hash)}';
-       return name;
+       return '${viewer.currentPage.linkHref}#${viewer.toHash(hash)}';
       }
     }
   </script>

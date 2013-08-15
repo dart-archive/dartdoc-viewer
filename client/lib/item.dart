@@ -142,7 +142,6 @@ class Item extends Container {
   void addInheritedComment(Item item) {}
   
   /// Creates a link for the href attribute of an [AnchorElement].
-  // TODO(tmandel): Clean this.
   String get linkHref {
    var name = findLibraryName(qualifiedName).replaceAll('.', '/');
    var index = name.indexOf('#');
