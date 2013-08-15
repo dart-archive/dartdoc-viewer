@@ -65,6 +65,7 @@ class Viewer {
     });
   }
   
+  /// Creates a valid hash ID for anchor tags.
   String toHash(String hash) {
     return 'id_' + Uri.encodeComponent(hash).replaceAll('%', '-');
   }
