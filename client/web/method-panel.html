@@ -42,9 +42,14 @@
       <p class="text-right"><dfn>
         <template if="isInherited">
           This member is inherited from 
-          <a href="#{{inheritedFrom.location}}">
-            {{inheritedFrom.simpleType}}
-          </a>
+          <template if="exists(inheritedFrom.location)">
+            <a href="#{{inheritedFrom.location}}">
+              {{inheritedFrom.simpleType}}
+            </a>
+          </template>
+          <template if="!exists(inheritedFrom.location)">
+            <i>{{inheritedFrom.simpleType}}</i>
+          </template>
         </template>
       </dfn></p>
 
@@ -67,9 +72,14 @@
         <template if="hasInheritedComment && isExpanded">
           <template if="viewer.isInherited">
             This documentation is inherited from 
-            <a href="#{{commentFrom.location}}">
-              {{commentFrom.simpleType}}
-            </a>
+            <template if="exists(commentFrom.location)">
+              <a href="#{{commentFrom.location}}">
+                {{commentFrom.simpleType}}
+              </a>
+            </template>
+            <template if="!exists(commentFrom.location)">
+              <i>{{commentFrom.simpleType}}</i>
+            </template>
           </template>
         </template>
       </dfn></p>
@@ -78,9 +88,10 @@
   </template>
   
   <script type="application/dart">
-    import 'member.dart';
     import 'package:web_ui/web_ui.dart';
+    
     import 'app.dart';
+    import 'member.dart';
     
     class MethodPanel extends MethodElement {
       @observable bool isExpanded = false;
