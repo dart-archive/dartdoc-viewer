@@ -173,10 +173,10 @@ class Home extends Item {
   /// All libraries being viewed from the homepage.
   List<Item> libraries = [];
   
-  /// The constructor parses the [libraries] input and constructs
+  /// The constructor parses the [yaml] input and constructs
   /// [Placeholder] objects to display before loading libraries.
-  Home(Map libraries) : super('', 'home') {
-    var libraryList = libraries['libraries'];
+  Home(Map yaml) : super('', 'home', _wrapComment(yaml['introduction'])) {
+    var libraryList = yaml['libraries'];
     for (Map library in libraryList) {
       var libraryName = library['name'];
       libraryNames[libraryName] = libraryName.replaceAll('.', '-');
