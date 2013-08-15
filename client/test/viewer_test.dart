@@ -451,7 +451,7 @@ void main() {
     expect(item is Parameter, isTrue);
     expect(item.name is String, isTrue);
     expect(item.type is NestedType, isTrue);
-    expect(item.annotations is List, isTrue);
+    expect(item.annotations is AnnotationGroup, isTrue);
   });
   
   test('variable_test', () {
@@ -463,7 +463,7 @@ void main() {
     var yaml = loadYaml(variable);
     var item = new Variable(yaml);
     expect(item is Variable, isTrue);
-    expect(item.annotations is List, isTrue);
+    expect(item.annotations is AnnotationGroup, isTrue);
     expect(item.comment is String, isTrue);
     expect(item.setterParameter, isNull);
     expect(item.type is NestedType, isTrue);
@@ -473,14 +473,14 @@ void main() {
     var currentMap = loadYaml(setter);
     var item = new Variable(currentMap, isSetter: true);
     expect(item is Variable, isTrue);
-    expect(item.annotations is List, isTrue);
+    expect(item.annotations is AnnotationGroup, isTrue);
     expect(item.comment is String, isTrue);
     expect(item.type is NestedType, isTrue);
     
     expect(item.setterParameter is Parameter, isTrue);
     var parameter = item.setterParameter;
     expect(parameter.type is NestedType, isTrue);
-    expect(parameter.annotations is List, isTrue);
+    expect(parameter.annotations is AnnotationGroup, isTrue);
   });
   
   // A test for A<B> type generic links.
@@ -699,8 +699,8 @@ void main() {
 
     var variable = library.variables.content.firstWhere((item) => 
         item.name == 'variable');
-    var firstAnnotation = variable.annotations.first;
-    var secondAnnotation = variable.annotations[1];
+    var firstAnnotation = variable.annotations.annotations.first;
+    var secondAnnotation = variable.annotations.annotations[1];
     
     var classA, classB, classC;
     library.classes.content.forEach((element) {
