@@ -552,12 +552,6 @@ void main() {
       expect(data, equals(clazz));
     }));
     
-    // TODO(tmandel): Add tests for inherited methods/variables and superclass
-    // comments.
-    //   * Check comment content and inherited content
-    //   * Check inheritedFrom and commentFrom
-    //   * Check subclasses
-    
     var yaml = loadYaml(clazz);
     var item = new Class(yaml);
     expect(item is Class, isTrue);
