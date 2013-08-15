@@ -142,8 +142,21 @@ class Item extends Container {
   void addInheritedComment(Item item) {}
   
   /// Creates a link for the href attribute of an [AnchorElement].
-  String get linkHref => 
-    findLibraryName(qualifiedName).replaceAll('.', '/');
+  // TODO(tmandel): Clean this.
+  String get linkHref {
+   var name = findLibraryName(qualifiedName).replaceAll('.', '/');
+   var index = name.indexOf('#');
+   if (index != -1) {
+     var hash = name.substring(index + 1, name.length);
+     name = name.substring(0, index);
+     name = '$name#${Uri.encodeComponent(hash)}';
+   } else {
+     var parts = name.split('/');
+     name = parts.map((e) => Uri.encodeComponent(e)).join('/');
+   }
+   name = name.replaceAll('%', '-');
+   return name;
+  }
 }
 
 /// Sorts each inner [List] by qualified names.

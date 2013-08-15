@@ -65,6 +65,10 @@ class Viewer {
     });
   }
   
+  String toHash(String hash) {
+    return 'id_' + Uri.encodeComponent(hash).replaceAll('%', '-');
+  }
+  
   /// The title of the current page.
   String get title => currentPage == null ? '' : currentPage.decoratedName;
   
@@ -83,7 +87,7 @@ class Viewer {
         // All ids are created using getIdName to avoid creating an invalid
         // HTML id from an operator or setter.
         hash = hash.substring(1, hash.length);
-        var e = document.query('#${escaped(hash)}');
+        var e = document.query('#$hash');
         if (e != null) {
           // Find the parent category element to make sure it is open.
           var category = e.parent;
@@ -125,13 +129,13 @@ class Viewer {
           _updatePage(destination, hash);
         } else {
           // If the destination is null, then it is a variable in this class.
-          _updatePage(clazz, '#$variable');
+          _updatePage(clazz, '#${toHash(variable)}');
         }
         return true;
       });
     } else {
       // It is a variable in this class.
-      _updatePage(clazz, '#$variable');
+      _updatePage(clazz, '#${toHash(variable)}');
     }
     return new Future.value(false);
   }
