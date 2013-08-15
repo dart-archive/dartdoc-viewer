@@ -141,6 +141,9 @@ class Item extends Container {
   /// Adds the comment from [item] to [this].
   void addInheritedComment(Item item) {}
   
+  /// Denotes whether this [Item] is inherited from another [Item] or not.
+  bool get isInherited => false;
+  
   /// Creates a link for the href attribute of an [AnchorElement].
   String get linkHref {
    var name = findLibraryName(qualifiedName).replaceAll('.', '/');

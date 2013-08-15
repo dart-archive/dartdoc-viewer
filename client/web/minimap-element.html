@@ -4,11 +4,13 @@
     apply-author-styles>
   <template>
     <template iterate="item in items">
-      <li>
-        <a href="#{{link(item)}}">
-          {{item.decoratedName}}
-        </a>
-      </li>
+      <template if="!item.isInherited || viewer.isInherited">
+        <li>
+          <a href="#{{link(item)}}">
+            {{item.decoratedName}}
+          </a>
+        </li>
+      </template>
     </template>
   </template>
   
