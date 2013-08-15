@@ -146,16 +146,15 @@ class Item extends Container {
   String get linkHref {
    var name = findLibraryName(qualifiedName).replaceAll('.', '/');
    var index = name.indexOf('#');
+   var hash = '';
    if (index != -1) {
-     var hash = name.substring(index + 1, name.length);
+     hash = name.substring(index + 1, name.length);
      name = name.substring(0, index);
-     name = '$name#${Uri.encodeComponent(hash)}';
-   } else {
-     var parts = name.split('/');
-     name = parts.map((e) => Uri.encodeComponent(e)).join('/');
+     hash = '#${Uri.encodeComponent(hash)}';
    }
-   name = name.replaceAll('%', '-');
-   return name;
+   var parts = name.split('/');
+   name = parts.map((e) => Uri.encodeComponent(e)).join('/') + hash;
+   return name.replaceAll('%', '-');
   }
 }
 
