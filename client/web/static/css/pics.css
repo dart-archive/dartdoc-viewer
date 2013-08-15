@@ -133,3 +133,35 @@ background-image: url('../method_private.png');
 .search-result:hover #result-name {
   color: #ffffff;
 }
+
+
+/*
+  MDN
+*/
+
+.mdn {
+  border: solid 1px hsl(10, 80%, 90%);
+  border-radius: 4px;
+  line-height: 22px;
+  margin: 22px 0;
+  padding: 21px 21px 0 21px;
+}
+
+/* End MDN massage. */
+
+.mdn-note {
+  font-size: 11px;
+  font-style: italic;
+  color: hsl(10, 60%, 80%);
+  text-align: right;
+  line-height: 21px; /* To absorb bottom border 1px. */
+  margin-right: -14px;
+}
+
+.mdn-note a {
+  color: hsl(10, 60%, 80%);
+}
+
+.mdn-note a:hover {
+  color: hsl(10, 60%, 60%);
+}

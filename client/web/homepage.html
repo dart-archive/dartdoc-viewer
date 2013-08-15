@@ -6,12 +6,11 @@
   <template>
     <template if="home != null">
       <div class="page-header"><h1>Libraries</h1></div>
-    
-      <ul class="nav nav-pills nav-stacked">
-        <template iterate="library in home.libraries">
-          <dartdoc-item item="{{library}}"></dartdoc-item>
-        </template>
-      </ul>
+      
+      <template iterate="library in home.libraries">
+        <dartdoc-item class="panel" item="{{library}}"></dartdoc-item>
+      </template>
+
     </template>
   </template>
   
