@@ -115,8 +115,8 @@
     <template if="viewer.currentPage != viewer.homePage">
 
       <template if="viewer.isPanel">
-        <div class="list-group visible-lg col-lg-3" 
-          data-spy="affix" data-offset-top="200">
+        <div class="list-group visible-lg col-lg-2 affix-left" 
+          data-spy="affix" data-offset-top="200" id="library-panel">
           <template iterate="library in viewer.homePage.libraries">
             <template 
               if="library.decoratedName == viewer.breadcrumbs[1].decoratedName">
@@ -145,7 +145,7 @@
       <template if="viewer.isMinimap">
         <!-- Minimap -->
         <template instantiate="if viewer.currentPage is Library">
-          <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
+          <div class="visible-lg col-lg-3 well well-sm nav affix-right" 
             id="minimap" data-spy="affix" data-offset-top="200">
             <a on-click="viewer.changePage(library)">
               {{viewer.currentPage.name}} library

@@ -109,10 +109,21 @@ background-image: url('../method_private.png');
   color: #333;
 }
 
-.affix {
+#library-panel {
+  max-height: 90%;
+  overflow: auto;
+}
+
+.affix-right {
   top: 60px;
   position: fixed;
   right: 10px;
+}
+
+.affix-left {
+  top: 60px;
+  position: fixed;
+  left: 10px;
 }
 
 #search {
