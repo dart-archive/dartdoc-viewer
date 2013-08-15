@@ -262,6 +262,9 @@ class Viewer {
   }
 }
 
+/// The path of this app on startup.
+String _pathname;
+
 /// The latest url reached by a popState event.
 String location;
 
@@ -278,6 +281,8 @@ void startHistory() {
 
 /// Handles browser navigation.
 main() {
+  _pathname = window.location.pathname;
+  
   window.onResize.listen((event) {
     viewer.isDesktop = window.innerWidth > desktopSizeBoundary;
   });
@@ -287,15 +292,13 @@ main() {
     if (e.target is AnchorElement) {
       var anchor = e.target;
       if (anchor.host == window.location.host) {
-        // Allow for CTRL+click to open in a new tab.
-        if (!e.ctrlKey) { 
-          e.preventDefault();
-          // navigate here: push state or set fragment
-          var hashIndex = anchor.href.indexOf('#');
-          var location = 'home';
-          if (hashIndex != -1) 
-            location = anchor.href.substring(hashIndex + 1, anchor.href.length);
-          viewer.handleLink(location);
+        if (anchor.pathname == _pathname) {
+          // Allow for CTRL+click to open in a new tab.
+          if (!e.ctrlKey) {
+            e.preventDefault();
+            var location = anchor.hash.substring(1, anchor.hash.length);
+            viewer.handleLink(location);
+          }
         }
       }
     }
