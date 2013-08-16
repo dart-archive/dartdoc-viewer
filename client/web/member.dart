@@ -117,6 +117,11 @@ class InheritedElement extends MemberElement {
   bool get hasInheritedComment =>
       item.commentFrom != '' && item.commentFrom != null;
   
+  /// Returns whether [location] exists within the search index.
+  bool exists(String location) {
+    return index.keys.contains(location.replaceAll('-','.'));
+  }
+  
   /// Creates a [LinkableType] for the owner of [qualifiedName].
   LinkableType findInheritance(String qualifiedName) {
     return new LinkableType(ownerName(qualifiedName));

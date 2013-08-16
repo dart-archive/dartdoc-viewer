@@ -225,53 +225,65 @@
           <ul>
             <template 
                 instantiate="if 
-                    viewer.currentPage.operators.content.isNotEmpty">
-              <li><a href="#operators" data-toggle="collapse">
-                Operators<b class="caret"></b>
-              </a></li>
-              <ul id="operators" class="collapse">
-                <dartdoc-minimap 
-                    items="{{viewer.currentPage.operators.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-            <template 
+                  viewer.currentPage.operators.content.isNotEmpty">
+                <template if="viewer.currentPage.operators.hasNonInherited 
+                  || viewer.isInherited">
+                  <li><a href="#operators" data-toggle="collapse">
+                    Operators<b class="caret"></b>
+                  </a></li>
+                  <ul id="operators" class="collapse">
+                    <dartdoc-minimap 
+                      items="{{viewer.currentPage.operators.content}}">
+                    </dartdoc-minimap>
+                  </ul>
+                </template>
+              </template>
+              <template 
                 instantiate="if 
-                    viewer.currentPage.variables.content.isNotEmpty">
-              <li><a href="#properties" data-toggle="collapse">
-                Properties<b class="caret"></b>
-              </a></li>
-              <ul id="properties" class="collapse">
-                <dartdoc-minimap 
-                    items="{{viewer.currentPage.variables.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-            <template 
+                  viewer.currentPage.variables.content.isNotEmpty">
+                <template if="viewer.currentPage.variables.hasNonInherited 
+                  || viewer.isInherited">
+                  <li><a href="#properties" data-toggle="collapse">
+                    Properties<b class="caret"></b>
+                  </a></li>
+                  <ul id="properties" class="collapse">
+                    <dartdoc-minimap 
+                      items="{{viewer.currentPage.variables.content}}">
+                    </dartdoc-minimap>
+                  </ul>
+                </template>
+              </template>
+              <template 
                 instantiate="if 
-                    viewer.currentPage.constructs.content.isNotEmpty">
-              <li><a href="#constructors" data-toggle="collapse">
-                Constructors<b class="caret"></b>
-              </a></li>
-              <ul id="constructors" class="collapse">
-                <dartdoc-minimap 
-                    items="{{viewer.currentPage.constructs.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-            <template 
+                  viewer.currentPage.constructs.content.isNotEmpty">
+                <template if="viewer.currentPage.constructs.hasNonInherited 
+                  || viewer.isInherited">
+                  <li><a href="#constructors" data-toggle="collapse">
+                    Constructors<b class="caret"></b>
+                  </a></li>
+                  <ul id="constructors" class="collapse">
+                    <dartdoc-minimap 
+                      items="{{viewer.currentPage.constructs.content}}">
+                    </dartdoc-minimap>
+                  </ul>
+                </template>
+              </template>
+              <template 
                 instantiate="if 
-                    viewer.currentPage.functions.content.isNotEmpty">
-              <li><a href="#functions" data-toggle="collapse">
-                Functions<b class="caret"></b>
-              </a></li>
-              <ul id="functions" class="collapse">
-                <dartdoc-minimap 
-                  items="{{viewer.currentPage.functions.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-          </ul>
+                  viewer.currentPage.functions.content.isNotEmpty">
+                <template if="viewer.currentPage.functions.hasNonInherited 
+                  || viewer.isInherited">
+                  <li><a href="#functions" data-toggle="collapse">
+                    Functions<b class="caret"></b>
+                  </a></li>
+                  <ul id="functions" class="collapse">
+                    <dartdoc-minimap 
+                      items="{{viewer.currentPage.functions.content}}">
+                    </dartdoc-minimap>
+                  </ul>
+                </template>
+              </template>
+            </ul>
         </div>
       </template>
     </template>

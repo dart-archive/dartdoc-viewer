@@ -141,6 +141,9 @@ class Item extends Container {
   /// Adds the comment from [item] to [this].
   void addInheritedComment(Item item) {}
   
+  /// Denotes whether this [Item] is inherited from another [Item] or not.
+  bool get isInherited => false;
+  
   /// Creates a link for the href attribute of an [AnchorElement].
   String get linkHref {
    var name = findLibraryName(qualifiedName).replaceAll('.', '/');
@@ -173,10 +176,10 @@ class Home extends Item {
   /// All libraries being viewed from the homepage.
   List<Item> libraries = [];
   
-  /// The constructor parses the [libraries] input and constructs
+  /// The constructor parses the [yaml] input and constructs
   /// [Placeholder] objects to display before loading libraries.
-  Home(Map libraries) : super('', 'home') {
-    var libraryList = libraries['libraries'];
+  Home(Map yaml) : super('', 'home', _wrapComment(yaml['introduction'])) {
+    var libraryList = yaml['libraries'];
     for (Map library in libraryList) {
       var libraryName = library['name'];
       libraryNames[libraryName] = libraryName.replaceAll('.', '-');

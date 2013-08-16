@@ -42,9 +42,14 @@
       <p class="text-right"><dfn>
         <template if="isInherited">
           This member is inherited from 
-          <a href="#{{inheritedFrom.location}}">
-            {{inheritedFrom.simpleType}}
-          </a>
+          <template if="exists(inheritedFrom.location)">
+            <a href="#{{inheritedFrom.location}}">
+              {{inheritedFrom.simpleType}}
+            </a>
+          </template>
+          <template if="!exists(inheritedFrom.location)">
+            <i>{{inheritedFrom.simpleType}}</i>
+          </template>
         </template>
       </dfn></p>
 
@@ -55,21 +60,29 @@
         </section>
       </template>
 
-      <template if="!isExpanded">
-        <template if="!hasInheritedComment || viewer.isInherited">
-          <a on-click="expandComment()" class="btn-link">
+      <template instantiate="if !nothingToExpand">
+        <a on-click="toggleExpand()" class="btn-link">
+          <template if="isExpanded">
+            ...Show less
+          </template>
+          <template if="!isExpanded">
             ...Show more
-          </a>
-        </template>
+          </template>
+        </a>
       </template>
 
       <p class="text-right"><dfn>
         <template if="hasInheritedComment && isExpanded">
           <template if="viewer.isInherited">
             This documentation is inherited from 
-            <a href="#{{commentFrom.location}}">
-              {{commentFrom.simpleType}}
-            </a>
+            <template if="exists(commentFrom.location)">
+              <a href="#{{commentFrom.location}}">
+                {{commentFrom.simpleType}}
+              </a>
+            </template>
+            <template if="!exists(commentFrom.location)">
+              <i>{{commentFrom.simpleType}}</i>
+            </template>
           </template>
         </template>
       </dfn></p>
@@ -78,12 +91,14 @@
   </template>
   
   <script type="application/dart">
-    import 'member.dart';
     import 'package:web_ui/web_ui.dart';
+    
     import 'app.dart';
+    import 'member.dart';
     
     class MethodPanel extends MethodElement {
       @observable bool isExpanded = false;
+      @observable bool nothingToExpand;
 
       inserted() {
         super.inserted();
@@ -95,10 +110,11 @@
           if (index == -1) isExpanded = true;
           else isExpanded = false;
         }
+        nothingToExpand = isExpanded;
       }
 
-      void expandComment() {
-        isExpanded = true;
+      void toggleExpand() {
+        isExpanded = !isExpanded;
       }
     }
   </script>

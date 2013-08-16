@@ -16,9 +16,14 @@
     <p class="text-right"><dfn>
       <template if="isInherited">
         This property is inherited from 
-        <a href="#{{inheritedFrom.location}}">
-          {{inheritedFrom.simpleType}}
-        </a>
+        <template if="exists(inheritedFrom.location)">
+          <a href="#{{inheritedFrom.location}}">
+            {{inheritedFrom.simpleType}}
+          </a>
+        </template>
+        <template if="!exists(inheritedFrom.location)">
+          <i>{{inheritedFrom.simpleType}}</i>
+        </template>
       </template>
     </dfn></p>
     
@@ -29,9 +34,14 @@
       </p>
     </template>
 
-    <template if="!isExpanded">
-      <a on-click="expandComment()" class="btn-link">
-        ...Show more
+    <template instantiate="if !nothingToExpand">
+      <a on-click="toggleExpand()" class="btn-link">
+        <template if="isExpanded">
+          ...Show less
+        </template>
+        <template if="!isExpanded">
+          ...Show more
+        </template>
       </a>
     </template>
 
@@ -39,9 +49,14 @@
       <template if="hasInheritedComment && isExpanded">
         <template if="app.viewer.isInherited">
           This documentation is inherited from 
-          <a href="#{{commentFrom.location}}">
-            {{commentFrom.simpleType}}.
-          </a>
+          <template if="exists(commentFrom.location)">
+            <a href="#{{commentFrom.location}}">
+              {{commentFrom.simpleType}}
+            </a>
+          </template>
+          <template if="!exists(commentFrom.location)">
+            <i>{{commentFrom.simpleType}}</i>
+          </template>
         </template>
       </template>
     </dfn></p>
@@ -59,6 +74,7 @@
      */
     class VariableElement extends InheritedElement {
       @observable bool isExpanded = false;
+      @observable bool nothingToExpand;
 
       inserted() {
         super.inserted();
@@ -70,10 +86,11 @@
           if (index == -1) isExpanded = true;
           else isExpanded = false;
         }
+        nothingToExpand = isExpanded;
       }
 
-      void expandComment() {
-        isExpanded = true;
+      void toggleExpand() {
+        isExpanded = !isExpanded;
       }
     }
   </script>
