@@ -104,7 +104,7 @@
   <template if="viewer.currentPage != viewer.homePage">
     <template if="viewer.isPanel">
       <div class="list-group visible-lg col-lg-2 affix-left" 
-          data-spy="affix" data-offset-top="200" id="library-panel">
+          data-spy="affix" data-offset-top="200px" id="library-panel">
           <template iterate="library in viewer.homePage.libraries">
             <template 
               if="library.decoratedName == viewer.breadcrumbs[1].decoratedName">
