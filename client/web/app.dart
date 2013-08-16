@@ -18,7 +18,6 @@ import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:web_ui/web_ui.dart';
-import 'package:yaml/yaml.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the YAML file being read in. 
