@@ -51,7 +51,7 @@ There are two ways to run the viewer locally:
  `dev_appserver.py <folder containing app.yaml>`, but first act on the 
  following:
    - When running the viewer on the development server, YAML or JSON files 
-   are retrieved from the client/local folder instead of the client/docs folder. 
+   are retrieved from the client/local folder instead of the client/docs folder.
    You must manually rename your 'docs' directory to 'local' for the server to 
    correctly retrieve your files.
    - If you intend to view documentation in a browser other than Dartium, you 
