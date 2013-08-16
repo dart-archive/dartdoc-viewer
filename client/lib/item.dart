@@ -2,6 +2,7 @@ library category_item;
 
 import 'dart:async';
 import 'dart:html';
+import 'dart:json';
 
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
@@ -217,9 +218,9 @@ abstract class LazyItem extends Item {
   
   /// Loads this [Item]'s data and populates all fields.
   Future load() {
-    var data = retrieveFileContents('$docsPath$qualifiedName.yaml');
+    var data = retrieveFileContents('$docsPath$qualifiedName.json');
     return data.then((response) {
-      var yaml = loadYaml(response);
+      var yaml = parse(response);
       loadValues(yaml);
       buildHierarchy(this, this);
     });
