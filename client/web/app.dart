@@ -101,6 +101,7 @@ class Viewer {
           // Open the category if it is not open.
           if (category != null && !category.classes.contains('in'))
             category.classes.add('in');
+            category.attributes['style'] = 'height: auto;';
           e.scrollIntoView(ScrollAlignment.TOP);
           // The navigation bar at the top of the page is 60px wide,
           // so scroll down 60px once the browser scrolls to the member.
