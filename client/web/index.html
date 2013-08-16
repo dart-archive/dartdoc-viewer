@@ -100,22 +100,10 @@
   </div>
 </div>
 
-<div class="container main-body">
-
-  <template if="viewer.currentPage == viewer.homePage ||
-    (!viewer.isPanel && !viewer.isMinimap)">
-    <main class="col-12">
-      <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
-    </main>
-  </template>
-
-
-
-  <template instantiate="if viewer.homePage != null">
-    <template if="viewer.currentPage != viewer.homePage">
-
-      <template if="viewer.isPanel">
-        <div class="list-group visible-lg col-lg-2 affix-left" 
+<div class="main-body">
+  <template if="viewer.currentPage != viewer.homePage">
+    <template if="viewer.isPanel">
+      <div class="list-group visible-lg col-lg-2 affix-left" 
           data-spy="affix" data-offset-top="200" id="library-panel">
           <template iterate="library in viewer.homePage.libraries">
             <template 
@@ -134,156 +122,156 @@
             </template>
           </template>
         </div>
+    </template>
+  </template>
+
+  <main id="page-content"
+      class="{{(viewer.isDesktop && viewer.isPanel) ? 'margin-left' : ''}} 
+          {{(viewer.isDesktop && viewer.isMinimap) ? 'margin-right' : ''}}">
+    <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
+  </main>
+
+  <template if="viewer.currentPage != viewer.homePage">
+    <template if="viewer.isMinimap">
+      <!-- Minimap -->
+      <template instantiate="if viewer.currentPage is Library">
+        <div class="visible-lg col-lg-3 well well-sm nav affix-right" 
+            id="minimap" data-spy="affix" data-offset-top="200">
+          <a on-click="viewer.changePage(library)">
+            {{viewer.currentPage.name}} library
+          </a>
+          <ul>
+            <template 
+                instantiate="if 
+                    viewer.currentPage.operators.content.isNotEmpty">
+              <li><a href="#operators" data-toggle="collapse">
+                Operators<b class="caret"></b>
+              </a></li>
+              <ul id="operators" class="collapse">
+                <dartdoc-minimap 
+                    items="{{viewer.currentPage.operators.content}}">
+                </dartdoc-minimap>
+              </ul>
+            </template>
+            <template 
+                instantiate="if 
+                    viewer.currentPage.variables.content.isNotEmpty">
+              <li><a href="#properties" data-toggle="collapse">
+                Properties<b class="caret"></b>
+              </a></li>
+              <ul id="properties" class="collapse">
+                <dartdoc-minimap
+                    items="{{viewer.currentPage.variables.content}}">
+                </dartdoc-minimap>
+              </ul>
+            </template>
+            <template 
+                instantiate="if 
+                    viewer.currentPage.functions.content.isNotEmpty">
+              <li><a href="#functions" data-toggle="collapse">
+                Functions<b class="caret"></b>
+              </a></li>
+              <ul id="functions" class="collapse">
+                <dartdoc-minimap 
+                    items="{{viewer.currentPage.functions.content}}">
+                </dartdoc-minimap>
+              </ul>
+            </template>
+            <template 
+                instantiate="if viewer.currentPage.classes.content.isNotEmpty">
+              <li><a href="#classes" data-toggle="collapse">
+                Classes<b class="caret"></b>
+              </a></li>
+              <ul id="classes" class="collapse">
+                <dartdoc-minimap 
+                    items="{{viewer.currentPage.classes.content}}">
+                </dartdoc-minimap>
+              </ul>
+            </template>
+            <template 
+                instantiate="if viewer.currentPage.typedefs.content.isNotEmpty">
+              <li><a href="#typedefs" data-toggle="collapse">
+                Typedefs<b class="caret"></b>
+              </a></li>
+              <ul id="typedefs" class="collapse">
+                <dartdoc-minimap 
+                    items="{{viewer.currentPage.typedefs.content}}">
+                </dartdoc-minimap>
+              </ul>
+            </template>
+            <template 
+                instantiate="if viewer.currentPage.errors.content.isNotEmpty">
+              <li><a href="#exceptions" data-toggle="collapse">
+                Exceptions<b class="caret"></b>
+              </a></li>
+              <ul id="exceptions" class="collapse">
+                <dartdoc-minimap 
+                    items="{{viewer.currentPage.errors.content}}">
+                </dartdoc-minimap>
+              </ul>
+            </template>
+          </ul>
+        </div>
       </template>
 
-      <main class="col-12 {{viewer.isPanel && viewer.isMinimap ? 
-        'col-lg-6' : 'col-lg-9'}}">
-        <dartdoc-page home="{{viewer.homePage}}">
-        </dartdoc-page>
-      </main>
-
-      <template if="viewer.isMinimap">
-        <!-- Minimap -->
-        <template instantiate="if viewer.currentPage is Library">
-          <div class="visible-lg col-lg-3 well well-sm nav affix-right" 
-            id="minimap" data-spy="affix" data-offset-top="200">
-            <a on-click="viewer.changePage(library)">
-              {{viewer.currentPage.name}} library
-            </a>
-            <ul>
-              <template 
-                instantiate="if 
-                  viewer.currentPage.operators.content.isNotEmpty">
-                <li><a href="#operators" data-toggle="collapse">
-                  Operators<b class="caret"></b>
-                </a></li>
-                <ul id="operators" class="collapse">
-                  <dartdoc-minimap 
-                    items="{{viewer.currentPage.operators.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-              <template 
-                instantiate="if 
-                  viewer.currentPage.variables.content.isNotEmpty">
-                <li><a href="#properties" data-toggle="collapse">
-                  Properties<b class="caret"></b>
-                </a></li>
-                <ul id="properties" class="collapse">
-                  <dartdoc-minimap
-                    items="{{viewer.currentPage.variables.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-              <template 
-                instantiate="if 
-                  viewer.currentPage.functions.content.isNotEmpty">
-                <li><a href="#functions" data-toggle="collapse">
-                  Functions<b class="caret"></b>
-                </a></li>
-                <ul id="functions" class="collapse">
-                  <dartdoc-minimap 
-                    items="{{viewer.currentPage.functions.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-              <template 
-                instantiate="if viewer.currentPage.classes.content.isNotEmpty">
-                <li><a href="#classes" data-toggle="collapse">
-                  Classes<b class="caret"></b>
-                </a></li>
-                <ul id="classes" class="collapse">
-                  <dartdoc-minimap 
-                    items="{{viewer.currentPage.classes.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-              <template 
-                instantiate="if viewer.currentPage.typedefs.content.isNotEmpty">
-                <li><a href="#typedefs" data-toggle="collapse">
-                  Typedefs<b class="caret"></b>
-                </a></li>
-                <ul id="typedefs" class="collapse">
-                  <dartdoc-minimap 
-                    items="{{viewer.currentPage.typedefs.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-              <template 
-                instantiate="if viewer.currentPage.errors.content.isNotEmpty">
-                <li><a href="#exceptions" data-toggle="collapse">
-                  Exceptions<b class="caret"></b>
-                </a></li>
-                <ul id="exceptions" class="collapse">
-                  <dartdoc-minimap 
-                    items="{{viewer.currentPage.errors.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-            </ul>
-          </div>
-        </template>
-
-        <template instantiate="if viewer.currentPage is Class">
-          <div class="visible-lg col-lg-3 well well-sm nav affix pull-right" 
+      <template instantiate="if viewer.currentPage is Class">
+        <div class="visible-lg col-lg-3 well well-sm nav affix-right" 
             id="minimap" data-spy="affix" data-offset-top="200px">
-            <a href="#dartdoc-top">
-              {{viewer.currentPage.name}} Class
-            </a>
-            <ul>
-              <template 
+          <a href="#dartdoc-top">
+            {{viewer.currentPage.name}} Class
+          </a>
+          <ul>
+            <template 
                 instantiate="if 
-                  viewer.currentPage.operators.content.isNotEmpty">
-                <li><a href="#operators" data-toggle="collapse">
-                  Operators<b class="caret"></b>
-                </a></li>
-                <ul id="operators" class="collapse">
-                  <dartdoc-minimap 
+                    viewer.currentPage.operators.content.isNotEmpty">
+              <li><a href="#operators" data-toggle="collapse">
+                Operators<b class="caret"></b>
+              </a></li>
+              <ul id="operators" class="collapse">
+                <dartdoc-minimap 
                     items="{{viewer.currentPage.operators.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-              <template 
+                </dartdoc-minimap>
+              </ul>
+            </template>
+            <template 
                 instantiate="if 
-                  viewer.currentPage.variables.content.isNotEmpty">
-                <li><a href="#properties" data-toggle="collapse">
-                  Properties<b class="caret"></b>
-                </a></li>
-                <ul id="properties" class="collapse">
-                  <dartdoc-minimap 
+                    viewer.currentPage.variables.content.isNotEmpty">
+              <li><a href="#properties" data-toggle="collapse">
+                Properties<b class="caret"></b>
+              </a></li>
+              <ul id="properties" class="collapse">
+                <dartdoc-minimap 
                     items="{{viewer.currentPage.variables.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-              <template 
+                </dartdoc-minimap>
+              </ul>
+            </template>
+            <template 
                 instantiate="if 
-                  viewer.currentPage.constructs.content.isNotEmpty">
-                <li><a href="#constructors" data-toggle="collapse">
-                  Constructors<b class="caret"></b>
-                </a></li>
-                <ul id="constructors" class="collapse">
-                  <dartdoc-minimap 
+                    viewer.currentPage.constructs.content.isNotEmpty">
+              <li><a href="#constructors" data-toggle="collapse">
+                Constructors<b class="caret"></b>
+              </a></li>
+              <ul id="constructors" class="collapse">
+                <dartdoc-minimap 
                     items="{{viewer.currentPage.constructs.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-              <template 
+                </dartdoc-minimap>
+              </ul>
+            </template>
+            <template 
                 instantiate="if 
-                  viewer.currentPage.functions.content.isNotEmpty">
-                <li><a href="#functions" data-toggle="collapse">
-                  Functions<b class="caret"></b>
-                </a></li>
-                <ul id="functions" class="collapse">
-                  <dartdoc-minimap 
-                    items="{{viewer.currentPage.functions.content}}">
-                  </dartdoc-minimap>
-                </ul>
-              </template>
-            </ul>
+                    viewer.currentPage.functions.content.isNotEmpty">
+              <li><a href="#functions" data-toggle="collapse">
+                Functions<b class="caret"></b>
+              </a></li>
+              <ul id="functions" class="collapse">
+                <dartdoc-minimap 
+                  items="{{viewer.currentPage.functions.content}}">
+                </dartdoc-minimap>
+              </ul>
+            </template>
+          </ul>
         </div>
       </template>
     </template>
   </template>
-</template>
-  
 </div>

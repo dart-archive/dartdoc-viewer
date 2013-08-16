@@ -5,6 +5,8 @@ polymer stabilizes.
 
 .main-body { 
   padding-top: 70px; 
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .header-logo {
@@ -93,6 +95,7 @@ background-image: url('../method_private.png');
 #minimap {
   padding-left: 10px;
   max-height: 80%;
+  width: 300px;
   overflow: auto;
 }
 
@@ -111,7 +114,16 @@ background-image: url('../method_private.png');
 
 #library-panel {
   max-height: 90%;
+  width: 200px;
   overflow: auto;
+}
+
+.margin-left {
+  margin-left: 220px;
+}
+
+.margin-right {
+  margin-right: 320px;
 }
 
 .affix-right {
