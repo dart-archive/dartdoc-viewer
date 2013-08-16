@@ -20,8 +20,7 @@ String empty = '';
 
 // The 'value' field is escaped more than normal to
 // account for the use of literal strings.
-String parameter =
-'''"name" : "input"
+String parameter = '''"name" : "input"
 "optional" : "true"
 "named" : "true"
 "default" : "true"
@@ -31,8 +30,7 @@ String parameter =
 "value" : "\\\"test\\\""
 "annotations" :''';
 
-String variable =
-'''"name" : "variable"
+String variable = '''"name" : "variable"
 "qualifiedName" : "Library.variable"
 "comment" : "<p>This is a test comment</p>"
 "final" : "false"
@@ -43,8 +41,7 @@ String variable =
     "outer" : "dart.core.String"
 "annotations" :''';
 
-String genericOneLevelVariable =
-'''"name" : "generic"
+String genericOneLevelVariable = '''"name" : "generic"
 "qualifiedName" : "Library.generic"
 "comment" : "<p>This is a test comment for generic types</p>"
 "final" : "false"
@@ -57,8 +54,7 @@ String genericOneLevelVariable =
     "outer" : "dart.core.List"
 "annotations" :''';
 
-String genericTwoLevelVariable =
-'''"name" : "generic"
+String genericTwoLevelVariable = '''"name" : "generic"
 "qualifiedName" : "Library.generic"
 "comment" : "<p>This is a test comment for generic types</p>"
 "final" : "false"
@@ -75,8 +71,7 @@ String genericTwoLevelVariable =
     "outer" : "dart.core.List"
 "annotations" :''';
 
-String setter =
-'''"abstract" : "false"
+String setter = '''"abstract" : "false"
 "annotations" :
 "comment" : "<p>This is a setter</p>"
 "commentfrom" : ""
@@ -99,8 +94,7 @@ String setter =
     "outer" : "void"
 "static" : "false"''';
 
-String method = 
-'''"name" : "getA"
+String method =  '''"name" : "getA"
 "qualifiedName" : "Library.getA"
 "comment" : ""
 "static" : "false"
@@ -122,8 +116,7 @@ String method =
     "value" : "null"
     "annotations" :''';
 
-String clazz =
-'''"name" : "A"
+String clazz = '''"name" : "A"
 "qualifiedName" : "Library.A"
 "comment" : "<p>This class is used for testing.</p>"
 "isAbstract" : "false"
@@ -166,8 +159,7 @@ String clazz =
           "outer" : "void"
       "parameters" :''';
 
-String library =
-'''"name" : "Library"
+String library = '''"name" : "Library"
 "qualifiedName" : "Library"
 "comment" : "<p>This is a library.</p>"
 "variables" :
@@ -181,8 +173,7 @@ String library =
   "typedef" :''';
 
 // A string of YAML with return types that are in scope for testing links.
-String dependencies = 
-'''"name" : "Library"
+String dependencies =  '''"name" : "Library"
 "qualifiedName" : "Library"
 "annotations" :
 "comment" : "<p>This is a library.</p>"
@@ -232,8 +223,7 @@ String dependencies =
     - "name" : "Library.B"
     - "name" : "Library.C"''';
 
-String annotationsAndGenerics =
-'''"name" : "Library"
+String annotationsAndGenerics = '''"name" : "Library"
 "qualifiedName" : "Library"
 "comment" : "<p>This is an annotation test</p>"
 "variables" :
@@ -285,8 +275,7 @@ String annotationsAndGenerics =
   "error" :
   "typedef" :''';
 
-String clazzA =
-'''"name" : "A"
+String clazzA = '''"name" : "A"
 "qualifiedName" : "Library.A"
 "isAbstract" : "false"
 "annotations" : 
@@ -349,8 +338,7 @@ String clazzA =
   "operators" :
   "setters" :''';
 
-String clazzB =
-'''"name" : "B"
+String clazzB = '''"name" : "B"
 "qualifiedName" : "Library.B"
 "annotations" :
 "isAbstract" : "true"
@@ -372,8 +360,7 @@ String clazzB =
     "annotations" :
 "methods" :''';
 
-String clazzC = 
-'''"name" : "C"
+String clazzC =  '''"name" : "C"
 "qualifiedName" : "Library.C"
 "annotations" :
 "isAbstract" : "true"
@@ -397,8 +384,7 @@ String clazzC =
 "variables" : 
 "methods" :''';
 
-String manyLibrariesIndex =
-'''dart.core library
+String manyLibrariesIndex = '''dart.core library
 dart.core.Object class
 dart.core.Object.toString method
 dart.core.Object.runtimeType getter
@@ -418,8 +404,7 @@ dart.mirrors.Mirror class
 dart.dom.svg library
 dart.dom.svg.Number class''';
 
-String oneLibraryIndex =
-'''Library1 library
+String oneLibraryIndex = '''Library1 library
 Library1.function method
 Library1.variable property
 Library1.Class class
@@ -696,7 +681,7 @@ void main() {
     var firstAnnotation = variable.annotations.annotations.first;
     var secondAnnotation = variable.annotations.annotations[1];
     
-    var classA, classB, classC;
+    var classA, classB;
     library.classes.content.forEach((element) {
       if (element.name == 'A') classA = element;
       if (element.name == 'B') classB = element;
