@@ -34,11 +34,6 @@ String ownerName(String qualifiedName) {
   return index != -1 ? qualifiedName.substring(0, index) : '';
 }
 
-/// Maps all characters in [name] based on [idMap] to make a valid HTML id.
-String escaped(String name) => 
-  'dartdoc_' + 
-    name.split('').map((c) => idMap[c] == null ? c : idMap[c]).join();
-
 /**
  * A [Container] that contains other [Container]s to be displayed.
  */
