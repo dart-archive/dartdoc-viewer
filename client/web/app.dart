@@ -19,8 +19,9 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:web_ui/web_ui.dart';
 
-// TODO(janicejl): YAML path should not be hardcoded. 
-// Path to the YAML file being read in. 
+// TODO(janicejl): JSON path should not be hardcoded. 
+// Path to the JSON file being read in. This file will always be in JSON
+// format and contains the format of the rest of the files.
 String sourcePath = '../../docs/library_list.json';
 
 /// This is the cut off point between mobile and desktop in pixels. 
