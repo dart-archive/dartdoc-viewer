@@ -126,7 +126,6 @@ class InheritedElement extends MemberElement {
   LinkableType findInheritance(String qualifiedName) {
     return new LinkableType(ownerName(qualifiedName));
   }
-  
 }
 
 class MethodElement extends InheritedElement {
