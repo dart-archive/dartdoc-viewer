@@ -140,13 +140,28 @@ class Item extends Container {
   
   /// Adds the comment from [item] to [this].
   void addInheritedComment(Item item) {}
+  
+  /// Creates a link for the href attribute of an [AnchorElement].
+  String get linkHref {
+   var name = findLibraryName(qualifiedName).replaceAll('.', '/');
+   var index = name.indexOf('#');
+   var hash = '';
+   if (index != -1) {
+     hash = name.substring(index + 1, name.length);
+     name = name.substring(0, index);
+     hash = '#${Uri.encodeComponent(hash)}';
+   }
+   var parts = name.split('/');
+   name = parts.map((e) => Uri.encodeComponent(e)).join('/') + hash;
+   return name.replaceAll('%', '-');
+  }
 }
 
 /// Sorts each inner [List] by qualified names.
 void _sort(List<List<Item>> items) {
   items.forEach((item) {
     item.sort((Item a, Item b) =>
-      a.qualifiedName.compareTo(b.qualifiedName));
+      a.decoratedName.compareTo(b.decoratedName));
   });
 }
 
@@ -160,7 +175,7 @@ class Home extends Item {
   
   /// The constructor parses the [libraries] input and constructs
   /// [Placeholder] objects to display before loading libraries.
-  Home(Map libraries) : super('Dart API Reference', 'home') {
+  Home(Map libraries) : super('', 'home') {
     var libraryList = libraries['libraries'];
     for (Map library in libraryList) {
       var libraryName = library['name'];
@@ -641,11 +656,12 @@ class LinkableType {
 
   /// The resolved qualified name of the type this [LinkableType] represents.
   String type;
+  String qualifiedName;
   
   /// The constructor resolves the library name by finding the correct library
   /// from [libraryNames] and changing [type] to match.
   LinkableType(String type) {
-    var current = type;
+    qualifiedName = type;
     this.type = findLibraryName(type);
   }
 

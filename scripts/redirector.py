@@ -42,7 +42,8 @@ class RequestHandler(blobstore_handlers.BlobstoreDownloadHandler):
     path = LOCAL_PATH + self.request.path[len('docs/'):]
     with open(path, 'r') as file:
       result = file.read()
-    self.HandleCacheAge(path)
+    # The cache age should be zero seconds if being run locally.
+    self.response.headers['Cache-Control'] = 'max-age=%d,s-maxage=%d' % (0, 0)
     self.response.out.write(result)
 
   def GetGoogleStorage(self):
@@ -64,8 +65,8 @@ class RequestHandler(blobstore_handlers.BlobstoreDownloadHandler):
       age = ONE_WEEK
     else:
       age = ONE_HOUR
-    self.response.headers['Cache-Control'] = 'max-age=' + \
-        str(age) + ',s-maxage=' + str(age)
+    self.response.headers['Cache-Control'] = 'max-age=%d,s-maxage=%d' % \
+      (age, age)
     
 application = WSGIApplication(
   [

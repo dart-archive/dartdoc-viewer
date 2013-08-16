@@ -51,7 +51,7 @@
           element.annotations.annotations.forEach((annotation) {
             var anchor = new AnchorElement()
               ..text = '@${annotation.simpleType}'
-              ..onClick.listen((_) => viewer.handleLink(annotation.location));
+              ..href = '#${annotation.location}';
             outerSpan.append(anchor);
             outerSpan.appendText(' ');
           });

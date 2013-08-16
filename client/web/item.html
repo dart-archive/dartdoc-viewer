@@ -6,8 +6,7 @@
   <template>
     <ul class="nav nav-pills nav-stacked">
       <li>
-        <a class="btn-link" id="{{idName}}" 
-            on-click="app.viewer.changePage(item)">
+        <a id="{{idName}}" href="#{{item.linkHref}}">
           <template instantiate="if item is! Method">
               {{title}}
           </template>
@@ -52,7 +51,9 @@
   </template>
   <script type="application/dart">
     import 'package:web_ui/web_ui.dart';
+    import 'package:dartdoc_viewer/data.dart';
     import 'package:dartdoc_viewer/item.dart';
+ 
     import 'app.dart' as app;
     import 'member.dart';
     

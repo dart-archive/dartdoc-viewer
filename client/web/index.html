@@ -15,12 +15,11 @@
 <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
 
 <template if="viewer.currentPage != null">
-  <template if="viewer.currentPage == viewer.homePage">
-    <title>Dart API Reference</title>
-  </template>
-  <template if="viewer.currentPage != viewer.homePage">
-    <title>{{viewer.currentPage.decoratedName}} - Dart API Reference</title>
-  </template>
+    <title>
+      {{viewer.currentPage.decoratedName}}
+      {{viewer.currentPage.decoratedName == '' ? '' : ' - '}}
+      Dart API Reference
+    </title>
 </template>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,8 +36,8 @@
 
     
     <a href="http://www.dartlang.org/" class="navbar-brand header-logo"></a>
-    <a on-click="viewer.changePage(viewer.homePage)" 
-      class="navbar-brand">
+    <a href="#home" 
+      class="navbar-brand btn-link">
       Dart API Reference
     </a>
 
@@ -51,7 +50,7 @@
               <template if="item != viewer.breadcrumbs.last">
                 <li>
                   <template instantiate="if item != null">
-                    <a on-click="viewer.changePage(item)">
+                    <a class="btn-link" href="#{{item.linkHref}}">
                       {{item.decoratedName}}
                     </a>
                   </template>
@@ -60,7 +59,7 @@
               <template if="item == viewer.breadcrumbs.last">
                 <li class="active">
                   <template instantiate="if item != null">
-                    <a>{{item.decoratedName}}</a>
+                    <a class="btn-link">{{item.decoratedName}}</a>
                   </template>
                 </li>
               </template>
@@ -101,27 +100,26 @@
 </div>
 
 <div class="main-body">
+  <!-- Library list panel -->
   <template if="viewer.currentPage != viewer.homePage">
     <template if="viewer.isPanel">
       <div class="list-group visible-lg col-lg-2 affix-left" 
           data-spy="affix" data-offset-top="200px" id="library-panel">
-          <template iterate="library in viewer.homePage.libraries">
-            <template 
+        <template iterate="library in viewer.homePage.libraries">
+          <template 
               if="library.decoratedName == viewer.breadcrumbs[1].decoratedName">
-              <a on-click="viewer.changePage(library)" 
-                class="list-group-item active btn-link">
-                {{library.decoratedName}}
-              </a>
-            </template>
-            <template 
-              if="library.decoratedName != viewer.breadcrumbs[1].decoratedName">
-              <a on-click="viewer.changePage(library)" 
-                class="list-group-item btn-link">
-                {{library.decoratedName}}
-              </a>
-            </template>
+            <a href="#{{library.linkHref}}" class="list-group-item active">
+              {{library.decoratedName}}
+            </a>
           </template>
-        </div>
+          <template 
+              if="library.decoratedName != viewer.breadcrumbs[1].decoratedName">
+            <a href="#{{library.linkHref}}" class="list-group-item">
+              {{library.decoratedName}}
+            </a>
+          </template>
+        </template>
+      </div>
     </template>
   </template>
 
@@ -136,12 +134,12 @@
       <!-- Minimap -->
       <template instantiate="if viewer.currentPage is Library">
         <div class="visible-lg col-lg-3 well well-sm nav affix-right" 
-            id="minimap" data-spy="affix" data-offset-top="200">
-          <a on-click="viewer.changePage(library)">
-            {{viewer.currentPage.name}} library
-          </a>
-          <ul>
-            <template 
+            id="minimap" data-spy="affix" data-offset-top="200px">
+            <a href="#{{viewer.currentPage.linkHref}}">
+              {{viewer.currentPage.name}} library
+            </a>
+            <ul>
+              <template 
                 instantiate="if 
                     viewer.currentPage.operators.content.isNotEmpty">
               <li><a href="#operators" data-toggle="collapse">

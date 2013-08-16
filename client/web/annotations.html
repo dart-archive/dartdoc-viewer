@@ -7,8 +7,7 @@
   <template>
     <template instantiate="if annotations.annotations.isNotEmpty">
       <template iterate="annotation in annotations.annotations">
-        <i><a class="btn-link" 
-          on-click="viewer.handleLink(annotation.link.location)">
+        <i><a href="#{{annotation.link.location}}">
           {{annotation.link.simpleType}}
         </a></i>
         

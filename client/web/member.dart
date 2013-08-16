@@ -15,7 +15,11 @@ class MemberElement extends WebComponent {
   @observable Item item;
  
   /// A valid string for an HTML id made from this [Item]'s name.
-  String get idName => escaped(item.name);
+  String get idName {
+    var name = item.name;
+    if (item.name == '') name = item.decoratedName;
+    return app.viewer.toHash(name);
+  }
   
   /// Adds [item]'s comment to the the [elementName] element with markdown
   /// links converted to working links.
@@ -53,9 +57,8 @@ class MemberElement extends WebComponent {
           } else {
             var linkable = new LinkableType(link.text);
             link
-              ..onClick.listen((_) => app.viewer.handleLink(linkable.location))
-              ..text = linkable.simpleType
-              ..attributes['class'] = 'btn-link';
+              ..href = '#${linkable.location}'
+              ..text = linkable.simpleType;
           }
         }
       }
@@ -66,11 +69,10 @@ class MemberElement extends WebComponent {
   /// Creates an HTML element for a parameterized type.  
   static Element createInner(NestedType type) {
     var span = new SpanElement();
-    if (!index.keys.contains(type.outer.simpleType)) {
+    if (index.keys.contains(type.outer.qualifiedName)) {
       var outer = new AnchorElement()
         ..text = type.outer.simpleType
-        ..onClick.listen((_) => app.viewer.handleLink(type.outer.location))
-        ..attributes['class'] = 'btn-link';
+        ..href = '#${type.outer.location}';
       span.append(outer);
     } else {
       span.appendText(type.outer.simpleType);

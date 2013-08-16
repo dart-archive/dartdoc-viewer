@@ -12,7 +12,7 @@
       Loading...
     </template>
     <template if="item != null">
-      <a id="{{item.name == '' ? 'dartdoc_${item.decoratedName}' : idName}}">
+      <a id="{{idName}}">
       </a>
       <div class="panel-heading">
         
@@ -42,7 +42,7 @@
       <p class="text-right"><dfn>
         <template if="isInherited">
           This member is inherited from 
-          <a on-click="viewer.handleLink(inheritedFrom.location)">
+          <a href="#{{inheritedFrom.location}}">
             {{inheritedFrom.simpleType}}
           </a>
         </template>
@@ -67,7 +67,7 @@
         <template if="hasInheritedComment && isExpanded">
           <template if="viewer.isInherited">
             This documentation is inherited from 
-            <a on-click="viewer.handleLink(commentFrom.location)">
+            <a href="#{{commentFrom.location}}">
               {{commentFrom.simpleType}}
             </a>
           </template>

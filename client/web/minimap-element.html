@@ -5,7 +5,7 @@
   <template>
     <template iterate="item in items">
       <li>
-        <a class="btn-link" on-click="viewer.miniMapLink(item)">
+        <a href="#{{link(item)}}">
           {{item.decoratedName}}
         </a>
       </li>
@@ -21,6 +21,12 @@
     /// An element in a page's minimap displayed on the right of the page.
     class MinimapElement extends WebComponent {
       @observable List<Item> items;
+      
+      /// Creates a proper href String for an [Item].
+      String link(item) {
+       var hash = item.name == '' ? item.decoratedName : item.name;
+       return '${viewer.currentPage.linkHref}#${viewer.toHash(hash)}';
+      }
     }
   </script>
 </element>

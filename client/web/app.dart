@@ -61,23 +61,21 @@ class Viewer {
     var manifest = retrieveFileContents(sourcePath);
     finished = manifest.then((response) {
       var libraries = loadYaml(response);
-      currentPage = new Home(libraries);
-      homePage = currentPage;
+      homePage = new Home(libraries);
     });
   }
   
-  /// Links to members within [currentPage].
-  void miniMapLink(Item item) {
-    var hash = item.name == '' ? item.decoratedName : item.name;
-    _updatePage(currentPage, '#$hash');
-    _updateState(currentPage);
+  /// Creates a valid hash ID for anchor tags.
+  String toHash(String hash) {
+    return 'id_' + Uri.encodeComponent(hash).replaceAll('%', '-');
   }
   
   /// The title of the current page.
   String get title => currentPage == null ? '' : currentPage.decoratedName;
   
   /// Creates a list of [Item] objects describing the path to [currentPage].
-  List<Item> get breadcrumbs => [homePage]..addAll(currentPage.path);
+  List<Item> get breadcrumbs => [homePage]
+    ..addAll(currentPage == null ? [] : currentPage.path);
   
   /// Scrolls the screen to the correct member if necessary.
   void _scrollScreen(String hash) {
@@ -90,7 +88,7 @@ class Viewer {
         // All ids are created using getIdName to avoid creating an invalid
         // HTML id from an operator or setter.
         hash = hash.substring(1, hash.length);
-        var e = document.query('#${escaped(hash)}');
+        var e = document.query('#$hash');
         if (e != null) {
           // Find the parent category element to make sure it is open.
           var category = e.parent;
@@ -124,6 +122,7 @@ class Viewer {
   /// Loads the [className] class and updates the current page to the
   /// class's member described by [location].
   Future _updateToClassMember(Class clazz, String location, String hash) {
+    var variable = location.split('.').last;
     if (!clazz.isLoaded) {
       return clazz.load().then((_) {
         var destination = pageIndex[location];
@@ -131,11 +130,13 @@ class Viewer {
           _updatePage(destination, hash);
         } else {
           // If the destination is null, then it is a variable in this class.
-          var variable = location.split('.').last;
-          _updatePage(clazz, '#$variable');
+          _updatePage(clazz, '#${toHash(variable)}');
         }
         return true;
       });
+    } else {
+      // It is a variable in this class.
+      _updatePage(clazz, '#${toHash(variable)}');
     }
     return new Future.value(false);
   }
@@ -155,6 +156,7 @@ class Viewer {
       } else {
         var clazz = pageIndex[className];
         if (clazz != null) {
+          // The location is a member of a class.
           return _updateToClassMember(clazz, location, hash);
         } else {
           // The location is of a top-level variable in a library.
@@ -260,6 +262,9 @@ class Viewer {
   }
 }
 
+/// The path of this app on startup.
+String _pathname;
+
 /// The latest url reached by a popState event.
 String location;
 
@@ -276,8 +281,23 @@ void startHistory() {
 
 /// Handles browser navigation.
 main() {
+  _pathname = window.location.pathname;
+  
   window.onResize.listen((event) {
     viewer.isDesktop = window.innerWidth > desktopSizeBoundary;
+  });
+  
+  // Handle clicks and redirect.
+  window.onClick.listen((Event e) {
+    if (e.target is AnchorElement) {
+      var anchor = e.target;
+      if (anchor.host == window.location.host 
+          && anchor.pathname == _pathname && !e.ctrlKey) {
+        e.preventDefault();
+        var location = anchor.hash.substring(1, anchor.hash.length);
+        viewer.handleLink(location);
+      }
+    }
   });
 
   startHistory();
@@ -287,6 +307,8 @@ main() {
   viewer.finished.then((_) {
     if (location != null && location != '') {
       viewer._handleLinkWithoutState(location);
+    } else {
+      viewer.currentPage = viewer.homePage;
     }
     retrieveFileContents('../../docs/index.txt').then((String list) {
       var elements = list.split('\n');
