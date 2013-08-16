@@ -101,25 +101,26 @@
 
 <div class="main-body">
   <!-- Library list panel -->
-  <template if="viewer.currentPage != viewer.homePage">
-    <template if="viewer.isPanel">
-      <div class="list-group visible-lg col-lg-2 affix-left" 
-          data-spy="affix" data-offset-top="200px" id="library-panel">
-        <template iterate="library in viewer.homePage.libraries">
-          <template 
-              if="library.decoratedName == viewer.breadcrumbs[1].decoratedName">
-            <a href="#{{library.linkHref}}" class="list-group-item active">
-              {{library.decoratedName}}
-            </a>
+  <template instantiate="if viewer.currentPage != null">
+    <template if="viewer.currentPage != viewer.homePage">
+      <template if="viewer.isPanel">
+        <div class="list-group visible-lg col-lg-2 affix-left" id="library-panel">
+          <template iterate="library in viewer.homePage.libraries">
+            <template 
+                if="library.decoratedName == viewer.breadcrumbs[1].decoratedName">
+              <a href="#{{library.linkHref}}" class="list-group-item active">
+                {{library.decoratedName}}
+              </a>
+            </template>
+            <template 
+                if="library.decoratedName != viewer.breadcrumbs[1].decoratedName">
+              <a href="#{{library.linkHref}}" class="list-group-item">
+                {{library.decoratedName}}
+              </a>
+            </template>
           </template>
-          <template 
-              if="library.decoratedName != viewer.breadcrumbs[1].decoratedName">
-            <a href="#{{library.linkHref}}" class="list-group-item">
-              {{library.decoratedName}}
-            </a>
-          </template>
-        </template>
-      </div>
+        </div>
+      </template>
     </template>
   </template>
 
@@ -134,7 +135,7 @@
       <!-- Minimap -->
       <template instantiate="if viewer.currentPage is Library">
         <div class="visible-lg col-lg-3 well well-sm nav affix-right" 
-            id="minimap" data-spy="affix" data-offset-top="200px">
+            id="minimap">
             <a href="#{{viewer.currentPage.linkHref}}">
               {{viewer.currentPage.name}} library
             </a>
