@@ -52,7 +52,7 @@ class Category extends Container {
   Category.forClasses(List<Map> classes, String name, 
       {bool isAbstract: false}) : super(name) {
     if (classes != null) {
-      classes.forEach((clazz) => 
+      classes.forEach((clazz) =>
         content.add(new Class.forPlaceholder(clazz['name'], clazz['preview'])));
     }
   }
@@ -215,8 +215,10 @@ abstract class LazyItem extends Item {
   bool isLoaded = false;
   String previewComment;
   
-  LazyItem(String qualifiedName, String name, this.previewComment, 
-      [String comment]) : super(name, qualifiedName, comment);
+  LazyItem(String qualifiedName, String name, previewComment, 
+      [String comment]) : super(name, qualifiedName, comment) {
+    this.previewComment = previewComment;
+  }
   
   /// Loads this [Item]'s data and populates all fields.
   Future load() {
