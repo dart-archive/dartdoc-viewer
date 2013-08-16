@@ -22,7 +22,7 @@ import 'package:yaml/yaml.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the YAML file being read in. 
-const sourcePath = '../../docs/library_list.json';
+String sourcePath = '../../docs/library_list.' + (isYaml ? 'yaml' : 'json');
 
 /// This is the cut off point between mobile and desktop in pixels. 
 // TODO(janicejl): Use pixel desity rather than how many pixels. Look at:
@@ -61,7 +61,12 @@ class Viewer {
   Viewer._() {
     var manifest = retrieveFileContents(sourcePath);
     finished = manifest.then((response) {
-      var libraries = parse(response);
+      var libraries;
+      if (isYaml) {
+        libraries = loadYaml(response);
+      } else {
+        libraries = parse(response);
+      }
       homePage = new Home(libraries);
     });
   }
