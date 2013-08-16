@@ -99,6 +99,9 @@ background-image: url('../method_private.png');
   overflow: auto;
 }
 
+/*
+TODO(janicejl): Currently uses fixed widths, change to use flex-box in future.
+*/
 #minimap ul {
   list-style: disc url('../smallcorner.png');
 }
