@@ -15,7 +15,7 @@ Map<String, Item> pageIndex = toObservable({});
 Map<String, String> libraryNames = {};
 
 // Determines if the input files are in YAML format or JSON format.
-bool isYaml = true;
+bool isYaml;
 
 // Returns a modified qualified name with an altered library segment.
 String findLibraryName(String type) {

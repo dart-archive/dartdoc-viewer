@@ -218,12 +218,7 @@ abstract class LazyItem extends Item {
   
   /// Loads this [Item]'s data and populates all fields.
   Future load() {
-    var location = '$docsPath$qualifiedName.';
-    if (isYaml) {
-      location = location + 'yaml';
-    } else {
-      location = location + 'json';
-    }
+    var location = '$docsPath$qualifiedName.' + (isYaml ? 'yaml' : 'json');
     var data = retrieveFileContents(location);
     return data.then((response) {
       var yaml = isYaml ? loadYaml(response) : parse(response);
