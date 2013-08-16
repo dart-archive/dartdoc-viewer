@@ -60,12 +60,15 @@
         </section>
       </template>
 
-      <template if="!isExpanded">
-        <template if="!hasInheritedComment || viewer.isInherited">
-          <a on-click="expandComment()" class="btn-link">
+      <template instantiate="if !nothingToExpand">
+        <a on-click="toggleExpand()" class="btn-link">
+          <template if="isExpanded">
+            ...Show less
+          </template>
+          <template if="!isExpanded">
             ...Show more
-          </a>
-        </template>
+          </template>
+        </a>
       </template>
 
       <p class="text-right"><dfn>
@@ -95,6 +98,7 @@
     
     class MethodPanel extends MethodElement {
       @observable bool isExpanded = false;
+      @observable bool nothingToExpand;
 
       inserted() {
         super.inserted();
@@ -106,10 +110,11 @@
           if (index == -1) isExpanded = true;
           else isExpanded = false;
         }
+        nothingToExpand = isExpanded;
       }
 
-      void expandComment() {
-        isExpanded = true;
+      void toggleExpand() {
+        isExpanded = !isExpanded;
       }
     }
   </script>
