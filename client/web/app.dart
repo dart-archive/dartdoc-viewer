@@ -22,8 +22,7 @@ import 'package:yaml/yaml.dart';
 
 // TODO(janicejl): YAML path should not be hardcoded. 
 // Path to the YAML file being read in. 
-String yamlPath = '../../docs/library_list.yaml';
-String jsonPath = '../../docs/library_list.json';
+String sourcePath = '../../docs/library_list.' + (isYaml ? 'yaml' : 'json');
 
 /// This is the cut off point between mobile and desktop in pixels. 
 // TODO(janicejl): Use pixel desity rather than how many pixels. Look at:
@@ -60,21 +59,16 @@ class Viewer {
 
   // Private constructor for singleton instantiation.
   Viewer._() {
-    finished = retrieveFileContents(yamlPath).then(_setHomepage)
-        .catchError((e) {
-      isYaml = false;
-      retrieveFileContents(jsonPath).then(_setHomepage);
+    var manifest = retrieveFileContents(sourcePath);
+    finished = manifest.then((response) {
+      var libraries;
+      if (isYaml) {
+        libraries = loadYaml(response);
+      } else {
+        var libraries = parse(response);
+      }
+      homePage = new Home(libraries);
     });
-  }
-  
-  Future _setHomepage(response) {
-    var libraries;
-    if (isYaml) {
-      libraries = loadYaml(response);
-    } else {
-      libraries = parse(response);
-    }
-    homePage = new Home(libraries);
   }
   
   /// Creates a valid hash ID for anchor tags.
