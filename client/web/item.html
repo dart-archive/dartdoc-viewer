@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <link rel="import" href="parameters.html">
 
-<element name="dartdoc-item" constructor="ItemElement" extends="div"  
+<element name="dartdoc-item" constructor="ItemElement" extends="div"
     apply-author-styles>
   <template>
     <ul class="nav nav-pills nav-stacked">
@@ -16,7 +16,7 @@
                 {{createType(item.type, 'dartdoc-item', 'type')}}
               </span>
             </template>
-          
+
             <span>
               <template if="item.isConstant">const</template>
               <template if="item.isAbstract">abstract</template>
@@ -53,17 +53,17 @@
     import 'package:web_ui/web_ui.dart';
     import 'package:dartdoc_viewer/data.dart';
     import 'package:dartdoc_viewer/item.dart';
- 
+
     import 'app.dart' as app;
     import 'member.dart';
-    
+
     /**
-     * An HTML representation of a Item. 
+     * An HTML representation of a Item.
      *
-     * Used as a placeholder for an CategoryItem object. 
+     * Used as a placeholder for an CategoryItem object.
      */
     class ItemElement extends MemberElement {
-      
+
       String get title => item.decoratedName;
     }
   </script>

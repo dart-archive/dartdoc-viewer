@@ -15,11 +15,11 @@ const docsPath = '../../docs/';
 /**
  * Anything that holds values and can be displayed.
  */
-@observable 
+@observable
 class Container {
   String name;
   String comment = '<span></span>';
-  
+
   Container(this.name, [this.comment]);
 }
 
@@ -39,21 +39,21 @@ String ownerName(String qualifiedName) {
  * A [Container] that contains other [Container]s to be displayed.
  */
 class Category extends Container {
-  
+
   List<Container> content = [];
   Set<String> memberNames = new Set<String>();
   int inheritedCounter = 0;
   int memberCounter = 0;
-  
-  Category.forClasses(List<Map> classes, String name, 
+
+  Category.forClasses(List<Map> classes, String name,
       {bool isAbstract: false}) : super(name) {
     if (classes != null) {
       classes.forEach((clazz) =>
         content.add(new Class.forPlaceholder(clazz['name'], clazz['preview'])));
     }
   }
-  
-  Category.forVariables(Map variables, Map getters, Map setters) 
+
+  Category.forVariables(Map variables, Map getters, Map setters)
       : super('Properties') {
     if (variables != null) {
       variables.keys.forEach((key) {
@@ -77,25 +77,25 @@ class Category extends Container {
       });
     }
   }
-  
-  Category.forFunctions(Map yaml, String name, {bool isConstructor: false, 
+
+  Category.forFunctions(Map yaml, String name, {bool isConstructor: false,
       String className: '', bool isOperator: false}) : super(name) {
     if (yaml != null) {
       yaml.keys.forEach((key) {
         memberNames.add(key);
         memberCounter++;
-        content.add(new Method(yaml[key], isConstructor: isConstructor, 
+        content.add(new Method(yaml[key], isConstructor: isConstructor,
             className: className, isOperator: isOperator));
       });
     }
   }
-  
+
   Category.forTypedefs(Map yaml) : super ('Typedefs') {
     if (yaml != null) {
       yaml.keys.forEach((key) => content.add(new Typedef(yaml[key])));
     }
   }
-  
+
   /// Adds [item] to [destination] if [item] has not yet been defined within
   /// [destination] and handles inherited comments.
   void addInheritedItem(Class clazz, Item item) {
@@ -105,14 +105,14 @@ class Category extends Container {
       pageIndex['${clazz.qualifiedName}.${item.name}'] = item;
       content.add(item);
     } else {
-      var member = content.firstWhere((innerItem) => 
+      var member = content.firstWhere((innerItem) =>
           innerItem.name == item.name);
       member.addInheritedComment(item);
     }
   }
-  
+
   bool get hasNonInherited => inheritedCounter < memberCounter;
-  
+
 }
 
 /**
@@ -122,24 +122,24 @@ class Item extends Container {
   /// A list of [Item]s representing the path to this [Item].
   List<Item> path = [];
   String qualifiedName;
-  
-  Item(String name, this.qualifiedName, [String comment]) 
+
+  Item(String name, this.qualifiedName, [String comment])
       : super(name, comment);
-  
-  /// [Item]'s name with its properties properly appended. 
+
+  /// [Item]'s name with its properties properly appended.
   String get decoratedName => name;
-  
+
   /// Adds this [Item] to [pageIndex] and updates all necessary members.
   void addToHierarchy() {
     pageIndex[qualifiedName] = this;
   }
-  
+
   /// Adds the comment from [item] to [this].
   void addInheritedComment(Item item) {}
-  
+
   /// Denotes whether this [Item] is inherited from another [Item] or not.
   bool get isInherited => false;
-  
+
   /// Creates a link for the href attribute of an [AnchorElement].
   String get linkHref {
    var name = findLibraryName(qualifiedName).replaceAll('.', '/');
@@ -168,10 +168,10 @@ void _sort(List<List<Item>> items) {
  * An [Item] containing all of the [Library] and [Placeholder] objects.
  */
 class Home extends Item {
-  
+
   /// All libraries being viewed from the homepage.
   List<Item> libraries = [];
-  
+
   /// The constructor parses the [yaml] input and constructs
   /// [Placeholder] objects to display before loading libraries.
   Home(Map yaml) : super('', 'home', _wrapComment(yaml['introduction'])) {
@@ -183,9 +183,9 @@ class Home extends Item {
     };
     _sort([this.libraries]);
   }
-  
+
   /// Returns the [Item] representing [libraryName].
-  // TODO(tmandel): Stop looping through 'libraries' so much. Possibly use a 
+  // TODO(tmandel): Stop looping through 'libraries' so much. Possibly use a
   // map from library names to their objects.
   Item itemNamed(String libraryName) {
     return libraries.firstWhere((lib) => libraryNames[lib.name] == libraryName,
@@ -207,15 +207,15 @@ void buildHierarchy(Item page, Item previous) {
  * An [Item] that is lazily loaded.
  */
 abstract class LazyItem extends Item {
-  
+
   bool isLoaded = false;
   String previewComment;
-  
-  LazyItem(String qualifiedName, String name, previewComment, 
+
+  LazyItem(String qualifiedName, String name, previewComment,
       [String comment]) : super(name, qualifiedName, comment) {
     this.previewComment = previewComment;
   }
-  
+
   /// Loads this [Item]'s data and populates all fields.
   Future load() {
     var location = '$docsPath$qualifiedName.' + (isYaml ? 'yaml' : 'json');
@@ -226,7 +226,7 @@ abstract class LazyItem extends Item {
       buildHierarchy(this, this);
     });
   }
-  
+
   /// Populates all of this [Item]'s fields.
   void loadValues(Map yaml);
 }
@@ -235,7 +235,7 @@ abstract class LazyItem extends Item {
  * An [Item] that describes a single Dart library.
  */
 class Library extends LazyItem {
-  
+
   Category classes;
   Category errors;
   Category typedefs;
@@ -246,13 +246,13 @@ class Library extends LazyItem {
   /// Creates a [Library] placeholder object with null fields.
   Library.forPlaceholder(Map library)
     : super(library['name'], library['name'], library['preview']);
-  
+
   /// Normal constructor for testing.
   Library(Map yaml) : super(yaml['qualifiedName'], yaml['name'], '') {
     loadValues(yaml);
     buildHierarchy(this, this);
-  } 
-  
+  }
+
   void addToHierarchy() {
     pageIndex[qualifiedName] = this;
     [classes, typedefs, errors, functions].forEach((category) {
@@ -261,7 +261,7 @@ class Library extends LazyItem {
       });
     });
   }
-  
+
   void loadValues(Map yaml) {
     this.comment = _wrapComment(yaml['comment']);
     var classes, exceptions, typedefs;
@@ -284,14 +284,14 @@ class Library extends LazyItem {
     }
     variables = new Category.forVariables(yaml['variables'], getters, setters);
     functions = new Category.forFunctions(methods, 'Functions');
-    this.operators = new Category.forFunctions(operators, 'Operators', 
+    this.operators = new Category.forFunctions(operators, 'Operators',
         isOperator: true);
-    _sort([this.classes.content, this.errors.content, 
+    _sort([this.classes.content, this.errors.content,
            this.typedefs.content, this.variables.content,
            this.functions.content, this.operators.content]);
     isLoaded = true;
   }
-  
+
   String get decoratedName {
     var parts = qualifiedName.split('.');
     if (parts.length > 1) {
@@ -306,7 +306,7 @@ class Library extends LazyItem {
  * An [Item] that describes a single Dart class.
  */
 class Class extends LazyItem {
-  
+
   Category functions;
   Category variables;
   Category constructs;
@@ -320,14 +320,14 @@ class Class extends LazyItem {
   List<String> generics = [];
 
   /// Creates a [Class] placeholder object with null fields.
-  Class.forPlaceholder(String location, String previewComment) 
+  Class.forPlaceholder(String location, String previewComment)
       : super(location, location.split('.').last, previewComment);
-  
+
   /// Normal constructor for testing.
   Class(Map yaml) : super(yaml['qualifiedName'], yaml['name'], '') {
     loadValues(yaml);
   }
-  
+
   void addToHierarchy() {
     pageIndex[qualifiedName] = this;
     if (isLoaded) {
@@ -338,7 +338,7 @@ class Class extends LazyItem {
       });
     }
   }
-  
+
   void loadValues(Map yaml) {
     comment = _wrapComment(yaml['comment']);
     isAbstract = yaml['isAbstract'] == 'true';
@@ -365,7 +365,7 @@ class Class extends LazyItem {
     functions = new Category.forFunctions(methods, 'Functions');
     operators = new Category.forFunctions(operates, 'Operators',
         isOperator: true);
-    constructs = new Category.forFunctions(constructors, 'Constructors', 
+    constructs = new Category.forFunctions(constructors, 'Constructors',
         isConstructor: true, className: this.name);
     var inheritedMethods = yaml['inheritedMethods'];
     var inheritedVariables = yaml['inheritedVariables'];
@@ -380,23 +380,23 @@ class Class extends LazyItem {
     _addVariable(getters, isGetter: true);
     _addMethod(methods);
     _addMethod(operates, isOperator: true);
-    _sort([this.functions.content, this.variables.content, 
+    _sort([this.functions.content, this.variables.content,
            this.constructs.content, this.operators.content]);
     isLoaded = true;
   }
-  
+
   /// Adds an inherited variable to [variables] if not present.
   void _addVariable(Map items, {isSetter: false, isGetter: false}) {
     if (items != null) {
       items.values.forEach((item) {
-        var object = new Variable(item, isSetter: isSetter, 
+        var object = new Variable(item, isSetter: isSetter,
             isGetter: isGetter, inheritedFrom: item['qualifiedName'],
             commentFrom: item['commentFrom']);
         variables.addInheritedItem(this, object);
-      }); 
+      });
     }
   }
-  
+
   /// Adds an inherited method to the correct [Category] if not present.
   void _addMethod(Map items, {isOperator: false}) {
     if (items != null) {
@@ -415,11 +415,11 @@ class Class extends LazyItem {
  * A collection of [Annotation]s.
  */
 class AnnotationGroup {
-  
+
   List<String> supportedBrowsers = [];
   List<Annotation> annotations = [];
   String domName;
-  
+
   AnnotationGroup(List annotes) {
     if (annotes != null) {
       annotes.forEach((annotation) {
@@ -439,11 +439,11 @@ class AnnotationGroup {
  * A single annotation to an [Item].
  */
 class Annotation {
-  
+
   String qualifiedName;
   LinkableType link;
   List<String> parameters;
-  
+
   Annotation(Map yaml) {
     qualifiedName = yaml['name'];
     link = new LinkableType(qualifiedName);
@@ -455,12 +455,12 @@ class Annotation {
  * An [Item] that describes a Dart member with parameters.
  */
 class Parameterized extends Item {
-  
+
   List<Parameter> parameters;
-  
-  Parameterized(String name, String qualifiedName, [String comment]) 
+
+  Parameterized(String name, String qualifiedName, [String comment])
       : super(name, qualifiedName, comment);
-  
+
   /// Creates [Parameter] objects for each parameter to this method.
   List<Parameter> getParameters(Map parameters) {
     var values = [];
@@ -477,10 +477,10 @@ class Parameterized extends Item {
  * An [Item] that describes a single Dart typedef.
  */
 class Typedef extends Parameterized {
-  
+
   LinkableType type;
   AnnotationGroup annotations;
-  
+
   Typedef(Map yaml) : super(yaml['name'], yaml['qualifiedName'],
       _wrapComment(yaml['comment'])) {
     type = new LinkableType(yaml['return']);
@@ -505,10 +505,10 @@ class Method extends Parameterized {
   AnnotationGroup annotations;
   NestedType type;
 
-  Method(Map yaml, {bool isConstructor: false, String className: '', 
+  Method(Map yaml, {bool isConstructor: false, String className: '',
       bool isOperator: false, String inheritedFrom: '',
-      String commentFrom: ''}) 
-        : super(yaml['name'], yaml['qualifiedName'], 
+      String commentFrom: ''})
+        : super(yaml['name'], yaml['qualifiedName'],
             _wrapComment(yaml['comment'])) {
     this.isStatic = yaml['static'] == 'true';
     this.isAbstract = yaml['abstract'] == 'true';
@@ -526,17 +526,17 @@ class Method extends Parameterized {
   void addToHierarchy() {
     if (inheritedFrom != '') pageIndex[qualifiedName] = this;
   }
-  
-  void addInheritedComment(Item item) {
+
+  void addInheritedComment(item) {
     if (comment == '<span></span>') {
       comment = item.comment;
       commentFrom = item.commentFrom;
     }
   }
-  
+
   bool get isInherited => inheritedFrom != '' && inheritedFrom != null;
-  
-  String get decoratedName => isConstructor ? 
+
+  String get decoratedName => isConstructor ?
       (name != '' ? '$className.$name' : className) : name;
 }
 
@@ -544,7 +544,7 @@ class Method extends Parameterized {
  * A single parameter to a [Method].
  */
 class Parameter {
-  
+
   String name;
   bool isOptional;
   bool isNamed;
@@ -552,7 +552,7 @@ class Parameter {
   NestedType type;
   String defaultValue;
   AnnotationGroup annotations;
-  
+
   Parameter(this.name, Map yaml) {
     this.isOptional = yaml['optional'] == 'true';
     this.isNamed = yaml['named'] == 'true';
@@ -561,7 +561,7 @@ class Parameter {
     this.defaultValue = yaml['value'];
     annotations = new AnnotationGroup(yaml['annotations']);
   }
-  
+
   String get decoratedName {
     var decorated = name;
     if (hasDefault) {
@@ -579,7 +579,7 @@ class Parameter {
  * A [Container] that describes a single Dart variable.
  */
 class Variable extends Item {
-  
+
   bool isFinal;
   bool isStatic;
   bool isAbstract;
@@ -594,7 +594,7 @@ class Variable extends Item {
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
       String inheritedFrom: '', String commentFrom: ''})
-      : super(yaml['name'], yaml['qualifiedName'], 
+      : super(yaml['name'], yaml['qualifiedName'],
           _wrapComment(yaml['comment'])) {
     this.isGetter = isGetter;
     this.isSetter = isSetter;
@@ -610,23 +610,23 @@ class Variable extends Item {
       type = new NestedType(yaml['return'].first);
       var parameters = yaml['parameters'];
       var parameterName = parameters.keys.first;
-      setterParameter = new Parameter(parameterName, 
+      setterParameter = new Parameter(parameterName,
           parameters[parameterName]);
     } else {
       type = new NestedType(yaml['type'].first);
     }
     annotations = new AnnotationGroup(yaml['annotations']);
   }
-  
-  void addInheritedComment(Item item) {
+
+  void addInheritedComment(item) {
     if (comment == '<span></span>') {
       comment = item.comment;
       commentFrom = item.commentFrom;
     }
   }
-  
+
   bool get isInherited => inheritedFrom != '' && inheritedFrom != null;
-  
+
   void addToHierarchy() {
     if (inheritedFrom != '') pageIndex[qualifiedName] = this;
   }
@@ -638,7 +638,7 @@ class Variable extends Item {
 class NestedType {
   LinkableType outer;
   List<NestedType> inner = [];
-  
+
   NestedType(Map yaml) {
     if (yaml == null) {
       outer = new LinkableType('void');
@@ -659,7 +659,7 @@ class LinkableType {
   /// The resolved qualified name of the type this [LinkableType] represents.
   String type;
   String qualifiedName;
-  
+
   /// The constructor resolves the library name by finding the correct library
   /// from [libraryNames] and changing [type] to match.
   LinkableType(String type) {

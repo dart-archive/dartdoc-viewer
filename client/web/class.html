@@ -10,10 +10,10 @@
       Loading...
     </template>
     <template if="item != null">
-      
+
       <dartdoc-annotation annotations="{{annotations}}">
       </dartdoc-annotation>
-     
+
       <div class="page-header"><h1>
         {{item.name}}
         <template instantiate="if item.generics.isNotEmpty">
@@ -29,7 +29,7 @@
         <template if="item.isAbstract">abstract</template>
         class
       </h1></div>
-      
+
       <p>
         <template if="interfaces.isNotEmpty">
           Implements:&nbsp;
@@ -56,8 +56,8 @@
           <template if="subclasses.isNotEmpty">
             Subclasses:
           </template>
-          <!-- Limit initial display to 3 items to not overwhelm the user. --> 
-          <template if="subclasses.length > 3"> 
+          <!-- Limit initial display to 3 items to not overwhelm the user. -->
+          <template if="subclasses.length > 3">
             <a href="#{{subclasses[0].location}}">
               {{subclasses[0].simpleType}}
             </a>
@@ -76,7 +76,7 @@
             <span id="{{item.name}}-subclass-hidden" class="hidden">
               ,&nbsp;
               <template iterate="subclass in subclasses">
-                <template if="subclass != subclasses[0] && 
+                <template if="subclass != subclasses[0] &&
                   subclass != subclasses[1] && subclass != subclasses[2]">
                   <a href="#{{subclass.location}}">
                     {{subclass.simpleType}}
@@ -101,10 +101,10 @@
           </template>
         </template>
       </p>
-  
+
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-class')}}</section>
-      
+
       <div class="accordion" id="accordion-grouping">
         <template instantiate="if operators.content.isNotEmpty">
           <template if="operators.hasNonInherited || viewer.isInherited">
@@ -120,7 +120,7 @@
         </template>
         <template instantiate="if constructors.content.isNotEmpty">
           <template if="constructors.hasNonInherited || viewer.isInherited">
-            <dartdoc-category category="{{constructors}}" 
+            <dartdoc-category category="{{constructors}}"
               class="accordion-group">
             </dartdoc-category>
           </template>
@@ -135,16 +135,18 @@
 
     </template>
   </template>
-  
+
   <script type="application/dart">
-    
+
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
-    
+
     import 'app.dart';
     import 'member.dart';
-    
+
     class ClassElement extends MemberElement {
+      Class get item => super.item;
+
       Category get variables => item.variables;
 
       Category get operators => item.operators;
@@ -152,13 +154,13 @@
       Category get constructors => item.constructs;
 
       Category get methods => item.functions;
-      
+
       AnnotationGroup get annotations => item.annotations;
-      
+
       List<LinkableType> get interfaces => item.implements;
-      
+
       List<LinkableType> get subclasses => item.subclasses;
-      
+
       LinkableType get superClass => item.superClass;
 
       void showSubclass() {

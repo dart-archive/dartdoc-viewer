@@ -2,7 +2,7 @@
 <link rel="import" href="item.html">
 <link rel="import" href="category.html">
 
-<element name="dartdoc-annotation" constructor="AnnotationElement" 
+<element name="dartdoc-annotation" constructor="AnnotationElement"
     extends="span" apply-author-styles>
   <template>
     <template instantiate="if annotations.annotations.isNotEmpty">
@@ -10,7 +10,7 @@
         <i><a href="#{{annotation.link.location}}">
           {{annotation.link.simpleType}}
         </a></i>
-        
+
         <template if="annotation.parameters.isNotEmpty">
           (
           <template iterate="parameter in annotation.parameters">
@@ -21,12 +21,12 @@
           </template>
           )
         </template>
-        
+
         <template if="annotation != annotations.annotations.last">
           ,&nbsp;
         </template>
       </template>
-      
+
     </template>
     <template if="annotations.supportedBrowsers.isNotEmpty">
       <br/><i>Supported on:
@@ -39,14 +39,12 @@
       </i><br/>
     </template>
   </template>
-  
+
   <script type="application/dart">
-    
+
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
-    
-    import 'app.dart';
-    
+
     class AnnotationElement extends WebComponent {
       @observable AnnotationGroup annotations;
     }

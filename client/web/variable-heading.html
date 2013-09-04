@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <link rel="import" href="annotations.html">
 
-<element name="variable-heading" constructor="VariableHeading" 
+<element name="variable-heading" constructor="VariableHeading"
   extends="p" apply-author-styles>
   <template>
     <a id="{{idName}}"></a>
@@ -36,6 +36,8 @@
      * An HTML representation of a Variable.
      */
     class VariableHeading extends MemberElement {
+
+      Variable get item => super.item;
 
       String get getter => item.isGetter ? 'get' : '';
 

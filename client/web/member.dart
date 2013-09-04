@@ -12,26 +12,26 @@ import 'app.dart' as app;
 /// Each member has an [Item] associated with it as well as a comment to
 /// display, so this class handles those two aspects shared by all members.
 class MemberElement extends WebComponent {
-  @observable Item item;
- 
+  @observable var item;
+
   /// A valid string for an HTML id made from this [Item]'s name.
   String get idName {
     var name = item.name;
     if (item.name == '') name = item.decoratedName;
     return app.viewer.toHash(name);
   }
-  
+
   /// Adds [item]'s comment to the the [elementName] element with markdown
   /// links converted to working links.
   void addComment(String elementName, {preview: false}) {
     var comment = item.comment;
-    if (preview && (item is Class || item is Library)) 
+    if (preview && (item is Class || item is Library))
       comment = item.previewComment;
     if (preview && (item is Method || item is Variable)) {
       var index = item.comment.indexOf('</p>');
       // All comments when read in from the YAML is surrounded by a <span> tag.
       // This finds the first paragraph, and surrounds it with a span tag for
-      // use as the snippet. 
+      // use as the snippet.
       if (index == -1) comment = '<span></span>';
       else comment = item.comment.substring(0, index) + '</p></span>';
     }
@@ -65,8 +65,8 @@ class MemberElement extends WebComponent {
       commentLocation.children.add(commentElement);
     }
   }
-  
-  /// Creates an HTML element for a parameterized type.  
+
+  /// Creates an HTML element for a parameterized type.
   static Element createInner(NestedType type) {
     var span = new SpanElement();
     if (index.keys.contains(type.outer.qualifiedName)) {
@@ -87,7 +87,7 @@ class MemberElement extends WebComponent {
     }
     return span;
   }
-  
+
   /// Creates a new HTML element describing a possibly parameterized type
   /// and adds it to [memberName]'s tag with class [className].
   void createType(NestedType type, String memberName, String className) {
@@ -101,7 +101,9 @@ class MemberElement extends WebComponent {
 class InheritedElement extends MemberElement {
   LinkableType inheritedFrom;
   LinkableType commentFrom;
-  
+
+  Method get item => super.item;
+
   inserted() {
     if (isInherited) {
       inheritedFrom = findInheritance(item.inheritedFrom);
@@ -110,18 +112,18 @@ class InheritedElement extends MemberElement {
       commentFrom = findInheritance(item.commentFrom);
     }
   }
-  
-  bool get isInherited => 
+
+  bool get isInherited =>
       item.inheritedFrom != '' && item.inheritedFrom != null;
-  
+
   bool get hasInheritedComment =>
       item.commentFrom != '' && item.commentFrom != null;
-  
+
   /// Returns whether [location] exists within the search index.
   bool exists(String location) {
     return index.keys.contains(location.replaceAll('-','.'));
   }
-  
+
   /// Creates a [LinkableType] for the owner of [qualifiedName].
   LinkableType findInheritance(String qualifiedName) {
     return new LinkableType(ownerName(qualifiedName));
@@ -129,5 +131,7 @@ class InheritedElement extends MemberElement {
 }
 
 class MethodElement extends InheritedElement {
+  Method get item => super.item;
+
   List<Parameter> get parameters => item.parameters;
 }

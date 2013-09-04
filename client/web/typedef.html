@@ -9,46 +9,47 @@
       Loading...
     </template>
     <template if="item != null">
-      
+
       <div class="page-header"><h1>{{item.name}} typedef</h1></div>
-      
+
       <!-- Comment -->
       <section class="description">{{addComment('dartdoc-typedef')}}</section>
-      
+
       <!-- Signature -->
-      <div class="panel">  
+      <div class="panel">
         <dartdoc-annotation annotations="{{item.annotations}}">
         </dartdoc-annotation>
-          
+
         <p class="panel-title">typedef
           <a href="#{{item.type.location}}">
             {{item.type.simpleType}}
           </a>{{item.name}}
-          
+
           <dartdoc-parameter parameters="{{item.parameters}}">
           </dartdoc-parameter>
         </p>
       </div>
-      
+
     </template>
   </template>
-  
+
   <script type="application/dart">
-    
+
     import 'package:dartdoc_viewer/item.dart';
     import 'package:web_ui/web_ui.dart';
-    
+
     import 'app.dart';
     import 'member.dart';
-    
+
     class TypedefElement extends MemberElement {
-      
+      Typedef get item => super.item;
+
       // Required parameters.
-      List<Parameter> get required => 
+      List<Parameter> get required =>
         item.parameters.where((parameter) => !parameter.isOptional).toList();
-      
+
       // Optional parameters.
-      List<Parameter> get optional => 
+      List<Parameter> get optional =>
         item.parameters.where((parameter) => parameter.isOptional).toList();
     }
   </script>
