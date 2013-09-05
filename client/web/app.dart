@@ -43,6 +43,8 @@ class Viewer {
   @observable Home homePage;
 
   /// The current page being shown. An Item.
+  /// TODO(alanknight): Restore the type declaration here and structure the code
+  /// so we can avoid the warnings from casting to subclasses.
   @observable var currentPage;
 
   /// State for whether or not the library list panel should be shown.

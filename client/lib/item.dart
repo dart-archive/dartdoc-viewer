@@ -618,7 +618,7 @@ class Variable extends Item {
     annotations = new AnnotationGroup(yaml['annotations']);
   }
 
-  void addInheritedComment(item) {
+  void addInheritedComment(Item item) {
     if (comment == '<span></span>') {
       comment = item.comment;
       commentFrom = item.commentFrom;
