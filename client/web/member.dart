@@ -124,8 +124,6 @@ class InheritedElement extends MemberElement {
   LinkableType inheritedFrom;
   LinkableType commentFrom;
 
-  get item => super.item;
-
   inserted() {
     if (isInherited) {
       inheritedFrom = findInheritance(item.inheritedFrom);
