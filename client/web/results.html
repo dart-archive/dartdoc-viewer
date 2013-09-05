@@ -1,65 +1,13 @@
 <!DOCTYPE html>
-<element name="search-result" constructor="Result" extends="a"  
-    apply-author-styles>
+<polymer-element name="search-result" extends="a"
+    attributes="item">
   <template>
     <ul class="list-unstyled small">
       <li id="result-name"><strong>{{descriptiveName}}</strong></li>
       <li class="text-right text-muted small">{{descriptiveType}}</li>
       <li class="text-right text-muted small">{{outerLibrary}}</li>
     </ul>
-    
+
   </template>
-  <script type="application/dart">
-    import 'package:dartdoc_viewer/data.dart';
-    import 'package:dartdoc_viewer/item.dart';
-    import 'package:dartdoc_viewer/search.dart';
-    import 'package:web_ui/web_ui.dart';
-    
-    /**
-     * An HTML representation of a Search Result. 
-     */
-    class Result extends WebComponent {
-      String membertype;
-      String qualifiedname;
-      
-      /// The name of this member.
-      String get descriptiveName {
-        var name = qualifiedname.split('.');
-        if (membertype == 'library') {
-          if (name.first == 'dart') {
-            return 'dart:${name.last}';
-          }
-        } else if (membertype == 'constructor') {
-          // Non-named constructors have an empty string for the last element
-          // of the qualified name, so we display the class name instead.
-          if (name.last == '') return name[name.length - 2];
-          return '${name[name.length - 2]}.${name.last}';
-        }
-        return name.last;
-      }
-      
-      /// The type of this member.
-      String get descriptiveType {
-        if (membertype == 'class' || membertype == 'library') 
-          return membertype;
-        var owner = ownerName(qualifiedname);
-        var ownerName = owner.split('.').last;
-        var ownerType = index[owner];
-        if (ownerType == 'class')
-          return '$membertype in $ownerName';
-        return membertype;
-      }
-      
-      /// The library containing this member.
-      String get outerLibrary {
-        if (membertype == 'library') return '';
-        var nameWithLibrary = findLibraryName(qualifiedname);
-        var libraryName = nameWithLibrary.split('.').first;
-        libraryName = libraryName.replaceAll('-', ':');
-        if (libraryName.contains(':dom:')) 
-          libraryName = libraryName.replaceFirst(':dom:', ':');
-        return 'library $libraryName';
-      }
-    }
-  </script>
-</element>
+  <script type="application/dart" src="results.dart"></script>
+</polymer-element>

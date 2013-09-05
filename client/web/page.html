@@ -5,56 +5,41 @@
 <link rel="import" href="class.html">
 <link rel="import" href="method.html">
 <link rel="import" href="typedef.html">
-  
-<element name="dartdoc-page" constructor="PageElement" extends="article"
-    apply-author-styles>
-  <template>
-      
-    <!-- Home -->
-    <template if="app.viewer.currentPage is Home">
-      <dartdoc-homepage item="{{app.viewer.homePage}}"></dartdoc-homepage>
-    </template>
 
-    <template if="app.viewer.homePage != null">
-      
+<polymer-element name="dartdoc-page" extends="article" attributes="home">
+  <template>
+
+    <!-- Home -->
+    <template if="{{isHome}}">
+      <article is="dartdoc-homepage" item="{{viewer.homePage}}"></article>
+    </template>
+    
+    <template if="{{hasHomePage}}">
+
       <!-- Library -->
-      <template if="app.viewer.currentPage is Library">
-        <dartdoc-library item="{{app.viewer.currentPage}}">
-        </dartdoc-library>
+      <template if="{{currentPageIsLibrary}}">
+        <article is="dartdoc-library" item="{{currentPage}}">
+        </article>
       </template>
-        
+
       <!-- Class -->
-      <template if="app.viewer.currentPage is Class">
-        <dartdoc-class item="{{app.viewer.currentPage}}"></dartdoc-class>
-      </template>  
-        
+      <template if="{{currentPageIsClass}}">
+        <article is="dartdoc-class" item="{{currentPage}}"></article>
+      </template>
+
       <!-- Method -->
-      <template instantiate="if app.viewer.currentPage is Method">
-        <dartdoc-method item="{{app.viewer.currentPage}}"></dartdoc-method>
+      <template if="{{currentPageIsMethod}}">
+        <article is="dartdoc-method" item="{{currentPage}}"></article>
       </template>
-      
+
       <!-- Typedef -->
-      <template instantiate="if app.viewer.currentPage is Typedef">
-        <dartdoc-typedef item="{{app.viewer.currentPage}}"></dartdoc-typedef>
+      <template if="{{currentPageIsTypedef}}">
+        <article is="dartdoc-typedef" item="{{currentPage}}"></article>
       </template>
-     
+
     </template>
 
   </template>
-  
-  <script type="application/dart">
-    import 'dart:html';
-    
-    import 'package:dartdoc_viewer/item.dart';
-    import 'package:web_ui/web_ui.dart';
-    
-    import 'app.dart' as app;
-    
-    /**
-     * An HTML representation of a page
-     */
-    class PageElement extends WebComponent {
-      @observable Home home;
-    }
-  </script>
-</element>
+
+  <script type="application/dart" src="page.dart"></script>
+</polymer-element>

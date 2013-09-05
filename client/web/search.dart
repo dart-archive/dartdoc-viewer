@@ -2,50 +2,78 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+library search;
+
 import 'dart:async';
-import 'dart:html' hide Element;
-import 'dart:html' as html show Element;
+import 'dart:html';
 import 'app.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart';
-import 'package:web_ui/web_ui.dart';
-import 'package:web_ui/watcher.dart' as watchers;
+import 'package:polymer/polymer.dart';
+import 'results.dart';
+import 'member.dart';
 
 /**
  * Component implementing the Dartdoc_viewer search.
  */
-class Search extends WebComponent {
+@CustomTag("search-box")
+class Search extends DartdocElement {
 
-  List<SearchResult> results = toObservable(<SearchResult>[]);
-  String _lastQuery;
+  Search() {
+    new PathObserver(this, "results").bindSync(
+        (_) {
+          notifyProperty(this, #dropdownOpen);
+          notifyProperty(this, #hasNoResults);
+        });
+    new PathObserver(this, "isFocused").bindSync(
+        (_) {
+          notifyProperty(this, #dropdownOpen);
+        });
+    new PathObserver(this, "searchQuery").bindSync(
+        (_) {
+          updateResults();
+        });
+  }
+
+  List<SearchResult> results = [];
+
   @observable bool isFocused = false;
-  
+
+  @observable String searchQuery = "";
+
+  @observable bool get hasNoResults => results.isEmpty;
+
+  @observable String get dropdownOpen =>
+      !searchQuery.isEmpty && isFocused ? 'open' : '';
+
   int currentIndex = -1;
 
   void updateResults() {
     currentIndex = -1;
     results.clear();
     results.addAll(lookupSearchResults(searchQuery, viewer.isDesktop ? 10 : 5));
+    notifyProperty(this, #results);
+    notifyProperty(this, #hasNoResults);
+    notifyProperty(this, #dropdownOpen);
   }
 
   void onBlurCallback(_) {
-    if (document.activeElement == null ||
-        !this.contains(document.activeElement)) {
       isFocused = false;
-      watchers.dispatch();
-    }
   }
 
   void onFocusCallback(_) {
     isFocused = true;
-    watchers.dispatch();
   }
 
-  void onSubmitCallback() {
+  void onSubmitCallback(event, detail, target) {
     if (!results.isEmpty) {
       String refId;
-      if (this.contains(document.activeElement)) {
-        refId = document.activeElement.dataset['ref-id'];
+      if (target != null ) {
+        // We get either the li or a element depending if we click or
+        // hit enter, so check both.
+        refId = target.dataset['ref-id'];
+        var parentRefId = target.parent.dataset['ref-id'];
+        if (refId == null) refId = parentRefId;
       }
       if (refId == null || refId.isEmpty) {
         // If nothing is focused, use the first search result.
@@ -54,59 +82,51 @@ class Search extends WebComponent {
       viewer.handleLink(new LinkableType(refId).location);
       searchQuery = "";
       results.clear();
-      document.query('#nav-collapse-button').classes.add('collapsed');
-      document.query('#nav-collapse-content').classes.remove('in');
-      document.query('#nav-collapse-content').classes.add('collapse');
+      dartdocMain.searchSubmitted();
       document.body.focus();
-      watchers.dispatch();
+      isFocused = false;
     }
   }
 
   void inserted() {
     super.inserted();
-    html.Element.focusEvent.forTarget(xtag, useCapture: true)
+    Element.focusEvent.forTarget(xtag, useCapture: true)
         .listen(onFocusCallback);
-    html.Element.blurEvent.forTarget(xtag, useCapture: true)
+    Element.blurEvent.forTarget(xtag, useCapture: true)
         .listen(onBlurCallback);
-    onKeyPress.listen(onKeyPressCallback);
     onKeyDown.listen(handleUpDown);
     window.onKeyDown.listen(shortcutHandler);
   }
 
-  void onKeyPressCallback(KeyboardEvent e) {
-    if (e.keyCode == KeyCode.ENTER) {
-      onSubmitCallback();
-      e.preventDefault();
-    }
-  }
-  
   void handleUpDown(KeyboardEvent e) {
     if (e.keyCode == KeyCode.UP) {
       if (currentIndex > 0) {
         currentIndex--;
-        document.query('#search$currentIndex').focus();
+        shadowRoot.query('#search$currentIndex').focus();
       } else if (currentIndex == 0) {
-        document.query('#q').focus();
+        searchBox.focus();
       }
       e.preventDefault();
     } else if (e.keyCode == KeyCode.DOWN) {
       if (currentIndex < results.length - 1) {
         currentIndex++;
-        document.query('#search$currentIndex').focus();
+        shadowRoot.query('#search$currentIndex').parent.focus();
       }
       e.preventDefault();
-    } 
+    } else if (e.keyCode == KeyCode.ENTER) {
+      onSubmitCallback(e, null, e.target);
+      e.preventDefault();
+    }
   }
-  
+
   /** Activate search on Ctrl+3 and S. */
   void shortcutHandler(KeyboardEvent event) {
     if (event.keyCode == KeyCode.THREE && event.ctrlKey) {
-      document.query('#q').focus();
+      searchBox.focus();
       event.preventDefault();
-    } else if (event.target != document.query('#q')
-        && event.keyCode == KeyCode.S) {
+    } else if (!isFocused && event.keyCode == KeyCode.S) {
       // Allow writing 's' in the search input.
-      document.query('#q').focus();
+      searchBox.focus();
       event.preventDefault();
     } else if (event.keyCode == KeyCode.ESC) {
       document.body.focus();
@@ -114,4 +134,6 @@ class Search extends WebComponent {
       event.preventDefault();
     }
   }
+
+  get searchBox => shadowRoot.query('#q');
 }

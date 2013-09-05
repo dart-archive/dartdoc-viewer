@@ -1,291 +1,108 @@
 <!DOCTYPE html>
+<head>
 <meta charset="utf-8">
-
+<script src="packages/polymer/boot.js"></script>
 <link rel="stylesheet" href="static/css/bootstrap.css">
-<link rel="stylesheet" href="static/css/pics.css">
+ <link rel="stylesheet" href="static/css/pics.css">
 <link rel="import" href="category.html">
 <link rel="import" href="item.html">
-<link rel="import" href="minimap-element.html">
+ <link rel="import" href="minimap-element.html">
 <link rel="import" href="page.html">
 <link rel="import" href="search.html">
+<link rel="import" href="minimap-library.html">
+<link rel="import" href="library-panel.html">
+<link rel="import" href="minimap-class.html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-<script type="application/dart" src="app.dart"></script>
-<script src="packages/browser/dart.js"></script>
-<script type="text/javascript" src="static/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="static/js/bootstrap.min.js"></script>
-
-<template if="viewer.currentPage != null">
+<body>
+<polymer-element name="dartdoc-main">
+  <template>
     <title>
-      {{viewer.currentPage.decoratedName}}
-      {{viewer.currentPage.decoratedName == '' ? '' : ' - '}}
+      {{decoratedName}}
+      {{pageNameSeparator}}
       Dart API Reference
     </title>
-</template>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
-    <button type="button" class="navbar-toggle" data-toggle="collapse" 
-      data-target=".navbar-responsive-collapse" id="nav-collapse-button">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-
+  
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+          data-target=".navbar-responsive-collapse" id="nav-collapse-button">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
     
-    <a href="http://www.dartlang.org/" class="navbar-brand header-logo"></a>
-    <a href="#home" 
-      class="navbar-brand btn-link">
-      Dart API Reference
-    </a>
-
-    <div class="nav-collapse collapse navbar-responsive-collapse" 
-        id="nav-collapse-content">
-      <ul class="nav navbar-nav">
-        <template if="viewer.currentPage != null">
-          <template iterate="item in viewer.breadcrumbs">
-            <template if="item != viewer.breadcrumbs.first">
-              <template if="item != viewer.breadcrumbs.last">
-                <li>
-                  <template instantiate="if item != null">
-                    <a class="btn-link" href="#{{item.linkHref}}">
-                      {{item.decoratedName}}
-                    </a>
+        <a href="http://www.dartlang.org/" class="navbar-brand header-logo"></a>
+        <a href="#home"
+          class="navbar-brand btn-link">
+          Dart API Reference
+        </a>
+    
+        <div class="nav-collapse collapse navbar-responsive-collapse"
+            id="nav-collapse-content">
+          <ul class="nav navbar-nav" id="navbar">
+          </ul>         
+          {{crumbs()}}
+    
+          <ul class="nav navbar-nav pull-right">
+    
+            <li class="dropdown">
+              <a class="dropdown-toggle" on-click="hideShowOptions">
+                Options <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <template if="{{viewer.currentPage != viewer.homePage}}">
+                  <li class="visible-lg"><a on-click="togglePanel">
+                    <template if="{{viewer.isPanel}}">Hide Libraries</template>
+                    <template if="{{!viewer.isPanel}}">Show Libraries</template>
+                  </a></li>
+                  <li class="visible-lg"><a on-click="toggleMinimap">
+                    <template if="{{viewer.isMinimap}}">Hide Minimap</template>
+                    <template if="{{!viewer.isMinimap}}">Show Minimap</template>
+                  </a></li>
+                </template>
+                <li><a on-click="toggleInherited">
+                  <template if="{{viewer.isInherited}}">Hide Inherited
                   </template>
-                </li>
-              </template>
-              <template if="item == viewer.breadcrumbs.last">
-                <li class="active">
-                  <template instantiate="if item != null">
-                    <a class="btn-link">{{item.decoratedName}}</a>
+                  <template if="{{!viewer.isInherited}}">Show Inherited
                   </template>
-                </li>
-              </template>
-            </template>
-          </template>
-        </template>
-        
-      </ul>  
-
-      <ul class="nav navbar-nav pull-right">
-        
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown">
-            Options <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <template instantiate="if viewer.currentPage != viewer.homePage">
-              <li class="visible-lg"><a on-click="viewer.togglePanel()">
-                <template if="viewer.isPanel">Hide Libraries</template>
-                <template if="!viewer.isPanel">Show Libraries</template>
-              </a></li>
-              <li class="visible-lg"><a on-click="viewer.toggleMinimap()">
-                <template if="viewer.isMinimap">Hide Minimap</template>
-                <template if="!viewer.isMinimap">Show Minimap</template>
-              </a></li>
-            </template>
-            <li><a on-click="viewer.toggleInherited()">
-              <template if="viewer.isInherited">Hide Inherited</template>
-              <template if="!viewer.isInherited">Show Inherited</template>
-            </a></li>
+                </a></li>
+              </ul>
+            </li>
+    
+            <li><search-box></search-box></li>
           </ul>
-        </li>
-
-        <li><search-box></search-box></li>
-      </ul>
+        </div>
+      </div>
     </div>
+  
+    <div class="main-body">
+      <template if="{{viewer.currentPage != null && viewer.isPanel}}">
+        <div is="dartdoc-library-panel"></div>
+      </template>
+  
+    <main id="page-content" class="{{pageContentClass}}">
+      <article id="dartdoc-page" is="dartdoc-page" home="{{viewer.homePage}}">
+      </article>
+    </main>
+  
+    <template if="{{shouldShowLibraryMinimap}}">
+        <article is="dartdoc-minimap-library" item={{viewer.currentPage}}>
+        </article>
+    </template>
+
+    <template if="{{shouldShowClassMinimap}}">
+      <article is="dartdoc-minimap-class" item={{viewer.currentPage}}>
+      </article>
+    </template>
+  
   </div>
-</div>
-
-<div class="main-body">
-  <!-- Library list panel -->
-  <template instantiate="if viewer.currentPage != null">
-    <template if="viewer.currentPage != viewer.homePage">
-      <template if="viewer.isPanel">
-        <div class="list-group visible-lg col-lg-2 affix-left" 
-            id="library-panel">
-          <template iterate="library in viewer.homePage.libraries">
-            <template 
-                if="library.decoratedName == 
-                    viewer.breadcrumbs[1].decoratedName">
-              <a href="#{{library.linkHref}}" class="list-group-item active">
-                {{library.decoratedName}}
-              </a>
-            </template>
-            <template 
-                if="library.decoratedName != 
-                    viewer.breadcrumbs[1].decoratedName">
-              <a href="#{{library.linkHref}}" class="list-group-item">
-                {{library.decoratedName}}
-              </a>
-            </template>
-          </template>
-        </div>
-      </template>
-    </template>
   </template>
+</polymer-element>
 
-  <main id="page-content"
-      class="{{(viewer.isDesktop && viewer.isPanel) ? 'margin-left' : ''}} 
-          {{(viewer.isDesktop && viewer.isMinimap) ? 'margin-right' : ''}}">
-    <dartdoc-page home="{{viewer.homePage}}"></dartdoc-page>
-  </main>
+<script type="application/dart" src="app.dart"></script>
+<script type="application/dart" src="index.dart"></script>
 
-  <template if="viewer.currentPage != viewer.homePage">
-    <template if="viewer.isMinimap">
-      <!-- Minimap -->
-      <template instantiate="if viewer.currentPage is Library">
-        <div class="visible-lg col-lg-3 well well-sm nav affix-right" 
-            id="minimap">
-            <a href="#{{viewer.currentPage.linkHref}}">
-              {{viewer.currentPage.name}} library
-            </a>
-            <ul>
-              <template 
-                instantiate="if 
-                    viewer.currentPage.operators.content.isNotEmpty">
-              <li><a href="#operators" data-toggle="collapse">
-                Operators<b class="caret"></b>
-              </a></li>
-              <ul id="operators" class="collapse">
-                <dartdoc-minimap 
-                    items="{{viewer.currentPage.operators.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-            <template 
-                instantiate="if 
-                    viewer.currentPage.variables.content.isNotEmpty">
-              <li><a href="#properties" data-toggle="collapse">
-                Properties<b class="caret"></b>
-              </a></li>
-              <ul id="properties" class="collapse">
-                <dartdoc-minimap
-                    items="{{viewer.currentPage.variables.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-            <template 
-                instantiate="if 
-                    viewer.currentPage.functions.content.isNotEmpty">
-              <li><a href="#functions" data-toggle="collapse">
-                Functions<b class="caret"></b>
-              </a></li>
-              <ul id="functions" class="collapse">
-                <dartdoc-minimap 
-                    items="{{viewer.currentPage.functions.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-            <template 
-                instantiate="if viewer.currentPage.classes.content.isNotEmpty">
-              <li><a href="#classes" data-toggle="collapse">
-                Classes<b class="caret"></b>
-              </a></li>
-              <ul id="classes" class="collapse">
-                <dartdoc-minimap 
-                    items="{{viewer.currentPage.classes.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-            <template 
-                instantiate="if viewer.currentPage.typedefs.content.isNotEmpty">
-              <li><a href="#typedefs" data-toggle="collapse">
-                Typedefs<b class="caret"></b>
-              </a></li>
-              <ul id="typedefs" class="collapse">
-                <dartdoc-minimap 
-                    items="{{viewer.currentPage.typedefs.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-            <template 
-                instantiate="if viewer.currentPage.errors.content.isNotEmpty">
-              <li><a href="#exceptions" data-toggle="collapse">
-                Exceptions<b class="caret"></b>
-              </a></li>
-              <ul id="exceptions" class="collapse">
-                <dartdoc-minimap 
-                    items="{{viewer.currentPage.errors.content}}">
-                </dartdoc-minimap>
-              </ul>
-            </template>
-          </ul>
-        </div>
-      </template>
-
-      <template instantiate="if viewer.currentPage is Class">
-        <div class="visible-lg col-lg-3 well well-sm nav affix-right" 
-            id="minimap">
-          <a href="#dartdoc-top">
-            {{viewer.currentPage.name}} Class
-          </a>
-          <ul>
-            <template 
-                instantiate="if 
-                  viewer.currentPage.operators.content.isNotEmpty">
-                <template if="viewer.currentPage.operators.hasNonInherited 
-                  || viewer.isInherited">
-                  <li><a href="#operators" data-toggle="collapse">
-                    Operators<b class="caret"></b>
-                  </a></li>
-                  <ul id="operators" class="collapse">
-                    <dartdoc-minimap 
-                      items="{{viewer.currentPage.operators.content}}">
-                    </dartdoc-minimap>
-                  </ul>
-                </template>
-              </template>
-              <template 
-                instantiate="if 
-                  viewer.currentPage.variables.content.isNotEmpty">
-                <template if="viewer.currentPage.variables.hasNonInherited 
-                  || viewer.isInherited">
-                  <li><a href="#properties" data-toggle="collapse">
-                    Properties<b class="caret"></b>
-                  </a></li>
-                  <ul id="properties" class="collapse">
-                    <dartdoc-minimap 
-                      items="{{viewer.currentPage.variables.content}}">
-                    </dartdoc-minimap>
-                  </ul>
-                </template>
-              </template>
-              <template 
-                instantiate="if 
-                  viewer.currentPage.constructs.content.isNotEmpty">
-                <template if="viewer.currentPage.constructs.hasNonInherited 
-                  || viewer.isInherited">
-                  <li><a href="#constructors" data-toggle="collapse">
-                    Constructors<b class="caret"></b>
-                  </a></li>
-                  <ul id="constructors" class="collapse">
-                    <dartdoc-minimap 
-                      items="{{viewer.currentPage.constructs.content}}">
-                    </dartdoc-minimap>
-                  </ul>
-                </template>
-              </template>
-              <template 
-                instantiate="if 
-                  viewer.currentPage.functions.content.isNotEmpty">
-                <template if="viewer.currentPage.functions.hasNonInherited 
-                  || viewer.isInherited">
-                  <li><a href="#functions" data-toggle="collapse">
-                    Functions<b class="caret"></b>
-                  </a></li>
-                  <ul id="functions" class="collapse">
-                    <dartdoc-minimap 
-                      items="{{viewer.currentPage.functions.content}}">
-                    </dartdoc-minimap>
-                  </ul>
-                </template>
-              </template>
-            </ul>
-        </div>
-      </template>
-    </template>
-  </template>
-</div>
+<dartdoc-main id="dartdoc-main"></dartdoc-main>
+</body>

@@ -2,96 +2,53 @@
 <link rel="import" href="annotations.html">
 <link rel="import" href="variable-heading.html">
 
-<element name="dartdoc-variable" constructor="VariableElement" extends="div"
-    apply-author-styles>
+<polymer-element name="dartdoc-variable" attributes="item" extends="div">
   <template>
-    
+
     <div class="panel-heading">
-      <dartdoc-annotation annotations="{{item.annotations}}">
+      <dartdoc-annotation annotations="{{annotations}}">
       </dartdoc-annotation>
-      <variable-heading item="{{item}}">
-      </variable-heading>
+      <p is="variable-heading" item="{{item}}">
+      </p>
     </div>
 
     <p class="text-right"><dfn>
-      <template if="isInherited">
-        This property is inherited from 
-        <template if="exists(inheritedFrom.location)">
-          <a href="#{{inheritedFrom.location}}">
+      <template if="{{isInherited}}">
+        Inherited from
+        <template if="{{exists(inheritedFrom.location)}}">
+          <a href="#{{inheritedFrom.location}}#id_{{item.name}}">
             {{inheritedFrom.simpleType}}
           </a>
         </template>
-        <template if="!exists(inheritedFrom.location)">
+        <template if="{{!exists(inheritedFrom.location)}}">
           <i>{{inheritedFrom.simpleType}}</i>
         </template>
       </template>
     </dfn></p>
-    
-    <!-- Comment -->
-    <template if="app.viewer.isInherited || !hasInheritedComment">
-      <p class="description">
-        {{addComment('dartdoc-variable', preview: !isExpanded)}}
-      </p>
-    </template>
 
-    <template instantiate="if !nothingToExpand">
-      <a on-click="toggleExpand()" class="btn-link">
-        <template if="isExpanded">
-          ...Show less
-        </template>
-        <template if="!isExpanded">
-          ...Show more
-        </template>
-      </a>
+    <p class="description">
+    </p>
+    <!-- Comment -->
+    <template if="{{viewer.isInherited || !hasInheritedComment}}">
+     {{addComment('dartdoc-variable')}}
     </template>
 
     <p class="text-right"><dfn>
-      <template if="hasInheritedComment && isExpanded">
-        <template if="app.viewer.isInherited">
-          This documentation is inherited from 
-          <template if="exists(commentFrom.location)">
-            <a href="#{{commentFrom.location}}">
+      <template if="{{hasInheritedComment}}">
+        <template if="{{viewer.isInherited}}">
+          Comment inherited from
+          <template if="{{exists(commentFrom.location)}}">
+            <a href="#{{commentFrom.location}}#id_{{item.name}}">
               {{commentFrom.simpleType}}
             </a>
           </template>
-          <template if="!exists(commentFrom.location)">
+          <template if="{{!exists(commentFrom.location)}}">
             <i>{{commentFrom.simpleType}}</i>
           </template>
         </template>
       </template>
     </dfn></p>
-    
+
   </template>
-  <script type="application/dart">
-    import 'dart:html';
-    import 'package:web_ui/web_ui.dart';
-    import 'package:dartdoc_viewer/item.dart';
-    import 'app.dart' as app;
-    import 'member.dart';
-
-    /**
-     * An HTML representation of a Variable.
-     */
-    class VariableElement extends InheritedElement {
-      @observable bool isExpanded = false;
-      @observable bool nothingToExpand;
-
-      inserted() {
-        super.inserted();
-        var index = item.comment.indexOf('</p>');
-        if (index == -1) {
-          isExpanded = true;
-        } else {
-          index = item.comment.indexOf('</p>', index + 1);
-          if (index == -1) isExpanded = true;
-          else isExpanded = false;
-        }
-        nothingToExpand = isExpanded;
-      }
-
-      void toggleExpand() {
-        isExpanded = !isExpanded;
-      }
-    }
-  </script>
-</element>
+  <script type="application/dart" src="variable.dart"></script>
+</polymer-element>

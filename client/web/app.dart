@@ -11,13 +11,14 @@ library dartdoc_viewer;
 
 import 'dart:async';
 import 'dart:html';
-import 'dart:json';
+import 'dart:convert';
 
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/search.dart';
-import 'package:web_ui/web_ui.dart';
+import 'package:polymer/polymer.dart';
+import 'index.dart';
 
 // TODO(janicejl): JSON path should not be hardcoded.
 // Path to the JSON file being read in. This file will always be in JSON
@@ -30,10 +31,15 @@ String sourcePath = '../../docs/library_list.json';
 const int desktopSizeBoundary = 1006;
 
 /// The [Viewer] object being displayed.
-Viewer viewer;
+  final Viewer viewer = new Viewer._();
+
+
+  IndexElement _dartdocMain;
+  IndexElement dartdocMain =
+      _dartdocMain == null ? _dartdocMain = query("#dartdoc-main").xtag : null;
 
 /// The Dartdoc Viewer application state.
-class Viewer {
+class Viewer extends ObservableBase {
 
   @observable bool isDesktop = window.innerWidth > desktopSizeBoundary;
 
@@ -48,10 +54,14 @@ class Viewer {
   @observable var currentPage;
 
   /// State for whether or not the library list panel should be shown.
-  @observable bool isPanel = true;
+  bool _isPanel = true;
+  @observable bool get isPanel => isDesktop && _isPanel;
+  set isPanel(x) => _isPanel = x;
 
   /// State for whether or not the minimap panel should be shown.
-  @observable bool isMinimap = true;
+  bool _isMinimap = true;
+  @observable bool get isMinimap => isDesktop && _isMinimap;
+  set isMinimap(x) => _isMinimap = x;
 
   /// State for whether or not inherited members should be shown.
   @observable bool isInherited = true;
@@ -63,10 +73,20 @@ class Viewer {
   Viewer._() {
     var manifest = retrieveFileContents(sourcePath);
     finished = manifest.then((response) {
-      var libraries = parse(response);
+      var libraries = JSON.decode(response);
       isYaml = libraries['filetype'] == 'yaml';
       homePage = new Home(libraries);
     });
+
+    new PathObserver(this, "currentPage").bindSync(
+      (_) {
+        notifyProperty(this, #breadcrumbs);
+      });
+    new PathObserver(this, "isDesktop").bindSync(
+      (_) {
+        notifyProperty(this, #isMinimap);
+        notifyProperty(this, #isPanel);
+      });
   }
 
   /// Creates a valid hash ID for anchor tags.
@@ -78,7 +98,7 @@ class Viewer {
   String get title => currentPage == null ? '' : currentPage.decoratedName;
 
   /// Creates a list of [Item] objects describing the path to [currentPage].
-  List<Item> get breadcrumbs => [homePage]
+  @observable List<Item> get breadcrumbs => [homePage]
     ..addAll(currentPage == null ? [] : currentPage.path);
 
   /// Scrolls the screen to the correct member if necessary.
@@ -92,25 +112,44 @@ class Viewer {
         // All ids are created using getIdName to avoid creating an invalid
         // HTML id from an operator or setter.
         hash = hash.substring(1, hash.length);
-        var e = document.query('#$hash');
+        var e = queryEverywhere(dartdocMain, hash);
+
         if (e != null) {
-          // Find the parent category element to make sure it is open.
-          var category = e.parent;
-          while (category != null &&
-              !category.classes.contains('accordion-body')) {
-            category = category.parent;
-          }
-          // Open the category if it is not open.
-          if (category != null && !category.classes.contains('in'))
-            category.classes.add('in');
-            category.attributes['style'] = 'height: auto;';
+        // TODO(alanknight): Open the element automatically when scrolled to.
+//      Find the parent category element to make sure it is open.
+//          var category = e.parent;
+//          while (category != null &&
+//              !category.classes.contains('accordion-body')) {
+//            category = category.parent;
+//          }
+//          // Open the category if it is not open.
+//          if (category != null && !category.classes.contains('in')) {
+//            category.classes.add('in');
+//            category.attributes['style'] = 'height: auto;';
+//          }
           e.scrollIntoView(ScrollAlignment.TOP);
+
           // The navigation bar at the top of the page is 60px wide,
           // so scroll down 60px once the browser scrolls to the member.
           window.scrollBy(0, -60);
         }
       });
     }
+  }
+
+  /// Query for an element by [id] in [parent] and in all the shadow
+  /// roots. If it's not found, return [null].
+  Element queryEverywhere(Element parent, String id) {
+    if (parent.id == id) return parent;
+    var shadowChildren =
+        parent.shadowRoot != null ? parent.shadowRoot.children : const [];
+    var allChildren = [parent.children, shadowChildren]
+        .expand((x) => x);
+    for (var e in allChildren) {
+      var found = queryEverywhere(e, id);
+      if (found != null) return found;
+    }
+    return null;
   }
 
   /// Updates [currentPage] to be [page].
@@ -208,6 +247,10 @@ class Viewer {
     }
     var members = locationWithoutHash.split('.');
     var libraryName = members.first;
+    // TODO(alanknight): A better implementation would be to match on either
+    // the link name or on the displayed name of a component.
+    // Allow references to be of the form #dart:core and convert them.
+    libraryName = libraryName.replaceAll(':', '-');
     // Since library names can contain '.' characters, the library part
     // of the input contains '-' characters replacing the '.' characters
     // in the original qualified name to make finding a library easier. These
@@ -253,12 +296,14 @@ class Viewer {
 
   /// Toggles the library panel
   void togglePanel() {
-    isPanel = !isPanel;
+    isPanel = !_isPanel;
+    notifyProperty(this, #isPanel);
   }
 
   /// Toggles the minimap panel
   void toggleMinimap() {
-    isMinimap = !isMinimap;
+    isMinimap = !_isMinimap;
+    notifyProperty(this, #isMinimap);
   }
 
   /// Toggles showing inherited members.
@@ -275,13 +320,16 @@ String location;
 
 /// Listens for browser navigation and acts accordingly.
 void startHistory() {
-  window.onPopState.listen((event) {
-    location = window.location.hash.replaceFirst('#', '');
-    if (viewer.homePage != null) {
-      if (location != '') viewer._handleLinkWithoutState(location);
-      else viewer._handleLinkWithoutState('home');
-    }
-  });
+  location = window.location.hash.replaceFirst('#', '');
+  window.onPopState.listen(navigate);
+}
+
+void navigate(event) {
+  location = window.location.hash.replaceFirst('#', '');
+  if (viewer.homePage != null) {
+    if (location != '') viewer._handleLinkWithoutState(location);
+    else viewer._handleLinkWithoutState('home');
+  }
 }
 
 /// Handles browser navigation.
@@ -306,7 +354,6 @@ main() {
   });
 
   startHistory();
-  viewer = new Viewer._();
   // If a user navigates to a page other than the homepage, the viewer
   // must first load fully before navigating to the specified page.
   viewer.finished.then((_) {

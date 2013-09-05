@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<link rel="import" href="minimap-element.html">
+
+<polymer-element name="dartdoc-minimap-library" 
+    extends="article" attributes="item">
+ <template>
+  <div class="visible-lg col-lg-3 well well-sm nav affix-right"
+      id="minimap">
+      <a href="#{{linkHref}}">
+        {{name}} library
+      </a>
+      <ul>
+        <template
+          if="{{operatorItems.isNotEmpty}}">
+        <li><a href="{{currentLocation}}#operators" on-click="hideShow">
+          Operators<b class="caret"></b>
+        </a></li>
+        <ul id="minimap-operators" class="collapse in">
+          <article is="dartdoc-minimap"
+              items="{{operatorItems}}">
+          </article>
+        </ul>
+      </template>
+      <template
+          if="{{variableItems.isNotEmpty}}">
+        <li><a href="{{currentLocation}}#properties" on-click="hideShow">
+          Properties<b class="caret"></b>
+        </a></li>
+        <ul id="minimap-properties" class="collapse in">
+          <article is="dartdoc-minimap"
+              items="{{variableItems}}">
+          </article>
+        </ul>
+      </template>
+      <template
+          if="{{functionItems.isNotEmpty}}">
+        <li><a href="{{currentLocation}}#functions" on-click="hideShow">
+          Functions<b class="caret"></b>
+        </a></li>
+        <ul id="minimap-functions" class="collapse in">
+          <article is="dartdoc-minimap"
+              items="{{functionItems}}">
+          </article>
+        </ul>
+      </template>
+      <template
+          if="{{classItems.isNotEmpty}}">
+        <li><a href="{{currentLocation}}#classes" on-click="hideShow">
+          Classes<b class="caret"></b>
+        </a></li>
+        <ul id="minimap-classes" class="collapse in">
+          <article id="class-minimap" is="dartdoc-minimap"
+              items="{{classItems}}">
+          </article>
+         </ul>
+      </template>
+      <template
+          if="{{typedefItems.isNotEmpty}}">
+        <li><a href="{{currentLocation}}#typedefs" on-click="hideShow">
+          Typedefs<b class="caret"></b>
+        </a></li>
+        <ul id="minimap-typedefs" class="collapse in">
+          <article is="dartdoc-minimap"
+              items="{{typedefItems}}">
+          </article>
+        </ul>
+      </template>
+      <template
+          if="{{errorItems.isNotEmpty}}">
+        <li><a href="{{currentLocation}}#exceptions" on-click="hideShow">
+          Exceptions<b class="caret"></b>
+        </a></li>
+        <ul id="minimap-exceptions" class="collapse in">
+          <article is="dartdoc-minimap"
+              items="{{errorItems}}">
+          </article>
+        </ul>
+      </template>
+    </ul>
+  </div>
+  </template>
+  <script type="application/dart" src="minimap-library.dart"></script>
+  </polymer-element>
+  

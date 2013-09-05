@@ -1,70 +1,50 @@
 <!DOCTYPE html>
 <link rel="import" href="parameters.html">
 
-<element name="dartdoc-item" constructor="ItemElement" extends="div"
-    apply-author-styles>
+<polymer-element name="dartdoc-item" attributes="item" extends="div">
   <template>
     <ul class="nav nav-pills nav-stacked">
       <li>
-        <a id="{{idName}}" href="#{{item.linkHref}}">
-          <template instantiate="if item is! Method">
+        <a id="{{idName}}" href="#{{linkHref}}">
+          <template if="{{item is! Method}}">
               {{title}}
           </template>
-          <template instantiate="if item is Method">
-            <template instantiate="if !item.isConstructor">
+          <template if="{{isMethod}}">
+            <template if="{{!isConstructor}}">
               <span class="type">
-                {{createType(item.type, 'dartdoc-item', 'type')}}
               </span>
+              {{createType(item.type, 'dartdoc-item', 'type')}}
             </template>
 
             <span>
-              <template if="item.isConstant">const</template>
-              <template if="item.isAbstract">abstract</template>
-              <template if="item.isStatic">static</template>
+              {{modifiers}}
               <b>{{item.decoratedName}}</b>
                <!-- Parameters -->
-              <dartdoc-parameter parameters="{{item.parameters}}">
-              </dartdoc-parameter>
+              <small is="dartdoc-parameter" parameters="{{parameters}}">
+              </small>
             </span>
           </template>
         </a>
       </li>
     </ul>
-    <template if="item is Class || item is Library">
-      <template if="item.previewComment != null">
+    <template if="{{shouldShowClassOrLibraryComment}}">
         <hr/>
         <p class="description">
-          {{addComment('dartdoc-item', preview: true)}}
         </p>
-      </template>
+    </template>
+    <template if="{{shouldShowClassOrLibraryComment}}">
+    {{addComment('dartdoc-item', true)}}  
     </template>
 
-    <template if="item is Method">
-      <template if="item.comment != '<span></span>'">
-        <hr/>
-        <p class="description" id="{{item.name}}-method-comment">
-          {{addComment('dartdoc-item', preview: true)}}
-        </p>
-      </template>
+    <template if="{{shouldShowMethodComment}}">
+      <hr/>
+      <p class="description" id="{{item.name}}-method-comment">
+      </p>
+    </template>
+    <template if="{{shouldShowMethodComment}}">
+      {{addComment('dartdoc-item', true)}}
     </template>
 
   </template>
-  <script type="application/dart">
-    import 'package:web_ui/web_ui.dart';
-    import 'package:dartdoc_viewer/data.dart';
-    import 'package:dartdoc_viewer/item.dart';
-
-    import 'app.dart' as app;
-    import 'member.dart';
-
-    /**
-     * An HTML representation of a Item.
-     *
-     * Used as a placeholder for an CategoryItem object.
-     */
-    class ItemElement extends MemberElement {
-
-      String get title => item.decoratedName;
-    }
-  </script>
-</element>
+  <script type="application/dart" src="item.dart"></script>
+</polymer-element>

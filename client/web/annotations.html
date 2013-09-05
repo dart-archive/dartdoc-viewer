@@ -2,52 +2,10 @@
 <link rel="import" href="item.html">
 <link rel="import" href="category.html">
 
-<element name="dartdoc-annotation" constructor="AnnotationElement"
-    extends="span" apply-author-styles>
+<polymer-element name="dartdoc-annotation" attributes="annotations">
   <template>
-    <template instantiate="if annotations.annotations.isNotEmpty">
-      <template iterate="annotation in annotations.annotations">
-        <i><a href="#{{annotation.link.location}}">
-          {{annotation.link.simpleType}}
-        </a></i>
-
-        <template if="annotation.parameters.isNotEmpty">
-          (
-          <template iterate="parameter in annotation.parameters">
-            {{parameter}}
-            <template if="parameter != annotation.parameters.last">
-              ,&nbsp;
-            </template>
-          </template>
-          )
-        </template>
-
-        <template if="annotation != annotations.annotations.last">
-          ,&nbsp;
-        </template>
-      </template>
-
-    </template>
-    <template if="annotations.supportedBrowsers.isNotEmpty">
-      <br/><i>Supported on:
-        <template iterate="browser in annotations.supportedBrowsers">
-          {{browser}}
-          <template if="browser != annotations.supportedBrowsers.last">
-            ,&nbsp;
-          </template>
-        </template>
-      </i><br/>
-    </template>
+    {{addAnnotations()}}
   </template>
 
-  <script type="application/dart">
-
-    import 'package:dartdoc_viewer/item.dart';
-    import 'package:web_ui/web_ui.dart';
-    import 'app.dart';
-
-    class AnnotationElement extends WebComponent {
-      @observable AnnotationGroup annotations;
-    }
-  </script>
-</element>
+  <script type="application/dart" src="annotations.dart"></script>
+</polymer-element>

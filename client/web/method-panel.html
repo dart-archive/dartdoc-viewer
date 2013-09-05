@@ -5,118 +5,70 @@
 <link rel="import" href="annotations.html">
 
 <!-- TODO(tmandel): Reduce redundancy here and in method.html -->
-<element name="method-panel" constructor="MethodPanel" extends="div"
-    apply-author-styles>
+<polymer-element name="method-panel" attributes="item" extends="div">
   <template>
-    <template if="item == null">
-      Loading...
-    </template>
-    <template if="item != null">
       <a id="{{idName}}">
       </a>
       <div class="panel-heading">
-        
-        <dartdoc-annotation annotations="{{item.annotations}}">
+
+        <dartdoc-annotation annotations="{{annotations}}">
         </dartdoc-annotation>
-      
+
         <!-- Return Type -->
         <p>
           <span>
-            <template if="item.isConstant">const</template>
-            <template if="item.isAbstract">abstract</template>
-            <template if="item.isStatic">static</template>
-            
-            <template instantiate="if !item.isConstructor">
-              <span class="type">
-                {{createType(item.type, 'method-panel', 'type')}}
-              </span>
-            </template>
-            <template if="item.isOperator">operator</template>
+            {{modifiers}}
+            <span class="type">
+            </span>
+            {{createType(item.type, 'method-panel', 'type')}}
+            <template if="{{item.isOperator}}">operator</template>
             <b>{{item.decoratedName}}</b>
              <!-- Parameters -->
-            <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
+            <small is="dartdoc-parameter" parameters="{{parameters}}"></small>
           </span>
         </p>
       </div>
 
       <p class="text-right"><dfn>
-        <template if="isInherited">
-          This member is inherited from 
-          <template if="exists(inheritedFrom.location)">
-            <a href="#{{inheritedFrom.location}}">
+        <template if="{{isInherited}}">
+          Inherited from
+          <template if="{{exists(inheritedFrom.location)}}">
+            <a href="#{{inheritedFrom.location}}#id_{{item.name}}">
               {{inheritedFrom.simpleType}}
             </a>
           </template>
-          <template if="!exists(inheritedFrom.location)">
+          <template if="{{!exists(inheritedFrom.location)}}">
             <i>{{inheritedFrom.simpleType}}</i>
           </template>
         </template>
       </dfn></p>
 
-      <!-- Comment -->
-      <template if="viewer.isInherited || !hasInheritedComment">
         <section class="description">
-          {{addComment('method-panel', preview: !isExpanded)}}
         </section>
-      </template>
-
-      <template instantiate="if !nothingToExpand">
-        <a on-click="toggleExpand()" class="btn-link">
-          <template if="isExpanded">
-            ...Show less
-          </template>
-          <template if="!isExpanded">
-            ...Show more
-          </template>
-        </a>
+      <!-- Comment -->
+      <template if="{{viewer.isInherited || !hasInheritedComment}}">
+        {{addComment('method-panel', false)}}
       </template>
 
       <p class="text-right"><dfn>
-        <template if="hasInheritedComment && isExpanded">
-          <template if="viewer.isInherited">
-            This documentation is inherited from 
-            <template if="exists(commentFrom.location)">
-              <a href="#{{commentFrom.location}}">
+        <template if="{{shouldShowMethodComment && 
+            hasInheritedComment}}">
+          <template if="{{viewer.isInherited}}">
+            Comment inherited from
+            <template if="{{exists(commentFrom.location)}}">
+              <a href="#{{commentFrom.location}}#id_{{item.name}}">
                 {{commentFrom.simpleType}}
               </a>
             </template>
-            <template if="!exists(commentFrom.location)">
+            <template if="{{!exists(commentFrom.location)}}">
               <i>{{commentFrom.simpleType}}</i>
             </template>
           </template>
         </template>
       </dfn></p>
-
-    </template>
   </template>
-  
-  <script type="application/dart">
-    import 'package:web_ui/web_ui.dart';
-    
-    import 'app.dart';
-    import 'member.dart';
-    
-    class MethodPanel extends MethodElement {
-      @observable bool isExpanded = false;
-      @observable bool nothingToExpand;
 
-      inserted() {
-        super.inserted();
-        var index = item.comment.indexOf('</p>');
-        if (index == -1) {
-          isExpanded = !isInherited;
-        } else {
-          index = item.comment.indexOf('</p>', index + 1);
-          if (index == -1) isExpanded = true;
-          else isExpanded = false;
-        }
-        nothingToExpand = isExpanded;
-      }
-
-      void toggleExpand() {
-        isExpanded = !isExpanded;
-      }
-    }
+  <script type="application/dart" src="method-panel.dart">
   </script>
 
-</element>
+</polymer-element>

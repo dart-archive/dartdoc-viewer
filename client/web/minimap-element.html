@@ -1,34 +1,14 @@
 <!DOCTYPE html>
 
-<element name="dartdoc-minimap" constructor="MinimapElement" extends="article"
-    apply-author-styles>
+<polymer-element name="dartdoc-minimap" extends="article" attributes="items">
   <template>
-    <template iterate="item in items">
-      <template if="!item.isInherited || viewer.isInherited">
+    <template repeat="{{item in itemsToShow}}">
         <li>
           <a href="#{{link(item)}}">
             {{item.decoratedName}}
           </a>
         </li>
-      </template>
     </template>
   </template>
-  
-  <script type="application/dart">
-    
-    import 'package:dartdoc_viewer/item.dart';
-    import 'package:web_ui/web_ui.dart';
-    import 'app.dart';
-    
-    /// An element in a page's minimap displayed on the right of the page.
-    class MinimapElement extends WebComponent {
-      @observable List<Item> items;
-      
-      /// Creates a proper href String for an [Item].
-      String link(item) {
-       var hash = item.name == '' ? item.decoratedName : item.name;
-       return '${viewer.currentPage.linkHref}#${viewer.toHash(hash)}';
-      }
-    }
-  </script>
-</element>
+  <script type="application/dart" src="minimap-element.dart"></script>
+</polymer-element>

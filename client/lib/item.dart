@@ -2,11 +2,11 @@ library category_item;
 
 import 'dart:async';
 import 'dart:html';
-import 'dart:json';
+import 'dart:convert';
 
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
-import 'package:web_ui/web_ui.dart';
+import 'package:polymer/polymer.dart';
 import 'package:yaml/yaml.dart';
 
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
@@ -15,12 +15,14 @@ const docsPath = '../../docs/';
 /**
  * Anything that holds values and can be displayed.
  */
-@observable
-class Container {
-  String name;
-  String comment = '<span></span>';
+
+class Container extends ObservableBase {
+  @observable String name;
+  @observable String comment = '<span></span>';
 
   Container(this.name, [this.comment]);
+
+  toString() => "$runtimeType($name)";
 }
 
 // Wraps a comment in span element to make it a single HTML Element.
@@ -121,13 +123,13 @@ class Category extends Container {
 class Item extends Container {
   /// A list of [Item]s representing the path to this [Item].
   List<Item> path = [];
-  String qualifiedName;
+  @observable String qualifiedName;
 
   Item(String name, this.qualifiedName, [String comment])
       : super(name, comment);
 
   /// [Item]'s name with its properties properly appended.
-  String get decoratedName => name;
+  @observable String get decoratedName => name;
 
   /// Adds this [Item] to [pageIndex] and updates all necessary members.
   void addToHierarchy() {
@@ -138,7 +140,7 @@ class Item extends Container {
   void addInheritedComment(Item item) {}
 
   /// Denotes whether this [Item] is inherited from another [Item] or not.
-  bool get isInherited => false;
+  @observable bool get isInherited => false;
 
   /// Creates a link for the href attribute of an [AnchorElement].
   String get linkHref {
@@ -221,7 +223,7 @@ abstract class LazyItem extends Item {
     var location = '$docsPath$qualifiedName.' + (isYaml ? 'yaml' : 'json');
     var data = retrieveFileContents(location);
     return data.then((response) {
-      var yaml = isYaml ? loadYaml(response) : parse(response);
+      var yaml = isYaml ? loadYaml(response) : JSON.decode(response);
       loadValues(yaml);
       buildHierarchy(this, this);
     });
@@ -310,13 +312,14 @@ class Class extends LazyItem {
   Category functions;
   Category variables;
   Category constructs;
+  get constructors => constructs;
   Category operators;
   LinkableType superClass;
   bool isAbstract;
   String previewComment;
   AnnotationGroup annotations;
-  List<LinkableType> implements;
-  List<LinkableType> subclasses;
+  List<LinkableType> implements = [];
+  List<LinkableType> subclasses = [];
   List<String> generics = [];
 
   /// Creates a [Class] placeholder object with null fields.
@@ -362,7 +365,7 @@ class Class extends LazyItem {
       constructors = allMethods['constructors'];
     }
     variables = new Category.forVariables(yaml['variables'], getters, setters);
-    functions = new Category.forFunctions(methods, 'Functions');
+    functions = new Category.forFunctions(methods, 'Methods');
     operators = new Category.forFunctions(operates, 'Operators',
         isOperator: true);
     constructs = new Category.forFunctions(constructors, 'Constructors',
@@ -408,6 +411,19 @@ class Class extends LazyItem {
         location.addInheritedItem(this, object);
       });
     }
+  }
+
+  String get nameWithGeneric {
+    var out = new StringBuffer();
+    out.write(name);
+    if (generics.isNotEmpty) {
+      out.write("<");
+      // Use a non-breaking space character, not &nbsp; because this will
+      // get escaped.
+      out.write(generics.join(",\u{00A0}"));
+      out.write(">");
+    }
+    return out.toString();
   }
 }
 
@@ -649,6 +665,8 @@ class NestedType {
       innerMap.forEach((element) => inner.add(new NestedType(element)));
     }
   }
+
+  get isDynamic => outer.isDynamic;
 }
 
 /**
@@ -672,4 +690,6 @@ class LinkableType {
 
   /// The [Item] describing this type if it has been loaded, otherwise null.
   String get location => type;
+
+  get isDynamic => simpleType == 'dynamic';
 }

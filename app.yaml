@@ -2,8 +2,8 @@
 # for details. All rights reserved. Use of this source code is governed by a
 # BSD-style license that can be found in the LICENSE file.
 
-application: dart-documentation
-version: css-inprogress
+application: dartdoc-next
+version: test
 
 runtime: python27
 api_version: 1
@@ -14,14 +14,15 @@ handlers:
   static_dir: client/web/static
   
 - url: /
-  static_files: client/web/out/index.html
-  upload: web/out/index.html
+  static_files: client/out/web/index.html
+  upload: out/web/index.html
 
 - url: /docs/.*
   script: scripts.redirector.application
 
 - url: /
-  static_dir: client/web/out/
+  static_dir: client/out/web
 
 skip_files:
 - ^(.*/)?docs/?
+- out/web/*.map

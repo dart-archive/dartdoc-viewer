@@ -2,85 +2,30 @@
 <link rel="import" href="parameters.html">
 <link rel="import" href="annotations.html">
 
-<element name="dartdoc-typedef" constructor="TypedefElement" extends="div"
-    apply-author-styles>
+<polymer-element name="dartdoc-typedef" extends="article" attributes="item">
   <template>
-    <template if="item == null">
-      Loading...
-    </template>
-    <template if="item != null">
-      <div class="panel-heading">
-        <a id="{{idName}}"></a>
-        <dartdoc-annotation annotations="{{item.annotations}}">
-        </dartdoc-annotation>
-        <!-- Signature -->
-        <p>typedef
-          <a href="#{{item.type.location}}">
-            {{item.type.simpleType}}
-          </a>{{item.name}}
+    
+      <div class="page-header"><h1>{{name}} typedef</h1></div>
 
-          <dartdoc-parameter parameters="{{item.parameters}}">
-          </dartdoc-parameter>
+
+      <!-- Signature --> 
+      <div class="panel">
+        <dartdoc-annotation annotations="{{annotations}}">
+        </dartdoc-annotation>
+        <p class="panel-title">typedef
+          <a href="#{{location}}">
+            {{simpleType}}
+          </a>{{name}}
+
+          <small is="dartdoc-parameter" parameters="{{parameters}}">
+          </small>
         </p>
       </div>
 
       <!-- Comment -->
-      <template if="app.viewer.isInherited || !hasInheritedComment">
-        <p class="description">
-          {{addComment('dartdoc-typedef', preview: !isExpanded)}}
-        </p>
-      </template>
-
-      <template instantiate="if !nothingToExpand">
-        <a on-click="toggleExpand()" class="btn-link">
-          <template if="isExpanded">
-            ...Show less
-          </template>
-          <template if="!isExpanded">
-            ...Show more
-          </template>
-        </a>
-      </template>
-    </template>
+      <section class="description"></section>
+      {{addComment('dartdoc-typedef')}}
   </template>
 
-  <script type="application/dart">
-
-    import 'package:dartdoc_viewer/item.dart';
-    import 'package:web_ui/web_ui.dart';
-    import 'app.dart' as app;
-    import 'member.dart';
-
-    class TypedefElement extends MemberElement {
-      Typedef get item => super.item;
-
-      @observable bool isExpanded = false;
-      @observable bool nothingToExpand;
-      
-      // Required parameters.
-      List<Parameter> get required =>
-        item.parameters.where((parameter) => !parameter.isOptional).toList();
-
-      // Optional parameters.
-      List<Parameter> get optional =>
-        item.parameters.where((parameter) => parameter.isOptional).toList();
-
-      inserted() {
-        super.inserted();
-        var index = item.comment.indexOf('</p>');
-        if (index == -1) {
-          isExpanded = true;
-        } else {
-          index = item.comment.indexOf('</p>', index + 1);
-          if (index == -1) isExpanded = true;
-          else isExpanded = false;
-        }
-        nothingToExpand = isExpanded;
-      }
-
-      void toggleExpand() {
-        isExpanded = !isExpanded;
-      }
-    }
-  </script>
-</element>
+  <script type="application/dart" src="typedef.dart"></script>
+</polymer-element>

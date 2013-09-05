@@ -2,77 +2,40 @@
 <link rel="import" href="item.html">
 <link rel="import" href="variable.html">
 <link rel="import" href="method-panel.html">
-<link rel="import" href="typedef.html">
 
-<element name="dartdoc-category" constructor="CategoryElement" 
-    extends="div" apply-author-styles>     
-  <template>
-    <div class="accordion-heading">
-      <a class="accordion-toggle {{app.viewer.isDesktop ? '' : 'collapsed'}}" 
-        data-toggle="collapse" 
-        data-parent="{{app.viewer.isDesktop ? '' : '#accordion-grouping'}}" 
-        href="#accordion-{{stylizedName}}">
+<polymer-element name="dartdoc-category" attributes="category" extends="div">
+   <template>
+   <div class="accordion-heading">
+      <a class="accordion-toggle {{accordionStyle}}"
+        on-click="hideShow"
+        data-toggle="collapse"
+        data-parent="{{accordionParent}}"
+        href="{{currentLocation}}#accordion-{{stylizedName}}">
         {{title}}
       </a>
     </div>
-    <div id="accordion-{{stylizedName}}" 
-      class="accordion-body collapse 
-        {{app.viewer.isDesktop ? 'in' : 'collapse'}}"
-      style="height:{{app.viewer.isDesktop ? 'auto':'0px'}}"> 
-      <div class="accordion-inner">
-        <ul class="nav nav-pills nav-stacked">
-          <template iterate="item in category.content">
-            <template if="item is Item && item is! Variable && 
-                item is! Method && item is! Typedef">
-              <dartdoc-item class="panel" item="{{item}}"></dartdoc-item>
-            </template>
-            
-            <template if="item is Variable">
-              <template if="!item.isInherited || app.viewer.isInherited">
-                <dartdoc-variable item="{{item}}" class="panel">
-                </dartdoc-variable>
-              </template>
-            </template>
 
-            <template if="item is Method">
-              <template if="!item.isInherited || app.viewer.isInherited">
-                <method-panel class="panel hidden-sm" item="{{item}}">
-                </method-panel>
-                <dartdoc-item class="visible-sm panel" item="{{item}}">
-                </dartdoc-item>
-              </template>
-            </template>
-
-            <template if="item is Typedef">
-              <template if="!item.isInherited || app.viewer.isInherited">
-                <dartdoc-typedef item="{{item}}" class="panel">
-                </dartdoc-typedef>
-              </template>
-            </template>
-          </template>
+   <div id="accordion-{{stylizedName}}"
+      class="accordion-body {{divClass}}"
+      style="height:{{divStyle}}">
+     <div class="accordion-inner">
+        <ul id="itemList" class="nav nav-pills nav-stacked">
+        <template repeat="{{variable in categoryVariables}}">
+          <div is="dartdoc-variable" item="{{variable}}" class="panel"></div>
+        </template>
+        <template repeat="{{class in categoryEverythingElse}}">
+           <div is="dartdoc-item" class="panel" item="{{class}}"></div>
+        </template>
+        <template repeat="{{method in categoryMethods}}">
+           <div is="method-panel" class="panel" item="{{method}}">
+           </div>
+        </template>       
         </ul>
       </div>
     </div>
   </template>
-  
-  <script type="application/dart">
-    import 'package:web_ui/web_ui.dart';
-    import 'package:dartdoc_viewer/item.dart';
-    import 'app.dart' as app;
-    import 'member.dart';
-    
-    /**
-     * An HTML representation of a Category. 
-     *
-     * Used as a placeholder for an CategoryItem object. 
-     */
-    class CategoryElement extends WebComponent {
-      @observable Container category;
-      
-      String get title => category.name;
 
-      String get stylizedName => category.name.replaceAll(' ', '-');
-    }
+<script type="application/dart" src="category.dart"></script>
 
-  </script>
-</element>
+</polymer-element>
+

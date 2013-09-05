@@ -9,6 +9,7 @@ packages
 
 # The out/ folder can be recreated by running build.dart.
 out
+client/out
 client/web/out
 
 # YAML input files can be generated with the docgen package in the Dart repo.

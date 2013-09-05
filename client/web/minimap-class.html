@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<link rel="import" href="minimap-element.html">
+
+<polymer-element name="dartdoc-minimap-class" 
+extends="article" attributes="item">
+  <template>
+  <div class="visible-lg col-lg-3 well well-sm nav affix-right"
+      id="minimap">
+    <a href="#dartdoc-top">
+      {{name}} Class
+    </a>
+    <ul>
+      <template
+          if="{{operatorItems.isNotEmpty}}">
+          <template if="{{shouldShowOperators}}">
+            <li><a href="{{currentLocation}}#operators" on-click="hideShow">
+              Operators<b class="caret"></b>
+            </a></li>
+            <ul id="minimap-operators" class="collapse in">
+              <article is="dartdoc-minimap"
+                items="{{operatorItems}}">
+              </article>
+            </ul>
+          </template>
+        </template>
+        <template
+          if="{{variableItems.isNotEmpty}}">
+          <template if="{{shouldShowVariables}}">
+            <li><a href="{{currentLocation}}#properties" on-click="hideShow">
+              Properties<b class="caret"></b>
+            </a></li>
+            <ul id="minimap-properties" class="collapse in">
+              <article is="dartdoc-minimap"
+                items="{{variableItems}}">
+              </article>
+            </ul>
+          </template>
+        </template>
+        <template
+          if="{{constructorItems.isNotEmpty}}">
+          <template if="{{shouldShowConstructors}}">
+              <li><a href="{{currentLocation}}#constructors" on-click="hideShow">
+              Constructors<b class="caret"></b>
+            </a></li>
+            <ul id="minimap-constructors" class="collapse in">
+              <article is="dartdoc-minimap"
+                items="{{constructorItems}}">
+              </article>
+            </ul>
+          </template>
+        </template>
+        <template
+          if="{{functionItems.isNotEmpty}}">
+          <template if="{{shouldShowFunctions}}">
+            <li><a href="{{currentLocation}}#functions" on-click="hideShow">
+              Methods<b class="caret"></b>
+            </a></li>
+            <ul id="minimap-functions" class="collapse in">
+              <article is="dartdoc-minimap"
+                items="{{functionItems}}">
+              </article>
+            </ul>
+          </template>
+        </template>
+      </ul>
+    </div>
+  </template>
+  <script type="application/dart" src="minimap-class.dart"></script> 
+</polymer-element>

@@ -6,7 +6,7 @@ import 'package:yaml/yaml.dart';
 
 import 'dart:async';
 import 'dart:html';
-import 'dart:json';
+import 'dart:convert';
 
 /**
  * Retrieves a file at the given [path].
@@ -19,7 +19,7 @@ Future<String> retrieveFileContents(String path) {
  * Creates a [Library] object from the [response] string of YAML.
  */
 Item loadData(String response) {
-  var doc = isYaml ? loadYaml(response) : parse(response);
+  var doc = isYaml ? loadYaml(response) : JSON.decode(response);
   if (doc == null) return null;
-  return new Library(doc); 
+  return new Library(doc);
 }
