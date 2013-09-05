@@ -8,6 +8,26 @@ import 'package:web_ui/web_ui.dart';
 
 import 'app.dart' as app;
 
+class SameProtocolUriPolicy implements UriPolicy {
+  final AnchorElement _hiddenAnchor = new AnchorElement();
+  final Location _loc = window.location;
+
+  bool allowsUri(String uri) {
+    _hiddenAnchor.href = uri;
+    // IE leaves an empty protocol for same-origin URIs.
+    var older = _hiddenAnchor.protocol;
+    var newer = _loc.protocol;
+    if ((older == "http:" && newer == "https:")
+        || (older == "https:" && newer == "http:")) {
+      return true;
+    }
+    return (older == newer || older == ':');
+  }
+}
+
+var validator = new NodeValidatorBuilder()
+    ..allowHtml5(uriPolicy: new SameProtocolUriPolicy());
+
 /// This is a web component to be extended by all Dart members with comments.
 /// Each member has an [Item] associated with it as well as a comment to
 /// display, so this class handles those two aspects shared by all members.
@@ -38,7 +58,7 @@ class MemberElement extends WebComponent {
     if (comment != '' && comment != null) {
       var commentLocation = getShadowRoot(elementName).query('.description');
       commentLocation.children.clear();
-      var commentElement = new Element.html(comment);
+      var commentElement = new Element.html(comment, validator: validator);
       var links = commentElement.queryAll('a');
       for (AnchorElement link in links) {
         if (link.href =='') {
@@ -49,11 +69,13 @@ class MemberElement extends WebComponent {
             // TODO(tmandel): Handle parameters differently?
             var index = link.text.indexOf('#');
             var newName = link.text.substring(index + 1, link.text.length);
-            link.replaceWith(new Element.html('<i>$newName</i>'));
+            link.replaceWith(new Element.html('<i>$newName</i>',
+                validator: validator));
           } else if (!index.keys.contains(link.text)) {
             // If markdown links to private or otherwise unknown members are
             // found, make them <i> tags instead of <a> tags for CSS.
-            link.replaceWith(new Element.html('<i>${link.text}</i>'));
+            link.replaceWith(new Element.html('<i>${link.text}</i>',
+                validator: validator));
           } else {
             var linkable = new LinkableType(link.text);
             link
@@ -102,7 +124,7 @@ class InheritedElement extends MemberElement {
   LinkableType inheritedFrom;
   LinkableType commentFrom;
 
-  Method get item => super.item;
+  get item => super.item;
 
   inserted() {
     if (isInherited) {
