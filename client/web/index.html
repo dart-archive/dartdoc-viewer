@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<script src="packages/polymer/boot.js"></script>
 <link rel="stylesheet" href="static/css/bootstrap.css">
  <link rel="stylesheet" href="static/css/pics.css">
 <link rel="import" href="category.html">
@@ -16,6 +15,8 @@
 </head>
 
 <body>
+<script type="application/dart" src="packages/polymer/init.dart"></script>
+<script src="packages/browser/dart.js"></script>
 <polymer-element name="dartdoc-main">
   <template>
     <title>
@@ -36,7 +37,7 @@
         <a href="http://www.dartlang.org/" class="navbar-brand header-logo"></a>
         <a href="#home"
           class="navbar-brand btn-link">
-          Dart API Reference
+          Dart API Reference (Work-in-Progress)
         </a>
     
         <div class="nav-collapse collapse navbar-responsive-collapse"
@@ -52,7 +53,7 @@
                 Options <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <template if="{{viewer.currentPage != viewer.homePage}}">
+                <template if="{{!isHomePage}}">
                   <li class="visible-lg"><a on-click="togglePanel">
                     <template if="{{viewer.isPanel}}">Hide Libraries</template>
                     <template if="{{!viewer.isPanel}}">Show Libraries</template>
@@ -79,22 +80,22 @@
   
     <div class="main-body">
       <template if="{{viewer.currentPage != null && viewer.isPanel}}">
-        <div is="dartdoc-library-panel"></div>
+        <dartdoc-library-panel></dartdoc-library-panel>
       </template>
   
     <main id="page-content" class="{{pageContentClass}}">
-      <article id="dartdoc-page" is="dartdoc-page" home="{{viewer.homePage}}">
-      </article>
+      <dartdoc-page id="dartdoc-page" home="{{homePage}}">
+      </dartdoc-page>
     </main>
   
     <template if="{{shouldShowLibraryMinimap}}">
-        <article is="dartdoc-minimap-library" item={{viewer.currentPage}}>
-        </article>
+        <dartdoc-minimap-library item={{viewer.currentPage}}>
+        </dartdoc-minimap-library>
     </template>
 
     <template if="{{shouldShowClassMinimap}}">
-      <article is="dartdoc-minimap-class" item={{viewer.currentPage}}>
-      </article>
+      <dartdoc-minimap-class item={{viewer.currentPage}}>
+      </dartdoc-minimap-class>
     </template>
   
   </div>
@@ -103,6 +104,7 @@
 
 <script type="application/dart" src="app.dart"></script>
 <script type="application/dart" src="index.dart"></script>
+
 
 <dartdoc-main id="dartdoc-main"></dartdoc-main>
 </body>

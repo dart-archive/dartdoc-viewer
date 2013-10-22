@@ -31,15 +31,15 @@ String sourcePath = '../../docs/library_list.json';
 const int desktopSizeBoundary = 1006;
 
 /// The [Viewer] object being displayed.
-  final Viewer viewer = new Viewer._();
+final Viewer viewer = new Viewer._();
 
-
-  IndexElement _dartdocMain;
-  IndexElement dartdocMain =
-      _dartdocMain == null ? _dartdocMain = query("#dartdoc-main").xtag : null;
+IndexElement _dartdocMain;
+IndexElement dartdocMain = _dartdocMain == null
+    ? _dartdocMain = querySelector("#dartdoc-main").xtag
+    : null;
 
 /// The Dartdoc Viewer application state.
-class Viewer extends ObservableBase {
+class Viewer extends Observable {
 
   @observable bool isDesktop = window.innerWidth > desktopSizeBoundary;
 
@@ -51,7 +51,14 @@ class Viewer extends ObservableBase {
   /// The current page being shown. An Item.
   /// TODO(alanknight): Restore the type declaration here and structure the code
   /// so we can avoid the warnings from casting to subclasses.
-  @observable var currentPage;
+  var _currentPage;
+  @observable get currentPage => _currentPage;
+  set currentPage(newPage) {
+    var oldPage = _currentPage;
+    _currentPage = newPage;
+    notifyPropertyChange(#breadcrumbs, null, breadcrumbs);
+    notifyPropertyChange(#currentPage, oldPage, newPage);
+  }
 
   /// State for whether or not the library list panel should be shown.
   bool _isPanel = true;
@@ -78,14 +85,10 @@ class Viewer extends ObservableBase {
       homePage = new Home(libraries);
     });
 
-    new PathObserver(this, "currentPage").bindSync(
-      (_) {
-        notifyProperty(this, #breadcrumbs);
-      });
     new PathObserver(this, "isDesktop").bindSync(
       (_) {
-        notifyProperty(this, #isMinimap);
-        notifyProperty(this, #isPanel);
+        notifyPropertyChange(#isMinimap, null, isMinimap);
+        notifyPropertyChange(#isPanel, null, isPanel);
       });
   }
 
@@ -297,13 +300,13 @@ class Viewer extends ObservableBase {
   /// Toggles the library panel
   void togglePanel() {
     isPanel = !_isPanel;
-    notifyProperty(this, #isPanel);
+    notifyPropertyChange(#isPanel, !_isPanel, _isPanel);
   }
 
   /// Toggles the minimap panel
   void toggleMinimap() {
     isMinimap = !_isMinimap;
-    notifyProperty(this, #isMinimap);
+    notifyPropertyChange(#isMinimap, !_isMinimap, _isMinimap);
   }
 
   /// Toggles showing inherited members.
@@ -333,7 +336,7 @@ void navigate(event) {
 }
 
 /// Handles browser navigation.
-main() {
+@initMethod _init() {
   _pathname = window.location.pathname;
 
   window.onResize.listen((event) {

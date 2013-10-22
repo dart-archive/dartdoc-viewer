@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <link rel="import" href="item.html">
 
-<polymer-element name="dartdoc-homepage" extends="article"  attributes="item">
+<polymer-element name="dartdoc-homepage"  attributes="item">
   <template>
       <section class="description"></section>
       {{addComment('dartdoc-homepage')}}
       <div class="page-header"><h1>Libraries</h1></div>
-      <template repeat="{{library in libraries}}"> 
-        <div is="dartdoc-item" class="panel" item="{{library}}"></div>
-      </template>
-
+      <div id="librariesGoHere"></div>
   </template>
 
   <script type="application/dart" src="homepage.dart"></script>

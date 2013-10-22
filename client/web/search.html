@@ -4,48 +4,39 @@ Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
 for details. All rights reserved. Use of this source code is governed by a
 BSD-style license that can be found in the LICENSE file.
 -->
-<html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="import" href="results.html">
-  </head>
+<link rel="import" href="results.html">
 
-  <body>
-  <polymer-element name="search-box">
-    <template>
-      <div class="navbar-form pull-right dropdown {{dropdownOpen}}" id="search">
-        <input type="search" name="q" id="q" autocomplete="off"
-            class="form-control dropdown-toggle" placeholder="Search API"
-            value="{{searchQuery}}"
-            data-toggle="dropdown">
+<polymer-element name="search-box">
+  <template>
+    <div class="navbar-form pull-right dropdown {{dropdownOpen}}" id="search">
+      <input type="search" name="q" id="q" autocomplete="off"
+          class="form-control dropdown-toggle" placeholder="Search API"
+          value="{{searchQuery}}"
+          data-toggle="dropdown">
 
-          <ul class="dropdown-menu pull-right" role="menu"
-              aria-labelledby="dropdownMenu">
-            <template if="{{hasNoResults}}">
-              <li class="search-result disabled">
-                <a tabindex="-1" href="#">No Results.</a>
-              </li>
-            </template>
-            <template repeat="{{result in results}}">
-              <!-- A tabIndex of 0 allows for tab navigation through results -->
-              <li tabindex="0"
-                  class="search-result">
-                  <a is="search-result" item="{{result}}"
-                    on-click="onSubmitCallback"
-                    id="search{{result.position}}"
-                    data-ref-id="{{result.element}}" >
-                </a> 
-              </li>
-            </template>
-            <!-- TODO(janicejl): Add "...add More" link to show more results.-->
-          </ul>
-        </div>
+        <ul class="dropdown-menu pull-right" role="menu"
+            aria-labelledby="dropdownMenu">
+          <template if="{{hasNoResults}}">
+            <li class="search-result disabled">
+              <a tabindex="-1" href="#">No Results.</a>
+            </li>
+          </template>
+          <template repeat="{{result in results}}">
+            <!-- A tabIndex of 0 allows for tab navigation through results -->
+            <li tabindex="0"
+                class="search-result">
+                <a is="search-result" item="{{result}}"
+                  on-click="onSubmitCallback"
+                  id="search{{result.position}}"
+                  data-ref-id="{{result.element}}" >
+              </a>
+            </li>
+          </template>
+          <!-- TODO(janicejl): Add "...add More" link to show more results.-->
+        </ul>
+      </div>
 
-    </template>
-
-
-    <script type="application/dart" src="search.dart">
-    </script>
-  </polymer-element>
-
-</body></html>
+  </template>
+</polymer-element>
+<script type="application/dart" src="search.dart">
+</script>

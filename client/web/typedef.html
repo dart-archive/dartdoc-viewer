@@ -2,23 +2,23 @@
 <link rel="import" href="parameters.html">
 <link rel="import" href="annotations.html">
 
-<polymer-element name="dartdoc-typedef" extends="article" attributes="item">
+<polymer-element name="dartdoc-typedef" attributes="item">
   <template>
     
       <div class="page-header"><h1>{{name}} typedef</h1></div>
 
 
       <!-- Signature --> 
-      <div class="panel">
+      <div class="panel-heading">
         <dartdoc-annotation annotations="{{annotations}}">
         </dartdoc-annotation>
+
         <p class="panel-title">typedef
           <a href="#{{location}}">
             {{simpleType}}
           </a>{{name}}
-
-          <small is="dartdoc-parameter" parameters="{{parameters}}">
-          </small>
+          <dartdoc-parameter parameters="{{parameters}}">
+          </dartdoc-parameter>
         </p>
       </div>
 

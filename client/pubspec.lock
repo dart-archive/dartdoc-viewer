@@ -4,63 +4,63 @@ packages:
   analyzer_experimental:
     description: analyzer_experimental
     source: hosted
-    version: "0.8.1+2"
+    version: "0.8.2"
   args:
     description: args
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   barback:
     description: barback
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   browser:
     description: browser
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   csslib:
     description: csslib
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   custom_element:
     description: custom_element
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   html5lib:
     description: html5lib
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   html_import:
     description: html_import
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   logging:
     description: logging
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   mdv:
     description: mdv
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   meta:
     description: meta
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   mutation_observer:
     description: mutation_observer
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   observe:
     description: observe
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   path:
     description: path
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   polymer:
     description: polymer
     source: hosted
-    version: "0.8.1+1"
+    version: "0.8.2"
   polymer_expressions:
     description: polymer_expressions
     source: hosted
@@ -72,24 +72,24 @@ packages:
   source_maps:
     description: source_maps
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   stack_trace:
     description: stack_trace
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   unittest:
     description: unittest
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   unmodifiable_collection:
     description: unmodifiable_collection
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   utf:
     description: utf
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"
   yaml:
     description: yaml
     source: hosted
-    version: "0.8.1"
+    version: "0.8.2"

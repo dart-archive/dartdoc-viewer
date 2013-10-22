@@ -8,41 +8,27 @@ import 'member.dart';
 /// An element in a page's minimap displayed on the right of the page.
 @CustomTag("dartdoc-minimap")
 class MinimapElement extends DartdocElement {
-  MinimapElement() {
+  MinimapElement.created() : super.created() {
     new PathObserver(this, "viewer.isInherited").bindSync(
       (_) {
-        notifyProperty(this, #shouldShow);
-        notifyProperty(this, #addLink);
-        notifyProperty(this, #itemsToShow);
-      });
-    new PathObserver(this, "viewer.currentPage").bindSync(
-      (_) {
-        notifyProperty(this, #shouldShow);
-        notifyProperty(this, #addLink);
-      });
-    new PathObserver(this, "items").bindSync(
-      (_) {
-        notifyProperty(this, #itemsToShow);
+        notifyPropertyChange(#itemsToShow, null, itemsToShow);
       });
   }
 
-  @observable List<Item> items = [];
+  List<Item> _items = [];
+  @published List<Item> get items => _items;
+  @published set items(newItems) {
+    notifyObservables(() => _items = newItems);
+  }
+
+  get observables => concat(super.observables, const [#itemsToShow]);
 
   @observable get itemsToShow => items.where(
       (item) => !item.isInherited || viewer.isInherited);
 
   /// Creates a proper href String for an [Item].
-  String link(linkItem) {
+  @observable String link(linkItem) {
    var hash = linkItem.name == '' ? linkItem.decoratedName : linkItem.name;
    return '${viewer.currentPage.linkHref}#${viewer.toHash(hash)}';
-  }
-
-  @observable shouldShow(item) => !item.isInherited || viewer.isInherited;
-
-  addLink(item) {
-    if (!shouldShow(item)) return;
-    var fragment = parent.createFragment(
-        '<li><a href="#${link(item)}">${item.decoratedName}</a></li>');
-    shadowRoot.append(fragment);
   }
 }

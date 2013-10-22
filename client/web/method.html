@@ -5,7 +5,7 @@
 <link rel="import" href="annotations.html">
 
 <!-- TODO(tmandel): Reduce redundancy here and in method-panel.html -->
-<polymer-element name="dartdoc-method" extends="article" attributes="item">
+<polymer-element name="dartdoc-method" attributes="item">
   <template>
       <dartdoc-annotation annotations="{{annotations}}">
       </dartdoc-annotation>
@@ -21,7 +21,7 @@
           <template if="{{item.isOperator}}">operator</template>
           {{item.decoratedName}}
            <!-- Parameters -->
-          <small is="dartdoc-parameter" parameters="{{parameters}}"></small>
+          <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
         </h1>
       </div>
 

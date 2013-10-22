@@ -11,18 +11,14 @@ import 'member.dart';
  */
 @CustomTag("variable-heading")
 class VariableHeading extends MemberElement {
-  VariableHeading() {
-    new PathObserver(this, "item").bindSync(
-        (_) {
-          notifyProperty(this, #getter);
-          notifyProperty(this, #setterParameter);
-          notifyProperty(this, #type);
-          notifyProperty(this, #name);
-          notifyProperty(this, #idName);
-        });
-  }
+  VariableHeading.created() : super.created();
 
-  Variable get item => super.item;
+  get observables => concat(super.observables,
+      const [#getter, #setterParameter, #type, #name, #idName]);
+  get defaultItem => new Variable({'type' : [null]})..name = 'loading';
+  wrongClass(newItem) => newItem is! Variable;
+
+  get item => super.item;
   set item(newItem) => super.item = newItem;
 
   @observable String get getter => item != null && item.isGetter ? 'get' : '';

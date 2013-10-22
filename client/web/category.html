@@ -2,8 +2,9 @@
 <link rel="import" href="item.html">
 <link rel="import" href="variable.html">
 <link rel="import" href="method-panel.html">
+<link rel="import" href="typedef.html">
 
-<polymer-element name="dartdoc-category" attributes="category" extends="div">
+<polymer-element name="dartdoc-category" attributes="category">
    <template>
    <div class="accordion-heading">
       <a class="accordion-toggle {{accordionStyle}}"
@@ -20,16 +21,6 @@
       style="height:{{divStyle}}">
      <div class="accordion-inner">
         <ul id="itemList" class="nav nav-pills nav-stacked">
-        <template repeat="{{variable in categoryVariables}}">
-          <div is="dartdoc-variable" item="{{variable}}" class="panel"></div>
-        </template>
-        <template repeat="{{class in categoryEverythingElse}}">
-           <div is="dartdoc-item" class="panel" item="{{class}}"></div>
-        </template>
-        <template repeat="{{method in categoryMethods}}">
-           <div is="method-panel" class="panel" item="{{method}}">
-           </div>
-        </template>       
         </ul>
       </div>
     </div>
@@ -38,4 +29,3 @@
 <script type="application/dart" src="category.dart"></script>
 
 </polymer-element>
-

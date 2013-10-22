@@ -10,18 +10,17 @@ import 'member.dart';
 
 @CustomTag("dartdoc-parameter")
 class ParameterElement extends DartdocElement {
-  ParameterElement() {
-    new PathObserver(this, "parameters").bindSync(
-        (_) {
-          notifyProperty(this, #required);
-          notifyProperty(this, #optional);
-          notifyProperty(this, #optionalOpeningDelimiter);
-          notifyProperty(this, #optionalClosingDelimiter);
-          notifyProperty(this, #addAllParameters);
-        });
-  }
+  ParameterElement.created() : super.created();
 
-  @observable List<Parameter> parameters = const [];
+  get observables => concat(super.observables, const [#required, #optional,
+      #optionalOpeningDelimiter, #optionalClosingDelimiter]);
+  get methodsToCall => concat(super.methodsToCall, const [#addAllParameters]);
+
+  List<Parameter> _parameters = const [];
+  @published get parameters => _parameters;
+  @published set parameters(newParameters) {
+    notifyObservables(() => _parameters = newParameters);
+  }
 
   // Required parameters.
   @observable List<Parameter> get required =>
@@ -32,13 +31,13 @@ class ParameterElement extends DartdocElement {
     parameters.where((parameter) => parameter.isOptional).toList();
 
   @observable get optionalOpeningDelimiter =>
-      optional.first.isNamed ? '{' : '[';
+      optional.isEmpty ? '' : optional.first.isNamed ? '{' : '[';
 
   @observable get optionalClosingDelimiter =>
-      optional.first.isNamed ? '}' : ']';
+      optional.isEmpty ? '' : optional.first.isNamed ? '}' : ']';
 
   addAllParameters() {
-    var location = shadowRoot.query('.required');
+    var location = shadowRoot.querySelector('.required');
     if (location == null) return;
     location.children.clear();
     location.appendText('(');

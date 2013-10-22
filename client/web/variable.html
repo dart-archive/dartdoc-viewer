@@ -2,14 +2,14 @@
 <link rel="import" href="annotations.html">
 <link rel="import" href="variable-heading.html">
 
-<polymer-element name="dartdoc-variable" attributes="item" extends="div">
+<polymer-element name="dartdoc-variable" attributes="item">
   <template>
 
     <div class="panel-heading">
       <dartdoc-annotation annotations="{{annotations}}">
       </dartdoc-annotation>
-      <p is="variable-heading" item="{{item}}">
-      </p>
+      <variable-heading item="{{item}}">
+      </variable-heading>
     </div>
 
     <p class="text-right"><dfn>

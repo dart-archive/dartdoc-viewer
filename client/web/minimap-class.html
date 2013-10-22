@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <link rel="import" href="minimap-element.html">
 
-<polymer-element name="dartdoc-minimap-class" 
-extends="article" attributes="item">
+<polymer-element name="dartdoc-minimap-class" attributes="item">
   <template>
   <div class="visible-lg col-lg-3 well well-sm nav affix-right"
       id="minimap">
@@ -11,54 +10,55 @@ extends="article" attributes="item">
     </a>
     <ul>
       <template
-          if="{{operatorItems.isNotEmpty}}">
+          if="{{operatorItemsIsNotEmpty}}">
           <template if="{{shouldShowOperators}}">
             <li><a href="{{currentLocation}}#operators" on-click="hideShow">
               Operators<b class="caret"></b>
             </a></li>
             <ul id="minimap-operators" class="collapse in">
-              <article is="dartdoc-minimap"
+              <dartdoc-minimap
                 items="{{operatorItems}}">
-              </article>
+              </dartdoc-minimap>
             </ul>
           </template>
         </template>
         <template
-          if="{{variableItems.isNotEmpty}}">
+          if="{{variableItemsIsNotEmpty}}">
           <template if="{{shouldShowVariables}}">
             <li><a href="{{currentLocation}}#properties" on-click="hideShow">
               Properties<b class="caret"></b>
             </a></li>
             <ul id="minimap-properties" class="collapse in">
-              <article is="dartdoc-minimap"
+              <dartdoc-minimap
                 items="{{variableItems}}">
-              </article>
+              </dartdoc-minimap>
             </ul>
           </template>
         </template>
         <template
-          if="{{constructorItems.isNotEmpty}}">
+          if="{{constructorItemsIsNotEmpty}}">
           <template if="{{shouldShowConstructors}}">
-              <li><a href="{{currentLocation}}#constructors" on-click="hideShow">
+              <li><a href="{{currentLocation}}#constructors" 
+               on-click="hideShow">
               Constructors<b class="caret"></b>
             </a></li>
             <ul id="minimap-constructors" class="collapse in">
-              <article is="dartdoc-minimap"
+              <dartdoc-minimap
                 items="{{constructorItems}}">
-              </article>
+              </dartdoc-minimap>
             </ul>
           </template>
         </template>
         <template
-          if="{{functionItems.isNotEmpty}}">
+          if="{{functionItemsIsNotEmpty}}">
           <template if="{{shouldShowFunctions}}">
             <li><a href="{{currentLocation}}#functions" on-click="hideShow">
               Methods<b class="caret"></b>
             </a></li>
             <ul id="minimap-functions" class="collapse in">
-              <article is="dartdoc-minimap"
+              <dartdoc-minimap
                 items="{{functionItems}}">
-              </article>
+              </dartdoc-minimap>
             </ul>
           </template>
         </template>

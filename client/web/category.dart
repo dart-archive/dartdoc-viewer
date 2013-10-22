@@ -15,32 +15,56 @@ import 'dart:html';
  @CustomTag("dartdoc-category")
 class CategoryElement extends DartdocElement {
 
-  CategoryElement() {
-    new PathObserver(this, "category.name").bindSync(
-        (_) {
-          notifyProperty(this, #title);
-          notifyProperty(this, #stylizedName);
-        });
-    new PathObserver(viewer, "isDesktop").bindSync(
-        (_) {
-          notifyProperty(this, #accordionStyle);
-          notifyProperty(this, #accordionParent);
-          notifyProperty(this, #divClass);
-          notifyProperty(this, #divStyle);
-          notifyProperty(this, #currentLocation);
-        });
-    new PathObserver(this, "category").bindSync(
-        (_) {
-          _flushCache();
-          notifyProperty(this, #categoryContent);
-          notifyProperty(this, #categoryVariables);
-          notifyProperty(this, #categoryMethods);
-          notifyProperty(this, #categoryEverythingElse);
-          notifyProperty(this, #currentLocation);
-        });
+  CategoryElement.created() : super.created() {
+    new PathObserver(viewer, "isDesktop").changes.listen((changes) {
+      var change = changes.first;
+      notifyPropertyChange(
+          #accordionStyle, accordionStyleFor(change.oldValue), accordionStyle);
+      notifyPropertyChange(#accordionParent,
+          accordionParentFor(change.oldValue), accordionParent);
+      notifyPropertyChange(#divClass, divClassFor(change.oldValue), divClass);
+      notifyPropertyChange(#divStyle, divStyleFor(change.oldValue), divStyle);
+    });
+    style.setProperty('display', 'block');
   }
 
-  @observable Container category;
+  addChildren() {
+    var elements = [];
+    var types = {
+      'dartdoc-variable' : categoryVariables,
+      'dartdoc-item' : categoryEverythingElse,
+      'method-panel' : categoryMethods
+    };
+    types.forEach((tagName, items) {
+      for (var subItem in items) {
+        var newItem = document.createElement(tagName);
+        newItem.item = subItem;
+        newItem.classes.add("panel");
+        elements.add(newItem);
+      }
+    });
+    var root = shadowRoot.querySelector("#itemList");
+    root.children.clear();
+    root.children.addAll(elements);
+  }
+
+  get observables => concat(super.observables,
+    const [#category, #categoryContent, #categoryVariables,
+    #categoryMethods, #categoryEverythingElse, #currentLocation, #title,
+    #stylizedName]);
+
+  Container _category;
+  @published Container get category => _category;
+  @published set category(newCategory) {
+    if (newCategory == null || newCategory is! Container ||
+        newCategory == _category) return;
+    _flushCache();
+    notifyObservables(() {
+      _category = newCategory;
+      _flushCache();
+    });
+    addChildren();
+  }
 
   @observable String get title => category == null ? '' : category.name;
 
@@ -78,12 +102,16 @@ class CategoryElement extends DartdocElement {
     _everythingElseCache = null;
   }
 
-  @observable get accordionStyle => viewer.isDesktop ? '' : 'collapsed';
-  @observable get accordionParent =>
-      viewer.isDesktop ? '' : '#accordion-grouping';
+  @observable get accordionStyle => accordionStyleFor(viewer.isDesktop);
+  accordionStyleFor(isDesktop) => isDesktop ? '' : 'collapsed';
+  @observable get accordionParent => accordionParentFor(viewer.isDesktop);
+  accordionParentFor(isDesktop) => isDesktop ? '' : '#accordion-grouping';
 
-  @observable get divClass => viewer.isDesktop ? 'collapse in' : 'collapse';
-  @observable get divStyle => viewer.isDesktop ? 'auto' : '0px';
+  @observable get divClass => divClassFor(viewer.isDesktop);
+  divClassFor(isDesktop) => isDesktop ? 'collapse in' : 'collapse';
+  @observable get divStyle => divStyleFor(viewer.isDesktop);
+  divStyleFor(isDesktop) => isDesktop ? 'auto' : '0px';
+
 
   var validator = new NodeValidatorBuilder()
     ..allowHtml5(uriPolicy: new SameProtocolUriPolicy())
@@ -94,7 +122,7 @@ class CategoryElement extends DartdocElement {
     ..allowTagExtension("method-panel", "div", attributes: ["item"]);
 
   hideShow(event, detail, target) {
-    var list = shadowRoot.query("#" + target.hash.split("#").last);
+    var list = shadowRoot.querySelector("#" + target.hash.split("#").last);
     if (list.classes.contains("in")) {
       list.classes.remove("in");
       list.style.height = '0px';
@@ -104,5 +132,5 @@ class CategoryElement extends DartdocElement {
     }
   }
 
-  @observable get currentLocation => window.location;
+  @observable get currentLocation => window.location.toString();
 }

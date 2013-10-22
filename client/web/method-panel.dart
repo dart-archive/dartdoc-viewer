@@ -8,18 +8,16 @@ import 'package:dartdoc_viewer/item.dart';
 
 @CustomTag("method-panel")
 class MethodPanel extends MethodElement {
-  MethodPanel() {
-    new PathObserver(this, "item").bindSync(
-        (_) {
-          notifyProperty(this, #annotations);
-          notifyProperty(this, #modifiers);
-          notifyProperty(this, #shouldShowMethodComment);
-          notifyProperty(this, #createType);
-          notifyProperty(this, #parameters);
-          notifyProperty(this, #isInherited);
-          notifyProperty(this, #hasInheritedComment);
-        });
+  MethodPanel.created() : super.created() {
+    style.setProperty('display', 'block');
   }
+
+  get observables => concat(super.observables,
+      const [#annotations, #modifiers, #shouldShowMethodComment,
+      #parameters, #isInherited, #hasInheritedComment]);
+  get methodsToCall => concat(super.methodsToCall, const [#createType]);
+
+  wrongClass(newItem) => newItem is! Method;
 
   createType(NestedType type, String memberName, String className) {
     if (!item.isConstructor) {
@@ -31,7 +29,7 @@ class MethodPanel extends MethodElement {
   get item => super.item;
 
   @observable String get modifiers =>
-      constantModifier + abstractModifier + staticModifier;
+      constantModifier + staticModifier;
   @observable get constantModifier => item.isConstant ? 'const' : '';
   @observable get abstractModifier => item.isAbstract ? 'abstract' : '';
   @observable get staticModifier => item.isStatic ? 'static' : '';

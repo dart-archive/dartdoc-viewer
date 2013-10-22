@@ -8,21 +8,16 @@ import 'member.dart';
 
 @CustomTag("dartdoc-typedef")
 class TypedefElement extends MemberElement {
-  TypedefElement() {
-    new PathObserver(this, "item").bindSync(
-        (_) {
-          notifyProperty(this, #required);
-          notifyProperty(this, #optional);
-          notifyProperty(this, #annotations);
-          notifyProperty(this, #name);
-          notifyProperty(this, #location);
-          notifyProperty(this, #simpleType);
-          notifyProperty(this, #parameters);
-        });
-  }
+  TypedefElement.created() : super.created();
 
-  Typedef get item => super.item;
-  set item(x) => super.item = x;
+  get observables => concat(super.observables,
+      const [#required, #optional, #annotations, #name,
+      #location, #simpleType, #parameters]);
+  wrongClass(newItem) => newItem is! Typedef;
+  get defaultItem => null;
+
+  get item => super.item;
+  set item(newItem) => super.item = newItem;
 
   @observable get name => check(() => item.name);
   @observable get location => check(() => item.type.location);

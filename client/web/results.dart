@@ -5,24 +5,32 @@ import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:polymer/polymer.dart';
 import 'member.dart';
+import 'dart:html';
 
 /**
  * An HTML representation of a Search Result.
  */
 @CustomTag("search-result")
-class Result extends MemberElement {
+class Result extends AnchorElement with Polymer, Observable {
 
-  Result() {
-    new PathObserver(this, "item").bindSync(
-        (_) {
-          notifyProperty(this, #descriptiveName);
-          notifyProperty(this, #descriptiveType);
-          notifyProperty(this, #outerLibrary);
-        });
+  Result.created() : super.created();
+
+  var _item;
+
+  @published get item => _item;
+  set item(newItem) {
+    var oldItem = item;
+    var oldObservables = [descriptiveName, descriptiveType, outerLibrary];
+    _item = newItem;
+    notifyPropertyChange(#item, oldItem, newItem);
+    notifyPropertyChange(#descriptiveName, oldObservables.first,
+        descriptiveName);
+    notifyPropertyChange(#descriptiveType, oldObservables[1],
+        descriptiveName);
+    notifyPropertyChange(#outerLibrary, oldObservables.last, descriptiveName);
   }
 
-  get item => super.item;
-  set item(x) => super.item = x;
+  get applyAuthorStyles => true;
 
   @observable String get membertype => item == null ? 'none' : item.type;
   @observable String get qualifiedname => item == null ? 'none' : item.element;

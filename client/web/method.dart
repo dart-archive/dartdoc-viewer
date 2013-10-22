@@ -8,15 +8,11 @@ import 'package:polymer/polymer.dart';
 // We should either delete them or make them navigable.
 @CustomTag("dartdoc-method")
 class DartdocMethod extends MethodElement {
-  DartdocMethod() {
-    new PathObserver(this, "item").bindSync(
-        (_) {
-          notifyProperty(this, #annotations);
-          notifyProperty(this, #modifiers);
-          notifyProperty(this, #shouldShowMethodComment);
-          notifyProperty(this, #createMethodType);
-        });
-  }
+  DartdocMethod.created() : super.created();
+
+  get observables => concat(super.observables,
+      const [#annotations, #modifiers, #shouldShowMethodComment]);
+  get methodsToCall => concat(super.methodsToCall, const [#createMethodType]);
 
   get item => super.item;
   set item(x) => super.item = x;
@@ -27,7 +23,7 @@ class DartdocMethod extends MethodElement {
     }
   }
 
-  @observable String get modifiers => constantModifier + abstractModifier
+  @observable String get modifiers => constantModifier
       + staticModifier;
   get constantModifier => item.isConstant ? 'const' : '';
   get abstractModifier => item.isAbstract ? 'abstract' : '';

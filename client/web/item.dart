@@ -6,6 +6,7 @@ import 'package:dartdoc_viewer/item.dart';
 
 import 'app.dart' as app;
 import 'member.dart';
+import 'dart:html';
 
 /**
  * An HTML representation of a Item.
@@ -14,26 +15,24 @@ import 'member.dart';
  */
  @CustomTag("dartdoc-item")
 class ItemElement extends MemberElement {
-  ItemElement() {
-    item = defaultItem();
-    new PathObserver(this, "item").bindSync(
-        (_) {
-          notifyProperty(this, #title);
-          notifyProperty(this, #parameters);
-          notifyProperty(this, #type);
-          notifyProperty(this, #linkHref);
-          notifyProperty(this, #isMethod);
-          notifyProperty(this, #modifiers);
-          notifyProperty(this, #shouldShowClassOrLibraryComment);
-          notifyProperty(this, #shouldShowMethodComment);
-          notifyProperty(this, #idName);
-        });
+  ItemElement.created() : super.created() {
+    style.setProperty('display', 'block');
   }
 
-  get item => super.item;
-  set item(x) => super.item = (x == null || x is! Item) ? defaultItem() : x;
+  get observables => concat(super.observables,
+      const [#title, #parameters, #type, #linkHref, #isMethod,
+      #modifiers, #shouldShowClassOrLibraryComment, #shouldShowMethodComment,
+      #idName]);
 
-  defaultItem() => new Class.forPlaceholder("<p>loading</p>", "<p>loading</p>");
+  get methodsToCall => concat(super.methodsToCall, const [#addChildren]);
+
+  wrongClass(newItem) => newItem is! Item;
+
+  get defaultItem =>
+      new Class.forPlaceholder("<p>loading</p>", "<p>loading</p>");
+
+  get item => super.item;
+  set item(newItem) => super.item = newItem;
 
   @observable get linkHref => item.linkHref;
   @observable String get title => item.decoratedName;
@@ -56,4 +55,55 @@ class ItemElement extends MemberElement {
       (item is Class || item is Library) && item.previewComment != null;
   @observable get shouldShowMethodComment =>
       item is Method && item.comment != '<span></span>';
- }
+
+  enteredView() {
+    super.enteredView();
+    addChildren();
+  }
+
+  addChildren() {
+    // TODO(alanknight): Some of what was being done in the template is nicer
+    // in code, but it would be much better if we could move some of this
+    // back to a template once performance improves.
+    var out = new StringBuffer();
+    var mainAnchor = new AnchorElement()
+      ..href = "#$linkHref"
+      ..id = idName;
+    if (!isMethod) {
+      mainAnchor.appendText(title);
+    } else if (isMethod && !isConstructor) {
+      if (item.type != null && !item.type.isDynamic) {
+        var returnType = new SpanElement()
+          ..classes.add("type");
+        returnType.append(MemberElement.createInner(item.type));
+        mainAnchor.append(returnType);
+      }
+      var signature = new SpanElement();
+      signature.appendText(modifiers);
+      var decoratedName = new Element.html('<b>${item.decoratedName}</b>');
+      signature.append(decoratedName);
+      var params = document.createElement('dartdoc-parameter');
+      params.parameters = parameters;
+      signature.append(params);
+      mainAnchor.append(signature);
+    }
+
+    var root = shadowRoot.querySelector("#nameGoesHere");
+    root.children.clear();
+    root.append(mainAnchor);
+
+    if (shouldShowClassOrLibraryComment) {
+      var commentary = [new Element.html('<hr/>')];
+      commentary.add(new Element.html('<p class="description"></p>'));
+      addComment('dartdoc-item', true, commentary.last);
+      root.children.addAll(commentary);
+    }
+    if (shouldShowMethodComment) {
+      var commentary = [new Element.html('<hr/>')];
+      commentary.add(new Element.html('<p class="description"></p>' +
+          'id=${item.name}-method-comment'));
+      addComment('dartdoc-item', true, commentary.last);
+      root.children.addAll(commentary);
+    }
+  }
+}

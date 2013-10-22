@@ -1,50 +1,12 @@
 <!DOCTYPE html>
 <link rel="import" href="parameters.html">
 
-<polymer-element name="dartdoc-item" attributes="item" extends="div">
+<polymer-element name="dartdoc-item" attributes="item">
   <template>
     <ul class="nav nav-pills nav-stacked">
-      <li>
-        <a id="{{idName}}" href="#{{linkHref}}">
-          <template if="{{item is! Method}}">
-              {{title}}
-          </template>
-          <template if="{{isMethod}}">
-            <template if="{{!isConstructor}}">
-              <span class="type">
-              </span>
-              {{createType(item.type, 'dartdoc-item', 'type')}}
-            </template>
-
-            <span>
-              {{modifiers}}
-              <b>{{item.decoratedName}}</b>
-               <!-- Parameters -->
-              <small is="dartdoc-parameter" parameters="{{parameters}}">
-              </small>
-            </span>
-          </template>
-        </a>
+      <li id="nameGoesHere">
       </li>
     </ul>
-    <template if="{{shouldShowClassOrLibraryComment}}">
-        <hr/>
-        <p class="description">
-        </p>
-    </template>
-    <template if="{{shouldShowClassOrLibraryComment}}">
-    {{addComment('dartdoc-item', true)}}  
-    </template>
-
-    <template if="{{shouldShowMethodComment}}">
-      <hr/>
-      <p class="description" id="{{item.name}}-method-comment">
-      </p>
-    </template>
-    <template if="{{shouldShowMethodComment}}">
-      {{addComment('dartdoc-item', true)}}
-    </template>
-
   </template>
   <script type="application/dart" src="item.dart"></script>
 </polymer-element>

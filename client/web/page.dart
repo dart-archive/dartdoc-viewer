@@ -13,23 +13,39 @@ import 'member.dart';
 class PageElement extends DartdocElement {
   @observable Home home;
 
-  PageElement() {
-    new PathObserver(this, "viewer.currentPage").bindSync(
-        (_) {
-          notifyProperty(this, #currentPage);
-          notifyProperty(this, #currentPageIsLibrary);
-          notifyProperty(this, #currentPageIsMethod);
-          notifyProperty(this, #currentPageIsClass);
-          notifyProperty(this, #currentPageIsTypedef);
-          notifyProperty(this, #isHome);
-          notifyProperty(this, #hasHomePage);
-        });
+  PageElement.created() : super.created();
+
+  enteredView() {
+    super.enteredView();
+    new PathObserver(this, "viewer.currentPage").changes.listen((changes) {
+      var change = changes.first;
+      notifyPropertyChange(#currentPage, change.oldValue, change.newValue);
+      notifyPropertyChange(#currentPageIsLibrary,
+          change.oldValue is Library,
+          change.newValue is Library);
+      notifyPropertyChange(#currentPageIsMethod,
+          change.oldValue is Method,
+          change.newValue is Method);
+      notifyPropertyChange(#currentPageIsClass,
+          change.oldValue is Class,
+          change.newValue is Class);
+      notifyPropertyChange(#currentPageIsTypedef,
+          change.oldValue is Typedef,
+          change.newValue is Typedef);
+      notifyPropertyChange(#isHome,
+          change.oldValue is Home,
+          change.newValue is Home);
+    });
     new PathObserver(this, "viewer.homePage").bindSync(
         (_) {
-          notifyProperty(this, #hasHomePage);
-        });
+          notifyPropertyChange(#hasHomePage, null, hasHomePage);
+          notifyPropertyChange(#homePage, null, homePage);
+          notifyPropertyChange(#isHome, null, isHome);
+    });
+    style.setProperty('display', 'block');
   }
 
+  @observable get homePage => viewer.homePage;
   @observable get isHome => currentPage is Home;
   @observable get hasHomePage => viewer.homePage != null;
 

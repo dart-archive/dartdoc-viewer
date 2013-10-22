@@ -14,9 +14,9 @@ import 'dart:async';
 import 'package:polymer/polymer.dart';
 
 /** Search Index */
-Map<String, String> index = {};
+@reflectable Map<String, String> index = {};
 
-class SearchResult implements Comparable {
+@reflectable class SearchResult implements Comparable {
 
   /** Qualified name of this search result references. */
   String element;
@@ -41,7 +41,7 @@ class SearchResult implements Comparable {
 }
 
 /// The value of each type of member.
-Map<String, int> value = {
+@reflectable Map<String, int> value = {
   'library' : 1,
   'class' : 2,
   'typedef' : 3,
@@ -60,7 +60,9 @@ Map<String, int> value = {
  * A score is given to each potential search result based off how likely it is
  * the appropriate qualified name to return for the search query.
  */
-List<SearchResult> lookupSearchResults(String query, int maxResults) {
+@reflectable List<SearchResult>
+    lookupSearchResults(String query, int maxResults) {
+  if (query == '') return [];
 
   var stopwatch = new Stopwatch()..start();
 
@@ -68,7 +70,7 @@ List<SearchResult> lookupSearchResults(String query, int maxResults) {
   var resultSet = new Set<String>();
   var queryList = query.trim().toLowerCase().split(' ');
   for (var key in index.keys) {
-    var lower = key.toLowercase();
+    var lower = key.toLowerCase();
     if (queryList.any((q) => lower.contains(q))) {
         resultSet.add(key);
     }
@@ -153,7 +155,7 @@ List<SearchResult> lookupSearchResults(String query, int maxResults) {
   }
 }
 
-void updatePositions(List<SearchResult> list) {
+@reflectable void updatePositions(List<SearchResult> list) {
   for(int i = 0; i < list.length; i++) {
     list[i].position = i;
   }

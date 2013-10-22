@@ -9,17 +9,22 @@ import 'dart:html';
 /// An element in a page's minimap displayed on the right of the page.
 @CustomTag("dartdoc-library-panel")
 class LibraryPanel extends DartdocElement {
-  LibraryPanel() {
+  LibraryPanel.created() : super.created() {
     new PathObserver(this, "viewer.currentPage").bindSync(
     (_) {
-      notifyProperty(this, #createEntries);
+      notifyPropertyChange(#createEntries, null, true);
     });
+  }
+
+  enteredView() {
+    super.enteredView();
+    createEntries();
   }
 
   linkHref(library) => library == null ? '' : library.linkHref;
 
-  @observable createEntries() {
-    var mainElement = shadowRoot.query("#library-panel");
+  @observable void createEntries() {
+    var mainElement = shadowRoot.querySelector("#library-panel");
     if (mainElement == null) return;
     // TODO(alanknight): Can we get away with checking if the children
     // have been added at all, so we don't have to re-do it every time.

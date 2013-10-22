@@ -3,7 +3,7 @@
 <link rel="import" href="category.html">
 <link rel="import" href="annotations.html">
 
-<polymer-element name="dartdoc-class" extends="article" attributes="item">
+<polymer-element name="dartdoc-class" attributes="item">
   <template>
       <dartdoc-annotation annotations="{{annotations}}">
       </dartdoc-annotation>
@@ -33,32 +33,32 @@
       {{addComment('dartdoc-class')}}
 
       <div class="accordion" id="accordion-grouping">
-        <template if="{{operators.content.isNotEmpty}}">
+        <template if="{{operatorsIsNotEmpty}}">
           <template if="{{operators.hasNonInherited || viewer.isInherited}}">
-            <div is="dartdoc-category" category="{{operators}}" 
+            <dartdoc-category category="{{operators}}" 
                 class="accordion-group">
-            </div>
+            </dartdoc-category>
           </template>
         </template>
-        <template if="{{variables.content.isNotEmpty}}">
+        <template if="{{variablesIsNotEmpty}}">
           <template if="{{variables.hasNonInherited || viewer.isInherited}}">
-            <div is="dartdoc-category" category="{{variables}}" 
+            <dartdoc-category category="{{variables}}" 
                 class="accordion-group">
-            </div>
+            </dartdoc-category>
           </template>
         </template>
-        <template if="{{constructors.content.isNotEmpty}}">
+        <template if="{{constructorsIsNotEmpty}}">
           <template if="{{constructors.hasNonInherited || viewer.isInherited}}">
-            <div is="dartdoc-category" category="{{constructors}}"
+            <dartdoc-category category="{{constructors}}"
               class="accordion-group">
-            </div>
+            </dartdoc-category>
           </template>
         </template>
-        <template if="{{methods.content.isNotEmpty}}">
+        <template if="{{methodsIsNotEmpty}}">
           <template if="{{methods.hasNonInherited || viewer.isInherited}}">
-            <div is="dartdoc-category" category="{{methods}}"
+            <dartdoc-category category="{{methods}}"
                 class="accordion-group">
-            </div>
+            </dartdoc-category>
           </template>
         </template>
       </div>
