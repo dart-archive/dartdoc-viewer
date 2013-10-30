@@ -20,7 +20,7 @@
       <p id="subclasses">
            <a class="btn btn-link btn-xs" 
             id="{{name}}-subclass-button" 
-            on-click="showSubclass">...</a>
+            on-click="{{showSubclass}}">...</a>
       </p>
       <!-- Subclasses -->
       <template if="{{isNotObject}}">
@@ -33,34 +33,26 @@
       {{addComment('dartdoc-class')}}
 
       <div class="accordion" id="accordion-grouping">
-        <template if="{{operatorsIsNotEmpty}}">
-          <template if="{{operators.hasNonInherited || viewer.isInherited}}">
+          <template if="{{shouldShowOperators}}">
             <dartdoc-category category="{{operators}}" 
                 class="accordion-group">
             </dartdoc-category>
           </template>
-        </template>
-        <template if="{{variablesIsNotEmpty}}">
-          <template if="{{variables.hasNonInherited || viewer.isInherited}}">
+          <template if="{{shouldShowVariables}}">
             <dartdoc-category category="{{variables}}" 
                 class="accordion-group">
             </dartdoc-category>
           </template>
-        </template>
-        <template if="{{constructorsIsNotEmpty}}">
-          <template if="{{constructors.hasNonInherited || viewer.isInherited}}">
+          <template if="{{shouldShowConstructors}}">
             <dartdoc-category category="{{constructors}}"
               class="accordion-group">
             </dartdoc-category>
           </template>
-        </template>
-        <template if="{{methodsIsNotEmpty}}">
-          <template if="{{methods.hasNonInherited || viewer.isInherited}}">
+          <template if="{{shouldShowMethods}}">
             <dartdoc-category category="{{methods}}"
                 class="accordion-group">
             </dartdoc-category>
           </template>
-        </template>
       </div>
 
     </template>

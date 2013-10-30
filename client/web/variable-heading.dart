@@ -1,3 +1,7 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library variable_heading;
 
 import 'dart:html';
@@ -15,7 +19,7 @@ class VariableHeading extends MemberElement {
 
   get observables => concat(super.observables,
       const [#getter, #setterParameter, #type, #name, #idName]);
-  get defaultItem => new Variable({'type' : [null]})..name = 'loading';
+  get defaultItem => new Variable({'type' : [null], 'name' : 'loading'});
   wrongClass(newItem) => newItem is! Variable;
 
   get item => super.item;

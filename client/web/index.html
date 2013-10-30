@@ -2,109 +2,26 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="static/css/bootstrap.css">
- <link rel="stylesheet" href="static/css/pics.css">
+<link rel="stylesheet" href="static/css/pics.css">
 <link rel="import" href="category.html">
 <link rel="import" href="item.html">
- <link rel="import" href="minimap-element.html">
+<link rel="import" href="minimap-element.html">
 <link rel="import" href="page.html">
 <link rel="import" href="search.html">
 <link rel="import" href="minimap-library.html">
 <link rel="import" href="library-panel.html">
 <link rel="import" href="minimap-class.html">
+<link rel="import" href="main.html">
+<link rel="import" href="app.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
-<script type="application/dart" src="packages/polymer/init.dart"></script>
+<script type="application/dart">
+import "package:polymer/init.dart";
+export "package:polymer/init.dart";
+</script>
 <script src="packages/browser/dart.js"></script>
-<polymer-element name="dartdoc-main">
-  <template>
-    <title>
-      {{decoratedName}}
-      {{pageNameSeparator}}
-      Dart API Reference
-    </title>
-  
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <button type="button" class="navbar-toggle" data-toggle="collapse"
-          data-target=".navbar-responsive-collapse" id="nav-collapse-button">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-    
-        <a href="http://www.dartlang.org/" class="navbar-brand header-logo"></a>
-        <a href="#home"
-          class="navbar-brand btn-link">
-          Dart API Reference (Work-in-Progress)
-        </a>
-    
-        <div class="nav-collapse collapse navbar-responsive-collapse"
-            id="nav-collapse-content">
-          <ul class="nav navbar-nav" id="navbar">
-          </ul>         
-          {{crumbs()}}
-    
-          <ul class="nav navbar-nav pull-right">
-    
-            <li class="dropdown">
-              <a class="dropdown-toggle" on-click="hideShowOptions">
-                Options <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <template if="{{!isHomePage}}">
-                  <li class="visible-lg"><a on-click="togglePanel">
-                    <template if="{{viewer.isPanel}}">Hide Libraries</template>
-                    <template if="{{!viewer.isPanel}}">Show Libraries</template>
-                  </a></li>
-                  <li class="visible-lg"><a on-click="toggleMinimap">
-                    <template if="{{viewer.isMinimap}}">Hide Minimap</template>
-                    <template if="{{!viewer.isMinimap}}">Show Minimap</template>
-                  </a></li>
-                </template>
-                <li><a on-click="toggleInherited">
-                  <template if="{{viewer.isInherited}}">Hide Inherited
-                  </template>
-                  <template if="{{!viewer.isInherited}}">Show Inherited
-                  </template>
-                </a></li>
-              </ul>
-            </li>
-    
-            <li><search-box></search-box></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  
-    <div class="main-body">
-      <template if="{{viewer.currentPage != null && viewer.isPanel}}">
-        <dartdoc-library-panel></dartdoc-library-panel>
-      </template>
-  
-    <main id="page-content" class="{{pageContentClass}}">
-      <dartdoc-page id="dartdoc-page" home="{{homePage}}">
-      </dartdoc-page>
-    </main>
-  
-    <template if="{{shouldShowLibraryMinimap}}">
-        <dartdoc-minimap-library item={{viewer.currentPage}}>
-        </dartdoc-minimap-library>
-    </template>
-
-    <template if="{{shouldShowClassMinimap}}">
-      <dartdoc-minimap-class item={{viewer.currentPage}}>
-      </dartdoc-minimap-class>
-    </template>
-  
-  </div>
-  </template>
-</polymer-element>
-
-<script type="application/dart" src="app.dart"></script>
-<script type="application/dart" src="index.dart"></script>
-
 
 <dartdoc-main id="dartdoc-main"></dartdoc-main>
 </body>

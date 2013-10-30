@@ -1,8 +1,13 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library results;
 
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart';
+import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
 import 'member.dart';
 import 'dart:html';
@@ -15,7 +20,7 @@ class Result extends AnchorElement with Polymer, Observable {
 
   Result.created() : super.created();
 
-  var _item;
+  SearchResult _item;
 
   @published get item => _item;
   set item(newItem) {
@@ -38,6 +43,7 @@ class Result extends AnchorElement with Polymer, Observable {
   /// The name of this member.
   String get descriptiveName {
     if (qualifiedname == null) return '';
+    // TODO(alanknight) : Look at unifying this with Location
     var name = qualifiedname.split('.');
     if (membertype == 'library') {
       if (name.first == 'dart') {
@@ -54,24 +60,19 @@ class Result extends AnchorElement with Polymer, Observable {
 
   /// The type of this member.
   String get descriptiveType {
+    if (item == null) return '';
     if (membertype == 'class' || membertype == 'library')
       return membertype;
-    var owner = ownerName(qualifiedname);
-    var ownerShortName = owner.split('.').last;
-    var ownerType = index[owner];
+    var ownerType = index[new DocsLocation(item.element).parentQualifiedName];
     if (ownerType == 'class')
-      return '$membertype in $ownerShortName';
+      return '$membertype in ${new DocsLocation(item.element).parentName}';
     return membertype;
   }
 
   /// The library containing this member.
   String get outerLibrary {
     if (membertype == 'library') return '';
-    var nameWithLibrary = findLibraryName(qualifiedname);
-    var libraryName = nameWithLibrary.split('.').first;
-    libraryName = libraryName.replaceAll('-', ':');
-    if (libraryName.contains(':dom:'))
-      libraryName = libraryName.replaceFirst(':dom:', ':');
+    var libraryName = new DocsLocation(qualifiedname).libraryName;
     return 'library $libraryName';
   }
 }

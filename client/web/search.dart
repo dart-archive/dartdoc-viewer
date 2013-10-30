@@ -71,7 +71,9 @@ class Search extends DartdocElement {
         // If nothing is focused, use the first search result.
         refId = results.first.element;
       }
-      viewer.handleLink(new LinkableType(refId).location);
+      var newLocation = new LinkableType(refId).location;
+      viewer.handleLink(newLocation);
+      window.history.pushState("#$newLocation", viewer.title, "#$newLocation");
       searchQuery = "";
       results.clear();
       dartdocMain.searchSubmitted();
@@ -94,7 +96,7 @@ class Search extends DartdocElement {
     if (e.keyCode == KeyCode.UP) {
       if (currentIndex > 0) {
         currentIndex--;
-        shadowRoot.querySelector('#search$currentIndex').focus();
+        shadowRoot.querySelector('#search$currentIndex').parent.focus();
       } else if (currentIndex == 0) {
         searchBox.focus();
       }

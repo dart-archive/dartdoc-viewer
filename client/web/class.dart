@@ -1,3 +1,7 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library class_;
 
 import 'package:dartdoc_viewer/item.dart';
@@ -10,15 +14,27 @@ import 'dart:mirrors';
 
 @CustomTag("dartdoc-class")
 class ClassElement extends MemberElement {
-  ClassElement.created() : super.created();
+  ClassElement.created() : super.created() {
+    new PathObserver(viewer, "isInherited").changes.listen((changes) {
+      notifyPropertyChange(#shouldShowOperators, null, true);
+      notifyPropertyChange(#shouldShowVariables, null, true);
+      notifyPropertyChange(#shouldShowConstructors, null, true);
+      notifyPropertyChange(#shouldShowMethods, null, true);
+      notifyPropertyChange(#variables, null, []);
+      notifyPropertyChange(#operators, null, []);
+      notifyPropertyChange(#constructors, null, []);
+      notifyPropertyChange(#methods, null, []);
+    });
+  }
 
-  get defaultItem => new Class.forPlaceholder('loading', 'loading');
+  get defaultItem => new Class.forPlaceholder('loading.loading', 'loading');
 
   get observables => concat(super.observables,
     const [#variables, #operators, #constructors, #methods,
-    #variablesIsNotEmpty, #operatorsIsNotEmpty, #constructorsIsNotEmpty,
-    #methodsIsNotEmpty, #annotations, #interfaces, #subclasses, #superClass,
-    #nameWithGeneric, #name, #isNotObject]);
+    #annotations, #interfaces, #subclasses, #superClass,
+    #nameWithGeneric, #name, #isNotObject,
+    #shouldShowOperators, #shouldShowVariables, #shouldShowConstructors,
+    #shouldShowMethods]);
 
   get methodsToCall => concat(super.methodsToCall,
       const [#addInterfaceLinks, #addSubclassLinks]);
@@ -32,12 +48,13 @@ class ClassElement extends MemberElement {
   @observable Category get operators => item.operators;
   @observable Category get constructors => item.constructs;
   @observable Category get methods => item.functions;
-  @observable bool get variablesIsNotEmpty => _isNotEmpty(variables);
-  @observable bool get operatorsIsNotEmpty => _isNotEmpty(operators);
-  @observable bool get constructorsIsNotEmpty => _isNotEmpty(constructors);
-  @observable bool get methodsIsNotEmpty => _isNotEmpty(methods);
-
-  _isNotEmpty(x) => x == null ? false : x.content.isNotEmpty;
+  @observable bool get shouldShowOperators => shouldShow(operators);
+  @observable bool get shouldShowVariables =>  shouldShow(variables);
+  @observable bool get shouldShowConstructors =>  shouldShow(constructors);
+  @observable bool get shouldShowMethods =>  shouldShow(methods);
+  @observable bool shouldShow(Category thing) =>
+      thing.content.isNotEmpty &&
+      (viewer.isInherited || thing.hasNonInherited);
 
   @observable AnnotationGroup get annotations => item.annotations;
   set annotations(_) {}
@@ -78,21 +95,28 @@ class ClassElement extends MemberElement {
   }
 
   @observable addSubclassLinks() {
+    if (shadowRoot == null) return;
     var p = shadowRoot.querySelector("#subclasses");
     // Remove all the children except the '...' button, which we can't
     // create dynamically because the on-click handler won't get registered.
     var buttonThatMustBeStatic = p.querySelector(".btn-link");
     p.children.clear();
     var text = makeLinks(subclasses.take(3));
+    // TODO(alanknight) : I don't understand how we can have the #subclasses
+    // template element but not the .btn-link one, but it seems to happen.
     if (subclasses.isEmpty) {
-      buttonThatMustBeStatic.classes.add("hidden");
+      if (buttonThatMustBeStatic != null) {
+        buttonThatMustBeStatic.classes.add("hidden");
+      }
     } else {
       p.append(p.createFragment('Subclasses: ' + text,
           treeSanitizer: sanitizer));
-      buttonThatMustBeStatic.classes.remove("hidden");
+      if (buttonThatMustBeStatic != null) {
+        buttonThatMustBeStatic.classes.remove("hidden");
+      }
     }
-    p.append(buttonThatMustBeStatic);
     if (subclasses.length <= 3) return;
+    p.append(buttonThatMustBeStatic);
     p.append(p.createFragment(
          '<span id="${item.name}-subclass-hidden" class="hidden">,&nbsp;'
          '</span>', treeSanitizer: sanitizer));

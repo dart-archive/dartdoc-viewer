@@ -1,10 +1,15 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library index;
 
 import 'package:dartdoc_viewer/item.dart';
 import 'package:polymer/polymer.dart';
 import 'member.dart';
-import 'app.dart' as app;
+import 'app.dart';
 import 'dart:html';
+import 'package:dartdoc_viewer/read_yaml.dart';
 
 @CustomTag("dartdoc-main")
 class IndexElement extends DartdocElement {
@@ -21,7 +26,6 @@ class IndexElement extends DartdocElement {
             shouldShowClassMinimap);
         notifyPropertyChange(#crumbs, null, 'some value');
         notifyPropertyChange(#pageContentClass, null, pageContentClass);
-        notifyPropertyChange(#isHomePage, null, isHomePage);
       });
     new PathObserver(this, "viewer.isMinimap").changes.listen((changes) {
       notifyPropertyChange(#shouldShowLibraryMinimap,
@@ -62,6 +66,7 @@ class IndexElement extends DartdocElement {
   togglePanel(event, detail, target) => viewer.togglePanel();
   toggleInherited(event, detail, target) => viewer.toggleInherited();
   toggleMinimap(event, detail, target) => viewer.toggleMinimap();
+  togglePkg(event, detail, target) => viewer.togglePkg();
 
   @observable get shouldShowLibraryMinimap =>
       shouldShowLibraryMinimapFor(viewer.isMinimap);
@@ -72,7 +77,6 @@ class IndexElement extends DartdocElement {
       shouldShowClassMinimapFor(viewer.isMinimap);
   @observable shouldShowClassMinimapFor(isMinimap) =>
       viewer.currentPage is Class && isMinimap;
-  @observable get isHomePage => viewer.currentPage == viewer.homePage;
   @observable get homePage => viewer.homePage;
   set homePage(x) {}
   @observable get viewer => super.viewer;
@@ -108,6 +112,29 @@ class IndexElement extends DartdocElement {
       list.classes.remove("open");
     } else {
       list.classes.add("open");
+    }
+  }
+
+  var _buildIdentifier;
+  @observable get buildIdentifier {
+    if (_buildIdentifier == null) {
+      _buildIdentifier = ''; // Don't try twice.
+      retrieveFileContents('../../docs/VERSION').then((version) {
+        _buildIdentifier = "r $version";
+        notifyPropertyChange(#buildIdentifier, null, _buildIdentifier);
+      }).catchError((_) => null);
+      return '';
+    } else {
+      return _buildIdentifier;
+    }
+  }
+
+  @observable navHideShow(event, detail, target) {
+    var nav = shadowRoot.querySelector("#nav-collapse-content");
+    if (nav.classes.contains("in")) {
+      nav.classes.remove("in");
+    } else {
+      nav.classes.add("in");
     }
   }
 }

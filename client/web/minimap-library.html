@@ -12,7 +12,7 @@
       <ul>
         <template
           if="{{operatorItemsIsNotEmpty}}">
-        <li><a href="{{currentLocation}}#operators" on-click="hideShow">
+        <li><a href="{{currentLocation}}#operators" on-click="{{hideShow}}">
           Operators<b class="caret"></b>
         </a></li>
         <ul id="minimap-operators" class="collapse in">
@@ -23,7 +23,7 @@
       </template>
       <template
           if="{{variableItemsIsNotEmpty}}">
-        <li><a href="{{currentLocation}}#properties" on-click="hideShow">
+        <li><a href="{{currentLocation}}#properties" on-click="{{hideShow}}">
           Properties<b class="caret"></b>
         </a></li>
         <ul id="minimap-properties" class="collapse in">
@@ -34,7 +34,7 @@
       </template>
       <template
           if="{{functionItemsIsNotEmpty}}">
-        <li><a href="{{currentLocation}}#functions" on-click="hideShow">
+        <li><a href="{{currentLocation}}#functions" on-click="{{hideShow}}">
           Functions<b class="caret"></b>
         </a></li>
         <ul id="minimap-functions" class="collapse in">
@@ -45,7 +45,7 @@
       </template>
       <template
           if="{{classItemsIsNotEmpty}}">
-        <li><a href="{{currentLocation}}#classes" on-click="hideShow">
+        <li><a href="{{currentLocation}}#classes" on-click="{{hideShow}}">
           Classes<b class="caret"></b>
         </a></li>
         <ul id="minimap-classes" class="collapse in">
@@ -56,7 +56,7 @@
       </template>
       <template
           if="{{typedefItemsIsNotEmpty}}">
-        <li><a href="{{currentLocation}}#typedefs" on-click="hideShow">
+        <li><a href="{{currentLocation}}#typedefs" on-click="{{hideShow}}">
           Typedefs<b class="caret"></b>
         </a></li>
         <ul id="minimap-typedefs" class="collapse in">
@@ -67,7 +67,7 @@
       </template>
       <template
           if="{{errorItemsIsNotEmpty}}">
-        <li><a href="{{currentLocation}}#exceptions" on-click="hideShow">
+        <li><a href="{{currentLocation}}#exceptions" on-click="{{hideShow}}">
           Exceptions<b class="caret"></b>
         </a></li>
         <ul id="minimap-exceptions" class="collapse in">

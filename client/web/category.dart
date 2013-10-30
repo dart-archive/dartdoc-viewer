@@ -1,5 +1,8 @@
-library category;
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
 
+library category;
 
 import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/item.dart';
@@ -25,10 +28,16 @@ class CategoryElement extends DartdocElement {
       notifyPropertyChange(#divClass, divClassFor(change.oldValue), divClass);
       notifyPropertyChange(#divStyle, divStyleFor(change.oldValue), divStyle);
     });
+    new PathObserver(viewer, "isInherited").changes.listen((changes) {
+      _flushCache();
+      addChildren();
+    });
     style.setProperty('display', 'block');
   }
 
-  addChildren() {
+  @observable void addChildren() {
+    if (shadowRoot == null) return;
+
     var elements = [];
     var types = {
       'dartdoc-variable' : categoryVariables,
@@ -53,8 +62,8 @@ class CategoryElement extends DartdocElement {
     #categoryMethods, #categoryEverythingElse, #currentLocation, #title,
     #stylizedName]);
 
-  Container _category;
-  @published Container get category => _category;
+  Category _category;
+  @published Category get category => _category;
   @published set category(newCategory) {
     if (newCategory == null || newCategory is! Container ||
         newCategory == _category) return;
@@ -75,21 +84,25 @@ class CategoryElement extends DartdocElement {
 
   @observable get categoryMethods {
     if (_methodsCache != null) return _methodsCache;
-    _methodsCache = categoryContent.where((each) => each is Method).toList();
+    _methodsCache = categoryContent.where(
+        (each) => each is Method && (!each.isInherited || viewer.isInherited))
+            .toList();
     return _methodsCache;
   }
 
   @observable get categoryVariables {
     if (_variablesCache != null) return _variablesCache;
     _variablesCache = categoryContent.where(
-        (each) => each is Variable).toList();
+        (each) => each is Variable && (!each.isInherited || viewer.isInherited))
+            .toList();
     return _variablesCache;
   }
 
   @observable get categoryEverythingElse {
     if (_everythingElseCache != null) return _everythingElseCache;
     _everythingElseCache = categoryContent.where(
-        (each) => each is! Variable && each is! Method).toList();
+        (each) => each is! Variable && each is! Method &&
+            (!each.isInherited || viewer.isInherited)).toList();
     return _everythingElseCache;
   }
   var _methodsCache = null;
@@ -121,8 +134,8 @@ class CategoryElement extends DartdocElement {
     ..allowCustomElement("dartdoc-category-interior", attributes: ["item"])
     ..allowTagExtension("method-panel", "div", attributes: ["item"]);
 
-  hideShow(event, detail, target) {
-    var list = shadowRoot.querySelector("#" + target.hash.split("#").last);
+  hideShow(event, detail, AnchorElement target) {
+    var list = shadowRoot.querySelector(target.attributes["data-target"]);
     if (list.classes.contains("in")) {
       list.classes.remove("in");
       list.style.height = '0px';

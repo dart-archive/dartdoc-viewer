@@ -1,3 +1,7 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library member;
 
 import 'dart:html';
@@ -7,7 +11,8 @@ import 'package:dartdoc_viewer/search.dart';
 import 'package:polymer/polymer.dart';
 @MirrorsUsed()
 import 'dart:mirrors';
-import 'app.dart' as app;
+import 'app.dart' as app show viewer;
+import 'package:dartdoc_viewer/location.dart';
 
 class SameProtocolUriPolicy implements UriPolicy {
   final AnchorElement _hiddenAnchor = new AnchorElement();
@@ -73,6 +78,26 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   InstanceMirror _cachedMirror;
   get mirror =>
       _cachedMirror == null ? _cachedMirror = reflect(this) : _cachedMirror;
+
+  enteredView() {
+    super.enteredView();
+    // Handle clicks and redirect.
+    onClick.listen(handleClick);
+  }
+
+  var _pathname = window.location.pathname;
+
+  void handleClick(Event e) {
+    if (e.target is AnchorElement) {
+      var anchor = e.target;
+      if (anchor.host == window.location.host
+          && anchor.pathname == _pathname && !e.ctrlKey) {
+        e.preventDefault();
+        var location = anchor.hash.substring(1, anchor.hash.length);
+        viewer.handleLink(location);
+      }
+    }
+  }
 }
 
 //// This is a web component to be extended by all Dart members with comments.
@@ -90,9 +115,6 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   Iterable<Symbol> get observables =>
       concat(super.observables, const [#item, #idName]);
 
-  Iterable<Symbol> get methodsToCall =>
-      concat(super.methodsToCall, const [#addComment]);
-
   @published set item(newItem) {
     if (newItem == null || wrongClass(newItem)) return;
     notifyObservables(() => _item = newItem);
@@ -104,7 +126,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
     if (item == null) return '';
     var name = item.name;
     if (item.name == '') name = item.decoratedName;
-    return app.viewer.toHash(name);
+    return new DocsLocation.empty().toHash(name);
   }
 
   /// Adds [item]'s comment to the the [elementName] element with markdown
@@ -130,6 +152,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
       if (commentLocation == null) {
         commentLocation = shadowRoot.querySelector('.description');
       }
+      if (commentLocation == null) return;
       commentLocation.children.clear();
       var commentElement = new Element.html(comment,
           treeSanitizer: sanitizer);
@@ -145,7 +168,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
             var newName = link.text.substring(index + 1, link.text.length);
             link.replaceWith(new Element.html('<i>$newName</i>',
                 treeSanitizer: sanitizer));
-          } else if (!index.keys.contains(link.text)) {
+          } else if (!index.containsKey(link.text)) {
             // If markdown links to private or otherwise unknown members are
             // found, make them <i> tags instead of <a> tags for CSS.
             link.replaceWith(new Element.html('<i>${link.text}</i>',
@@ -165,7 +188,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   /// Creates an HTML element for a parameterized type.
   static Element createInner(NestedType type) {
     var span = new SpanElement();
-    if (index.keys.contains(type.outer.qualifiedName)) {
+    if (index.containsKey(type.outer.qualifiedName)) {
       var outer = new AnchorElement()
         ..text = type.outer.simpleType
         ..href = '#${type.outer.location}';
@@ -211,10 +234,12 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   enteredView() {
     super.enteredView();
     if (isInherited) {
-      inheritedFrom = findInheritance(item.inheritedFrom);
+      inheritedFrom = new LinkableType(
+          new DocsLocation(item.inheritedFrom).parentQualifiedName);
     }
     if (hasInheritedComment) {
-      commentFrom = findInheritance(item.commentFrom);
+      commentFrom = new LinkableType(
+          new DocsLocation(item.commentFrom).parentQualifiedName);
     }
   }
 
@@ -227,12 +252,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   /// Returns whether [location] exists within the search index.
   @observable bool exists(String location) {
     if (location == null) return false;
-    return index.keys.contains(location.replaceAll('-','.'));
-  }
-
-  /// Creates a [LinkableType] for the owner of [qualifiedName].
-  LinkableType findInheritance(String qualifiedName) {
-    return new LinkableType(ownerName(qualifiedName));
+    return index.containsKey(location.replaceAll('-','.'));
   }
 }
 

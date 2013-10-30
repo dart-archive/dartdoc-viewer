@@ -13,6 +13,10 @@ import 'package:dartdoc_viewer/search.dart';
 import 'package:unittest/html_enhanced_config.dart';
 import 'package:unittest/unittest.dart';
 import 'package:yaml/yaml.dart';
+import 'package:polymer/polymer.dart';
+
+// TODO(alanknight): These tests mostly exercise parsing YAML in the expected
+// form. Convert them to use JSON, and add tests.
 
 // Since YAML is sensitive to whitespace, these are declared in the top-level
 // for readability and to avoid possible parsing errors.
@@ -219,9 +223,12 @@ String dependencies =  '''"name" : "Library"
       "annotations" : 
 "classes" :
   "class" :
-    - "name" : "Library.A"
-    - "name" : "Library.B"
-    - "name" : "Library.C"''';
+    - "name" : "A"
+      "qualifiedName" : "Library.A"
+    - "name" : "B"
+      "qualifiedName" : "Library.B"
+    - "name" : "C"
+      "qualifiedName" : "Library.C"''';
 
 String annotationsAndGenerics = '''"name" : "Library"
 "qualifiedName" : "Library"
@@ -269,9 +276,12 @@ String annotationsAndGenerics = '''"name" : "Library"
   "methods" :
 "classes" :
   "class" :
-    - "name" : "Library.A"
-    - "name" : "Library.B"
-    - "name" : "Library.C"
+    - "name" : "A"
+      "qualifiedName" : "Library.A"
+    - "name" : "B"
+      "qualifiedName" : "Library.B"
+    - "name" : "C"
+      "qualifiedName" : "Library.C"
   "error" :
   "typedef" :''';
 
@@ -413,7 +423,8 @@ Library1.Class.variable property
 Library1.Class. constructor
 Library1.Class.from constructor''';
 
-void main() {
+@initMethod void main() {
+  isYaml = true;
   useHtmlEnhancedConfiguration();
 
   test('read_empty', () {

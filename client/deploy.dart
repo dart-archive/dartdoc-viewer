@@ -13,7 +13,7 @@ compileToJs(_) {
   print("Running dart2js");
   var dart2js = join(dirname(Platform.executable), 'dart2js');
   var result =
-    Process.runSync(dart2js, [ // '--minify',
+    Process.runSync(dart2js, [ '--minify',
         '-o', 'out/web/index.html_bootstrap.dart.js',
         'out/web/index.html_bootstrap.dart', '--suppress-hints'],
         runInShell: true);

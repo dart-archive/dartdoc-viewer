@@ -1,13 +1,17 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library category_item;
 
 import 'dart:async';
-import 'dart:html';
 import 'dart:convert';
 
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:polymer/polymer.dart';
 import 'package:yaml/yaml.dart';
+import 'package:dartdoc_viewer/location.dart';
 
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
 @reflectable const docsPath = '../../docs/';
@@ -16,8 +20,10 @@ import 'package:yaml/yaml.dart';
  * Anything that holds values and can be displayed.
  */
 
+nothing() => null;
+
 @reflectable class Container extends Observable {
-  @observable String name;
+  @observable final String name;
   @observable String comment = '<span></span>';
 
   Container(this.name, [this.comment]);
@@ -31,12 +37,6 @@ import 'package:yaml/yaml.dart';
   return '<span>$comment</span>';
 }
 
-/// Returns the qualified name of [qualifiedName]'s owner.
-@reflectable String ownerName(String qualifiedName) {
-  var index = qualifiedName.lastIndexOf('.');
-  return index != -1 ? qualifiedName.substring(0, index) : '';
-}
-
 /**
  * A [Container] that contains other [Container]s to be displayed.
  */
@@ -47,11 +47,16 @@ import 'package:yaml/yaml.dart';
   int inheritedCounter = 0;
   int memberCounter = 0;
 
+  Item memberNamed(String name, {orElse : nothing}) {
+    return content.firstWhere((x) => x.name == name, orElse: orElse);
+  }
+
   Category.forClasses(List<Map> classes, String name,
       {bool isAbstract: false}) : super(name) {
     if (classes != null) {
       classes.forEach((clazz) =>
-        content.add(new Class.forPlaceholder(clazz['name'], clazz['preview'])));
+        content.add(new Class.forPlaceholder(clazz['qualifiedName'],
+            clazz['preview'])));
     }
   }
 
@@ -123,7 +128,7 @@ import 'package:yaml/yaml.dart';
 @reflectable class Item extends Container {
   /// A list of [Item]s representing the path to this [Item].
   List<Item> path = [];
-  @observable String qualifiedName;
+  @observable final String qualifiedName;
 
   Item(String name, this.qualifiedName, [String comment])
       : super(name, comment);
@@ -136,6 +141,11 @@ import 'package:yaml/yaml.dart';
     pageIndex[qualifiedName] = this;
   }
 
+  /// Loads this [Item]'s data and populates all fields.
+  Future load() {
+    return new Future.value(this);
+  }
+
   /// Adds the comment from [item] to [this].
   void addInheritedComment(Item item) {}
 
@@ -143,19 +153,16 @@ import 'package:yaml/yaml.dart';
   @observable bool get isInherited => false;
 
   /// Creates a link for the href attribute of an [AnchorElement].
-  String get linkHref {
-   var name = findLibraryName(qualifiedName).replaceAll('.', '/');
-   var index = name.indexOf('#');
-   var hash = '';
-   if (index != -1) {
-     hash = name.substring(index + 1, name.length);
-     name = name.substring(0, index);
-     hash = '#${Uri.encodeComponent(hash)}';
-   }
-   var parts = name.split('/');
-   name = parts.map((e) => Uri.encodeComponent(e)).join('/') + hash;
-   return name.replaceAll('%', '-');
-  }
+  String get linkHref => qualifiedName;
+
+  bool get isLoaded => true;
+
+  Item memberNamed(String name, {Function orElse : nothing}) => nothing();
+
+  Item get owner =>
+      pageIndex[new DocsLocation(qualifiedName).parentQualifiedName];
+
+  Item get home => owner == null ? null : owner.home;
 }
 
 /// Sorts each inner [List] by qualified names.
@@ -171,27 +178,81 @@ import 'package:yaml/yaml.dart';
  */
 @reflectable class Home extends Item {
 
+  Item get home => this;
+  Home owner;
+
   /// All libraries being viewed from the homepage.
   List<Item> libraries = [];
 
-  /// The constructor parses the [yaml] input and constructs
-  /// [Placeholder] objects to display before loading libraries.
-  Home(Map yaml) : super('', 'home', _wrapComment(yaml['introduction'])) {
-    var libraryList = yaml['libraries'];
-    for (Map library in libraryList) {
-      var libraryName = library['name'];
-      libraryNames[libraryName] = libraryName.replaceAll('.', '-');
-      this.libraries.add(new Library.forPlaceholder(library));
-    };
-    _sort([this.libraries]);
+  /// Return a link that will get us to this item.
+  String get linkHref => name == '' ? 'home' : Uri.encodeComponent(name);
+
+  static _nameFromYaml(Map yaml) {
+    var package = yaml['packageName'];
+    return package == null ? 'home' : package;
   }
 
-  /// Returns the [Item] representing [libraryName].
-  // TODO(tmandel): Stop looping through 'libraries' so much. Possibly use a
-  // map from library names to their objects.
-  Item itemNamed(String libraryName) {
-    return libraries.firstWhere((lib) => libraryNames[lib.name] == libraryName,
-        orElse: () => null);
+  /// The constructor parses the [yaml] input and constructs
+  /// [Placeholder] objects to display before loading libraries.
+  Home(Map yaml) : super(_nameFromYaml(yaml), _nameFromYaml(yaml),
+      _wrapComment(yaml['introduction'])) {
+
+    // TODO(alanknight): Fix complicated, recursive constructor.
+    var libraryList = yaml['libraries'];
+    var packages = new Map();
+    if (isTopLevelHome) {
+      libraryList.forEach((each) =>
+         packages.putIfAbsent(each['packageName'], () => []).add(each));
+    }
+
+    var directLibraries = isTopLevelHome ? packages[''] : libraryList;
+    for (Map library in directLibraries) {
+      var libraryName = library['name'];
+      var newLibrary = new Library.forPlaceholder(library);
+      newLibrary.home = this;
+      this.libraries.add(newLibrary);
+      pageIndex[newLibrary.qualifiedName] = newLibrary;
+    };
+    packages.remove('');
+    packages.forEach((packageName, libraries) {
+      var main = libraries.firstWhere(
+          (each) => each['name'] == packageName,
+          orElse: () => libraries.first);
+      var package = new Home({
+        'libraries' : libraries,
+        'packageName' : packageName
+        });
+      package.owner = this;
+      this.libraries.add(package);
+    });
+
+    _sort([this.libraries]);
+    makeMainLibrarySpecial(yaml);
+    pageIndex[qualifiedName] = this;
+    if (isTopLevelHome) pageIndex[''] = this;
+  }
+
+  bool get isTopLevelHome => name == 'home';
+
+  void makeMainLibrarySpecial(yaml) {
+    var mainLib = libraries.firstWhere((each) => each.name == name,
+        orElse: nothing);
+    if (mainLib != null) {
+      libraries.remove(mainLib);
+      libraries.insert(0, mainLib);
+      var libs = yaml['libraries'];
+      var main = libs.firstWhere((each) => each['name'] == mainLib.name);
+      var intro = main['packageIntro'];
+      if (intro != null && !intro.isEmpty) {
+        comment = _wrapComment(intro);
+      }
+    }
+  }
+
+  Item memberNamed(String name, {Function orElse : nothing}) {
+    return libraries.firstWhere(
+        (each) => each.name == name || each.decoratedName == name,
+        orElse: orElse);
   }
 }
 
@@ -220,12 +281,14 @@ import 'package:yaml/yaml.dart';
 
   /// Loads this [Item]'s data and populates all fields.
   Future load() {
+    if (isLoaded) return new Future.value(this);
     var location = '$docsPath$qualifiedName.' + (isYaml ? 'yaml' : 'json');
     var data = retrieveFileContents(location);
     return data.then((response) {
       var yaml = isYaml ? loadYaml(response) : JSON.decode(response);
       loadValues(yaml);
       buildHierarchy(this, this);
+      return new Future.value(this);
     });
   }
 
@@ -244,10 +307,14 @@ import 'package:yaml/yaml.dart';
   Category variables;
   Category functions;
   Category operators;
+  Home home;
 
   /// Creates a [Library] placeholder object with null fields.
   Library.forPlaceholder(Map library)
-    : super(library['name'], library['name'], library['preview']);
+    : super(
+        library['qualifiedName'],
+        library['name'],
+        library['preview']);
 
   /// Normal constructor for testing.
   Library(Map yaml) : super(yaml['qualifiedName'], yaml['name'], '') {
@@ -256,7 +323,7 @@ import 'package:yaml/yaml.dart';
   }
 
   void addToHierarchy() {
-    pageIndex[qualifiedName] = this;
+    super.addToHierarchy();
     [classes, typedefs, errors, functions].forEach((category) {
       category.content.forEach((clazz) {
         buildHierarchy(clazz, this);
@@ -295,12 +362,28 @@ import 'package:yaml/yaml.dart';
   }
 
   String get decoratedName {
-    var parts = qualifiedName.split('.');
-    if (parts.length > 1) {
-      return '${parts.first}:${parts.last}';
+    if (isDartLibrary) {
+      return name.replaceAll('-dom-', '-').replaceAll('-', ':');
     } else {
-      return name;
+      return name.replaceAll('-', '.');
     }
+  }
+
+  bool get isDartLibrary => name.startsWith("dart-");
+
+  /// Return a link that will get us back to this page.
+  String get linkHref {
+    return qualifiedName;
+  }
+
+  Item memberNamed(String name, {Function orElse : nothing}) {
+    if (name == null) return orElse();
+    for (var category in
+        [classes, functions, variables, operators, typedefs, errors]) {
+      var member = category.memberNamed(name, orElse: nothing);
+      if (member != null) return member;
+    }
+    return orElse();
   }
 }
 
@@ -324,7 +407,7 @@ import 'package:yaml/yaml.dart';
 
   /// Creates a [Class] placeholder object with null fields.
   Class.forPlaceholder(String location, String previewComment)
-      : super(location, location.split('.').last, previewComment) {
+      : super(location, new DocsLocation(location).memberName, previewComment) {
     operators = new Category.forFunctions(null, 'placeholder');
     variables = new Category.forVariables(null, null, null);
     constructs = new Category.forFunctions(null, 'placeholder');
@@ -336,8 +419,10 @@ import 'package:yaml/yaml.dart';
     loadValues(yaml);
   }
 
+  String get linkHref => qualifiedName;
+
   void addToHierarchy() {
-    pageIndex[qualifiedName] = this;
+    super.addToHierarchy();
     if (isLoaded) {
       [functions, constructs, operators].forEach((category) {
         category.content.forEach((clazz) {
@@ -430,6 +515,17 @@ import 'package:yaml/yaml.dart';
     }
     return out.toString();
   }
+
+  Item memberNamed(String name, {Function orElse : nothing}) {
+    if (name == null) return orElse();
+    for (var category in
+        [annotations, constructs, functions, operators, variables]) {
+      var member = category.memberNamed(name, orElse: nothing);
+      if (member != null) return member;
+    }
+    return orElse();
+  }
+
 }
 
 /**
@@ -440,6 +536,13 @@ import 'package:yaml/yaml.dart';
   List<String> supportedBrowsers = [];
   List<Annotation> annotations = [];
   String domName;
+
+  Item memberNamed(String name, {Function orElse : nothing}) {
+    for (var annotation in annotations) {
+      if (annotation.name == name) return annotation;
+    }
+    return orElse();
+  }
 
   AnnotationGroup(List annotes) {
     if (annotes != null) {
@@ -545,7 +648,8 @@ import 'package:yaml/yaml.dart';
   }
 
   void addToHierarchy() {
-    if (inheritedFrom != '') pageIndex[qualifiedName] = this;
+    // TODO(alanknight): Conditionally calling super is very unpleasant.
+    if (inheritedFrom != '') super.addToHierarchy();
   }
 
   void addInheritedComment(item) {
@@ -651,7 +755,7 @@ import 'package:yaml/yaml.dart';
   bool get isInherited => inheritedFrom != '' && inheritedFrom != null;
 
   void addToHierarchy() {
-    if (inheritedFrom != '') pageIndex[qualifiedName] = this;
+    if (inheritedFrom != '') super.addToHierarchy();
   }
 }
 
@@ -682,21 +786,21 @@ import 'package:yaml/yaml.dart';
 @reflectable class LinkableType {
 
   /// The resolved qualified name of the type this [LinkableType] represents.
-  String type;
-  String qualifiedName;
+  DocsLocation loc;
 
   /// The constructor resolves the library name by finding the correct library
   /// from [libraryNames] and changing [type] to match.
   LinkableType(String type) {
-    qualifiedName = type;
-    this.type = findLibraryName(type);
+    loc = new DocsLocation(type);
   }
 
   /// The simple name for this type.
-  String get simpleType => type.split('.').last;
+  String get simpleType => loc.name;
 
   /// The [Item] describing this type if it has been loaded, otherwise null.
-  String get location => type;
+  String get location => loc.withAnchor;
+
+  String get qualifiedName => location;
 
   get isDynamic => simpleType == 'dynamic';
 }

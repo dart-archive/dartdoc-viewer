@@ -1,3 +1,7 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library item;
 
 import 'package:polymer/polymer.dart';
@@ -29,7 +33,7 @@ class ItemElement extends MemberElement {
   wrongClass(newItem) => newItem is! Item;
 
   get defaultItem =>
-      new Class.forPlaceholder("<p>loading</p>", "<p>loading</p>");
+      new Class.forPlaceholder("loading.loading", "loading");
 
   get item => super.item;
   set item(newItem) => super.item = newItem;

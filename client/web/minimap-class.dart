@@ -1,3 +1,7 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library minimap_class;
 
 import 'package:dartdoc_viewer/item.dart';
@@ -9,7 +13,19 @@ import 'dart:html';
 /// An element in a page's minimap displayed on the right of the page.
 @CustomTag("dartdoc-minimap-class")
 class MinimapElementClass extends MemberElement {
-  MinimapElementClass.created() : super.created();
+  MinimapElementClass.created() : super.created() {
+    new PathObserver(this, "viewer.isInherited").bindSync(
+        (_) {
+          notifyPropertyChange(#shouldShowConstructors, null,
+              shouldShowConstructors);
+          notifyPropertyChange(#shouldShowOperators, null,
+              shouldShowConstructors);
+          notifyPropertyChange(#shouldShowFunctions, null,
+              shouldShowConstructors);
+          notifyPropertyChange(#shouldShowVariables, null,
+                  shouldShowConstructors);
+        });
+  }
 
   get observables => concat(super.observables, const [#operatorItems,
       #variableItems, #constructorItems,
@@ -17,11 +33,11 @@ class MinimapElementClass extends MemberElement {
       #operatorItemsIsNotEmpty, #variableItemsIsNotEmpty,
       #constructorItemsIsNotEmpty, #functionItemsIsNotEmpty, #page,
       #shouldShowConstructors, #shouldShowFunctions, #shouldShowVariables,
-      #shouldShowOperators, #name, #currentLocation]);
+      #shouldShowOperators, #name, #currentLocation, #linkHref]);
 
   wrongClass(newItem) => newItem is! Class;
 
-  get defaultItem => new Class.forPlaceholder('loading', 'loading');
+  get defaultItem => new Class.forPlaceholder('loading.loading', 'loading');
 
   @observable get operatorItems => page.operators.content;
   @observable get variableItems => page.variables.content;
@@ -41,6 +57,7 @@ class MinimapElementClass extends MemberElement {
   _isNotEmpty(x) => x == null || page is! Class ? false : x.content.isNotEmpty;
 
   @observable get page => item;
+  @observable get linkHref => item.linkHref;
 
   get item => super.item;
   set item(newItem) => super.item = newItem;
@@ -48,7 +65,10 @@ class MinimapElementClass extends MemberElement {
   @observable get shouldShowConstructors => shouldShow((x) => x.constructors);
   @observable get shouldShowFunctions => shouldShow((x) => x.functions);
   @observable get shouldShowVariables => shouldShow((x) => x.variables);
-  @observable get shouldShowOperators => shouldShow((x) => x.operators);
+  @observable get shouldShowOperators {
+    var result = shouldShow((x) => x.operators);
+    return result;
+  }
 
   shouldShow(Function f) => page is Class &&
       (f(page).hasNonInherited ||  viewer.isInherited);

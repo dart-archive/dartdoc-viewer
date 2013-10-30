@@ -8,10 +8,10 @@
    <template>
    <div class="accordion-heading">
       <a class="accordion-toggle {{accordionStyle}}"
-        on-click="hideShow"
+        on-click="{{hideShow}}"
         data-toggle="collapse"
         data-parent="{{accordionParent}}"
-        href="{{currentLocation}}#accordion-{{stylizedName}}">
+        data-target="#accordion-{{stylizedName}}">
         {{title}}
       </a>
     </div>

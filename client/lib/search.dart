@@ -1,3 +1,7 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 /**
  * A library for searching and filtering documentation.
  *
@@ -12,6 +16,7 @@ library search;
 
 import 'dart:async';
 import 'package:polymer/polymer.dart';
+import 'package:dartdoc_viewer/location.dart';
 
 /** Search Index */
 @reflectable Map<String, String> index = {};
@@ -20,6 +25,21 @@ import 'package:polymer/polymer.dart';
 
   /** Qualified name of this search result references. */
   String element;
+
+  static const typesThatLinkWithinAParentPage = const ['method', 'operator',
+    'getter', 'setter', 'variable', 'constructor', 'property' ];
+
+  String get url {
+    if (!typesThatLinkWithinAParentPage.contains(type)) return element;
+    var location = new DocsLocation(element);
+    var sub = location.subMemberName == null
+        ? location.memberName
+        : location.subMemberName;
+    if (sub == null) return element;
+    var newLocation = new DocsLocation(location.parentQualifiedName);
+    newLocation.anchor = newLocation.toHash(sub);
+    return newLocation.withAnchor;
+  }
 
   /** This element's member type. */
   String type;
@@ -60,8 +80,8 @@ import 'package:polymer/polymer.dart';
  * A score is given to each potential search result based off how likely it is
  * the appropriate qualified name to return for the search query.
  */
-@reflectable List<SearchResult>
-    lookupSearchResults(String query, int maxResults) {
+@reflectable
+List<SearchResult> lookupSearchResults(String query, int maxResults) {
   if (query == '') return [];
 
   var stopwatch = new Stopwatch()..start();

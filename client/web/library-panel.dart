@@ -1,3 +1,7 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 library library_panel;
 
 import 'package:dartdoc_viewer/item.dart';
@@ -10,7 +14,7 @@ import 'dart:html';
 @CustomTag("dartdoc-library-panel")
 class LibraryPanel extends DartdocElement {
   LibraryPanel.created() : super.created() {
-    new PathObserver(this, "viewer.currentPage").bindSync(
+    new PathObserver(this, "viewer.libraries").bindSync(
     (_) {
       notifyPropertyChange(#createEntries, null, true);
     });
@@ -26,19 +30,18 @@ class LibraryPanel extends DartdocElement {
   @observable void createEntries() {
     var mainElement = shadowRoot.querySelector("#library-panel");
     if (mainElement == null) return;
-    // TODO(alanknight): Can we get away with checking if the children
-    // have been added at all, so we don't have to re-do it every time.
     mainElement.children.clear();
-    for (var library in viewer.homePage.libraries) {
+    var breadcrumbs = viewer.breadcrumbs;
+    for (var library in viewer.libraries) {
       var isFirst =
-          library.decoratedName == viewer.breadcrumbs.first.decoratedName;
+          library.decoratedName == breadcrumbs.first.decoratedName;
       var element =
           isFirst ? newElement(library, true) : newElement(library, false);
       mainElement.append(element);
     }
   }
 
-  newElement(Library library, bool isActive) {
+  newElement(library, bool isActive) {
     var html = '<a href="#${linkHref(library)}" class="list-group-item'
         '${isActive ? ' active' : ''}">'
         '${library.decoratedName}</a>';

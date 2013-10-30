@@ -26,9 +26,9 @@ BSD-style license that can be found in the LICENSE file.
             <li tabindex="0"
                 class="search-result">
                 <a is="search-result" item="{{result}}"
-                  on-click="onSubmitCallback"
+                  on-click="{{onSubmitCallback}}"
                   id="search{{result.position}}"
-                  data-ref-id="{{result.element}}" >
+                  data-ref-id="{{result.url}}" >
               </a>
             </li>
           </template>
