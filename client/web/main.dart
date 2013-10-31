@@ -42,6 +42,7 @@ class IndexElement extends DartdocElement {
       (_) {
         notifyPropertyChange(#pageContentClass, null, pageContentClass);
       });
+    onClick.listen(hideOptionsMenuWhenClickedOutside);
   }
 
   @observable get pageContentClass {
@@ -113,6 +114,18 @@ class IndexElement extends DartdocElement {
     } else {
       list.classes.add("open");
     }
+  }
+
+  hideOptionsMenuWhenClickedOutside(MouseEvent e) {
+    var coordinates = e.offset;
+    var el = shadowRoot.elementFromPoint(coordinates.x, coordinates.y);
+    if (el == null || el.classes.contains("dropdown-toggle")) return;
+    hideOptions();
+  }
+
+  hideOptions() {
+    var list = shadowRoot.querySelector(".dropdown-menu").parent;
+    list.classes.remove("open");
   }
 
   var _buildIdentifier;
