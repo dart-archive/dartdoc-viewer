@@ -157,8 +157,13 @@ class DocsLocation {
   /// The string that identifies our parent (e.g. the package containing a
   /// library, or the class containing a method) or an empty string if
   /// we don't have a parent.
-  String get parentQualifiedName =>
-      new DocsLocation.fromList(componentNames..removeLast()).withoutAnchor;
+  String get parentQualifiedName => parentLocation.withoutAnchor;
+
+  /// The [DocsLocation] that identifies our parent (e.g. the package
+  /// containing a
+  /// library, or the class containing a method)
+  DocsLocation get parentLocation =>
+      new DocsLocation.fromList(componentNames..removeLast());
 
   /// The simple name of our parent
   String get parentName {
@@ -166,6 +171,9 @@ class DocsLocation {
     if (names.length < 2) return '';
     return names[names.length - 2];
   }
+
+  bool get isEmpty => packageName == null && libraryName == null
+      && memberName == null && subMemberName == null && anchor == null;
 
   toString() => 'DocsLocation($withAnchor)';
 }

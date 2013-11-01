@@ -124,9 +124,8 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   /// A valid string for an HTML id made from this [Item]'s name.
   @observable String get idName {
     if (item == null) return '';
-    var name = item.name;
-    if (item.name == '') name = item.decoratedName;
-    return new DocsLocation.empty().toHash(name);
+    var loc = item.anchorHrefLocation;
+    return loc.anchor == null ? '' : loc.anchor;
   }
 
   /// Adds [item]'s comment to the the [elementName] element with markdown

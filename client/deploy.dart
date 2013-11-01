@@ -4,9 +4,11 @@ import 'package:polymer/builder.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 
-void main() {
-  lint(entryPoints: ['web/index.html'])
-    .then((_) => deploy(entryPoints: ['web/index.html'])).then(compileToJs);
+void main(options) {
+  lint(entryPoints: ['web/index.html'], options: parseOptions(options))
+    .then((_) => deploy(
+        entryPoints: ['web/index.html'], 
+        options: parseOptions(options))).then(compileToJs);
 }
 
 compileToJs(_) {

@@ -155,12 +155,25 @@ nothing() => null;
   /// Creates a link for the href attribute of an [AnchorElement].
   String get linkHref => qualifiedName;
 
+  /// The [DocsLocation] for our URI.
+  DocsLocation get location => new DocsLocation(qualifiedName);
+
+  /// The link to an anchor within a larger page, if appropriate.
+  DocsLocation get anchorHrefLocation {
+    var basic = location;
+    var parent = location.parentLocation;
+    if (parent.isEmpty) return parent;
+    parent.anchor = parent.toHash(basic.componentNames.last);
+    return parent;
+  }
+
+  String get anchorHref => anchorHrefLocation.withAnchor;
+
   bool get isLoaded => true;
 
   Item memberNamed(String name, {Function orElse : nothing}) => nothing();
 
-  Item get owner =>
-      pageIndex[new DocsLocation(qualifiedName).parentQualifiedName];
+  Item get owner => pageIndex[location.parentQualifiedName];
 
   Item get home => owner == null ? null : owner.home;
 }
@@ -184,8 +197,8 @@ nothing() => null;
   /// All libraries being viewed from the homepage.
   List<Item> libraries = [];
 
-  /// Return a link that will get us to this item.
-  String get linkHref => name == '' ? 'home' : Uri.encodeComponent(name);
+  DocsLocation get anchorHrefLocation =>
+      new DocsLocation(name == null ? 'home' : name);
 
   static _nameFromYaml(Map yaml) {
     var package = yaml['packageName'];
@@ -371,11 +384,6 @@ nothing() => null;
 
   bool get isDartLibrary => name.startsWith("dart-");
 
-  /// Return a link that will get us back to this page.
-  String get linkHref {
-    return qualifiedName;
-  }
-
   Item memberNamed(String name, {Function orElse : nothing}) {
     if (name == null) return orElse();
     for (var category in
@@ -419,7 +427,9 @@ nothing() => null;
     loadValues(yaml);
   }
 
-  String get linkHref => qualifiedName;
+  /// The link to an anchor within a larger page, if appropriate. For classes
+  /// we link directly to their page instead.
+  DocsLocation get anchorHrefLocation => location;
 
   void addToHierarchy() {
     super.addToHierarchy();
