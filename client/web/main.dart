@@ -14,6 +14,9 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 @CustomTag("dartdoc-main")
 class IndexElement extends DartdocElement {
 
+  /// Records the timestamp of the event that opened the options menu.
+  var _openedAt;
+
   IndexElement.created() : super.created();
 
   enteredView() {
@@ -107,23 +110,25 @@ class IndexElement extends DartdocElement {
       '${item.decoratedName}</a></li>',
       treeSanitizer: sanitizer);
 
-  hideShowOptions(event, detail, target) {
+  void toggleOptionsMenu(MouseEvent event, detail, target) {
     var list = shadowRoot.querySelector(".dropdown-menu").parent;
     if (list.classes.contains("open")) {
       list.classes.remove("open");
     } else {
+      _openedAt = event.timeStamp;
       list.classes.add("open");
     }
   }
 
-  hideOptionsMenuWhenClickedOutside(MouseEvent e) {
-    var coordinates = e.offset;
-    var el = shadowRoot.elementFromPoint(coordinates.x, coordinates.y);
-    if (el == null || el.classes.contains("dropdown-toggle")) return;
-    hideOptions();
+  void hideOptionsMenuWhenClickedOutside(MouseEvent e) {
+    if (_openedAt != null && _openedAt == e.timeStamp) {
+      _openedAt == null;
+      return;
+    }
+    hideOptionsMenu();
   }
 
-  hideOptions() {
+  void hideOptionsMenu() {
     var list = shadowRoot.querySelector(".dropdown-menu").parent;
     list.classes.remove("open");
   }
