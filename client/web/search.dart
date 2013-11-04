@@ -122,8 +122,8 @@ class Search extends DartdocElement {
       searchBox.focus();
       event.preventDefault();
     } else if (event.keyCode == KeyCode.ESC) {
-      document.body.focus();
-      isFocused = false;
+      searchQuery = "";
+      results.clear();
       event.preventDefault();
     }
   }
