@@ -85,6 +85,33 @@ nothing() => null;
     }
   }
 
+  /// Used to create lists of instance variables or methods by filtering.
+  /// In normal usage [members] to contain all methods or all variables, rather
+  /// than a mixture.
+  Category.forInstanceMembers(List members, name) : super(name) {
+    for (var member in members) {
+      if (!member.isStatic) {
+        memberNames.add(member.name);
+        memberCounter++;
+        if (member.isInherited) inheritedCounter++;
+        content.add(member);
+      }
+    }
+  }
+
+  /// Used to create lists of static variables or methods by filtering.
+  ///. In normal usage [members] to contain all methods or all variables, rather
+  /// than a mixture.
+  Category.forStaticMembers(List members, name) : super(name) {
+    for (var member in members) {
+      if (member.isStatic) {
+        memberNames.add(member.name);
+        memberCounter++;
+        content.add(member);
+      }
+    }
+  }
+
   Category.forFunctions(Map yaml, String name, {bool isConstructor: false,
       String className: '', bool isOperator: false}) : super(name) {
     if (yaml != null) {
@@ -413,6 +440,46 @@ nothing() => null;
   List<LinkableType> subclasses = [];
   List<String> generics = [];
 
+  Category _instanceVariables;
+  Category _staticVariables;
+  Category _instanceFunctions;
+  Category _staticFunctions;
+  void flushCaches() {
+    _instanceVariables = null;
+    _staticVariables = null;
+    _instanceFunctions = null;
+    _staticFunctions = null;
+  }
+
+  Category get instanceVariables {
+    if (_instanceVariables == null) {
+      _instanceVariables = new Category.forInstanceMembers(variables.content,
+          "Instance Properties");
+    }
+    return _instanceVariables;
+  }
+  Category get staticVariables {
+    if (_staticVariables == null) {
+      _staticVariables = new Category.forStaticMembers(variables.content,
+          "Static Properties");
+    }
+    return _staticVariables;
+  }
+  Category get instanceFunctions {
+    if (_instanceFunctions == null) {
+      _instanceFunctions = new Category.forInstanceMembers(functions.content,
+          "Instance Methods");
+    }
+    return _instanceFunctions;
+  }
+  Category get staticFunctions {
+    if (_staticFunctions == null) {
+      _staticFunctions = new Category.forStaticMembers(functions.content,
+          "Static Methods");
+    }
+    return _staticFunctions;
+  }
+
   /// Creates a [Class] placeholder object with null fields.
   Class.forPlaceholder(String location, String previewComment)
       : super(location, new DocsLocation(location).memberName, previewComment) {
@@ -443,6 +510,7 @@ nothing() => null;
   }
 
   void loadValues(Map yaml) {
+    flushCaches();
     comment = _wrapComment(yaml['comment']);
     isAbstract = yaml['isAbstract'] == 'true';
     superClass = new LinkableType(yaml['superclass']);

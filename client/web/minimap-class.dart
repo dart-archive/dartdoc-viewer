@@ -30,45 +30,56 @@ class MinimapElementClass extends MemberElement {
   get observables => concat(super.observables, const [#operatorItems,
       #variableItems, #constructorItems,
       #functionItems, #operators, #variables, #constructors, #functions,
+      #staticVariables, #staticFunctions, #staticFunctionItems,
+      #staticVariableItems,
       #operatorItemsIsNotEmpty, #variableItemsIsNotEmpty,
+      #staticVariableItemsIsNotEmpty, #staticFunctionItemsIsNotEmpty,
       #constructorItemsIsNotEmpty, #functionItemsIsNotEmpty, #page,
       #shouldShowConstructors, #shouldShowFunctions, #shouldShowVariables,
-      #shouldShowOperators, #name, #currentLocation, #linkHref]);
+      #shouldShowOperators, #shouldShowStaticFunctions,
+      #shouldShowStaticVariables, #name, #currentLocation, #linkHref]);
 
   wrongClass(newItem) => newItem is! Class;
 
   get defaultItem => new Class.forPlaceholder('loading.loading', 'loading');
 
   @observable get operatorItems => page.operators.content;
-  @observable get variableItems => page.variables.content;
+  @observable get variableItems => page.instanceVariables.content;
+  @observable get staticVariableItems => page.staticVariables.content;
   @observable get constructorItems => page.constructs.content;
-  @observable get functionItems => page.functions.content;
+  @observable get functionItems => page.instanceFunctions.content;
+  @observable get staticFunctionItems => page.staticFunctions.content;
 
   @observable get operators => page.operators;
-  @observable get variables => page.variables;
+  @observable get variables => page.instanceVariables;
+  @observable get staticVariables => page.staticVariables;
   @observable get constructors => page.constructs;
-  @observable get functions => page.functions;
+  @observable get functions => page.instanceFunctions;
+  @observable get staticFunctions => page.staticFunctions;
 
   @observable get operatorItemsIsNotEmpty => _isNotEmpty(operators);
   @observable get variableItemsIsNotEmpty => _isNotEmpty(variables);
+  @observable get staticVariableItemsIsNotEmpty => _isNotEmpty(staticVariables);
   @observable get constructorItemsIsNotEmpty => _isNotEmpty(constructors);
   @observable get functionItemsIsNotEmpty => _isNotEmpty(functions);
+  @observable get staticFunctionItemsIsNotEmpty => _isNotEmpty(staticFunctions);
 
   _isNotEmpty(x) => x == null || page is! Class ? false : x.content.isNotEmpty;
 
-  @observable get page => item;
+  @observable Class get page => item;
   @observable get linkHref => item.linkHref;
 
-  get item => super.item;
+  Class get item => super.item;
   set item(newItem) => super.item = newItem;
 
   @observable get shouldShowConstructors => shouldShow((x) => x.constructors);
   @observable get shouldShowFunctions => shouldShow((x) => x.functions);
   @observable get shouldShowVariables => shouldShow((x) => x.variables);
-  @observable get shouldShowOperators {
-    var result = shouldShow((x) => x.operators);
-    return result;
-  }
+  @observable get shouldShowStaticFunctions
+      => shouldShow((x) => x.staticFunctions);
+  @observable get shouldShowStaticVariables
+      => shouldShow((x) => x.staticVariables);
+  @observable get shouldShowOperators => shouldShow((x) => x.operators);
 
   shouldShow(Function f) => page is Class &&
       (f(page).hasNonInherited ||  viewer.isInherited);

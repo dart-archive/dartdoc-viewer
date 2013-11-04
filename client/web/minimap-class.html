@@ -9,27 +9,6 @@
       {{name}} Class
     </a>
     <ul>
-          <template if="{{shouldShowOperators}}">
-            <li><a href="{{currentLocation}}#operators" on-click="{{hideShow}}">
-              Operators<b class="caret"></b>
-            </a></li>
-            <ul id="minimap-operators" class="collapse in">
-              <dartdoc-minimap
-                items="{{operatorItems}}">
-              </dartdoc-minimap>
-            </ul>
-          </template>
-          <template if="{{shouldShowVariables}}">
-            <li><a href="{{currentLocation}}#properties" 
-                on-click="{{hideShow}}">
-              Properties<b class="caret"></b>
-            </a></li>
-            <ul id="minimap-properties" class="collapse in">
-              <dartdoc-minimap
-                items="{{variableItems}}">
-              </dartdoc-minimap>
-            </ul>
-          </template>
           <template if="{{shouldShowConstructors}}">
               <li><a href="{{currentLocation}}#constructors" 
                on-click="{{hideShow}}">
@@ -41,6 +20,16 @@
               </dartdoc-minimap>
             </ul>
           </template>
+          <template if="{{shouldShowOperators}}">
+            <li><a href="{{currentLocation}}#operators" on-click="{{hideShow}}">
+              Operators<b class="caret"></b>
+            </a></li>
+            <ul id="minimap-operators" class="collapse in">
+              <dartdoc-minimap
+                items="{{operatorItems}}">
+              </dartdoc-minimap>
+            </ul>
+          </template>
           <template if="{{shouldShowFunctions}}">
             <li><a href="{{currentLocation}}#functions" on-click="{{hideShow}}">
               Methods<b class="caret"></b>
@@ -48,6 +37,39 @@
             <ul id="minimap-functions" class="collapse in">
               <dartdoc-minimap
                 items="{{functionItems}}">
+              </dartdoc-minimap>
+            </ul>
+          </template>
+          <template if="{{shouldShowStaticFunctions}}">
+            <li><a href="{{currentLocation}}#staticFunctions" 
+                on-click="{{hideShow}}">
+              Static Methods<b class="caret"></b>
+            </a></li>
+            <ul id="minimap-staticFunctions" class="collapse in">
+              <dartdoc-minimap
+                items="{{staticFunctionItems}}">
+              </dartdoc-minimap>
+            </ul>
+          </template> 
+          <template if="{{shouldShowVariables}}">
+            <li><a href="{{currentLocation}}#properties" 
+                on-click="{{hideShow}}">
+              Properties<b class="caret"></b>
+            </a></li>
+            <ul id="minimap-properties" class="collapse in">
+              <dartdoc-minimap
+                items="{{variableItems}}">
+              </dartdoc-minimap>
+            </ul>
+          </template>
+          <template if="{{shouldShowStaticVariables}}">
+            <li><a href="{{currentLocation}}#staticProperties" 
+                on-click="{{hideShow}}">
+              Static Properties<b class="caret"></b>
+            </a></li>
+            <ul id="minimap-staticProperties" class="collapse in">
+              <dartdoc-minimap
+                items="{{staticVariableItems}}">
               </dartdoc-minimap>
             </ul>
           </template>

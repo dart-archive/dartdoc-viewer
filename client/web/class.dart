@@ -30,11 +30,11 @@ class ClassElement extends MemberElement {
   get defaultItem => new Class.forPlaceholder('loading.loading', 'loading');
 
   get observables => concat(super.observables,
-    const [#variables, #operators, #constructors, #methods,
-    #annotations, #interfaces, #subclasses, #superClass,
+    const [#variables, #operators, #constructors, #methods, #staticMethods,
+    #staticVariables, #annotations, #interfaces, #subclasses, #superClass,
     #nameWithGeneric, #name, #isNotObject,
     #shouldShowOperators, #shouldShowVariables, #shouldShowConstructors,
-    #shouldShowMethods]);
+    #shouldShowMethods, #shouldShowStaticMethods, #shouldShowStaticVariables]);
 
   get methodsToCall => concat(super.methodsToCall,
       const [#addInterfaceLinks, #addSubclassLinks]);
@@ -44,14 +44,18 @@ class ClassElement extends MemberElement {
   get item => super.item;
   set item(newItem) => super.item = newItem;
 
-  @observable Category get variables => item.variables;
+  @observable Category get variables => item.instanceVariables;
   @observable Category get operators => item.operators;
   @observable Category get constructors => item.constructs;
-  @observable Category get methods => item.functions;
+  @observable Category get methods => item.instanceFunctions;
+  @observable Category get staticMethods => item.staticFunctions;
+  @observable Category get staticVariables => item.staticVariables;
   @observable bool get shouldShowOperators => shouldShow(operators);
   @observable bool get shouldShowVariables =>  shouldShow(variables);
+  @observable bool get shouldShowStaticVariables => shouldShow(staticVariables);
   @observable bool get shouldShowConstructors =>  shouldShow(constructors);
   @observable bool get shouldShowMethods =>  shouldShow(methods);
+  @observable bool get shouldShowStaticMethods =>  shouldShow(staticMethods);
   @observable bool shouldShow(Category thing) =>
       thing.content.isNotEmpty &&
       (viewer.isInherited || thing.hasNonInherited);

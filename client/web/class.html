@@ -33,8 +33,21 @@
       {{addComment('dartdoc-class')}}
 
       <div class="accordion" id="accordion-grouping">
+            <dartdoc-category category="{{constructors}}"
+              class="accordion-group">
+            </dartdoc-category>
           <template if="{{shouldShowOperators}}">
             <dartdoc-category category="{{operators}}" 
+                class="accordion-group">
+            </dartdoc-category>
+          </template>
+          <template if="{{shouldShowMethods}}">
+            <dartdoc-category category="{{methods}}"
+                class="accordion-group">
+            </dartdoc-category>
+          </template>
+          <template if="{{shouldShowStaticMethods}}">
+            <dartdoc-category category="{{staticMethods}}"
                 class="accordion-group">
             </dartdoc-category>
           </template>
@@ -43,18 +56,12 @@
                 class="accordion-group">
             </dartdoc-category>
           </template>
-          <template if="{{shouldShowConstructors}}">
-            <dartdoc-category category="{{constructors}}"
-              class="accordion-group">
-            </dartdoc-category>
-          </template>
-          <template if="{{shouldShowMethods}}">
-            <dartdoc-category category="{{methods}}"
+          <template if="{{shouldShowStaticVariables}}">
+            <dartdoc-category category="{{staticVariables}}" 
                 class="accordion-group">
             </dartdoc-category>
           </template>
       </div>
-
     </template>
 
   <script type="application/dart" src="class.dart"></script>
