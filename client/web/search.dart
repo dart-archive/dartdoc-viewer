@@ -77,8 +77,6 @@ class Search extends DartdocElement {
       searchQuery = "";
       results.clear();
       dartdocMain.searchSubmitted();
-      document.body.focus();
-      isFocused = false;
     }
   }
 
