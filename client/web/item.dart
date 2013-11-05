@@ -98,13 +98,13 @@ class ItemElement extends MemberElement {
 
     if (shouldShowClassOrLibraryComment) {
       var commentary = [new Element.html('<hr/>')];
-      commentary.add(new Element.html('<p class="description"></p>'));
+      commentary.add(new Element.html('<div class="description"></div>'));
       addComment('dartdoc-item', true, commentary.last);
       root.children.addAll(commentary);
     }
     if (shouldShowMethodComment) {
       var commentary = [new Element.html('<hr/>')];
-      commentary.add(new Element.html('<p class="description"></p>' +
+      commentary.add(new Element.html('<div class="description"></div>' +
           'id=${item.name}-method-comment'));
       addComment('dartdoc-item', true, commentary.last);
       root.children.addAll(commentary);
