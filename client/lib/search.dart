@@ -81,7 +81,8 @@ import 'package:dartdoc_viewer/location.dart';
  * the appropriate qualified name to return for the search query.
  */
 @reflectable
-List<SearchResult> lookupSearchResults(String query, int maxResults) {
+List<SearchResult> lookupSearchResults(String query, int maxResults,
+    Function filter) {
   if (query == '') return [];
 
   var stopwatch = new Stopwatch()..start();
@@ -89,6 +90,7 @@ List<SearchResult> lookupSearchResults(String query, int maxResults) {
   var scoredResults = <SearchResult>[];
   var resultSet = new Set<String>();
   var queryList = query.trim().toLowerCase().split(' ');
+  queryList = queryList.map((x) => x.replaceAll(":", '-')).toList();
   for (var key in index.keys) {
     var lower = key.toLowerCase();
     if (queryList.any((q) => lower.contains(q))) {
@@ -120,8 +122,14 @@ List<SearchResult> lookupSearchResults(String query, int maxResults) {
     if (lowerCaseResult.contains('.dom.')) {
       lowerCaseResult = lowerCaseResult.replaceFirst('.dom', '');
     }
-    var qualifiedNameParts = lowerCaseResult.split('.');
-    qualifiedNameParts.forEach((q) => q.trim());
+
+    var location = new DocsLocation(lowerCaseResult);
+    var qualifiedNameParts = location.componentNames.skip(1).toList();
+    // We allow results that aren't within the current context, but we
+    // demote them severely.
+    if (!filter(location)) {
+      score -= 500;
+    }
 
     queryList.forEach((q) {
       // If it is a direct match to the last segment of the qualified name,
@@ -134,7 +142,7 @@ List<SearchResult> lookupSearchResults(String query, int maxResults) {
         score += 500 ~/ value[type];
       }
 
-      for (int i = 0; i < qualifiedNameParts.length - 1; i++) {
+      for (var segment in qualifiedNameParts) {
         // If it is a direct match to any segment of the qualified name, give
         // score boost depending on the member type.
         // If it starts with the search query, give it aboost depending on
@@ -142,19 +150,19 @@ List<SearchResult> lookupSearchResults(String query, int maxResults) {
         // If it contains the search query, give it an even smaller score boost
         // also depending on the member type and the percentage of the segment
         // the query fills.
-        if (qualifiedNameParts[i] == q) {
+        if (segment == q) {
           score += 300 ~/ value[type];
-        } else if (qualifiedNameParts[i].startsWith(q)) {
-          var percent = q.length / qualifiedNameParts[i].length;
+        } else if (segment.startsWith(q)) {
+          var percent = q.length / segment.length;
           score += (300 * percent) ~/ value[type];
-        } else if (qualifiedNameParts[i].contains(q)) {
-          var percent = q.length / qualifiedNameParts[i].length;
+        } else if (segment.contains(q)) {
+          var percent = q.length / segment.length;
           score += (150 * percent) ~/ value[type];
         }
       }
 
       // If the result item is part of the dart library, give it a small boost.
-      if (qualifiedNameParts.first == 'dart') {
+      if (location.libraryName.startsWith('dart')) {
         score += 50;
       }
     });

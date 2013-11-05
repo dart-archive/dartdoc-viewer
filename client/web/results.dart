@@ -46,9 +46,9 @@ class Result extends AnchorElement with Polymer, Observable {
     // TODO(alanknight) : Look at unifying this with Location
     var name = qualifiedname.split('.');
     if (membertype == 'library') {
-      if (name.first == 'dart') {
-        return 'dart:${name.last}';
-      }
+      var lib = pageIndex[qualifiedname];
+      if (lib == null) return '';
+      return lib.decoratedName;
     } else if (membertype == 'constructor') {
       // Non-named constructors have an empty string for the last element
       // of the qualified name, so we display the class name instead.
@@ -61,18 +61,31 @@ class Result extends AnchorElement with Polymer, Observable {
   /// The type of this member.
   String get descriptiveType {
     if (item == null) return '';
-    if (membertype == 'class' || membertype == 'library')
-      return membertype;
-    var ownerType = index[new DocsLocation(item.element).parentQualifiedName];
+    var loc = new DocsLocation(item.element);
+    if (membertype == 'class')
+      return 'class';
+    if (membertype == 'library') {
+      return loc.packageName == null ?
+          'library' : 'library in ${loc.packageName}';
+    }
+    var ownerType = index[loc.parentQualifiedName];
     if (ownerType == 'class')
-      return '$membertype in ${new DocsLocation(item.element).parentName}';
+      return '$membertype in ${loc.parentName}';
     return membertype;
   }
 
   /// The library containing this member.
   String get outerLibrary {
     if (membertype == 'library') return '';
-    var libraryName = new DocsLocation(qualifiedname).libraryName;
-    return 'library $libraryName';
+    var loc = new DocsLocation(qualifiedname);
+    var libraryName = loc.libraryQualifiedName;
+    var library = pageIndex[libraryName];
+    if (library == null) return '';
+    var packageName = loc.packageName;
+    if (packageName == null) {
+      return 'library ${library.decoratedName}';
+    } else {
+      return 'library ${library.decoratedName} in ${packageName}';
+    }
   }
 }

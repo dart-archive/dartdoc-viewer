@@ -9,6 +9,7 @@ import 'dart:html';
 import 'app.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart';
+import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
 import 'results.dart';
 import 'member.dart';
@@ -42,10 +43,31 @@ class Search extends DartdocElement {
   void updateResults() {
     currentIndex = -1;
     results.clear();
-    results.addAll(lookupSearchResults(searchQuery, viewer.isDesktop ? 10 : 5));
+    results.addAll(lookupSearchResults(
+        searchQuery,
+        viewer.isDesktop ? 10 : 5,
+        locationValidInContext));
     notifyPropertyChange(#results, null, results);
     notifyPropertyChange(#hasNoResults, null, hasNoResults);
     notifyPropertyChange(#dropdownOpen, null, dropdownOpen);
+  }
+
+  /// Return true if we consider [location] valid in the current context. This
+  /// is used to filter search so that if we're inside a package we will
+  /// give search priority to things within that package, or if we're
+  /// not showing pkg, we will give lower priority to search results from there.
+  bool locationValidInContext(DocsLocation location) {
+    var currentContext = viewer.currentPage.home;
+    var showPkg = viewer.showPkgLibraries;
+    if (currentContext == viewer.homePage) {
+      if (viewer.showPkgLibraries) {
+        return true;
+      } else {
+        return location.packageName == null;
+      }
+    } else {
+      return location.packageName == currentContext.name;
+    }
   }
 
   void onBlurCallback(_) {
