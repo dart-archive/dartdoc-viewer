@@ -188,3 +188,135 @@ TODO(janicejl): Currently uses fixed widths, change to use flex-box in future.
 .mdn-note a:hover {
   color: hsl(10, 60%, 60%);
 }
+
+
+
+
+/* New styles */
+
+/* ***** Fonts ***** */
+
+/* General */
+.page-header > h1 {
+  font-size: 42px;
+  line-height: 52px;
+  color: #0489c3;
+}
+
+
+/* Structure */
+.affix-left {
+  top: 120px;
+}
+
+.affix-right {
+  top: 120px;
+  border: none;
+  /*width: 170px !important;*/
+  background: #0489c3;
+}
+
+.affix-right a {
+  color: #fff;
+}
+
+.affix-right ul li a {
+  color: #fff;
+}
+
+#minimap ul {
+  list-style: disc url('../smallcorner-white.png');
+  padding-left: 25px;
+}
+
+#minimap ul ul {
+  list-style: disc url('../smallcorner-white.png');
+}
+
+
+/* Library Panel */
+#library-panel {
+  width: 170px;
+}
+
+#library-panel .list-group-item {
+  font-size: 12px;
+  color: #5a5a5a;
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  border-right: none;
+  border-left: none;
+  text-decoration: none;
+}
+
+
+/* Nav */
+.navbar {
+  background: #fff;
+  height: 65px;
+}
+
+.navbar-brand.btn-link {
+  width: auto !important;
+  font-weight: 400;
+  margin: 25px 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.header-logo {
+  background-image: url('../dart-logo.png');
+  background-repeat: no-repeat;
+  width: 116px !important;
+  height: 31px !important;
+  float: left;
+  margin: 15px !important;
+}
+
+
+/* Accordion */
+.accordion-group {
+  border: none;
+}
+
+.accordion-heading a {
+  font-size: 32px;
+  line-height: 38px;
+  text-decoration: none;
+  color: #5a5a5a;
+}
+
+.accordion-heading .accordion-toggle {
+  padding-left: 0;
+}
+
+.panel-heading {
+  border-bottom: none;
+  background-color: transparent;
+}
+
+#nameGoesHere a {
+  padding-left: 0;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+#nameGoesHere hr {
+  margin: 10px 0;
+}
+
+.accordion-inner {
+  padding-left: 0;
+}
+
+#itemList .panel {
+  border: none;
+  border-bottom: 1px solid #ddd;
+  padding-left: 0;
+}
+
+#itemList .panel p {
+  margin-bottom: 5px;
+  font-size: 16px;
+  line-height: 19px;
+}
