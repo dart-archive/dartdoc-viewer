@@ -237,7 +237,7 @@ class Viewer extends Observable {
     return lib.load();
   }
 
-  Future<List<Item>> getMember(Library lib, DocsLocation location) {
+  Future<List<Item>> getMember(lib, DocsLocation location) {
     var member = lib.memberNamed(location.memberName);
     if (member == null) return new Future.value([lib, null]);
     return member.load().then((mem) => new Future.value([lib, member]));

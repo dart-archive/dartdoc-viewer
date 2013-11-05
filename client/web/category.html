@@ -12,13 +12,13 @@
         data-toggle="collapse"
         data-parent="{{accordionParent}}"
         data-target="#accordion-{{stylizedName}}">
-        {{title}}
+        {{title}}<b class="caret"></b>
       </a>
     </div>
 
    <div id="accordion-{{stylizedName}}"
       class="accordion-body {{divClass}}"
-      style="height:{{divStyle}}">
+      style="height:auto">
      <div class="accordion-inner">
         <ul id="itemList" class="nav nav-pills nav-stacked">
         </ul>

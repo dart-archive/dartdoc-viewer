@@ -26,7 +26,6 @@ class CategoryElement extends DartdocElement {
       notifyPropertyChange(#accordionParent,
           accordionParentFor(change.oldValue), accordionParent);
       notifyPropertyChange(#divClass, divClassFor(change.oldValue), divClass);
-      notifyPropertyChange(#divStyle, divStyleFor(change.oldValue), divStyle);
     });
     new PathObserver(viewer, "isInherited").changes.listen((changes) {
       _flushCache();
@@ -122,9 +121,6 @@ class CategoryElement extends DartdocElement {
 
   @observable get divClass => divClassFor(viewer.isDesktop);
   divClassFor(isDesktop) => isDesktop ? 'collapse in' : 'collapse';
-  @observable get divStyle => divStyleFor(viewer.isDesktop);
-  divStyleFor(isDesktop) => isDesktop ? 'auto' : '0px';
-
 
   var validator = new NodeValidatorBuilder()
     ..allowHtml5(uriPolicy: new SameProtocolUriPolicy())
