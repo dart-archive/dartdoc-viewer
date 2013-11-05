@@ -3,13 +3,13 @@
 
 <polymer-element name="variable-heading" attributes="item">
   <template>
-    <a id="{{idName}}"></a>
     <template if="{{item.isFinal}}">final</template>
     <template if="{{item.isStatic}}">static</template>
     <template if="{{item.isAbstract}}">abstract</template>
     <template if="{{item.isConstant}}">const</template>
     <template if="{{item.isSetter}}">
-      void&nbsp;set&nbsp;<b>{{name}}</b>(
+      void&nbsp;set&nbsp;<b><a id="{{idName}}" href="#{{item.anchorHref}}">
+        {{name}}</a></b>(
       <dartdoc-annotation annotations="{{setterParameter.annotations}}">
       </dartdoc-annotation>
       <span class="setParam">
@@ -23,7 +23,8 @@
       <span class="type">
         {{createType(item.type, 'variable-heading', 'type')}}
       </span>
-      {{getter}}&nbsp;<b>{{name}}</b>
+      {{getter}}&nbsp;<b><a id="{{idName}}" href="#{{item.anchorHref}}">
+          {{name}}</a></b>
     </template>
   </template>
   <script type="application/dart" src="variable-heading.dart"></script>

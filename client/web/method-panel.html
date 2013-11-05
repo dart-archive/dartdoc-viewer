@@ -7,13 +7,9 @@
 <!-- TODO(tmandel): Reduce redundancy here and in method.html -->
 <polymer-element name="method-panel" attributes="item">
   <template>
-      <a id="{{idName}}">
-      </a>
       <div class="panel-heading">
-
         <dartdoc-annotation annotations="{{annotations}}">
         </dartdoc-annotation>
-
         <!-- Return Type -->
         <p>
           <span>
@@ -22,7 +18,8 @@
             </span>
             {{createType(item.type, 'method-panel', 'type')}}
             <template if="{{item.isOperator}}">operator</template>
-            <b>{{item.decoratedName}}</b>
+            <b><a id="{{idName}}" href="#{{item.anchorHref}}">
+                {{item.decoratedName}}</a></b>            
              <!-- Parameters -->
             <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
           </span>
