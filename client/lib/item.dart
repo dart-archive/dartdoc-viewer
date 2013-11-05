@@ -34,7 +34,7 @@ nothing() => null;
 // Wraps a comment in span element to make it a single HTML Element.
 @reflectable String _wrapComment(String comment) {
   if (comment == null) comment = '';
-  return '<span>$comment</span>';
+  return '<div>$comment</div>';
 }
 
 /**
