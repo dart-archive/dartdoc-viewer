@@ -6,6 +6,7 @@
 body {
 	font-family: 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
+    font-size:15px;
 }
 
 /* ***** General ***** */
@@ -55,7 +56,7 @@ h5 {
 	font: 400 12px/17px 'Montserrat', sans-serif;
 	margin-top: 90px;
 	font-weight: 400;
-	font-size: 16px;
+	font-size: 15px;
 	color: #484848;
 }
 
@@ -148,22 +149,6 @@ i[class*="icon-app-"] {
 	height: 35px; 
 }
 
-i.icon-app-1 {
-	background-position: 0 -150px;
-}
-
-i.icon-app-2 {
-	background-position: -50px -150px;
-}
-
-i.icon-app-3 {
-	background-position: -100px -150px;
-}
-
-i.icon-app-4 {
-	background-position: -150px -150px;
-}
-
 i.icon-triangle {
 	display: inline-block;
 	width: 9px;
@@ -203,9 +188,9 @@ i.icon-close-x {
     font-family: 'Montserrat', sans-serif;
 	text-decoration: none;
 	color: #464646;
-	text-transform: uppercase;
 	font-size: 12px;
 	line-height: 18px;
+	padding-top:28px;
 }
 
 @media (min-width: 768px) {
@@ -309,6 +294,12 @@ i.icon-close-x {
 
 .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus {
      color:#1485c3;
+}
+
+.navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+color: #555555;
+background-color: #d5d5d5;
+height: 65px;
 }
 
 
@@ -495,18 +486,6 @@ i.icon-close-x {
 
 
 /* ***** Hero ***** */
-.hero-hldr {
-	background: #0084c5; /* Old browsers */
-	background: -moz-linear-gradient(45deg,  #0084c5 0%, #0489c3 36%, #30cabf 66%, #2fbcb2 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#0084c5), color-stop(36%,#0489c3), color-stop(66%,#30cabf), color-stop(100%,#2fbcb2)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(45deg,  #0084c5 0%,#0489c3 36%,#30cabf 66%,#2fbcb2 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(45deg,  #0084c5 0%,#0489c3 36%,#30cabf 66%,#2fbcb2 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(45deg,  #0084c5 0%,#0489c3 36%,#30cabf 66%,#2fbcb2 100%); /* IE10+ */
-	background: linear-gradient(45deg,  #0084c5 0%,#0489c3 36%,#30cabf 66%,#2fbcb2 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0084c5', endColorstr='#2fbcb2',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-	margin-top: 65px;
-}
-
 .hero {
 	text-align: center;
 	min-height: 420px;
@@ -631,85 +610,53 @@ pre li {
 	
 }
 
-
-/* ***** Browser support ***** */
-.browser-support {
-	margin-top: 65px;
+b {
+	font-weight:400;
+	font-weight:bold;
 }
 
-/* ***** Dart is a new language ***** */
-.dart-new-language {
-	margin-top: 50px;
-	margin-bottom: 50px;
-	text-align: center;
+
+#itemList .panel p {
+	font-size:15px !important;
+	padding-left:30px;
 }
 
-/* ***** Dart’s comprehensive libraries ***** */
-.dart-libraries {
-	margin-top: 50px;
-	margin-bottom: 50px;
-	text-align: center;
+#itemList .panel p.description p {
+	padding-left:0px;
 }
 
-/* ***** Compilation to JavaScript ***** */
-.js-dart-apps {
-	margin-top: 50px;
-	margin-bottom: 50px;
-	text-align: center;
+
+
+#itemList .panel li {
+	font-size:15px !important;
+	margin-left:30px;
 }
 
-/* ***** Amazing Apps ***** */
-.amazing-apps {
-	margin-top: 50px;
-	margin-bottom: 50px;
-	text-align: center;
+#itemList .panel pre {
+	margin-left:30px;	
 }
 
-#amazing-apps-carousel {
-	min-height: 455px;
-	background: transparent url(../img/phone-shell.png) no-repeat center center;
+
+.panel-heading {
+padding: 0px 10px;
 }
 
-/* ***** Productivity Tools ***** */
-.productivity-tools {
-	text-align: center;
+.panel-heading p {
+	font-size:15px !important;
+	padding-left:0px !important;
 }
 
-.productivity-tools img {
-	margin: 15px 0 75px 0;
-	width: 100%;
-	max-width: 786px;
+#nameGoesHere a {
+	font-size:15px !important;
 }
 
-.productivity-tools p {
-	max-width: 785px;
-	margin-right: auto;
-	margin-left: auto;
-}
 
-.productivity-tools p.version {
-	margin-top: 20px;
-	font-size: 12px;
-	line-height: 18px;
-}
-
-.productivity-tools-options {
-	margin-top: 40px;
-	margin-bottom: 80px;
-}
-
-@media (max-width: 992px) {
-	.productivity-tools-options h6 {
-	    margin-top: 35px;
-	    margin-bottom: 10px;
-	}
-}
 
 /* ***** Buttons ***** */
 
 .btn-lg {
-    padding: 10px 46px;
-    font-size: 16px;
+	padding: 10px 46px;
+    font-size: 15px;
     line-height: 1.33;
     text-transform:uppercase;
     border:0;
@@ -759,74 +706,32 @@ pre li {
 }
 
 .affix {
-    position: fixed;
+position: fixed;
 }
 
 code {
-    padding: 2px 4px;
-    font-size: 90%;
-    color: #0084c5;
-    white-space: nowrap;
-    background-color: #dce3e6;
-    border-radius: 4px;
+	padding: 2px 4px;
+	font-size: 90%;
+	color: #676767;
+	white-space: nowrap;
+	background-color: #fff !important;
 }
 
-/* ***** Footer ***** */
-.footer {
-	background: #3f4245 url(../img/footer-bg.png) repeat-x left top;
-	padding-top: 60px;
-	padding-bottom: 80px;
-	position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    height: 300px;
+
+#search {
+width: 300px !important;
+margin-top:8px;
 }
 
-@media (max-width: 992px) {
-	.footer {
-		position: relative;
-	    height: auto;
-	}
+#minimap {
+	font-size:14px;
 }
 
-.footer h4 {
-    color: #1485c3;
+#minimap .nav .caret {
+border-top-color: #fff;
+border-bottom-color: #fff;
 }
 
-.footer > * {
-	color: #fff;
-}
-
-.footer p {
-	color: #fff;
-	margin-top: 15px;
-	margin-bottom: 15px;
-}
-
-.footer p.sm {
-	font-size: 9px;
-	line-height: 16px;
-}
-
-.footer p > a {
-	color: #fff;
-}
-
-.footer ul {
-	list-style: none;
-	padding-left: 0;
-	font-size: 11px;
-	line-height: 16px;
-}
-
-.footer ul > li {
-	margin-left: 0;
-	margin: 8px 0;
-}
-
-.footer ul > li > a {
-	color: #fff;
-	font-size: 11px;
-	line-height: 16px;
+.accordion-heading a:hover {
+	color: #0083c5;	
 }

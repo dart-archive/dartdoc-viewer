@@ -11,6 +11,8 @@ import 'app.dart';
 import 'dart:html';
 import 'package:dartdoc_viewer/read_yaml.dart';
 
+// TODO(alanknight): Clean up the dart-style CSS file's formatting once
+// it's stable.
 @CustomTag("dartdoc-main")
 class IndexElement extends DartdocElement {
 
