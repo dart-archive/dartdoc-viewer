@@ -114,7 +114,7 @@ class ClassElement extends MemberElement {
       }
     } else {
       p.append(p.createFragment('Subclasses: ' + text,
-          treeSanitizer: sanitizer));
+          validator: validator));
       if (buttonThatMustBeStatic != null) {
         buttonThatMustBeStatic.classes.remove("hidden");
       }
@@ -123,7 +123,7 @@ class ClassElement extends MemberElement {
     p.append(buttonThatMustBeStatic);
     p.append(p.createFragment(
          '<span id="${item.name}-subclass-hidden" class="hidden">,&nbsp;'
-         '</span>', treeSanitizer: sanitizer));
+         '</span>', validator: validator));
     var q = shadowRoot.querySelector("#${item.name}-subclass-hidden");
     q.append(q.createFragment(makeLinks(subclasses.skip(3))));
   }

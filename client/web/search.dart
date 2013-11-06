@@ -94,8 +94,9 @@ class Search extends DartdocElement {
         refId = results.first.element;
       }
       var newLocation = new LinkableType(refId).location;
-      viewer.handleLink(newLocation);
-      window.history.pushState("#$newLocation", viewer.title, "#$newLocation");
+      var encoded = Uri.encodeFull(newLocation);
+      viewer.handleLink(encoded);
+      window.history.pushState("#$encoded", viewer.title, "#$encoded");
       searchQuery = "";
       results.clear();
       dartdocMain.searchSubmitted();

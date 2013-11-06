@@ -742,6 +742,20 @@ nothing() => null;
   String get decoratedName => isConstructor ?
       (name != '' ? '$className.$name' : className) : name;
 
+  get linkHref => anchorHref;
+
+  /// The link to an anchor within a larger page, if appropriate.
+  DocsLocation get anchorHrefLocation {
+    if (isConstructor && name == '') {
+      var locationForUnnamed = location;
+      locationForUnnamed.anchor =
+          locationForUnnamed.toHash(locationForUnnamed.memberName);
+      return locationForUnnamed;
+    } else {
+      return super.anchorHrefLocation;
+    }
+  }
+
   String toString() => decoratedName;
 }
 

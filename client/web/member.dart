@@ -146,7 +146,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
       if (commentLocation == null) return;
       commentLocation.children.clear();
       var commentElement = new Element.html(comment,
-          treeSanitizer: sanitizer);
+          validator: validator);
       var links = commentElement.querySelectorAll('a');
       for (AnchorElement link in links) {
         if (link.href =='') {
@@ -158,12 +158,12 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
             var index = link.text.indexOf('#');
             var newName = link.text.substring(index + 1, link.text.length);
             link.replaceWith(new Element.html('<i>$newName</i>',
-                treeSanitizer: sanitizer));
+                validator: validator));
           } else if (!index.containsKey(link.text)) {
             // If markdown links to private or otherwise unknown members are
             // found, make them <i> tags instead of <a> tags for CSS.
             link.replaceWith(new Element.html('<i>${link.text}</i>',
-                treeSanitizer: sanitizer));
+                validator: validator));
           } else {
             var linkable = new LinkableType(link.text);
             link

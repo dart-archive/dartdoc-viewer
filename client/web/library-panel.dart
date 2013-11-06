@@ -45,6 +45,6 @@ class LibraryPanel extends DartdocElement {
     var html = '<a href="#${linkHref(library)}" class="list-group-item'
         '${isActive ? ' active' : ''}">'
         '${library.decoratedName}</a>';
-    return new Element.html(html, treeSanitizer: sanitizer);
+    return new Element.html(html, validator: validator);
   }
 }

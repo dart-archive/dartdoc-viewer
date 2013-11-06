@@ -204,8 +204,9 @@ class Viewer extends Observable {
         var newLocation = new DocsLocation(location.parentQualifiedName);
         newLocation.anchor = newLocation.toHash(location.subMemberName);
         var newUri = newLocation.withAnchor;
-        window.history.pushState("#$newUri", viewer.title, "#$newUri");
-        return handleLink(newLocation.withAnchor);
+        var encoded = Uri.encodeFull(newUri);
+        window.history.pushState("#$encoded", viewer.title, "#$encoded");
+        return handleLink(encoded);
       }
       return getItem(location).then((items)
           => _updatePage(location.itemFromList(items.toList()), location));
@@ -267,7 +268,8 @@ class Viewer extends Observable {
     // [package/]libraryWithDashes[.class.method]#anchor
 
     // We will tolerate colons in the location instead of dashes, though
-    var location = new DocsLocation(uri);
+    var decoded = Uri.decodeFull(uri);
+    var location = new DocsLocation(decoded);
 
     if (location.libraryName == 'home') {
       _updatePage(viewer.homePage, location);

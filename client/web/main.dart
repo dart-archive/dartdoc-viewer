@@ -105,12 +105,12 @@ class IndexElement extends DartdocElement {
       new Element.html('<li><a class="btn-link" '
         'href="#${item.linkHref}">'
         '${item.decoratedName}</a></li>',
-        treeSanitizer: sanitizer);
+        validator: validator);
 
   finalCrumb(item) =>
     new Element.html('<li class="active"><a class="btn-link">'
       '${item.decoratedName}</a></li>',
-      treeSanitizer: sanitizer);
+      validator: validator);
 
   void toggleOptionsMenu(MouseEvent event, detail, target) {
     var list = shadowRoot.querySelector(".dropdown-menu").parent;
