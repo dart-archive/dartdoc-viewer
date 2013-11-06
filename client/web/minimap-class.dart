@@ -84,7 +84,7 @@ class MinimapElementClass extends MemberElement {
   shouldShow(Function f) => page is Class &&
       (f(page).hasNonInherited ||  viewer.isInherited);
 
-  @observable get name => page.name;
+  @observable get name => page.decoratedName;
 
   @observable get currentLocation => window.location.toString();
 

@@ -48,7 +48,7 @@ class MinimapElementLibrary extends MemberElement {
   contents(thing) => thing == null ? [] : thing.content;
 
   @observable get linkHref => item.linkHref;
-  @observable get name => item.name;
+  @observable get name => item.decoratedName;
   @observable get currentLocation => window.location.toString();
 
   get item => super.item;
