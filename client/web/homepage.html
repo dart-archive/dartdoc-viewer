@@ -3,7 +3,9 @@
 
 <polymer-element name="dartdoc-homepage"  attributes="item">
   <template>
-      <section class="description"></section>
+        <!--  TODO(alanknight): The div with itemList and panel are here to
+      convince it to use the right paragraph spacing. Seems pretty awful. -->
+      <div id="itemList"><section class="description panel"></section></div>
       {{addComment('dartdoc-homepage')}}
       <div class="page-header"><h1>Libraries</h1></div>
       <div id="librariesGoHere"></div>
