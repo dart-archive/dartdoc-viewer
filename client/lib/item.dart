@@ -209,9 +209,17 @@ nothing() => null;
 @reflectable void _sort(List<List<Item>> items) {
   items.forEach((item) {
     item.sort((Item a, Item b) =>
-      a.decoratedName.compareTo(b.decoratedName));
+      _compareLibraryNames(a.decoratedName, b.decoratedName));
   });
 }
+
+int _compareLibraryNames(String a, String b) {
+  var aIsDart = a.startsWith("dart");
+  var bIsDart = b.startsWith("dart");
+  if (aIsDart == bIsDart) return a.compareTo(b);
+  return aIsDart ? -1 : 1;
+}
+
 
 /**
  * An [Item] containing all of the [Library] and [Placeholder] objects.
