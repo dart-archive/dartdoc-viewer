@@ -195,7 +195,7 @@ i.icon-close-x {
 
 @media (min-width: 768px) {
 	.navbar-nav > li > a {
-		padding-top: 25px;
+		padding-top: 28px;
 	}
 }
 
@@ -225,6 +225,17 @@ i.icon-close-x {
 	height: 33px;
 	margin-right: 50px;
 }
+
+@media (max-width: 768px) {
+	.navbar-brand.btn-link {
+		width: auto;
+		max-width: none;
+		margin-top: 0px !important;
+		padding-top: 22px !important;
+		text-align: left;
+	}
+}
+	
 
 .nav.navbar-right > li > a {
 	padding-left: 2px;
@@ -260,6 +271,20 @@ i.icon-close-x {
 	background: #fff;
 }
 
+@media (max-width: 768px) {
+	.collapse.in {
+		width: 100%;
+		top: 66px;
+		position: absolute;
+		left: 0;
+		background-color: #fff;
+	}
+
+	.navbar-nav.pull-right {
+		display: none;
+	}
+}
+
 .navbar-nav > li > .dropdown-menu {
 	text-align: left;
 }
@@ -273,7 +298,6 @@ i.icon-close-x {
 .navbar-nav > li > .dropdown-menu > li > a {
 	text-decoration: none;
 }
-
 
 @media (max-width: 768px) {
 	.navbar-search {
@@ -604,6 +628,7 @@ height: 65px;
 
 pre {
 	background-color:#fff;
+	max-width: 650px;
 }
 
 pre li {
@@ -619,6 +644,12 @@ b {
 #itemList .panel p {
 	font-size:15px !important;
 	padding-left:30px;
+	max-width: 650px;
+	margin-bottom: 15px;
+}
+
+.firstParagraph {
+	color: #000;
 }
 
 #itemList .panel p.description p {
@@ -715,12 +746,13 @@ code {
 	color: #676767;
 	white-space: nowrap;
 	background-color: #fff !important;
+	max-width: 650px;
 }
 
 
 #search {
-width: 300px !important;
-margin-top:8px;
+	width: 300px !important;
+	margin-top: 17px;
 }
 
 #minimap {
