@@ -147,6 +147,11 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
       commentLocation.children.clear();
       var commentElement = new Element.html(comment,
           validator: validator);
+      var firstParagraph = (commentElement is ParagraphElement) ?
+          commentElement : commentElement.querySelector("p");
+      if (firstParagraph != null) {
+        firstParagraph.classes.add("firstParagraph");
+      }
       var links = commentElement.querySelectorAll('a');
       for (AnchorElement link in links) {
         if (link.href =='') {
