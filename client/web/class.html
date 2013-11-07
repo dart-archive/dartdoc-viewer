@@ -35,9 +35,11 @@
       {{addComment('dartdoc-class')}}
 
       <div class="accordion" id="accordion-grouping">
+          <template if="{{shouldShowConstructors}}">
             <dartdoc-category category="{{constructors}}"
               class="accordion-group">
             </dartdoc-category>
+          </template>
           <template if="{{shouldShowOperators}}">
             <dartdoc-category category="{{operators}}" 
                 class="accordion-group">
