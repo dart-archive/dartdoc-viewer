@@ -120,7 +120,9 @@ class ClassElement extends MemberElement {
       }
     }
     if (subclasses.length <= 3) return;
-    p.append(buttonThatMustBeStatic);
+    if (buttonThatMustBeStatic != null) {
+      p.append(buttonThatMustBeStatic);
+    }
     p.append(p.createFragment(
          '<span id="${item.name}-subclass-hidden" class="hidden">,&nbsp;'
          '</span>', validator: validator));
