@@ -248,7 +248,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   /// Returns whether [location] exists within the search index.
   @observable bool exists(String location) {
     if (location == null) return false;
-    return index.containsKey(location.replaceAll('-','.'));
+    return index.containsKey(location);
   }
 }
 

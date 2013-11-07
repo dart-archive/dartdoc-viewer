@@ -5,6 +5,7 @@
 library minimap_class;
 
 import 'package:dartdoc_viewer/item.dart';
+import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
 import 'app.dart';
 import 'member.dart';
@@ -89,8 +90,9 @@ class MinimapElementClass extends MemberElement {
   @observable get currentLocation => window.location.toString();
 
   hideShow(event, detail, target) {
+    var loc = new DocsLocation(target.hash);
     var list = shadowRoot.querySelector(
-        "#minimap-" + target.hash.split("#").last);
+        "#minimap-" + loc.anchor);
     if (list.classes.contains("in")) {
       list.classes.remove("in");
     } else {

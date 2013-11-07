@@ -18,7 +18,9 @@ final libraryMatch = new RegExp(r'([\w\-\:]+)');
 /// A member or sub-member in one of our URI's starts with a '.' and is
 /// an identifier.
 final memberMatch = new RegExp(r'\.(\w+)');
-final anchorMatch = new RegExp(r'\#(\w+)');
+/// A sub-member can be a normal identifier but can also be an operator.
+final subMemberMatch = new RegExp(r'\.([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%]+)');
+final anchorMatch = new RegExp(r'\@(\w+)');
 
 // This represents a component described by a URI and can give us
 // the URI given the component or vice versa.
@@ -44,7 +46,9 @@ class DocsLocation {
   }
 
   void _extractPieces(String uri) {
-    var position = 0;
+
+    if (uri == null || uri.length == 0) return;
+    var position = (uri[0] == "#") ? 1 : 0;
 
     _check(regex) {
       var match = regex.matchAsPrefix(uri, position);
@@ -55,11 +59,10 @@ class DocsLocation {
       }
     }
 
-    if (uri == null) return;
     packageName = _check(packageMatch);
     libraryName = _check(libraryMatch);
     memberName = _check(memberMatch);
-    subMemberName = _check(memberMatch);
+    subMemberName = _check(subMemberMatch);
     anchor = _check(anchorMatch);
   }
 
@@ -95,7 +98,7 @@ class DocsLocation {
   /// with a leading period if the [subMemberName] is non-empty.
   get subMemberPlus => subMemberName == null ? '' : '.$subMemberName';
   /// The trailing anchor e.g. #id_hashCode, including the leading hash.
-  get anchorPlus => anchor == null ? '' : '#$anchor';
+  get anchorPlus => anchor == null ? '' : '@$anchor';
 
   /// Return a list of the components' basic names. Omits the anchor, but
   /// includes the package name, even if it is null.

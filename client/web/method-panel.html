@@ -30,7 +30,7 @@
         <template if="{{isInherited}}">
           Inherited from
           <template if="{{exists(inheritedFrom.location)}}">
-            <a href="#{{inheritedFrom.location}}#id_{{item.name}}">
+            <a href="#{{inheritedFrom.loc.withAnchor}}">
               {{inheritedFrom.simpleType}}
             </a>
           </template>
@@ -53,7 +53,7 @@
           <template if="{{viewer.isInherited}}">
             Comment inherited from
             <template if="{{exists(commentFrom.location)}}">
-              <a href="#{{commentFrom.location}}#id_{{item.name}}">
+              <a href="#{{commentFrom.loc.withAnchor}}">
                 {{commentFrom.simpleType}}
               </a>
             </template>

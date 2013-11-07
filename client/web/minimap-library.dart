@@ -5,6 +5,7 @@
 library minimap_library;
 
 import 'package:dartdoc_viewer/item.dart';
+import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
 import 'app.dart' as app;
 import 'member.dart';
@@ -58,8 +59,9 @@ class MinimapElementLibrary extends MemberElement {
       thing == null ? null : thing.decoratedName;
 
   hideShow(event, detail, target) {
+    var loc = new DocsLocation(target.hash);
     var list = shadowRoot.querySelector(
-        "#minimap-" + target.hash.split("#").last);
+        "#minimap-" + loc.anchor);
     if (list.classes.contains("in")) {
       list.classes.remove("in");
     } else {
