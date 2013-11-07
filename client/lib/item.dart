@@ -725,11 +725,7 @@ int _compareLibraryNames(String a, String b) {
     this.isConstant = yaml['constant'] == 'true';
     this.isOperator = isOperator;
     this.isConstructor = isConstructor;
-    // TODO(alanknight): Probably docgen shouldn't be producing this if it's
-    // not actually inherited.
-    if (inheritedFrom != qualifiedName) {
-      this.inheritedFrom = inheritedFrom;
-    }
+    this.inheritedFrom = inheritedFrom;
     this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
