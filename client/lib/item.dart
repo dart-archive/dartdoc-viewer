@@ -808,7 +808,7 @@ int _compareLibraryNames(String a, String b) {
   DocsLocation get anchorHrefLocation {
     if (owner == null) return null;
     var parameterLoc = owner.location.parentLocation;
-    parameterLoc.anchor = parameterLoc.toHash("${owner.decoratedName}.$name");
+    parameterLoc.anchor = parameterLoc.toHash("${owner.decoratedName}_$name");
     return parameterLoc;
   }
 

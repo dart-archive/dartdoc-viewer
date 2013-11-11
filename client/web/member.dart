@@ -171,7 +171,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
     // TODO(tmandel): Handle parameters differently?
     var parameterName =
         link.text.substring(loc.withAnchor.length + 1, link.text.length);
-    loc.anchor = loc.toHash("${loc.subMemberName}.$parameterName");
+    loc.anchor = loc.toHash("${loc.subMemberName}_$parameterName");
     loc.subMemberName = null;
     link.replaceWith(new Element.html(
         '<a href="#${loc.withAnchor}">$parameterName</a>',
