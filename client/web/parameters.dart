@@ -74,7 +74,13 @@ class ParameterElement extends DartdocElement {
         outerSpan.append(MemberElement.createInner(element.type));
         space = ' ';
       }
-      outerSpan.appendText('$space${element.decoratedName}');
+      var parameterName = new AnchorElement()
+        ..text = element.name
+        ..href = element.anchorHref
+        ..id = "${element.anchorHrefLocation.anchor}";
+      outerSpan.appendText(space);
+      outerSpan.append(parameterName);
+      outerSpan.appendText(element.decoration);
       if (className == 'required' && optional.isNotEmpty ||
           element != elements.last) {
         outerSpan.appendText(', ');

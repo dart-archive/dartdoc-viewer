@@ -668,13 +668,13 @@ Library1.Class.from constructor''';
       index[splitElements[0]] = splitElements[1];
     });
 
-    var results = lookupSearchResults('dart', 10);
+    var results = lookupSearchResults('dart', 10, null);
     // Expect the top 4 results to be libraries.
     for (int i = 0; i < 4; i++) {
       expect(index[results[i].element], equals('library'));
     }
 
-    results = lookupSearchResults('object', 10);
+    results = lookupSearchResults('object', 10, null);
     expect(results[0].element, equals('dart.core.Object'));
     for (int i = 1; i < 4; i++) {
       expect(results[i].element.startsWith('dart.core.Object.'), isTrue);
@@ -815,13 +815,13 @@ Library1.Class.from constructor''';
       index[splitElements[0]] = splitElements[1];
     });
 
-    var results = lookupSearchResults('dart', 10);
+    var results = lookupSearchResults('dart', 10, null);
     // Expect the top 4 results to be libraries.
     for (int i = 0; i < 4; i++) {
       expect(index[results[i].element], equals('library'));
     }
 
-    results = lookupSearchResults('object', 10);
+    results = lookupSearchResults('object', 10, null);
     expect(results[0].element, equals('dart.core.Object'));
     for (int i = 1; i < 4; i++) {
       expect(results[i].element.startsWith('dart.core.Object.'), isTrue);
@@ -838,11 +838,11 @@ Library1.Class.from constructor''';
       index[splitElements[0]] = splitElements[1];
     });
 
-    var results = lookupSearchResults('Class.from', 2);
+    var results = lookupSearchResults('Class.from', 2, null);
     expect(results[0].element, equals('Library1.Class.from'));
     expect(results.length, equals(1));
 
-    results = lookupSearchResults('Class', 6);
+    results = lookupSearchResults('Class', 6, null);
     expect(results[0].element, equals('Library1.Class'));
     expect(results.any((x) => x.element == 'Library1.Class.'), isTrue);
     expect(results.length, equals(5));
@@ -850,16 +850,16 @@ Library1.Class.from constructor''';
     expect(results[2].score, equals(results[3].score));
     expect(results[3].score, equals(results[4].score));
 
-    results = lookupSearchResults('variable', 2);
+    results = lookupSearchResults('variable', 2, null);
     var expected = ['Library1.variable', 'Library1.Class.variable'];
     expect(expected.contains(results[0].element), isTrue);
     expect(expected.contains(results[1].element), isTrue);
 
-    results = lookupSearchResults('method', 2);
+    results = lookupSearchResults('method', 2, null);
     expect(results[0].element, equals('Library1.Class.method'));
     expect(results.length, equals(1));
 
-    results = lookupSearchResults('Library', 9);
+    results = lookupSearchResults('Library', 9, null);
     expect(results[0].element, equals('Library1'));
     expect(results[1].element, equals('Library1.Class'));
     // The remaining results should all have the same score.

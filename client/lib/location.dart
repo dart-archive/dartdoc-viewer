@@ -31,6 +31,8 @@ class DocsLocation {
   String subMemberName;
   String anchor;
 
+  // TODO(alanknight): These might be nicer to work with as immutable value
+  // objects with methods to get modified versions.
   DocsLocation.empty();
 
   DocsLocation(String uri) {
@@ -149,7 +151,8 @@ class DocsLocation {
   /// Return the item in the list that corresponds to the thing we represent.
   /// Assumes that the items all match what we describe, so really amounts
   /// to finding the last non-nil entry.
-  itemFromList(List items) => items.reversed.firstWhere((x) => x != null);
+  itemFromList(List items) => items.reversed
+      .firstWhere((x) => x != null, orElse: () => null);
 
   /// Change [hash] into the form we use for identifying a doc entry within
   /// a larger page.

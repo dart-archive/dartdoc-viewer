@@ -676,7 +676,7 @@ int _compareLibraryNames(String a, String b) {
     var values = [];
     if (parameters != null) {
       parameters.forEach((name, data) {
-        values.add(new Parameter(name, data));
+        values.add(new Parameter(name, data, this));
       });
     }
     return values;
@@ -779,8 +779,9 @@ int _compareLibraryNames(String a, String b) {
   NestedType type;
   String defaultValue;
   AnnotationGroup annotations;
+  Item owner;
 
-  Parameter(this.name, Map yaml) {
+  Parameter(this.name, Map yaml, [this.owner]) {
     this.isOptional = yaml['optional'] == 'true';
     this.isNamed = yaml['named'] == 'true';
     this.hasDefault = yaml['default'] == 'true';
@@ -789,17 +790,31 @@ int _compareLibraryNames(String a, String b) {
     annotations = new AnnotationGroup(yaml['annotations']);
   }
 
-  String get decoratedName {
-    var decorated = name;
+  String get decoratedName => '$name$decoration';
+
+  String get decoration {
     if (hasDefault) {
       if (isNamed) {
-        decorated = '$decorated: $defaultValue';
+        return ': $defaultValue';
       } else {
-        decorated = '$decorated=$defaultValue';
+        return '=$defaultValue';
       }
     }
-    return decorated;
+    return '';
   }
+
+  // For a method parameter we use the special anchor @method.parameter
+  // because the parameter name may not be unique on the page
+  DocsLocation get anchorHrefLocation {
+    if (owner == null) return null;
+    var parameterLoc = owner.location.parentLocation;
+    parameterLoc.anchor = parameterLoc.toHash("${owner.decoratedName}.$name");
+    return parameterLoc;
+  }
+
+  String get anchorHref => anchorHrefLocation.withAnchor;
+
+  toString() => "Parameter named $name in $owner";
 }
 
 /**

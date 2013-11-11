@@ -152,10 +152,10 @@ class Viewer extends Observable {
         var e = queryEverywhere(dartdocMain, hash);
 
         if (e != null) {
-          e.scrollIntoView(ScrollAlignment.TOP);
+          e.scrollIntoView();
           // The navigation bar at the top of the page is 60px wide,
           // so scroll down 60px once the browser scrolls to the member.
-          window.scrollBy(0, -60);
+          window.scrollBy(0, -80);
           // TODO(alanknight): The focus only shows up the element if it's
           // a link, e.g. classes. It would be nice to highlight sub-members
           e.focus();
@@ -234,17 +234,19 @@ class Viewer extends Observable {
     if (lib == null) {
       lib = viewer.homePage.memberNamed(location.libraryName);
     }
-    if (lib == null) return new Future.value(false);
+    if (lib == null) return new Future.value(null);
     return lib.load();
   }
 
   Future<List<Item>> getMember(lib, DocsLocation location) {
+    if (lib == null) return new Future.value(null);
     var member = lib.memberNamed(location.memberName);
     if (member == null) return new Future.value([lib, null]);
     return member.load().then((mem) => new Future.value([lib, member]));
   }
 
   Future<List<Item>> getSubMember(List libWithMember, DocsLocation location) {
+    if (libWithMember == null) return new Future.value([]);
     if (libWithMember.last == null) {
       return new Future.value([libWithMember.first]);
     }

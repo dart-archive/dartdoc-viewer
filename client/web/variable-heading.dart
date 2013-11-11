@@ -25,7 +25,7 @@ class VariableHeading extends MemberElement {
   get item => super.item;
   set item(newItem) => super.item = newItem;
 
-  @observable String get getter => item != null && item.isGetter ? 'get' : '';
+  @observable String get getter => item != null && item.isGetter ? 'get ' : '';
 
   @observable Parameter get setterParameter => item.setterParameter;
 

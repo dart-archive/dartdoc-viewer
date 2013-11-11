@@ -73,6 +73,8 @@ import 'package:dartdoc_viewer/location.dart';
   'constructor' : 4
 };
 
+bool _nullFilter(_) => true;
+
 /**
  * Returns a list of up to [maxResults] number of [SearchResult]s based off the
  * searchQuery.
@@ -82,7 +84,7 @@ import 'package:dartdoc_viewer/location.dart';
  */
 @reflectable
 List<SearchResult> lookupSearchResults(String query, int maxResults,
-    Function filter) {
+    [Function filter = _nullFilter]) {
   if (query == '') return [];
 
   var stopwatch = new Stopwatch()..start();

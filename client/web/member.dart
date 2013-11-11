@@ -154,31 +154,57 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
       }
       var links = commentElement.querySelectorAll('a');
       for (AnchorElement link in links) {
-        if (link.href =='') {
-          if (link.text.contains('#')) {
-            // If the link is to a parameter of this method, it shouldn't be
-            // made into a working link. It instead is replaced with an <i>
-            // tag to make it stand out within the comment.
-            // TODO(tmandel): Handle parameters differently?
-            var index = link.text.indexOf('#');
-            var newName = link.text.substring(index + 1, link.text.length);
-            link.replaceWith(new Element.html('<i>$newName</i>',
-                validator: validator));
-          } else if (!index.containsKey(link.text)) {
-            // If markdown links to private or otherwise unknown members are
-            // found, make them <i> tags instead of <a> tags for CSS.
-            link.replaceWith(new Element.html('<i>${link.text}</i>',
-                validator: validator));
-          } else {
-            var linkable = new LinkableType(link.text);
-            link
-              ..href = '#${linkable.location}'
-              ..text = linkable.simpleType;
-          }
-        }
+        _resolveLink(link);
       }
       commentLocation.children.add(commentElement);
     }
+  }
+
+  bool _isParameterReference(AnchorElement link, DocsLocation loc) {
+    return link.text.length > loc.withAnchor.length;
+  }
+
+  void _replaceWithParameterReference(AnchorElement link, DocsLocation loc) {
+    // If the link is to a parameter of this method, it shouldn't be
+    // made into a working link. It instead is replaced with an <i>
+    // tag to make it stand out within the comment.
+    // TODO(tmandel): Handle parameters differently?
+    var parameterName =
+        link.text.substring(loc.withAnchor.length + 1, link.text.length);
+    loc.anchor = loc.toHash("${loc.subMemberName}.$parameterName");
+    loc.subMemberName = null;
+    link.replaceWith(new Element.html(
+        '<a href="#${loc.withAnchor}">$parameterName</a>',
+        validator: validator));
+  }
+
+  void _resolveLink(AnchorElement link) {
+    if (link.href != '') return;
+    var loc = new DocsLocation(link.text);
+    if (_isParameterReference(link, loc)) {
+      _replaceWithParameterReference(link, loc);
+      return;
+    }
+    if (index.containsKey(link.text)) {
+      _setLinkReference(link, loc);
+      return;
+    }
+    loc.packageName = null;
+    if (index.containsKey(loc.withAnchor)) {
+      _setLinkReference(link, loc);
+      return;
+    }
+    // If markdown links to private or otherwise unknown members are
+    // found, make them <i> tags instead of <a> tags for CSS.
+    link.replaceWith(new Element.html('<i>${link.text}</i>',
+        validator: validator));
+  }
+
+  void _setLinkReference(AnchorElement link, DocsLocation loc) {
+    var linkable = new LinkableType(loc.withAnchor);
+    link
+    ..href = '#${linkable.location}'
+    ..text = linkable.simpleType;
   }
 
   /// Creates an HTML element for a parameterized type.
