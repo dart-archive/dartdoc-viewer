@@ -14,7 +14,7 @@ import 'package:yaml/yaml.dart';
 import 'package:dartdoc_viewer/location.dart';
 
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
-@reflectable const docsPath = '../../docs/';
+@reflectable const docsPath = 'docs/';
 
 /**
  * Anything that holds values and can be displayed.

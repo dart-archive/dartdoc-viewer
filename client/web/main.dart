@@ -139,7 +139,7 @@ class IndexElement extends DartdocElement {
   @observable get buildIdentifier {
     if (_buildIdentifier == null) {
       _buildIdentifier = ''; // Don't try twice.
-      retrieveFileContents('../../docs/VERSION').then((version) {
+      retrieveFileContents('docs/VERSION').then((version) {
         _buildIdentifier = "r $version";
         notifyPropertyChange(#buildIdentifier, null, _buildIdentifier);
       }).catchError((_) => null);
