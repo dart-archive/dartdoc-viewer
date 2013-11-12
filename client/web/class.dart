@@ -11,9 +11,13 @@ import 'app.dart';
 import 'member.dart';
 @MirrorsUsed()
 import 'dart:mirrors';
+import 'dart:html';
 
 @CustomTag("dartdoc-class")
 class ClassElement extends MemberElement {
+
+  static const MAX_SUBCLASSES_TO_SHOW = 3;
+
   ClassElement.created() : super.created() {
     new PathObserver(viewer, "isInherited").changes.listen((changes) {
       notifyPropertyChange(#shouldShowOperators, null, true);
@@ -70,10 +74,11 @@ class ClassElement extends MemberElement {
   @observable LinkableType get superClass => item.superClass;
 
   void showSubclass(event, detail, target) {
-    shadowRoot.querySelector('#${item.name}-subclass-hidden').classes
-        .remove('hidden');
+    var hidden = shadowRoot.querySelectorAll('.hidden').toList();
+    hidden.forEach((element) =>
+        element.classes.remove('hidden'));
     shadowRoot.querySelector(
-        '#${item.name}-subclass-button').classes.add('hidden');
+        '#subclass-button').classes.add('hidden');
   }
 
   @observable String get nameWithGeneric => item.nameWithGeneric;
@@ -82,7 +87,7 @@ class ClassElement extends MemberElement {
   @observable bool get isNotObject => item.qualifiedName != 'dart.core.Object';
 
   @observable addExtraSubclassLinks() {
-    makeLinks(subclasses.skip(3));
+    makeLinks(subclasses.skip(MAX_SUBCLASSES_TO_SHOW));
   }
 
   @observable addInterfaceLinks() {
@@ -90,48 +95,61 @@ class ClassElement extends MemberElement {
     if (p == null) return;
     p.children.clear();
     if (interfaces.isNotEmpty) {
-      p.append(p.createFragment('Implements:&nbsp;' + makeLinks(interfaces)
-                              + '&nbsp;'));
+      p.append(new Text('Implements: '));
+      makeLinks(interfaces).forEach(p.append);
+      p.appendText(' ');
     }
     if (superClass != null) {
-      p.append(p.createFragment('Extends:&nbsp;' + makeLinks([superClass])));
+      p.append(new Text('Extends: '));
+      makeLinks([superClass]).forEach(p.append);
     }
   }
 
   @observable addSubclassLinks() {
     if (shadowRoot == null) return;
     var p = shadowRoot.querySelector("#subclasses");
-    // Remove all the children except the '...' button, which we can't
-    // create dynamically because the on-click handler won't get registered.
-    var buttonThatMustBeStatic = p.querySelector(".btn-link");
     p.children.clear();
-    var text = makeLinks(subclasses.take(3));
-    // TODO(alanknight) : I don't understand how we can have the #subclasses
-    // template element but not the .btn-link one, but it seems to happen.
-    if (subclasses.isEmpty) {
-      if (buttonThatMustBeStatic != null) {
-        buttonThatMustBeStatic.classes.add("hidden");
-      }
-    } else {
-      p.append(p.createFragment('Subclasses: ' + text,
-          validator: validator));
-      if (buttonThatMustBeStatic != null) {
-        buttonThatMustBeStatic.classes.remove("hidden");
-      }
+    var links = makeLinks(subclasses.take(MAX_SUBCLASSES_TO_SHOW));
+    if (subclasses.isNotEmpty) {
+      p.appendText('Subclasses: ');
+      links.forEach(p.append);
     }
-    if (subclasses.length <= 3) return;
-    if (buttonThatMustBeStatic != null) {
-      p.append(buttonThatMustBeStatic);
-    }
-    p.append(p.createFragment(
-         '<span id="${item.name}-subclass-hidden" class="hidden">,&nbsp;'
-         '</span>', validator: validator));
-    var q = shadowRoot.querySelector("#${item.name}-subclass-hidden");
-    q.append(q.createFragment(makeLinks(subclasses.skip(3))));
+    if (subclasses.length <= MAX_SUBCLASSES_TO_SHOW) return;
+    var ellipsis = new AnchorElement()
+      ..classes = ["btn", "btn-link", "btn-xs"]
+      ..id = "subclass-button"
+      ..text = "..."
+      ..onClick.listen((event) => showSubclass(null, null, null));
+    p.append(ellipsis);
+    makeLinks(subclasses.skip(MAX_SUBCLASSES_TO_SHOW), hidden: true)
+        .forEach(p.append);
   }
 
-  makeLinks(Iterable classes) =>
-    classes
-        .map((cls) =>'<a href="#${cls.location}">${cls.simpleType}</a>')
-        .join(",&nbsp;");
+  /// Make links for subclasses, interfaces, etc. comma-separated, and hidden
+  /// initially if [hidden] is true. Also assume that if [hidden] is false
+  /// we should suppress the first comma.
+  makeLinks(Iterable classes, {hidden : false}) {
+    var first = !hidden;
+    return classes.map((cls) => makeLink(cls, hidden: hidden)).fold([],
+        (list, classLink) {
+          if (first) {
+            first = false;
+          } else {
+            list.add(
+                new SpanElement()
+                  ..text = ', '
+                  ..id = 'subclass-hidden'
+                  ..classes = hidden ? ['hidden'] : []);
+          }
+          list.add(classLink);
+          return list;
+    });
+  }
+
+  makeLink(cls, {hidden : false}) =>
+    new AnchorElement()
+      ..href = "#${cls.location}"
+      ..id = 'subclass-hidden'
+      ..classes = (hidden ? ['hidden'] : [])
+      ..text = cls.simpleType;
 }

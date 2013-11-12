@@ -462,28 +462,28 @@ int _compareLibraryNames(String a, String b) {
   Category get instanceVariables {
     if (_instanceVariables == null) {
       _instanceVariables = new Category.forInstanceMembers(variables.content,
-          "Instance Properties");
+          "Properties");
     }
     return _instanceVariables;
   }
   Category get staticVariables {
     if (_staticVariables == null) {
       _staticVariables = new Category.forStaticMembers(variables.content,
-          "Static Properties");
+          "Static properties");
     }
     return _staticVariables;
   }
   Category get instanceFunctions {
     if (_instanceFunctions == null) {
       _instanceFunctions = new Category.forInstanceMembers(functions.content,
-          "Instance Methods");
+          "Methods");
     }
     return _instanceFunctions;
   }
   Category get staticFunctions {
     if (_staticFunctions == null) {
       _staticFunctions = new Category.forStaticMembers(functions.content,
-          "Static Methods");
+          "Static methods");
     }
     return _staticFunctions;
   }
