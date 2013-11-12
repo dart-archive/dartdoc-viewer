@@ -203,8 +203,8 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   void _setLinkReference(AnchorElement link, DocsLocation loc) {
     var linkable = new LinkableType(loc.withAnchor);
     link
-    ..href = '#${linkable.location}'
-    ..text = linkable.simpleType;
+      ..href = '#${linkable.location}'
+      ..text = linkable.simpleType;
   }
 
   /// Creates an HTML element for a parameterized type.

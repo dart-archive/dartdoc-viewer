@@ -790,9 +790,9 @@ int _compareLibraryNames(String a, String b) {
     annotations = new AnnotationGroup(yaml['annotations']);
   }
 
-  String get decoratedName => '$name$decoration';
+  String get decoratedName => '$name$_decoration';
 
-  String get decoration {
+  String get _decoration {
     if (hasDefault) {
       if (isNamed) {
         return ': $defaultValue';
