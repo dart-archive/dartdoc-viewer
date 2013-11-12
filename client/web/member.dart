@@ -46,7 +46,10 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
 }
 
 //// An abstract class for all Dartdoc elements.
-@reflectable abstract class DartdocElement extends PolymerElement {
+// TODO(sigmund): remove 'with ChangeNotifier', that wont be needed after the
+// next release of polymer
+@reflectable abstract class DartdocElement extends PolymerElement
+    with ChangeNotifier {
   DartdocElement.created() : super.created();
 
   get applyAuthorStyles => true;
@@ -91,7 +94,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
     if (e.target is AnchorElement) {
       var anchor = e.target;
       if (anchor.host == window.location.host
-          && anchor.pathname == _pathname && !e.ctrlKey) {
+          && anchor.pathname == _pathname && !(e as MouseEvent).ctrlKey) {
         e.preventDefault();
         var location = anchor.hash.substring(1, anchor.hash.length);
         viewer.handleLink(location);

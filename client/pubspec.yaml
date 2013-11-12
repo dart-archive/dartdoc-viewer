@@ -5,6 +5,9 @@ dependencies:
   polymer: any
   polymer_expressions: any
   yaml: any
+transformers:
+- polymer:
+    entry_points: web/index.html
 dev_dependencies:
   unittest: any
   barback: any

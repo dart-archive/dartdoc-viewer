@@ -863,7 +863,7 @@ int _compareLibraryNames(String a, String b) {
   void addInheritedComment(Item item) {
     if (comment == '<span></span>') {
       comment = item.comment;
-      commentFrom = item.commentFrom;
+      if (item is Variable) commentFrom = item.commentFrom;
     }
   }
 

@@ -9,6 +9,7 @@ packages
 
 # The out/ folder can be recreated by running build.dart.
 out
+client/build
 client/out
 client/web/out
 

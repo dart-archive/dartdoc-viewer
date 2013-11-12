@@ -5,15 +5,13 @@ import 'dart:io';
 import 'package:path/path.dart';
 
 void main(options) {
-  lint(entryPoints: ['web/index.html'], options: parseOptions(options))
-    .then((_) => deploy(
-        entryPoints: ['web/index.html'], 
-        options: parseOptions(options))).then(compileToJs);
+  build(entryPoints: ['web/index.html'], options: parseOptions(['--deploy']))
+      .then(compileToJs);
 }
 
 compileToJs(_) {
   print("Running dart2js");
-  var dart2js = join(dirname(Platform.executable), 'dart2js');
+  var dart2js = '${Platform.executable}2js';
   var result =
     Process.runSync(dart2js, [ '--minify',
         '-o', 'out/web/index.html_bootstrap.dart.js',

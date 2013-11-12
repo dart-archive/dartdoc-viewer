@@ -4,7 +4,7 @@ packages:
   analyzer:
     description: analyzer
     source: hosted
-    version: "0.10.1"
+    version: "0.10.2"
   args:
     description: args
     source: hosted
@@ -52,7 +52,7 @@ packages:
   polymer:
     description: polymer
     source: hosted
-    version: "0.9.0"
+    version: "0.9.0+1"
   polymer_expressions:
     description: polymer_expressions
     source: hosted
