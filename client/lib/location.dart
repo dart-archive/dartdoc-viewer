@@ -20,7 +20,7 @@ final libraryMatch = new RegExp(r'([\w\-\:]+)');
 final memberMatch = new RegExp(r'\.(\w+)');
 /// A sub-member can be a normal identifier but can also be an operator.
 final subMemberMatch = new RegExp(r'\.([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%]+)');
-final anchorMatch = new RegExp(r'\@(\w+)');
+final anchorMatch = new RegExp(r'\@([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%]+)');
 
 // This represents a component described by a URI and can give us
 // the URI given the component or vice versa.
@@ -45,6 +45,14 @@ class DocsLocation {
     if (components.length > 2) memberName = components[2];
     if (components.length > 3) subMemberName = components[3];
     if (components.length > 4) anchor = components[4];
+  }
+
+  DocsLocation.clone(DocsLocation original) {
+    packageName == original.packageName;
+    libraryName == original.libraryName;
+    memberName = original.memberName;
+    subMemberName = original.subMemberName;
+    anchor = original.anchor;
   }
 
   void _extractPieces(String uri) {
@@ -82,6 +90,9 @@ class DocsLocation {
   /// http://site/#args/args.ArgParser#id_==
   /// it would return args/argsArgParser#id_==
   String get withAnchor => withoutAnchor + anchorPlus;
+
+  DocsLocation get locationWithoutAnchor =>
+      new DocsLocation.clone(this)..anchor = null;
 
   /// The package name with the trailing / separator, or the empty
   /// string if the package name is not set.
@@ -170,6 +181,12 @@ class DocsLocation {
   /// library, or the class containing a method)
   DocsLocation get parentLocation =>
       new DocsLocation.fromList(componentNames..removeLast());
+
+  DocsLocation get asHash {
+    var hash = parentLocation;
+    hash.anchor = toHash(name);
+    return hash;
+  }
 
   /// The simple name of our parent
   String get parentName {

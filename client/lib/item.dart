@@ -113,13 +113,14 @@ nothing() => null;
   }
 
   Category.forFunctions(Map yaml, String name, {bool isConstructor: false,
-      String className: '', bool isOperator: false}) : super(name) {
+      String className: '', bool isOperator: false, Class owner})
+        : super(name) {
     if (yaml != null) {
       yaml.keys.forEach((key) {
         memberNames.add(key);
         memberCounter++;
         content.add(new Method(yaml[key], isConstructor: isConstructor,
-            className: className, isOperator: isOperator));
+            className: className, isOperator: isOperator, owner: owner));
       });
     }
   }
@@ -186,13 +187,15 @@ nothing() => null;
   DocsLocation get location => new DocsLocation(qualifiedName);
 
   /// The link to an anchor within a larger page, if appropriate.
-  DocsLocation get anchorHrefLocation {
-    var basic = location;
-    var parent = location.parentLocation;
+  DocsLocation anchorHrefLocationFrom(aLocation) {
+    var basic = aLocation;
+    var parent = aLocation.parentLocation;
     if (parent.isEmpty) return parent;
     parent.anchor = parent.toHash(basic.componentNames.last);
     return parent;
   }
+
+  DocsLocation get anchorHrefLocation => anchorHrefLocationFrom(location);
 
   String get anchorHref => anchorHrefLocation.withAnchor;
 
@@ -541,11 +544,12 @@ int _compareLibraryNames(String a, String b) {
       constructors = allMethods['constructors'];
     }
     variables = new Category.forVariables(yaml['variables'], getters, setters);
-    functions = new Category.forFunctions(methods, 'Methods');
+    functions = new Category.forFunctions(methods, 'Methods', className: name,
+        owner: this);
     operators = new Category.forFunctions(operates, 'Operators',
-        isOperator: true);
+        isOperator: true, className: name, owner: this);
     constructs = new Category.forFunctions(constructors, 'Constructors',
-        isConstructor: true, className: this.name);
+        isConstructor: true, className: name, owner: this);
     var inheritedMethods = yaml['inheritedMethods'];
     var inheritedVariables = yaml['inheritedVariables'];
     if (inheritedMethods != null) {
@@ -570,7 +574,7 @@ int _compareLibraryNames(String a, String b) {
       items.values.forEach((item) {
         var object = new Variable(item, isSetter: isSetter,
             isGetter: isGetter, inheritedFrom: item['qualifiedName'],
-            commentFrom: item['commentFrom']);
+            commentFrom: item['commentFrom'], owner: this);
         variables.addInheritedItem(this, object);
       });
     }
@@ -582,7 +586,7 @@ int _compareLibraryNames(String a, String b) {
       items.values.forEach((item) {
         var object = new Method(item, isOperator: isOperator,
             inheritedFrom: item['qualifiedName'],
-            commentFrom: item['commentFrom']);
+            commentFrom: item['commentFrom'], className: name, owner: this);
         var location = isOperator ? this.operators : this.functions;
         location.addInheritedItem(this, object);
       });
@@ -711,25 +715,22 @@ int _compareLibraryNames(String a, String b) {
   String inheritedFrom;
   String commentFrom;
   String className;
+  Class owner;
   bool isOperator;
   AnnotationGroup annotations;
   NestedType type;
 
-  Method(Map yaml, {bool isConstructor: false, String className: '',
-      bool isOperator: false, String inheritedFrom: '',
-      String commentFrom: ''})
+  Method(Map yaml, {this.isConstructor: false, this.className: '',
+      this.isOperator: false, this.inheritedFrom: '',
+      String commentFrom: '', this.owner})
         : super(yaml['name'], yaml['qualifiedName'],
             _wrapComment(yaml['comment'])) {
     this.isStatic = yaml['static'] == 'true';
     this.isAbstract = yaml['abstract'] == 'true';
     this.isConstant = yaml['constant'] == 'true';
-    this.isOperator = isOperator;
-    this.isConstructor = isConstructor;
-    this.inheritedFrom = inheritedFrom;
     this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
-    this.className = className;
     annotations = new AnnotationGroup(yaml['annotations']);
   }
 
@@ -753,15 +754,28 @@ int _compareLibraryNames(String a, String b) {
   get linkHref => anchorHref;
 
   /// The link to an anchor within a larger page, if appropriate.
+  /// Note that for an inherited method, the qualified name refers to where
+  /// it is actually defined. This returns a link into the local page, which
+  /// is based on the owner.
   DocsLocation get anchorHrefLocation {
+    var baseLocation = localLocation;
     if (isConstructor && name == '') {
-      var locationForUnnamed = location;
+      var locationForUnnamed = baseLocation;
       locationForUnnamed.anchor =
           locationForUnnamed.toHash(locationForUnnamed.memberName);
       return locationForUnnamed;
     } else {
-      return super.anchorHrefLocation;
+      return anchorHrefLocationFrom(baseLocation);
     }
+  }
+
+  /// A location based on the actual page we're in, rather than our inherited
+  /// location.
+  DocsLocation get localLocation {
+    if (!isInherited || owner == null) return location;
+    var local = owner.location;
+    local.subMemberName = name;
+    return local;
   }
 
   String toString() => decoratedName;
@@ -790,9 +804,9 @@ int _compareLibraryNames(String a, String b) {
     annotations = new AnnotationGroup(yaml['annotations']);
   }
 
-  String get decoratedName => '$name$_decoration';
+  String get decoratedName => '$name$decoration';
 
-  String get _decoration {
+  String get decoration {
     if (hasDefault) {
       if (isNamed) {
         return ': $defaultValue';
@@ -833,9 +847,10 @@ int _compareLibraryNames(String a, String b) {
   Parameter setterParameter;
   NestedType type;
   AnnotationGroup annotations;
+  Class owner;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
-      String inheritedFrom: '', String commentFrom: ''})
+      String inheritedFrom: '', String commentFrom: '', this.owner})
       : super(yaml['name'], yaml['qualifiedName'],
           _wrapComment(yaml['comment'])) {
     this.isGetter = isGetter;
@@ -871,6 +886,21 @@ int _compareLibraryNames(String a, String b) {
 
   void addToHierarchy() {
     if (inheritedFrom != '') super.addToHierarchy();
+  }
+
+  /// The link to an anchor within a larger page, if appropriate.
+  /// Note that for an inherited variable, the qualified name refers to where
+  /// it is actually defined. This returns a link into the local page, which
+  /// is based on the owner.
+  DocsLocation get anchorHrefLocation => anchorHrefLocationFrom(localLocation);
+
+  /// A location based on the actual page we're in, rather than our inherited
+  /// location.
+  DocsLocation get localLocation {
+    if (!isInherited || owner == null) return location;
+    var local = owner.location;
+    local.subMemberName = name;
+    return local;
   }
 }
 
@@ -910,10 +940,10 @@ int _compareLibraryNames(String a, String b) {
   }
 
   /// The simple name for this type.
-  String get simpleType => loc.name;
+  String get simpleType => loc.locationWithoutAnchor.name;
 
   /// The [Item] describing this type if it has been loaded, otherwise null.
-  String get location => loc.withAnchor;
+  String get location => loc.withoutAnchor;
 
   String get qualifiedName => location;
 

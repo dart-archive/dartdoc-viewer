@@ -260,11 +260,11 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
     super.enteredView();
     if (isInherited) {
       inheritedFrom = new LinkableType(
-          new DocsLocation(item.inheritedFrom).parentQualifiedName);
+          new DocsLocation(item.inheritedFrom).asHash.withAnchor);
     }
     if (hasInheritedComment) {
       commentFrom = new LinkableType(
-          new DocsLocation(item.commentFrom).parentQualifiedName);
+          new DocsLocation(item.commentFrom).asHash.withAnchor);
     }
   }
 

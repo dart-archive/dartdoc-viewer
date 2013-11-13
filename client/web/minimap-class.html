@@ -20,16 +20,6 @@
               </dartdoc-minimap>
             </ul>
           </template>
-          <template if="{{shouldShowOperators}}">
-            <li><a href="{{currentLocation}}@operators" on-click="{{hideShow}}">
-              Operators<b class="caret"></b>
-            </a></li>
-            <ul id="minimap-operators" class="collapse in">
-              <dartdoc-minimap
-                items="{{operatorItems}}">
-              </dartdoc-minimap>
-            </ul>
-          </template>
           <template if="{{shouldShowFunctions}}">
             <li><a href="{{currentLocation}}@functions" on-click="{{hideShow}}">
               Methods<b class="caret"></b>
@@ -37,6 +27,16 @@
             <ul id="minimap-functions" class="collapse in">
               <dartdoc-minimap
                 items="{{functionItems}}">
+              </dartdoc-minimap>
+            </ul>
+          </template>
+          <template if="{{shouldShowOperators}}">
+            <li><a href="{{currentLocation}}@operators" on-click="{{hideShow}}">
+              Operators<b class="caret"></b>
+            </a></li>
+            <ul id="minimap-operators" class="collapse in">
+              <dartdoc-minimap
+                items="{{operatorItems}}">
               </dartdoc-minimap>
             </ul>
           </template>

@@ -100,7 +100,7 @@ class Viewer extends Observable {
   set isMinimap(x) => _isMinimap = x;
 
   /// State for whether or not inherited members should be shown.
-  @observable bool isInherited = false;
+  @observable bool isInherited = true;
 
   /// The current element on the current page being shown (e.g. #dartdoc-top).
   String _hash;
