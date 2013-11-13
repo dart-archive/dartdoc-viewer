@@ -424,6 +424,7 @@ int _compareLibraryNames(String a, String b) {
 
   Item memberNamed(String name, {Function orElse : nothing}) {
     if (name == null) return orElse();
+    if (!isLoaded) return orElse();
     for (var category in
         [classes, functions, variables, operators, typedefs, errors]) {
       var member = category.memberNamed(name, orElse: nothing);

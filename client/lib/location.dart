@@ -150,13 +150,14 @@ class DocsLocation {
     if (package != null) items.add(package);
     if (libraryName == null) return items;
     var library = items.last.memberNamed(libraryName);
+    if (library == null) return items;
     items.add(library);
     var member = memberName == null
-        ? library.memberNamed(memberName) : null;
+        ? null : library.memberNamed(memberName);
     if (member != null) {
       items.add(member);
       var subMember = subMemberName == null
-          ? member.memberNamed(subMemberName)  : null;
+          ? null : member.memberNamed(subMemberName);
       if (subMember != null) items.add(subMember);
     }
     return items;
@@ -200,6 +201,16 @@ class DocsLocation {
 
   @reflectable bool get isEmpty => packageName == null && libraryName == null
       && memberName == null && subMemberName == null && anchor == null;
+
+  /// Return the last component for which we have a value, not counting
+  /// the anchor.
+  @reflectable String get lastName {
+    if (subMemberName != null) return subMemberName;
+    if (memberName != null) return memberName;
+    if (libraryName != null) return libraryName;
+    if (packageName != null) return packageName;
+    return null;
+  }
 
   @reflectable toString() => 'DocsLocation($withAnchor)';
 }

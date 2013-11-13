@@ -163,17 +163,18 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
     }
   }
 
-  bool _isParameterReference(AnchorElement link, DocsLocation loc) {
-    return link.text.length > loc.withAnchor.length;
+  String _parameterName(AnchorElement link, DocsLocation loc) {
+    var item = loc.items(viewer.homePage).last;
+    var itemName = item.location.withoutAnchor;
+    if (item is Method && itemName.length < link.text.length) {
+      return link.text.substring(itemName.length + 1, link.text.length);
+    } else {
+      return null;
+    }
   }
 
-  void _replaceWithParameterReference(AnchorElement link, DocsLocation loc) {
-    // If the link is to a parameter of this method, it shouldn't be
-    // made into a working link. It instead is replaced with an <i>
-    // tag to make it stand out within the comment.
-    // TODO(tmandel): Handle parameters differently?
-    var parameterName =
-        link.text.substring(loc.withAnchor.length + 1, link.text.length);
+  void _replaceWithParameterReference(AnchorElement link, DocsLocation loc,
+      String parameterName) {
     loc.anchor = loc.toHash("${loc.subMemberName}_$parameterName");
     loc.subMemberName = null;
     link.replaceWith(new Element.html(
@@ -184,8 +185,9 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   void _resolveLink(AnchorElement link) {
     if (link.href != '') return;
     var loc = new DocsLocation(link.text);
-    if (_isParameterReference(link, loc)) {
-      _replaceWithParameterReference(link, loc);
+    var parameterName = _parameterName(link, loc);
+    if (parameterName != null) {
+      _replaceWithParameterReference(link, loc, parameterName);
       return;
     }
     if (index.containsKey(link.text)) {
