@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library search;
+library search_box;
 
 import 'dart:async';
 import 'dart:html';
@@ -135,18 +135,20 @@ class Search extends DartdocElement {
     }
   }
 
-  /** Activate search on Ctrl+3 and S. */
+  /** Activate search on Ctrl+3, /, and S. */
   void shortcutHandler(KeyboardEvent event) {
     if (event.keyCode == KeyCode.THREE && event.ctrlKey) {
       searchBox.focus();
       event.preventDefault();
-    } else if (!isFocused && event.keyCode == KeyCode.S) {
-      // Allow writing 's' in the search input.
+    } else if (!isFocused &&
+        (event.keyCode == KeyCode.S || event.keyCode == KeyCode.SLASH)) {
+      // Allow writing 's' and '/' in the search input.
       searchBox.focus();
+      searchBox.select();
       event.preventDefault();
     } else if (event.keyCode == KeyCode.ESC) {
       searchQuery = "";
-      results.clear();
+      searchBox.value = '';
       event.preventDefault();
     }
   }
