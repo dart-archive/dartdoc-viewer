@@ -10,7 +10,7 @@
     </a>
     <ul>
           <template if="{{shouldShowConstructors}}">
-              <li><a href="{{currentLocation}}@constructors" 
+              <li><a id="constructors" 
                on-click="{{hideShow}}">
               Constructors<b class="caret"></b>
             </a></li>
@@ -21,7 +21,7 @@
             </ul>
           </template>
           <template if="{{shouldShowFunctions}}">
-            <li><a href="{{currentLocation}}@functions" on-click="{{hideShow}}">
+            <li><a id="functions" on-click="{{hideShow}}">
               Methods<b class="caret"></b>
             </a></li>
             <ul id="minimap-functions" class="collapse in">
@@ -31,7 +31,7 @@
             </ul>
           </template>
           <template if="{{shouldShowOperators}}">
-            <li><a href="{{currentLocation}}@operators" on-click="{{hideShow}}">
+            <li><a id="operators" on-click="{{hideShow}}">
               Operators<b class="caret"></b>
             </a></li>
             <ul id="minimap-operators" class="collapse in">
@@ -41,7 +41,7 @@
             </ul>
           </template>
           <template if="{{shouldShowStaticFunctions}}">
-            <li><a href="{{currentLocation}}@staticFunctions" 
+            <li><a id="staticFunctions" 
                 on-click="{{hideShow}}">
               Static methods<b class="caret"></b>
             </a></li>
@@ -52,7 +52,7 @@
             </ul>
           </template> 
           <template if="{{shouldShowVariables}}">
-            <li><a href="{{currentLocation}}@properties" 
+            <li><a id="properties" 
                 on-click="{{hideShow}}">
               Properties<b class="caret"></b>
             </a></li>
@@ -63,7 +63,7 @@
             </ul>
           </template>
           <template if="{{shouldShowStaticVariables}}">
-            <li><a href="{{currentLocation}}@staticProperties" 
+            <li><a id="staticProperties" 
                 on-click="{{hideShow}}">
               Static properties<b class="caret"></b>
             </a></li>
