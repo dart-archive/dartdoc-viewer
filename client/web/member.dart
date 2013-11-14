@@ -33,6 +33,7 @@ class SameProtocolUriPolicy implements UriPolicy {
 
 var uriPolicy = new SameProtocolUriPolicy();
 var validator = new NodeValidatorBuilder()
+    ..allowElement("a", attributes: ["rel"])
     ..allowHtml5(uriPolicy: uriPolicy);
 
 var sanitizer = new NullTreeSanitizer();
