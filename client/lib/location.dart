@@ -149,7 +149,8 @@ class DocsLocation {
         : root.memberNamed(packageName);
     if (package != null) items.add(package);
     if (libraryName == null) return items;
-    var library = items.last.memberNamed(libraryName);
+    var home = items.isEmpty ? root : items.last;
+    var library = home.memberNamed(libraryName);
     if (library == null) return items;
     items.add(library);
     var member = memberName == null

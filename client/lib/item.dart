@@ -611,7 +611,8 @@ int _compareLibraryNames(String a, String b) {
     if (name == null) return orElse();
     for (var category in
         [annotations, constructs, functions, operators, variables]) {
-      var member = category.memberNamed(name, orElse: nothing);
+      var member =  category == null ? null :
+          category.memberNamed(name, orElse: nothing);
       if (member != null) return member;
     }
     return orElse();
