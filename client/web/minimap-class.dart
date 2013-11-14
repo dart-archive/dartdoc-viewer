@@ -73,17 +73,18 @@ class MinimapElementClass extends MemberElement {
   Class get item => super.item;
   set item(newItem) => super.item = newItem;
 
-  @observable get shouldShowConstructors => shouldShow((x) => x.constructors);
+  @observable get shouldShowConstructors => page is Class &&
+      page.constructors != null && page.constructors.content.isNotEmpty;
   @observable get shouldShowFunctions => shouldShow((x) => x.functions);
   @observable get shouldShowVariables => shouldShow((x) => x.variables);
-  @observable get shouldShowStaticFunctions
-      => shouldShow((x) => x.staticFunctions);
+  @observable get shouldShowStaticFunctions => page is Class &&
+      page.staticFunctions != null && page.staticFunctions.content.isNotEmpty;
   @observable get shouldShowStaticVariables
       => shouldShow((x) => x.staticVariables);
   @observable get shouldShowOperators => shouldShow((x) => x.operators);
 
   shouldShow(Function f) => page is Class &&
-      (f(page).hasNonInherited ||  viewer.isInherited);
+      (f(page).hasNonInherited || viewer.isInherited);
 
   @observable get name => page.decoratedName;
 
