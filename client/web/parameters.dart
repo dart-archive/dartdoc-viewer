@@ -76,7 +76,7 @@ class ParameterElement extends DartdocElement {
       }
       var parameterName = new AnchorElement()
         ..text = element.name
-        ..href = element.anchorHref
+        ..href = "#${element.anchorHref}"
         ..id = "${element.anchorHrefLocation.anchor}";
       outerSpan.appendText(space);
       outerSpan.append(parameterName);
