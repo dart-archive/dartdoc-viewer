@@ -285,9 +285,14 @@ int _compareLibraryNames(String a, String b) {
 
   bool get isTopLevelHome => name == 'home';
 
+  /// Find the main library for a package and put it first in the list,
+  /// and get the README for the package from it. The main library is assumed
+  /// to be the one that has the same name as the package. If there is no
+  /// such library, pick the first one in the (alphabetical) list and get
+  /// the README from it.
   void makeMainLibrarySpecial(yaml) {
     var mainLib = libraries.firstWhere((each) => each.name == name,
-        orElse: nothing);
+        orElse: () => libraries.isEmpty ? null : libraries.first);
     if (mainLib != null) {
       libraries.remove(mainLib);
       libraries.insert(0, mainLib);
