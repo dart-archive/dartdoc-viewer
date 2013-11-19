@@ -17,6 +17,7 @@ library search;
 import 'dart:async';
 import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/location.dart';
+import 'dart:math';
 
 /** Search Index */
 @reflectable Map<String, String> index = {};
@@ -61,8 +62,8 @@ import 'package:dartdoc_viewer/location.dart';
 }
 
 /// The value of each type of member.
-@reflectable Map<String, int> value = {
-  'library' : 1,
+@reflectable const Map<String, int> value = const {
+  'library' : 2,
   'class' : 2,
   'typedef' : 3,
   'method' : 4,
@@ -75,7 +76,57 @@ import 'package:dartdoc_viewer/location.dart';
 
 bool _nullFilter(_) => true;
 
+
+/// Represents a hit when searching, and stores basic information about the
+/// matched item.
+class Hit {
+  /// The qualified name of the matched object, e.g. dart-core.Object.hashCode
+  final String name;
+
+  ///
+  final String lower;
+  // Really an enum of the keys in [value]
+  final String type;
+
+  factory Hit(String name, String lower) {
+    var withoutDom =
+        lower.contains('.dom.') ? lower.replaceFirst('.dom', '') : lower;
+    var type = index[name];
+    return new Hit.withFinals(name, withoutDom, type);
+  }
+
+  Hit.withFinals(this.name, this.lower, this.type);
+
+  get weight => value[type];
+
+  toString() => "Hit($name)";
+
+  /// Calculate a score boost proportional to [increase], the [weight] given
+  /// to our [type] of object.
+  score(num increase) => increase ~/ weight;
+}
+
+/// The maximum number of search results we will examine. Saves time on
+/// searches with very large numbers of matches (e.g. single letters)
 const int MAX_RESULTS_TO_CONSIDER = 1000;
+
+List<String> splitQueryTerms(String query) {
+  var queryList = query.trim().toLowerCase().split(' ');
+  queryList = queryList.map((x) => x.replaceAll(":", '-')).toList();
+  // If someone types a dot we don't know if they meant e.g. polymer.builder
+  // library or polymer.CustomTag, or polymer.builder.CommandLineOptions.
+  // So add a query term with those replaced with hyphens, but also split
+  // it up into individual words in case that's wrong. And ignore split
+  // words with two or fewer characters, which introduce too many matches.
+  var splitDots = queryList.map((x) => x.split(".")).toList();
+  for (List split in splitDots) {
+    if (split.length > 1) {
+      queryList.addAll(split.where((x) => x.length > 2));
+      queryList.add(split.join("-"));
+    }
+  }
+  return queryList;
+}
 
 /**
  * Returns a list of up to [maxResults] number of [SearchResult]s based off the
@@ -92,58 +143,63 @@ List<SearchResult> lookupSearchResults(String query, int maxResults,
   var stopwatch = new Stopwatch()..start();
 
   var scoredResults = <SearchResult>[];
-  var resultSet = new Set<String>();
-  var queryList = query.trim().toLowerCase().split(' ');
-  queryList = queryList.map((x) => x.replaceAll(":", '-')).toList();
+  var resultSet = new List<Hit>();
+  var queryList = splitQueryTerms(query);
+
   for (var key in index.keys) {
     var lower = key.toLowerCase();
     if (queryList.any((q) => lower.contains(q))) {
-        resultSet.add(key);
+        resultSet.add(new Hit(key, lower));
     }
   }
 
-  for (var r in resultSet.take(MAX_RESULTS_TO_CONSIDER)) {
+  for (Hit r in resultSet.take(MAX_RESULTS_TO_CONSIDER)) {
     /// If it is taking too long to compute the search results, time out and
     /// return an empty list of results.
    if (stopwatch.elapsedMilliseconds > 500) {
       return [];
     }
     int score = 0;
-    var lowerCaseResult = r.toLowerCase();
-    var type = index[r];
 
     var splitDotQueries = [];
     // If the search was for a named constructor (Map.fromIterable), give it a
     // score boost of 200.
     queryList.forEach((q) {
-      if (q.contains('.') && lowerCaseResult.endsWith(q)) {
+      if (q.contains('.') && r.lower.endsWith(q)) {
         score += 100;
         splitDotQueries = q.split('.');
       }
     });
     queryList.addAll(splitDotQueries);
 
-    if (lowerCaseResult.contains('.dom.')) {
-      lowerCaseResult = lowerCaseResult.replaceFirst('.dom', '');
-    }
-
-    var location = new DocsLocation(lowerCaseResult);
+    var location = new DocsLocation(r.lower);
     var qualifiedNameParts = location.componentNames.skip(1).toList();
+
     // We allow results that aren't within the current context, but we
     // demote them severely.
     if (!filter(location)) {
       score -= 500;
     }
 
+    // If something is named exactly what you typed, including case, then
+    // it should be first.
+    if (r.name == query) {
+      score += 1000;
+    }
+    // If it's a partial case-sensitive match, give it a bonus.
+    if ((r.name != r.lower) && r.name.contains(query)) {
+      score += 150;
+    }
+
     queryList.forEach((q) {
       // If it is a direct match to the last segment of the qualified name,
       // give score an extra point boost depending on the member type.
       if (qualifiedNameParts.last == q) {
-        score += 1000 ~/ value[type];
+        score += r.score(1000);
       } else if (qualifiedNameParts.last.startsWith(q)) {
-        score += 750 ~/ value[type];
+        score += r.score(750);
       } else if (qualifiedNameParts.last.contains(q)) {
-        score += 500 ~/ value[type];
+        score += r.score(500);
       }
 
       for (var segment in qualifiedNameParts) {
@@ -155,13 +211,13 @@ List<SearchResult> lookupSearchResults(String query, int maxResults,
         // also depending on the member type and the percentage of the segment
         // the query fills.
         if (segment == q) {
-          score += 300 ~/ value[type];
+          score += r.score(300);
         } else if (segment.startsWith(q)) {
           var percent = q.length / segment.length;
-          score += (300 * percent) ~/ value[type];
+          score += r.score(300 * percent);
         } else if (segment.contains(q)) {
           var percent = q.length / segment.length;
-          score += (150 * percent) ~/ value[type];
+          score += r.score(150 * percent);
         }
       }
 
@@ -170,7 +226,7 @@ List<SearchResult> lookupSearchResults(String query, int maxResults,
         score += 50;
       }
     });
-    scoredResults.add(new SearchResult(r, type, score));
+    scoredResults.add(new SearchResult(r.name, r.type, score));
   }
 
   /// If it is taking too long to compute the search results, time out and
@@ -179,7 +235,7 @@ List<SearchResult> lookupSearchResults(String query, int maxResults,
     return [];
   }
   scoredResults.sort();
-  updatePositions(scoredResults);
+  updatePositions(scoredResults.take(maxResults).toList());
   if (scoredResults.length > maxResults) {
     return scoredResults.take(maxResults).toList();
   } else {
