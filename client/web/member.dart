@@ -165,7 +165,9 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   }
 
   String _parameterName(AnchorElement link, DocsLocation loc) {
-    var item = loc.items(viewer.homePage).last;
+    var items = loc.items(viewer.homePage);
+    if (items.isEmpty) return '';
+    var item = items.last;
     var itemName = item.location.withoutAnchor;
     if (item is Method && itemName.length < link.text.length) {
       return link.text.substring(itemName.length + 1, link.text.length);
