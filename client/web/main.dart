@@ -178,7 +178,7 @@ class IndexElement extends DartdocElement {
       if (originalPadding != null) body.style.paddingTop = originalPadding;
     } else {
       originalPadding = body.style.paddingTop;
-      body.style.paddingTop = (rects.first.bottom).toString() + "px";
+      body.style.paddingTop = (rects.first.height).toString() + "px";
     }
   }
 }
