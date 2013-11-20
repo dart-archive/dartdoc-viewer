@@ -19,6 +19,9 @@ class IndexElement extends DartdocElement {
   /// Records the timestamp of the event that opened the options menu.
   var _openedAt;
 
+  /// Remember where we think the top of the main body normally ought to be.
+  String originalPadding;
+
   IndexElement.created() : super.created();
 
   enteredView() {
@@ -149,12 +152,33 @@ class IndexElement extends DartdocElement {
     }
   }
 
+  /// Collapse/expand the navbar when in mobile. Workaround for something
+  /// that ought to happen magically with bootstrap, but fails in the
+  /// presence of shadow DOM.
   @observable navHideShow(event, detail, target) {
     var nav = shadowRoot.querySelector("#nav-collapse-content");
-    if (nav.classes.contains("in")) {
+    hideOrShowNavigation(hide: nav.classes.contains("in"), nav: nav);
+  }
+
+  @observable hideOrShowNavigation({bool hide, Element nav}) {
+    if (nav == null) nav = shadowRoot.querySelector("#nav-collapse-content");
+    if (hide) {
       nav.classes.remove("in");
     } else {
       nav.classes.add("in");
+    }
+    // The navbar is fixed, but can change size. We need to tell the main
+    // body to be below the expanding navbar. This seems to be the least
+    // horrible way to do that. But this will only work on the current page,
+    // so if we change pages we have to make sure we close this.
+    var navbar = shadowRoot.querySelector(".navbar-nav");
+    Element body = shadowRoot.querySelector(".main-body");
+    var rects = navbar.getClientRects();
+    if (rects.isEmpty) {
+      if (originalPadding != null) body.style.paddingTop = originalPadding;
+    } else {
+      originalPadding = body.style.paddingTop;
+      body.style.paddingTop = (rects.first.bottom).toString() + "px";
     }
   }
 }

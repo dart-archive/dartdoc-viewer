@@ -198,7 +198,6 @@ i.icon-close-x {
     }
 }
 
-
 .navbar-nav > li > a {
     font-family: 'Montserrat', sans-serif;
     text-decoration: none;
@@ -286,17 +285,13 @@ i.icon-close-x {
     background: #fff;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .collapse.in {
         width: 100%;
         top: 66px;
         position: absolute;
-        left: 0;
+        left: 5px;
         background-color: #fff;
-    }
-
-    .navbar-nav.pull-right {
-        display: none;
     }
 }
 
@@ -304,20 +299,12 @@ i.icon-close-x {
     text-align: left;
 }
 
-@media (max-width: 768px) {
-    .navbar-nav > li > .dropdown-menu .dd-tip {
-        display: none;
-    }
-}
-
 .navbar-nav > li > .dropdown-menu > li > a {
     text-decoration: none;
 }
 
-@media (max-width: 768px) {
-    .navbar-search {
-        display: none;
-    }
+.navbar-nav > li > .dropdown-toggle {
+    text-align: right;
 }
 
 .navbar-search .search-query {
