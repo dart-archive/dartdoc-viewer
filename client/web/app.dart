@@ -183,12 +183,12 @@ class Viewer extends Observable {
   Future _updatePage(Item page, DocsLocation location) {
     // Avoid reloading the page if it isn't necessary.
     if (page != null && page != currentPage) {
-    var main = window.document.querySelector("#dartdoc-main");
-    main.hideOrShowNavigation(hide: true);
-    currentPage = page;
+      var main = window.document.querySelector("#dartdoc-main");
+      main.hideOrShowNavigation(hide: true);
+      currentPage = page;
+    }
     _hash = location.anchorPlus;
     _scrollScreen(location.anchorPlus);
-    }
     return new Future.value(true);
   }
 
