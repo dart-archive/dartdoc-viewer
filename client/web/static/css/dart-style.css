@@ -289,7 +289,6 @@ i.icon-close-x {
     .collapse.in {
         width: 100%;
         top: 66px;
-        position: absolute;
         left: 5px;
         background-color: #fff;
     }
@@ -643,11 +642,10 @@ b {
     font-weight:bold;
 }
 
-
 #itemList .panel p {
     font-size:15px !important;
-    padding-left:30px;
     max-width: 650px;
+    padding-left: 30px;
     margin-bottom: 15px !important;
 }
 
@@ -663,7 +661,18 @@ b {
 
 #itemList .panel li {
     font-size:15px !important;
-    margin-left:30px;
+}
+
+@media (max-width: 768px) {
+    #itemList .panel li {
+        margin-left:0px;
+    }
+}
+
+@media (min-width: 768px) {
+    #itemList .panel li {
+        margin-left:30px;
+    }
 }
 
 #itemList .panel li > p {
