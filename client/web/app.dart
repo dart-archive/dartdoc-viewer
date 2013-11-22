@@ -334,7 +334,10 @@ void navigate(event) {
     dartdocMain.collapseSearchAndOptionsIfNeeded();
     dartdocMain.hideOrShowNavigation();
   });
-  dartdocMain.hideOrShowNavigation();
+  // If we do this directly, then the dartdocMain element may not be available
+  // yet. This happens when compiled to JS, but not in Dartium. So insert a
+  // delay. Ugh.
+  new Future.value(null).then((_) => dartdocMain.hideOrShowNavigation());
 
   startHistory();
   // If a user navigates to a page other than the homepage, the viewer
