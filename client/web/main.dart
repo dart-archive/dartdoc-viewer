@@ -10,6 +10,7 @@ import 'member.dart';
 import 'app.dart';
 import 'dart:html';
 import 'package:dartdoc_viewer/read_yaml.dart';
+import 'dart:math';
 
 // TODO(alanknight): Clean up the dart-style CSS file's formatting once
 // it's stable.
@@ -99,9 +100,48 @@ class IndexElement extends DartdocElement {
     root.children.clear();
     if (breadcrumbs.length < 2) return;
     var last = breadcrumbs.toList().removeLast();
-    breadcrumbs.skip(1).takeWhile((x) => x != last).forEach(
-        (x) => root.append(normalCrumb(x)));
+    var crumbs = breadcrumbs.skip(1).takeWhile((x) => x != last).
+        map(normalCrumb).toList();
+    crumbs.forEach(root.append);
     root.append(finalCrumb(last));
+    collapseSearchAndOptionsIfNeeded();
+  }
+
+  /// We want the search and options to collapse into a menu button if there
+  /// isn't room for them to fit, but the amount of room taken up by the
+  /// breadcrumbs is dynamic, so we calculate the widths programmatically
+  /// and set the collapse style if necessary. As a bonus, when we're expanding
+  /// we have to make them visible first in order to measure the width to know
+  /// if we should leave them visible or not.
+  void collapseSearchAndOptionsIfNeeded() {
+    // TODO(alanknight) : This is messy because we've deleted many of the
+    // bootstrap-specific attributes, but we need some of it in order to have
+    // things look right. This leads to the odd behavior where the drop-down
+    // makes the crumbs appear either in the title bar or dropping down,
+    // depending how wide the window is. I'm calling that a feature for now,
+    // but it could still use cleanup.
+    var permanentHeaders = shadowRoot.querySelectorAll(".navbar-brand");
+    var searchAndOptions = shadowRoot.querySelector("#searchAndOptions");
+    var wholeThing = shadowRoot.querySelector(".navbar-fixed-top");
+    var navbar = shadowRoot.querySelector("#navbar");
+    var collapsible = shadowRoot.querySelector("#nav-collapse-content");
+    // First, we make it visible, so we can see how large it _would_ be.
+    collapsible.classes.add("in");
+    var allItems = permanentHeaders.toList()
+      ..add(searchAndOptions)
+      ..add(navbar);
+    var innerWidth = allItems.fold(0,
+        (sum, element) => sum + element.marginEdge.width);
+    var outerWidth = wholeThing.contentEdge.width;
+    var button = shadowRoot.querySelector("#nav-collapse-button");
+    // Then if it's too big, we make it go away again.
+    if (outerWidth <= innerWidth) {
+      button.classes.add("visible");
+      collapsible.classes.remove("in");
+    } else {
+      button.classes.remove("visible");
+      collapsible.classes.add("in");
+    }
   }
 
   normalCrumb(item) =>
@@ -160,9 +200,10 @@ class IndexElement extends DartdocElement {
     hideOrShowNavigation(hide: nav.classes.contains("in"), nav: nav);
   }
 
-  @observable hideOrShowNavigation({bool hide, Element nav}) {
+  @observable hideOrShowNavigation({bool hide : true, Element nav}) {
     if (nav == null) nav = shadowRoot.querySelector("#nav-collapse-content");
-    if (hide) {
+    var button = shadowRoot.querySelector("#nav-collapse-button");
+    if (hide && button.getComputedStyle().display != 'none') {
       nav.classes.remove("in");
     } else {
       nav.classes.add("in");
@@ -171,14 +212,14 @@ class IndexElement extends DartdocElement {
     // body to be below the expanding navbar. This seems to be the least
     // horrible way to do that. But this will only work on the current page,
     // so if we change pages we have to make sure we close this.
-    var navbar = shadowRoot.querySelector(".navbar-nav");
+    var navbar = shadowRoot.querySelector(".navbar-fixed-top");
     Element body = shadowRoot.querySelector(".main-body");
-    var rects = navbar.getClientRects();
-    if (rects.isEmpty) {
-      if (originalPadding != null) body.style.paddingTop = originalPadding;
+    var height = navbar.marginEdge.height;
+    var positioning = navbar.getComputedStyle().position;
+    if (positioning == "fixed") {
+      body.style.paddingTop = height.toString() + "px";
     } else {
-      originalPadding = body.style.paddingTop;
-      body.style.paddingTop = (rects.first.height).toString() + "px";
+      body.style.removeProperty("padding-top");
     }
   }
 }

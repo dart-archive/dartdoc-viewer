@@ -331,6 +331,8 @@ void navigate(event) {
 @initMethod _init() {
   window.onResize.listen((event) {
     viewer.isDesktop = window.innerWidth > desktopSizeBoundary;
+    dartdocMain.collapseSearchAndOptionsIfNeeded();
+    dartdocMain.hideOrShowNavigation();
   });
 
   startHistory();

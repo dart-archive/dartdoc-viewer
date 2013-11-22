@@ -11,8 +11,7 @@
   <template>  
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
-        <button type="button" class="navbar-toggle" data-toggle="collapse"
-          data-target=".navbar-responsive-collapse" id="nav-collapse-button"
+        <button type="button" class="navbar-toggle" id="nav-collapse-button"
           on-click="{{navHideShow}}">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -25,15 +24,14 @@
           Dart API Reference
         </a>
     
-        <div class="nav-collapse collapse navbar-responsive-collapse"
-            id="nav-collapse-content">
+        <div class="collapse in" id="nav-collapse-content">
             
           <!-- The dynamically created breadcrumbs attach to this. -->
           <ul class="nav navbar-nav" id="navbar">
           </ul>   
           {{crumbs()}}
     
-          <ul class="nav navbar-nav pull-right">
+          <ul class="nav navbar-nav pull-right" id="searchAndOptions">
             <li class="dropdown">
               <a class="dropdown-toggle" on-click="{{toggleOptionsMenu}}">
                 Options <b class="caret"></b>

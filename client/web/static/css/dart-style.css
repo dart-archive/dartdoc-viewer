@@ -791,3 +791,15 @@ code {
 .accordion-heading a:hover {
     color: #0083c5;    
 }
+
+#nav-collapse-button.visible {
+    display: block;
+}
+
+/* Override the normal bootstrap which forces this to be
+   invisible at this resolution */
+@media screen and (min-width: 768 px) {
+    .navbar-toggle {
+        display: block;
+    }
+}
