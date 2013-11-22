@@ -334,6 +334,7 @@ void navigate(event) {
     dartdocMain.collapseSearchAndOptionsIfNeeded();
     dartdocMain.hideOrShowNavigation();
   });
+  dartdocMain.hideOrShowNavigation();
 
   startHistory();
   // If a user navigates to a page other than the homepage, the viewer
