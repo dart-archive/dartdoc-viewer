@@ -657,7 +657,13 @@ b {
     padding-left:0px !important;
 }
 
-
+/* A lot of the HTML comments have <h2>Other Resources</h2> which
+   is ridiculously large. */
+.description h2 {
+    font-size:15px;
+    margin-bottom:0px;
+    margin-top:0px;
+}
 
 #itemList .panel li {
     font-size:15px !important;
