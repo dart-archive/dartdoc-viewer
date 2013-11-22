@@ -63,12 +63,6 @@ class IndexElement extends DartdocElement {
 
   query(String selectors) => shadowRoot.querySelector(selectors);
 
-  searchSubmitted() {
-    query('#nav-collapse-button').classes.add('collapsed');
-    query('#nav-collapse-content').classes.remove('in');
-    query('#nav-collapse-content').classes.add('collapse');
-  }
-
   @observable get item => viewer.currentPage.item;
   @observable get pageNameSeparator => decoratedName == '' ? '' : ' - ';
   @observable get decoratedName =>

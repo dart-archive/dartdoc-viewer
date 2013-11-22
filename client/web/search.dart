@@ -93,13 +93,11 @@ class Search extends DartdocElement {
         // If nothing is focused, use the first search result.
         refId = results.first.element;
       }
-      var newLocation = new LinkableType(refId).location;
-      var encoded = Uri.encodeFull(newLocation);
+      var encoded = Uri.encodeFull(refId);
       viewer.handleLink(encoded);
       window.history.pushState("#$encoded", viewer.title, "#$encoded");
       searchQuery = "";
       results.clear();
-      dartdocMain.searchSubmitted();
     }
   }
 
