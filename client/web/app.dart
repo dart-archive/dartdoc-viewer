@@ -243,7 +243,28 @@ class Viewer extends Observable {
     if (lib == null) return new Future.value(null);
     var member = lib.memberNamed(location.memberName);
     if (member == null) return new Future.value([lib, null]);
-    return member.load().then((mem) => new Future.value([lib, member]));
+    if (member is Class) {
+      // Load all interfaces and superclasses, too, so our parameter links are
+      // correct.
+      // TODO(efortuna): All of this can be avoided if we resolve links after
+      // we've added the inherited methods? As it is, the methods are there,
+      // but the comments aren't correctly resolved without our help.
+      return member.load().then((Class mem) {
+        var interfaces = [];
+        for (LinkableType interface in mem.implements) {
+          interfaces.add(getMember(lib, interface.loc));
+        }
+        return Future.wait(interfaces).then((loaded) {
+          if (mem.superClass.loc.memberName != 'Object') {
+            return getMember(lib, mem.superClass.loc);
+          } else {
+            return new Future.value([lib, member]);
+          }
+        });
+      });
+    } else {
+      return member.load().then((mem) => new Future.value([lib, member]));
+    }
   }
 
   Future<List<Item>> getSubMember(List libWithMember, DocsLocation location) {

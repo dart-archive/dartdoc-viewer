@@ -21,8 +21,11 @@ final libraryMatch = new RegExp(r'([\w\-\:]+)');
 /// an identifier.
 final memberMatch = new RegExp(r'\.(\w+)');
 /// A sub-member can be a normal identifier but can also be an operator.
+/// Constructors always contain a "-" and are of the form
+/// "className-constructorName" (if constructorName is empty, it will just be
+/// "className-".
 final subMemberMatch = new RegExp(r'\.([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%]+)');
-final anchorMatch = new RegExp(r'\@([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%]+)');
+final anchorMatch = new RegExp(r'\@([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%\.]+)');
 
 // This represents a component described by a URI and can give us
 // the URI given the component or vice versa.
@@ -157,8 +160,16 @@ class DocsLocation {
         ? null : library.memberNamed(memberName);
     if (member != null) {
       items.add(member);
-      var subMember = subMemberName == null
-          ? null : member.memberNamed(subMemberName);
+      var subMember = subMemberName;
+      if (subMember != null) {
+        var lookupName = subMemberName;
+        if (subMember.contains('-')) {
+          // Constructors are hyphenated Classname-constructorname. We want to
+          // look up just the constructor name.
+          lookupName = subMemberName.substring(subMemberName.indexOf('-') + 1);
+        }
+        subMember = member.memberNamed(lookupName);
+      }
       if (subMember != null) items.add(subMember);
     }
     return items;

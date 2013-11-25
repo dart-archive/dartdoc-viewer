@@ -170,7 +170,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
     var item = items.last;
     var itemName = item.location.withoutAnchor;
     if (item is Method && itemName.length < link.text.length) {
-      return link.text.substring(itemName.length + 1, link.text.length);
+      return link.text.substring(link.text.lastIndexOf('.') + 1);
     } else {
       return null;
     }
@@ -178,7 +178,8 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
 
   void _replaceWithParameterReference(AnchorElement link, DocsLocation loc,
       String parameterName) {
-    loc.anchor = loc.toHash("${loc.subMemberName}_$parameterName");
+    loc.anchor = loc.toHash(
+        "${loc.subMemberName.replaceAll('-', '.')}_$parameterName");
     loc.subMemberName = null;
     link.replaceWith(new Element.html(
         '<a href="#${loc.withAnchor}">$parameterName</a>',
