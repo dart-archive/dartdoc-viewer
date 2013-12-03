@@ -36,7 +36,12 @@ class ItemElement extends MemberElement {
       new Class.forPlaceholder("loading.loading", "loading");
 
   get item => super.item;
-  set item(newItem) => super.item = newItem;
+  set item(newItem) {
+    super.item = newItem;
+    // TODO(alanknight) : enteredView doesn't seem to be reliably called for
+    // these, so call it explicitly.
+    addChildren();
+  }
 
   @observable get linkHref => item.linkHref;
   @observable String get title => item.decoratedName;

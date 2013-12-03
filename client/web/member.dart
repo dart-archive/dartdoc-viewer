@@ -13,6 +13,7 @@ import 'package:polymer/polymer.dart';
 import 'dart:mirrors';
 import 'app.dart' as app show viewer;
 import 'package:dartdoc_viewer/location.dart';
+import 'dart:js';
 
 class SameProtocolUriPolicy implements UriPolicy {
   final AnchorElement _hiddenAnchor = new AnchorElement();
@@ -160,6 +161,12 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
       for (AnchorElement link in links) {
         _resolveLink(link);
       }
+      var codeBlocks = commentElement.querySelectorAll("code");
+      codeBlocks.forEach((HtmlElement e) {
+          var htmlText = e.innerHtml;
+          var pretty = context.callMethod('prettyPrintOne', [htmlText, "dart"]);
+          e.innerHtml = pretty;
+      });
       commentLocation.children.add(commentElement);
     }
   }
