@@ -206,7 +206,7 @@ class Viewer extends Observable {
         newLocation.anchor = newLocation.toHash(location.subMemberName);
         var newUri = newLocation.withAnchor;
         var encoded = Uri.encodeFull(newUri);
-        window.history.pushState("#$encoded", viewer.title, "#$encoded");
+        window.location.replace("#$encoded");
         return handleLink(encoded);
       }
       return getItem(location).then((items)
