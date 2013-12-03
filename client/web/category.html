@@ -7,18 +7,17 @@
 <polymer-element name="dartdoc-category" attributes="category">
    <template>
    <div class="accordion-heading">
-      <a class="accordion-toggle {{accordionStyle}}"
+      <a id="{{stylizedName}}" class="accordion-toggle {{accordionStyle}}"
         on-click="{{hideShow}}"
         data-toggle="collapse"
-        data-parent="{{accordionParent}}"
         data-target="#accordion-{{stylizedName}}">
-        {{title}}<b class="caret"></b>
+        {{title}}<b id="caret" class="{{caretStyle}}"></b>
       </a>
     </div>
 
    <div id="accordion-{{stylizedName}}"
       class="accordion-body {{divClass}}"
-      style="height:auto">
+      style="height:{{lineHeight}}">
      <div class="accordion-inner">
         <ul id="itemList" class="nav nav-pills nav-stacked">
         </ul>

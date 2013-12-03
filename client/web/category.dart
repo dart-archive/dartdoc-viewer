@@ -20,18 +20,16 @@ class CategoryElement extends DartdocElement {
 
   CategoryElement.created() : super.created() {
     new PathObserver(viewer, "isDesktop").changes.listen((changes) {
-      var change = changes.first;
-      notifyPropertyChange(
-          #accordionStyle, accordionStyleFor(change.oldValue), accordionStyle);
-      notifyPropertyChange(#accordionParent,
-          accordionParentFor(change.oldValue), accordionParent);
-      notifyPropertyChange(#divClass, divClassFor(change.oldValue), divClass);
+      isExpanded = viewer.isDesktop;
     });
     new PathObserver(viewer, "isInherited").changes.listen((changes) {
       _flushCache();
       addChildren();
     });
     style.setProperty('display', 'block');
+    setCaretStyle();
+    setDivClass();
+    setLineHeight();
   }
 
   @observable void addChildren() {
@@ -114,13 +112,13 @@ class CategoryElement extends DartdocElement {
     _everythingElseCache = null;
   }
 
-  @observable get accordionStyle => accordionStyleFor(viewer.isDesktop);
-  accordionStyleFor(isDesktop) => isDesktop ? '' : 'collapsed';
-  @observable get accordionParent => accordionParentFor(viewer.isDesktop);
-  accordionParentFor(isDesktop) => isDesktop ? '' : '#accordion-grouping';
+  @observable get accordionStyle => isExpanded ? '' : 'collapsed';
 
-  @observable get divClass => divClassFor(viewer.isDesktop);
-  divClassFor(isDesktop) => isDesktop ? 'collapse in' : 'collapse';
+  // TODO(alanknight): If these are observable variables, how come I still have
+  // to explicitly notify when I change them?
+  @observable String divClass;
+  @observable String caretStyle;
+  @observable String lineHeight;
 
   var validator = new NodeValidatorBuilder()
     ..allowHtml5(uriPolicy: new SameProtocolUriPolicy())
@@ -130,15 +128,30 @@ class CategoryElement extends DartdocElement {
     ..allowCustomElement("dartdoc-category-interior", attributes: ["item"])
     ..allowTagExtension("method-panel", "div", attributes: ["item"]);
 
+  bool _isExpanded = viewer.isDesktop;
+  bool get isExpanded => _isExpanded;
+  set isExpanded(bool expanded) {
+    _isExpanded = expanded;
+    setCaretStyle();
+    setDivClass();
+    setLineHeight();
+  }
+
+  void setDivClass() {
+    divClass = isExpanded ? 'collapse in' : 'collapse';
+    notifyPropertyChange(#divClass, null, divClass);
+  }
+  void setCaretStyle() {
+    caretStyle = isExpanded ? '' : 'caret';
+    notifyPropertyChange(#caretStyle, null, caretStyle);
+  }
+  void setLineHeight() {
+    lineHeight = isExpanded ? 'auto' : '0px';
+    notifyPropertyChange(#lineHeight, null, caretStyle);
+  }
+
   hideShow(event, detail, AnchorElement target) {
-    var list = shadowRoot.querySelector(target.attributes["data-target"]);
-    if (list.classes.contains("in")) {
-      list.classes.remove("in");
-      list.style.height = '0px';
-    } else {
-      list.classes.add("in");
-      list.style.height = 'auto';
-    }
+    isExpanded = !isExpanded;
   }
 
   @observable get currentLocation => window.location.toString();

@@ -12,8 +12,8 @@
       <ul>
         <template
           if="{{operatorItemsIsNotEmpty}}">
-        <li><a id="operators" on-click="{{hideShow}}">
-          Operators<b class="caret"></b>
+        <li><a id="operators" href="#{{linkHref}}@Operators">
+          Operators
         </a></li>
         <ul id="minimap-operators" class="collapse in">
           <dartdoc-minimap
@@ -23,8 +23,8 @@
       </template>
       <template
           if="{{variableItemsIsNotEmpty}}">
-        <li><a id="properties" on-click="{{hideShow}}">
-          Properties<b class="caret"></b>
+        <li><a id="properties" href="#{{linkHref}}@Properties">
+          Properties
         </a></li>
         <ul id="minimap-properties" class="collapse in">
           <dartdoc-minimap
@@ -34,8 +34,8 @@
       </template>
       <template
           if="{{functionItemsIsNotEmpty}}">
-        <li><a id="functions" on-click="{{hideShow}}">
-          Functions<b class="caret"></b>
+        <li><a id="functions" href="#{{linkHref}}@Functions">
+          Functions
         </a></li>
         <ul id="minimap-functions" class="collapse in">
           <dartdoc-minimap
@@ -45,8 +45,8 @@
       </template>
       <template
           if="{{classItemsIsNotEmpty}}">
-        <li><a id="classes" on-click="{{hideShow}}">
-          Classes<b class="caret"></b>
+        <li><a id="classes" href="#{{linkHref}}@Classes">
+          Classes
         </a></li>
         <ul id="minimap-classes" class="collapse in">
           <dartdoc-minimap id="class-minimap"
@@ -56,8 +56,8 @@
       </template>
       <template
           if="{{typedefItemsIsNotEmpty}}">
-        <li><a id="typedefs" on-click="{{hideShow}}">
-          Typedefs<b class="caret"></b>
+        <li><a id="typedefs" href="#{{linkHref}}@Typedefs">
+          Typedefs
         </a></li>
         <ul id="minimap-typedefs" class="collapse in">
           <dartdoc-minimap
@@ -67,8 +67,8 @@
       </template>
       <template
           if="{{errorItemsIsNotEmpty}}">
-        <li><a id="exceptions" on-click="{{hideShow}}">
-          Exceptions<b class="caret"></b>
+        <li><a id="exceptions" href="#{{linkHref}}@Exceptions">
+          Exceptions
         </a></li>
         <ul id="minimap-exceptions" class="collapse in">
           <dartdoc-minimap

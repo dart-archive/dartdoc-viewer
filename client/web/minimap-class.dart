@@ -84,7 +84,8 @@ class MinimapElementClass extends MemberElement {
   @observable get shouldShowOperators => shouldShow((x) => x.operators);
 
   shouldShow(Function f) => page is Class &&
-      (f(page).hasNonInherited || viewer.isInherited);
+      (f(page).hasNonInherited ||
+          (viewer.isInherited && f(page).inheritedCounter > 0));
 
   @observable get name => page.decoratedName;
 
