@@ -12,7 +12,7 @@ packages:
   barback:
     description: barback
     source: hosted
-    version: "0.10.1+3"
+    version: "0.9.0"
   browser:
     description: browser
     source: hosted
@@ -28,7 +28,7 @@ packages:
   html5lib:
     description: html5lib
     source: hosted
-    version: "0.9.1"
+    version: "0.9.0"
   html_import:
     description: html_import
     source: hosted
@@ -44,7 +44,7 @@ packages:
   observe:
     description: observe
     source: hosted
-    version: "0.9.1+1"
+    version: "0.9.0+1"
   path:
     description: path
     source: hosted
@@ -52,15 +52,15 @@ packages:
   polymer:
     description: polymer
     source: hosted
-    version: "0.9.1+1"
+    version: "0.9.0+1"
   polymer_expressions:
     description: polymer_expressions
     source: hosted
-    version: "0.9.1"
+    version: "0.9.0"
   shadow_dom:
     description: shadow_dom
     source: hosted
-    version: "0.9.1"
+    version: "0.9.0"
   source_maps:
     description: source_maps
     source: hosted
