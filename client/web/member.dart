@@ -171,36 +171,32 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
     }
   }
 
-  String _parameterName(AnchorElement link, DocsLocation loc) {
-    var items = loc.items(viewer.homePage);
-    if (items.isEmpty) return '';
-    var item = items.last;
-    var itemName = item.location.withoutAnchor;
-    if (item is Method && itemName.length < link.text.length) {
-      return link.text.substring(link.text.lastIndexOf('.') + 1);
-    } else {
-      return null;
-    }
-  }
-
-  void _replaceWithParameterReference(AnchorElement link, DocsLocation loc,
-      String parameterName) {
-    loc.anchor = loc.toHash(
-        "${loc.subMemberName.replaceAll('-', '.')}_$parameterName");
-    loc.subMemberName = null;
+  /// If [link] refers to a method/function parameter, i.e. it's of the form
+  ///       dart-core.Object.doStuff.param OR
+  ///       dart-async.runZoned.param
+  /// representing either a method or a function. then replace it with the
+  /// last two elements as part of an @ tag instead. e.g.
+  /// dart-core.Object@id_doStuff.param. Return true if we did so.
+  bool _replaceWithParameterReference(AnchorElement link, DocsLocation loc) {
+    var item = loc.item(viewer.homePage);
+    if (item is! Method) return false;
+    var itemLocation = item.location;
+    var itemName = itemLocation.withoutAnchor;
+    if (itemLocation.withoutAnchor.length >= link.text.length) return false;
+    var parameter = link.text.substring(itemName.length + 1);
+    var parent = itemLocation.parentLocation;
+    parent.anchor = loc.toHash(
+        "${itemLocation.lastName.replaceAll('-', '.')}_$parameter");
     link.replaceWith(new Element.html(
-        '<a href="#${loc.withAnchor}">$parameterName</a>',
+        '<a href="#${parent.withAnchor}">$parameter</a>',
         validator: validator));
+    return true;
   }
 
   void _resolveLink(AnchorElement link) {
     if (link.href != '') return;
     var loc = new DocsLocation(link.text);
-    var parameterName = _parameterName(link, loc);
-    if (parameterName != null) {
-      _replaceWithParameterReference(link, loc, parameterName);
-      return;
-    }
+    if (_replaceWithParameterReference(link, loc)) return;
     if (index.containsKey(link.text)) {
       _setLinkReference(link, loc);
       return;

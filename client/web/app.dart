@@ -219,8 +219,10 @@ class Viewer extends Observable {
   /// Find the item corresponding to this location
   Future getItem(DocsLocation location) =>
     getLibrary(location)
-      .then((lib) => getMember(lib, location))
-      .then((libWithMember) => getSubMember(libWithMember, location));
+      .then((lib) =>
+          getMember(lib, location))
+      .then((libWithMember) =>
+          getSubMember(libWithMember, location));
 
   // All libraries should be in [pageIndex], but may not be loaded.
   // TODO(alanknight): It would be nice if this could all be methods on
@@ -256,7 +258,8 @@ class Viewer extends Observable {
         }
         return Future.wait(interfaces).then((loaded) {
           if (mem.superClass.loc.memberName != 'Object') {
-            return getMember(lib, mem.superClass.loc);
+            return getMember(lib, mem.superClass.loc).then(
+                (_) => [lib, member]) ;
           } else {
             return new Future.value([lib, member]);
           }

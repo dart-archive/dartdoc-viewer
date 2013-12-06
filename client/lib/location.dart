@@ -175,6 +175,24 @@ class DocsLocation {
     return items;
   }
 
+  /// Find the part of us that refers to an [Item] accessible from
+  /// root and return a new [DocsLocation] with just that portion.
+  /// e.g. if we had dart-core.String.substring.startIndex it
+  /// would return dart-core.String.substring, since the method
+  /// parameter doesn't have an [Item]. The [root] parameter is a Home.
+  DocsLocation itemLocation(root) => item(root).location;
+
+  /// Find the bottom-most [Item] that we refer to, accessible from
+  /// root, and return it.
+  /// e.g. if we had dart-core.String.substring.startIndex it
+  /// would return the substring [Method], since the method
+  /// parameter doesn't have an [Item]. The [root] parameter is a Home.
+  item(root) {
+    var myItems = items(root);
+    if (myItems.isEmpty) return null;
+    return myItems.last;
+  }
+
   /// Return the item in the list that corresponds to the thing we represent.
   /// Assumes that the items all match what we describe, so really amounts
   /// to finding the last non-nil entry.
