@@ -63,7 +63,7 @@ class ItemElement extends MemberElement {
   @observable get shouldShowClassOrLibraryComment =>
       (item is Class || item is Library) && item.previewComment != null;
   @observable get shouldShowMethodComment =>
-      item is Method && item.comment != '<span></span>';
+      item is Method && item.hasComment;
 
   enteredView() {
     super.enteredView();

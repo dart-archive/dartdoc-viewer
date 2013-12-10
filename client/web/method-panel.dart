@@ -40,5 +40,5 @@ class MethodPanel extends MethodElement {
   @observable get annotations => item.annotations;
 
   @observable get shouldShowMethodComment =>
-    item != null && item.comment != '<span></span>';
+    item != null && item.hasComment;
 }

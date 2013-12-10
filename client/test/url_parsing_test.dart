@@ -23,9 +23,9 @@ var urls = {
   "intl" : [null, "intl", null, null, null],
   "intl/intl" : ["intl", "intl", null, null, null],
   "intl/intl.Intl" : ["intl", "intl", "Intl", null, null],
-  "intl/intl.Intl#id_foo" : ["intl", "intl", "Intl", null, "id_foo"],
+  "intl/intl.Intl@id_foo" : ["intl", "intl", "Intl", null, "id_foo"],
   "intl/intl.Intl.message" : ["intl", "intl", "Intl", "message", null],
-  "intl#id_foo" : [null, "intl", null, null, "id_foo"],
+  "intl@id_foo" : [null, "intl", null, null, "id_foo"],
 };
 
 // Convert the map results to a list that's easier to write the expected

@@ -25,6 +25,9 @@ nothing() => null;
 @reflectable class Container extends Observable {
   @observable final String name;
   @observable String comment = '<span></span>';
+  bool get hasComment => !hasNoComment;
+  bool get hasNoComment =>
+      comment == '<span></span>' || comment == '<div></div>';
 
   Container(this.name, [this.comment]);
 
@@ -750,7 +753,7 @@ int _compareLibraryNames(String a, String b) {
   }
 
   void addInheritedComment(item) {
-    if (comment == '<span></span>') {
+    if (hasNoComment) {
       comment = item.comment;
       commentFrom = item.commentFrom;
     }
@@ -916,7 +919,7 @@ int _compareLibraryNames(String a, String b) {
   }
 
   void addInheritedComment(Item item) {
-    if (comment == '<span></span>') {
+    if (hasNoComment) {
       comment = item.comment;
       if (item is Variable) commentFrom = item.commentFrom;
     }
