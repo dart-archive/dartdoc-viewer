@@ -44,7 +44,7 @@ String _wrapComment(String comment) {
  */
 @reflectable class Category extends Container {
 
-  ObservableList<Container> content = toObservable([]);
+  List<Container> content = [];
   Set<String> memberNames = new Set<String>();
   int inheritedCounter = 0;
   int memberCounter = 0;

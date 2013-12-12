@@ -18,6 +18,8 @@ class MinimapElement extends PolymerElement {
   @observable String camelCaseName;
   @observable String categoryLink;
 
+  @observable ObservableList<Item> itemsToShow;
+
   get syntax => defaultSyntax;
   get applyAuthorStyles => true;
 
@@ -32,8 +34,6 @@ class MinimapElement extends PolymerElement {
     }));
   }
 
-  @observable Iterable<Item> itemsToShow;
-
   itemChanged() {
     if (category == null || item == null) return;
 
@@ -45,7 +45,8 @@ class MinimapElement extends PolymerElement {
 
     itemChanged();
     camelCaseName = toCamelCase(category.name.toLowerCase());
-    itemsToShow = category.content.where(
-        (x) => !x.isInherited || viewer.isInherited);
+    // Note: ObservableList for isNotEmpty
+    itemsToShow = new ObservableList.from(category.content.where(
+        (x) => !x.isInherited || viewer.isInherited));
   }
 }

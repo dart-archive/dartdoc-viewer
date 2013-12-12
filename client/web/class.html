@@ -25,34 +25,18 @@
     </div>
 
     <div class="accordion" id="accordion-grouping">
-      <template if="{{shouldShowConstructors}}">
-        <dartdoc-category category="{{item.constructors}}"
-            class="accordion-group">
-        </dartdoc-category>
-      </template>
-      <template if="{{shouldShowFunctions}}">
-        <dartdoc-category category="{{item.functions}}" class="accordion-group">
-        </dartdoc-category>
-      </template>
-      <template if="{{shouldShowOperators}}">
-        <dartdoc-category category="{{item.operators}}"
-            class="accordion-group">
-        </dartdoc-category>
-      </template>
-      <template if="{{shouldShowStaticFunctions}}">
-        <dartdoc-category category="{{item.staticFunctions}}"
-            class="accordion-group">
-        </dartdoc-category>
-      </template>
-      <template if="{{shouldShowVariables}}">
-        <dartdoc-category category="{{item.variables}}" class="accordion-group">
-        </dartdoc-category>
-      </template>
-      <template if="{{shouldShowStaticVariables}}">
-        <dartdoc-category category="{{item.staticVariables}}"
-            class="accordion-group">
-        </dartdoc-category>
-      </template>
+      <dartdoc-category category="{{item.constructors}}"
+          methods="{{lazyConstructors}}"></dartdoc-category>
+      <dartdoc-category category="{{item.functions}}"
+          methods="{{lazyFunctions}}"></dartdoc-category>
+      <dartdoc-category category="{{item.operators}}"
+          methods="{{lazyOperators}}"></dartdoc-category>
+      <dartdoc-category category="{{item.staticFunctions}}"
+          methods="{{lazyStaticFunctions}}"></dartdoc-category>
+      <dartdoc-category category="{{item.variables}}"
+          variables="{{lazyVariables}}"></dartdoc-category>
+      <dartdoc-category category="{{item.staticVariables}}"
+          variables="{{lazyStaticVariables}}"></dartdoc-category>
     </div>
   </template>
 

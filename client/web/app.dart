@@ -87,8 +87,8 @@ class Viewer extends Observable {
     _updateLibraries();
   }
 
-  // !!! split this into the preference and the computed value (we only take
-  // the preference into account when in desktop mode)
+  // TODO(jmesserly): split this into the preference and the computed value
+  // (we only take the preference into account when in desktop mode)
   /// State for whether or not the library list panel should be shown.
   @observable bool isPanel = true;
   bool _isPanel = true;
@@ -102,6 +102,10 @@ class Viewer extends Observable {
 
   /// The current element on the current page being shown (e.g. #dartdoc-top).
   String _hash;
+
+  /// The current member on the current page being shown (e.g. #id_created).
+  /// This will be empty if we simply want to select the library or class.
+  String get activeMember => _hash;
 
   // Private constructor for singleton instantiation.
   Viewer._() {

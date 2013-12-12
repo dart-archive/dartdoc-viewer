@@ -4,31 +4,40 @@
 
 library web.class_;
 
+import 'dart:html';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:polymer/polymer.dart';
-
 import 'app.dart';
+import 'lazy_load.dart';
 import 'member.dart';
-import 'dart:html';
+
 
 @CustomTag("dartdoc-class")
 class ClassElement extends MemberElement {
   static const MAX_SUBCLASSES_TO_SHOW = 3;
 
-  ClassElement.created() : super.created();
+  final ObservableList lazyConstructors = new ObservableList();
+  final ObservableList lazyOperators = new ObservableList();
+  final ObservableList lazyFunctions = new ObservableList();
+  final ObservableList lazyStaticFunctions = new ObservableList();
+  final ObservableList lazyVariables = new ObservableList();
+  final ObservableList lazyStaticVariables = new ObservableList();
+
+  LazyListLoader _loader;
+
+  ClassElement.created() : super.created() {
+    registerObserver('viewer', viewer.changes.listen((changes) {
+      if (changes.any((c) => c.name == #isInherited)) {
+        _loadCategories();
+      }
+    }));
+  }
 
   get defaultItem => _defaultItem;
   static final _defaultItem = new Class.forPlaceholder('loading.loading',
       'loading');
 
   bool wrongClass(newItem) => newItem is! Class;
-
-  @observable bool shouldShowOperators = false;
-  @observable bool shouldShowVariables = false;
-  @observable bool shouldShowStaticVariables = false;
-  @observable bool shouldShowConstructors = false;
-  @observable bool shouldShowFunctions = false;
-  @observable bool shouldShowStaticFunctions = false;
 
   void showSubclass(event, detail, target) {
     for (var e in shadowRoot.querySelectorAll('.hidden')) {
@@ -37,22 +46,44 @@ class ClassElement extends MemberElement {
     shadowRoot.querySelector('#subclass-button').classes.add('hidden');
   }
 
-  onChangeShowInherited() {
-    bool shouldShow(Category c) => c.content.isNotEmpty &&
-        (viewer.isInherited || c.hasNonInherited);
+  leftView() {
+    super.leftView();
+    if (_loader != null) {
+      _loader.cancel();
+      _loader = null;
+    }
+  }
 
-    shouldShowOperators = shouldShow(item.operators);
-    shouldShowVariables = shouldShow(item.variables);
-    shouldShowStaticVariables = shouldShow(item.staticVariables);
-    shouldShowConstructors = shouldShow(item.constructors);
-    shouldShowFunctions = shouldShow(item.functions);
-    shouldShowStaticFunctions = shouldShow(item.staticFunctions);
+  _loadCategories() {
+    if (_loader != null) _loader.cancel();
+    _loader = new LazyListLoader([
+      _filterInherited(item.constructors),
+      _filterInherited(item.operators),
+      _filterInherited(item.functions),
+      _filterInherited(item.staticFunctions),
+      _filterInherited(item.variables),
+      _filterInherited(item.staticVariables),
+    ], [
+      lazyConstructors,
+      lazyOperators,
+      lazyFunctions,
+      lazyStaticFunctions,
+      lazyVariables,
+      lazyStaticVariables
+    ])..start(eager: viewer.activeMember != '');
+  }
+
+  List _filterInherited(Category category) {
+    if (viewer.isInherited || category.inheritedCounter == 0) {
+      return category.content;
+    }
+    return category.content.where((c) => !c.isInherited).toList();
   }
 
   itemChanged() {
     super.itemChanged();
 
-    onChangeShowInherited();
+    _loadCategories();
 
     if (shadowRoot != null) {
       addInterfaces();

@@ -19,12 +19,17 @@ import 'dart:html';
 class CategoryElement extends DartdocElement {
   @published Category category;
 
+  // Note: only one of these is used at any given time, the other two will be
+  // null. We do it this way to keep the <template if> outside of the
+  // <template repeat>, so the repeat is more strongly typed.
+  @published ObservableList<Item> items;
+  @published ObservableList<Variable> variables;
+  @published ObservableList<Method> methods;
+
+  @observable bool hasItems = false;
+
   @observable String title;
   @observable String stylizedName;
-  @observable var categoryContent;
-  @observable List<Method> categoryMethods;
-  @observable List<Variable> categoryVariables;
-  @observable List categoryEverythingElse;
 
   @observable String accordionStyle;
   @observable String divClass;
@@ -33,9 +38,6 @@ class CategoryElement extends DartdocElement {
 
   CategoryElement.created() : super.created() {
     registerObserver('viewer', viewer.changes.listen((changes) {
-      if (changes.any((c) => c.name == #isInherited)) {
-        categoryChanged();
-      }
       if (changes.any((c) => c.name == #isDesktop)) {
         _isExpanded = viewer.isDesktop;
       }
@@ -56,24 +58,16 @@ class CategoryElement extends DartdocElement {
   void categoryChanged() {
     title = category == null ? '' : category.name;
     stylizedName = category == null ? '' : category.name.replaceAll(' ', '-');
-    categoryContent = category == null ? [] : category.content;
+  }
 
-    categoryMethods = [];
-    categoryVariables = [];
-    categoryEverythingElse = [];
-    for (var c in categoryContent) {
-      if (c.isInherited && !viewer.isInherited) continue;
+  void itemsChanged() => _updateHasItems();
+  void variablesChanged() => _updateHasItems();
+  void methodsChanged() => _updateHasItems();
 
-      List list;
-      if (c is Method) {
-        list = categoryMethods;
-      } else if (c is Variable) {
-        list = categoryVariables;
-      } else {
-        list = categoryEverythingElse;
-      }
-      list.add(c);
-    }
+  _updateHasItems() {
+    hasItems = items != null && items.isNotEmpty ||
+        variables != null && variables.isNotEmpty ||
+        methods != null && methods.isNotEmpty;
   }
 
   hideShow(event, detail, AnchorElement target) {
