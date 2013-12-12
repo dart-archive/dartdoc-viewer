@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-
 <polymer-element name="dartdoc-library-panel">
 <template>
-   <div class="list-group affix-left"
-        id="library-panel">
-   </div>
-   {{createEntries()}}
+  <div class="list-group affix-left" id="library-panel">
+    <template repeat="{{viewer.libraries}}">
+      <a href="#{{linkHref}}" class="list-group-item">{{decoratedName}}</a>
+    </template>
+  </div>
 </template>
-<script type="application/dart" src="library-panel.dart"></script> 
+<script type="application/dart" src="library-panel.dart"></script>
 </polymer-element>

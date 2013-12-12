@@ -2,27 +2,23 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library annotations;
+library web.annotations;
 
 import 'package:dartdoc_viewer/item.dart';
 import 'package:polymer/polymer.dart';
-import 'app.dart';
 import 'member.dart';
 
-@CustomTag("dartdoc-annotation")
-class AnnotationElement extends DartdocElement {
+// TODO(jmesserly): just extend HtmlElement?
+@CustomTag('dartdoc-annotation')
+class AnnotationElement extends PolymerElement {
+  @published AnnotationGroup annotations;
+
   AnnotationElement.created() : super.created();
 
-  get methodsToCall => concat(super.methodsToCall, const [#addAnnotations]);
-  AnnotationGroup _annotations;
-  @published get annotations => _annotations;
-  @published set annotations(newAnnotations) {
-    notifyObservables(() => _annotations = newAnnotations);
-  }
-
-  void addAnnotations() {
-    shadowRoot.children.clear();
+  void annotationsChanged() {
+    this.children.clear();
     if (annotations == null || annotations.annotations.isEmpty) return;
+    // TODO(jmesserly): we should be able to build this content via template
     var out = new StringBuffer();
     for (var annotation in annotations.annotations) {
       out.write('<i><a href="#${annotation.link.location}">'
@@ -33,11 +29,10 @@ class AnnotationElement extends DartdocElement {
       if (hasParams) out.write(")");
     }
     if (annotations.supportedBrowsers.isNotEmpty) {
-      out.write("<br/><i>Supported on: ");
+      out.write("<br><i>Supported on: ");
       out.write(annotations.supportedBrowsers.join(",&nbsp;"));
-      out.write("</i><br/>");
+      out.write("</i><br>");
     }
-    var fragment = createFragment(out.toString(), validator: validator);
-    shadowRoot.append(fragment);
+    this.setInnerHtml(out.toString(), treeSanitizer: nullSanitizer);
   }
 }

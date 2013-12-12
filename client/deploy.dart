@@ -2,7 +2,6 @@
 
 import 'package:polymer/builder.dart';
 import 'dart:io';
-import 'package:path/path.dart';
 
 void main(options) {
   build(entryPoints: ['web/index.html'], options: parseOptions(['--deploy']))

@@ -1,9 +1,9 @@
 /*
-TODO(janicejl): Rewrite this file using nested rules to simplify the CSS after 
-polymer stabilizes. 
+TODO(janicejl): Rewrite this file using nested rules to simplify the CSS after
+polymer stabilizes.
 */
 
-.main-body { 
+.main-body {
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -219,10 +219,6 @@ TODO(janicejl): Currently uses fixed widths, change to use flex-box in future.
   color: #fff;
 }
 
-.affix-right ul li a {
-  color: #fff;
-}
-
 #minimap ul {
   list-style: disc url('../smallcorner-white.png');
   padding-left: 25px;
@@ -248,6 +244,9 @@ TODO(janicejl): Currently uses fixed widths, change to use flex-box in future.
   text-decoration: none;
 }
 
+#library-panel .list-group-item.active {
+  color: #fff;
+}
 
 /* Nav */
 .navbar {

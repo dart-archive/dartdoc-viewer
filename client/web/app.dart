@@ -11,7 +11,7 @@
  * Pages, Categories and CategoryItems are used to format and layout the page.
  */
 // TODO(janicejl): Add a link to the dart docgen landing page in future.
-library dartdoc_viewer;
+library web.app;
 
 import 'dart:async';
 import 'dart:html' show Element, querySelector, window, ScrollAlignment,
@@ -24,8 +24,8 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
+import 'package:template_binding/template_binding.dart';
 import 'main.dart';
-import 'dart:math' as math;
 
 // TODO(janicejl): JSON path should not be hardcoded.
 // Path to the JSON file being read in. This file will always be in JSON
@@ -40,15 +40,12 @@ const int desktopSizeBoundary = 1006;
 /// The [Viewer] object being displayed.
 final Viewer viewer = new Viewer._();
 
-IndexElement _dartdocMain;
-IndexElement dartdocMain = _dartdocMain == null
-    ? _dartdocMain = querySelector("#dartdoc-main").xtag
-    : null;
+MainElement dartdocMain = querySelector("#dartdoc-main");
 
 /// The Dartdoc Viewer application state.
 class Viewer extends Observable {
 
-  @observable bool isDesktop = window.innerWidth > desktopSizeBoundary;
+  @observable bool isDesktop;
 
   Future finished;
 
@@ -57,47 +54,48 @@ class Viewer extends Observable {
 
   bool _showPkgLibraries = false;
   @observable bool get showPkgLibraries => _showPkgLibraries;
-  @observable set showPkgLibraries(newValue) {
-    var oldValue = _showPkgLibraries;
-    _showPkgLibraries = newValue;
-    notifyPropertyChange(#showPkgLibraries, oldValue, newValue);
-    // We know it's changed, don't need to bother telling it old and new values.
-    notifyPropertyChange(#libraries, null, []);
+  @observable set showPkgLibraries(bool newValue) {
+    if (_showPkgLibraries == newValue) return;
+
+    _showPkgLibraries = notifyPropertyChange(#showPkgLibraries,
+        _showPkgLibraries, newValue);
+
+    _updateLibraries();
   }
 
-  @observable get libraries {
-    if (currentPage == null) return [];
-    if (showPkgLibraries) {
-      return currentPage.home.libraries;
+  @observable List libraries;
+
+  _updateLibraries() {
+    if (currentPage == null) {
+      libraries = [];
     } else {
-      return currentPage.home.libraries.where(
-          (each) => each is Library).toList();
+      libraries = currentPage.home.libraries;
+      if (!showPkgLibraries) {
+        libraries = libraries.where((x) => x is Library).toList();
+      }
     }
   }
 
+  Item _currentPage;
+
   /// The current page being shown. An Item.
-  /// TODO(alanknight): Restore the type declaration here and structure the code
-  /// so we can avoid the warnings from casting to subclasses.
-  var _currentPage;
-  @observable get currentPage => _currentPage;
-  set currentPage(newPage) {
-    var oldPage = _currentPage;
-    var oldLibraries = libraries;
-    _currentPage = newPage;
-    notifyPropertyChange(#breadcrumbs, null, breadcrumbs);
-    notifyPropertyChange(#currentPage, oldPage, newPage);
-    notifyPropertyChange(#libraries, oldLibraries, libraries);
+  @observable Item get currentPage => _currentPage;
+  @observable set currentPage(Item newPage) {
+    if (_currentPage == newPage) return;
+
+    _currentPage = notifyPropertyChange(#currentPage, _currentPage, newPage);
+    _updateLibraries();
   }
 
+  // !!! split this into the preference and the computed value (we only take
+  // the preference into account when in desktop mode)
   /// State for whether or not the library list panel should be shown.
+  @observable bool isPanel = true;
   bool _isPanel = true;
-  @observable bool get isPanel => isDesktop && _isPanel;
-  set isPanel(x) => _isPanel = x;
 
   /// State for whether or not the minimap panel should be shown.
+  @observable bool isMinimap = true;
   bool _isMinimap = true;
-  @observable bool get isMinimap => isDesktop && _isMinimap;
-  set isMinimap(x) => _isMinimap = x;
 
   /// State for whether or not inherited members should be shown.
   @observable bool isInherited = true;
@@ -114,29 +112,18 @@ class Viewer extends Observable {
       homePage = new Home(libraries);
     });
 
-    new PathObserver(this, "isDesktop").bindSync(
-      (_) {
-        notifyPropertyChange(#isMinimap, null, isMinimap);
-        notifyPropertyChange(#isPanel, null, isPanel);
-      });
+    _updateDesktopMode(null);
+    window.onResize.listen(_updateDesktopMode);
+  }
+
+  _updateDesktopMode(_) {
+    isDesktop = window.innerWidth > desktopSizeBoundary;
+    isMinimap = isDesktop && _isMinimap;
+    isPanel = isDesktop && _isPanel;
   }
 
   /// The title of the current page.
   String get title => currentPage == null ? '' : currentPage.decoratedName;
-
-  /// Creates a list of [Item] objects describing the path to [currentPage].
-  // TODO(alanknight) : This seems like it could be simpler.
-  @observable List<Item> get breadcrumbs {
-    if (viewer.homePage == null) return [];
-    var items = [];
-    var current = viewer.currentPage;
-    while (current != null) {
-      items.add(current);
-      current = current.owner;
-    }
-    items = items.reversed.toList();
-    return items;
-  }
 
   /// Scrolls the screen to the correct member if necessary.
   void _scrollScreen(String hash) {
@@ -253,8 +240,8 @@ class Viewer extends Observable {
       // but the comments aren't correctly resolved without our help.
       return member.load().then((Class mem) {
         var interfaces = [];
-        for (LinkableType interface in mem.implements) {
-          interfaces.add(getMember(lib, interface.loc));
+        for (LinkableType iface in mem.interfaces) {
+          interfaces.add(getMember(lib, iface.loc));
         }
         return Future.wait(interfaces).then((loaded) {
           if (mem.superClass.loc.memberName != 'Object') {
@@ -309,14 +296,14 @@ class Viewer extends Observable {
 
   /// Toggles the library panel
   void togglePanel() {
-    isPanel = !_isPanel;
-    notifyPropertyChange(#isPanel, !_isPanel, _isPanel);
+    _isPanel = !_isPanel;
+    isPanel = isDesktop && _isPanel;
   }
 
   /// Toggles the minimap panel
   void toggleMinimap() {
-    isMinimap = !_isMinimap;
-    notifyPropertyChange(#isMinimap, !_isMinimap, _isMinimap);
+    _isMinimap = !_isMinimap;
+    isMinimap = isDesktop && _isMinimap;
   }
 
   void togglePkg() {
@@ -373,10 +360,21 @@ void navigate(event) {
       viewer.currentPage = viewer.homePage;
     }
     retrieveFileContents('docs/index.json').then((String json) {
-      index = JSON.decode(json);
+      searchIndex.map = JSON.decode(json);
     });
   });
 }
 
 Iterable concat(Iterable list1, Iterable list2) =>
     [list1, list2].expand((x) => x);
+
+main() => initPolymer();
+
+
+final defaultSyntax = new _DefaultSyntaxWithEvents();
+
+// TODO(jmesserly): for now we disable polymer expressions
+class _DefaultSyntaxWithEvents extends BindingDelegate {
+  prepareBinding(String path, name, node) =>
+      Polymer.prepareBinding(path, name, node, super.prepareBinding);
+}

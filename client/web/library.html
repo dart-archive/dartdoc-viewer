@@ -1,49 +1,44 @@
-<!DOCTYPE html>
-<link rel="import" href="item.html">
-<link rel="import" href="class.html">
 <link rel="import" href="category.html">
+<link rel="import" href="class.html">
+<link rel="import" href="comment.html">
+<link rel="import" href="item.html">
 
 <polymer-element name="dartdoc-library" attributes="item">
   <template>
-      <div class="page-header"><h1>{{item.decoratedName}} library</h1></div>
+    <div class="page-header"><h1>{{item.decoratedName}} library</h1></div>
 
-      <!-- Comment -->
-      <!--  TODO(alanknight): The div with itemList and panel are here to
-      convince it to use the right paragraph spacing. Seems pretty awful. -->
-      <div id="itemList"><section class="description panel"></section></div>
-      {{addComment('dartdoc-library')}}
-      <div class="accordion" id="accordion-grouping">
-        <template if="{{operatorsIsNotEmpty}}">
-          <dartdoc-category category="{{item.operators}}" 
-            class="accordion-group">
-          </dartdoc-category>
-        </template>
-        <template if="{{variablesIsNotEmpty}}">
-          <dartdoc-category category="{{item.variables}}" 
-            class="accordion-group">
-          </dartdoc-category>
-        </template>
-        <template if="{{functionsIsNotEmpty}}">
-          <dartdoc-category category="{{item.functions}}" 
-            class="accordion-group">
-          </dartdoc-category>
-        </template>
-        <template if="{{classesIsNotEmpty}}">
-          <dartdoc-category category="{{item.classes}}" 
-            class="accordion-group"> 
-          </dartdoc-category>
-        </template>
-        <template if="{{typedefsIsNotEmpty}}">
-          <dartdoc-category category="{{item.typedefs}}" 
-            class="accordion-group">
-          </dartdoc-category>
-        </template>
-        <template if="{{errorsIsNotEmpty}}">
-          <dartdoc-category category="{{item.errors}}" 
-            class="accordion-group">
-          </dartdoc-category>
-        </template>
-      </div>
+    <!-- Comment -->
+    <!--  TODO(alanknight): The div with itemList and panel are here to
+    convince it to use the right paragraph spacing. Seems pretty awful. -->
+    <div id="itemList">
+      <div is="dartdoc-comment" class="panel" item="{{item}}"></div>
+    </div>
+    <div class="accordion" id="accordion-grouping">
+      <template if="{{item.operators.content.isNotEmpty}}">
+        <dartdoc-category category="{{item.operators}}" class="accordion-group">
+        </dartdoc-category>
+      </template>
+      <template if="{{item.variables.content.isNotEmpty}}">
+        <dartdoc-category category="{{item.variables}}" class="accordion-group">
+        </dartdoc-category>
+      </template>
+      <template if="{{item.functions.content.isNotEmpty}}">
+        <dartdoc-category category="{{item.functions}}" class="accordion-group">
+        </dartdoc-category>
+      </template>
+      <template if="{{item.classes.content.isNotEmpty}}">
+        <dartdoc-category category="{{item.classes}}" class="accordion-group">
+        </dartdoc-category>
+      </template>
+      <template if="{{item.typedefs.content.isNotEmpty}}">
+        <dartdoc-category category="{{item.typedefs}}" class="accordion-group">
+        </dartdoc-category>
+      </template>
+      <template if="{{item.errors.content.isNotEmpty}}">
+        <dartdoc-category category="{{item.errors}}" class="accordion-group">
+        </dartdoc-category>
+      </template>
+    </div>
   </template>
 
   <script type="application/dart" src="library.dart"></script>

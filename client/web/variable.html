@@ -1,51 +1,33 @@
-<!DOCTYPE html>
 <link rel="import" href="annotations.html">
+<link rel="import" href="comment.html">
+<link rel="import" href="link.html">
 <link rel="import" href="variable-heading.html">
 
-<polymer-element name="dartdoc-variable" attributes="item">
+<polymer-element name="dartdoc-variable">
   <template>
-
     <div class="panel-heading">
-      <dartdoc-annotation annotations="{{annotations}}">
+      <dartdoc-annotation annotations="{{item.annotations}}">
       </dartdoc-annotation>
-      <variable-heading item="{{item}}">
-      </variable-heading>
+      <variable-heading item="{{item}}"></variable-heading>
     </div>
 
     <p class="text-right"><dfn>
       <template if="{{isInherited}}">
         Inherited from
-        <template if="{{exists(inheritedFrom.location)}}">
-          <a href="#{{inheritedFrom.loc.withAnchor}}">
-            {{inheritedFrom.simpleType}}
-          </a>
-        </template>
-        <template if="{{!exists(inheritedFrom.location)}}">
-          <i>{{inheritedFrom.simpleType}}</i>
-        </template>
+        <dartdoc-link type="{{inheritedFrom}}"></dartdoc-link>
       </template>
     </dfn></p>
 
-    <p class="description">
-    </p>
+
     <!-- Comment -->
-    <template if="{{viewer.isInherited || !hasInheritedComment}}">
-     {{addComment('dartdoc-variable')}}
+    <template if="{{shouldShowComment}}">
+      <div is="dartdoc-comment" item="{{item}}"></div>
     </template>
 
     <p class="text-right"><dfn>
-      <template if="{{hasInheritedComment}}">
-        <template if="{{viewer.isInherited}}">
-          Comment inherited from
-          <template if="{{exists(commentFrom.location)}}">
-            <a href="#{{commentFrom.loc.withAnchor}}">
-              {{commentFrom.simpleType}}
-            </a>
-          </template>
-          <template if="{{!exists(commentFrom.location)}}">
-            <i>{{commentFrom.simpleType}}</i>
-          </template>
-        </template>
+      <template if="{{shouldShowCommentFrom}}">
+        Comment inherited from
+        <dartdoc-link type="{{commentFrom}}"></dartdoc-link>
       </template>
     </dfn></p>
 

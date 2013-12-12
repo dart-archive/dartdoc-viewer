@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <!--
 Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
 for details. All rights reserved. Use of this source code is governed by a
@@ -15,20 +14,17 @@ BSD-style license that can be found in the LICENSE file.
           data-toggle="dropdown">
 
         <ul class="dropdown-menu pull-right" role="menu"
-            aria-labelledby="dropdownMenu">
-          <template if="{{hasNoResults}}">
+            aria-labelledby="dropdownMenu" on-click="{{onSubmitCallback}}">
+          <template if="{{results.isEmpty}}">
             <li class="search-result disabled">
               <a tabindex="-1" href="#">No Results.</a>
             </li>
           </template>
-          <template repeat="{{result in results}}">
+          <template repeat="{{results}}">
             <!-- A tabIndex of 0 allows for tab navigation through results -->
-            <li tabindex="0"
-                class="search-result">
-                <a is="search-result" item="{{result}}"
-                  on-click="{{onSubmitCallback}}"
-                  id="search{{result.position}}"
-                  data-ref-id="{{result.url}}" >
+            <li tabindex="0" class="search-result">
+              <a is="search-result" item="{{}}" id="search{{position}}"
+                  data-ref-id="{{url}}" >
               </a>
             </li>
           </template>

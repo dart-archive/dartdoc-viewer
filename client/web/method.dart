@@ -2,37 +2,49 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library method;
+library web.method;
 
-import 'app.dart';
-import 'member.dart';
 import 'package:polymer/polymer.dart';
 
-// TODO(alanknight): These pages are almost impossible to get to right now.
-// We should either delete them or make them navigable.
-@CustomTag("dartdoc-method")
-class DartdocMethod extends MethodElement {
-  DartdocMethod.created() : super.created();
+import 'member.dart';
+import 'package:dartdoc_viewer/item.dart';
 
-  get observables => concat(super.observables,
-      const [#annotations, #modifiers, #shouldShowMethodComment]);
-  get methodsToCall => concat(super.methodsToCall, const [#createMethodType]);
 
-  get item => super.item;
-  set item(x) => super.item = x;
+@initMethod _init() {
+  Polymer.register('method-panel', MethodElement);
+  Polymer.register('dartdoc-method', MethodElement);
+}
 
-  void createMethodType() {
-    if (!item.isConstructor) {
-      createType(item.type, 'dartdoc-method', 'type');
-    }
+/// Shared type for dartdoc-method and method-panel
+@reflectable
+class MethodElement extends InheritedElement {
+  @observable bool isNotConstructor;
+  @observable String modifiers;
+  @observable String constantModifier;
+  @observable String abstractModifier;
+  @observable String staticModifier;
+
+  MethodElement.created() : super.created();
+
+  wrongClass(newItem) => newItem is! Method;
+
+  itemChanged() {
+    super.itemChanged();
+    if (item == null) return;
+
+    isNotConstructor = !item.isConstructor;
+    constantModifier = item.isConstant ? 'const' : '';
+    abstractModifier = item.isAbstract ? 'abstract' : '';
+    staticModifier = item.isStatic ? 'static' : '';
+    modifiers = constantModifier + staticModifier;
   }
 
-  @observable String get modifiers => constantModifier
-      + staticModifier;
-  get constantModifier => item.isConstant ? 'const' : '';
-  get abstractModifier => item.isAbstract ? 'abstract' : '';
-  get staticModifier => item.isStatic ? 'static' : '';
-  @observable get annotations => item.annotations;
-  @observable get shouldShowMethodComment =>
-    item != null && item.hasComment;
+  get defaultItem => _defaultItem;
+  static final _defaultItem = new Method({
+    "name" : "Loading",
+    "qualifiedName" : "Loading",
+    "comment" : "",
+    "parameters" : null,
+    "return" : [null],
+  }, isConstructor: true);
 }

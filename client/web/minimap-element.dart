@@ -2,35 +2,50 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library minimap_element;
+library web.minimap_element;
 
 import 'package:dartdoc_viewer/item.dart';
 import 'package:polymer/polymer.dart';
-import 'app.dart' as app;
-import 'member.dart';
-import 'package:dartdoc_viewer/location.dart';
+import 'package:polymer/src/build/utils.dart' show toCamelCase;
+import 'app.dart' show viewer, defaultSyntax;
 
 /// An element in a page's minimap displayed on the right of the page.
 @CustomTag("dartdoc-minimap")
-class MinimapElement extends DartdocElement {
+class MinimapElement extends PolymerElement {
+  @published Category category;
+  @published Item item;
+
+  @observable String camelCaseName;
+  @observable String categoryLink;
+
+  get syntax => defaultSyntax;
+  get applyAuthorStyles => true;
+
   MinimapElement.created() : super.created() {
-    new PathObserver(this, "viewer.isInherited").bindSync(
-      (_) {
-        notifyPropertyChange(#itemsToShow, null, itemsToShow);
-      });
+    registerObserver('isInherited', viewer.changes.listen((changes) {
+      for (var change in changes) {
+        if (change.name == #isInherited) {
+          categoryChanged();
+          return;
+        }
+      }
+    }));
   }
 
-  List<Item> _items = [];
-  @published List<Item> get items => _items;
-  @published set items(newItems) {
-    notifyObservables(() => _items = newItems);
+  @observable Iterable<Item> itemsToShow;
+
+  itemChanged() {
+    if (category == null || item == null) return;
+
+    categoryLink = '#${item.linkHref}@${category.name.replaceAll(" ", "-")}';
   }
 
-  get observables => concat(super.observables, const [#itemsToShow]);
+  categoryChanged() {
+    if (category == null || item == null) return;
 
-  @observable get itemsToShow => items.where(
-      (item) => !item.isInherited || viewer.isInherited);
-
-  /// Creates a proper href String for an [Item].
-  @observable String link(linkItem) => linkItem.anchorHref;
+    itemChanged();
+    camelCaseName = toCamelCase(category.name.toLowerCase());
+    itemsToShow = category.content.where(
+        (x) => !x.isInherited || viewer.isInherited);
+  }
 }

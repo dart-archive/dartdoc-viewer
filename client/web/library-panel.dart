@@ -2,49 +2,36 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library library_panel;
+library web.library_panel;
 
+import 'dart:html';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:polymer/polymer.dart';
-import 'app.dart' as app;
 import 'member.dart';
-import 'dart:html';
 
 /// An element in a page's minimap displayed on the right of the page.
 @CustomTag("dartdoc-library-panel")
 class LibraryPanel extends DartdocElement {
-  LibraryPanel.created() : super.created() {
-    new PathObserver(this, "viewer.libraries").bindSync(
-    (_) {
-      notifyPropertyChange(#createEntries, null, true);
-    });
+  LibraryPanel.created() : super.created();
+
+  shadowRootReady(root, template) {
+    super.shadowRootReady(root, template);
+
+    registerObserver('viewer', viewer.changes.listen((changes) {
+      for (var change in changes) {
+        if (change.name == #currentPage) {
+          _updateActiveLibrary(null);
+          return;
+        }
+      }
+    }));
+
+    onMutation(shadowRoot).then(_updateActiveLibrary);
   }
 
-  enteredView() {
-    super.enteredView();
-    createEntries();
-  }
-
-  linkHref(library) => library == null ? '' : library.linkHref;
-
-  @observable void createEntries() {
-    var mainElement = shadowRoot.querySelector("#library-panel");
-    if (mainElement == null) return;
-    mainElement.children.clear();
-    var breadcrumbs = viewer.breadcrumbs;
-    for (var library in viewer.libraries) {
-      var isFirst =
-          library.decoratedName == breadcrumbs.first.decoratedName;
-      var element =
-          isFirst ? newElement(library, true) : newElement(library, false);
-      mainElement.append(element);
+  void _updateActiveLibrary(_) {
+    for (var a in shadowRoot.querySelectorAll('a')) {
+      a.classes.toggle('active', a.text == viewer.currentPage.decoratedName);
     }
-  }
-
-  newElement(library, bool isActive) {
-    var html = '<a href="#${linkHref(library)}" class="list-group-item'
-        '${isActive ? ' active' : ''}">'
-        '${library.decoratedName}</a>';
-    return new Element.html(html, validator: validator);
   }
 }

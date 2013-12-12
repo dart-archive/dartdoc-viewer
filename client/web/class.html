@@ -1,69 +1,60 @@
 <!DOCTYPE html>
-<link rel="import" href="item.html">
-<link rel="import" href="category.html">
 <link rel="import" href="annotations.html">
+<link rel="import" href="category.html">
+<link rel="import" href="comment.html">
+<link rel="import" href="item.html">
 
 <polymer-element name="dartdoc-class" attributes="item">
   <template>
-      <dartdoc-annotation annotations="{{annotations}}">
-      </dartdoc-annotation>
+    <dartdoc-annotation annotations="{{item.annotations}}"></dartdoc-annotation>
 
-      <div class="page-header"><h1>
-        {{nameWithGeneric}}
-        <template if="{{item.isAbstract}}">abstract</template>
-        class
-      </h1></div>
+    <div class="page-header"><h1>
+      {{item.nameWithGeneric}}
+      <template if="{{item.isAbstract}}">abstract</template>
+      class
+    </h1></div>
 
-      <p id="interfaces"></p>
-      {{addInterfaceLinks()}}
+    <p id="interfaces"></p>
+    <p id="subclasses"></p>
 
-      <p id="subclasses">
-      </p>
-      <!-- Subclasses -->
-      <template if="{{isNotObject}}">
-        {{addSubclassLinks()}}
+    <!-- Comment -->
+    <!--  TODO(alanknight): The div with itemList and panel are here to
+    convince it to use the right paragraph spacing. Seems pretty awful. -->
+    <div id="itemList">
+      <div is="dartdoc-comment" class="panel" item="{{item}}"></div>
+    </div>
+
+    <div class="accordion" id="accordion-grouping">
+      <template if="{{shouldShowConstructors}}">
+        <dartdoc-category category="{{item.constructors}}"
+            class="accordion-group">
+        </dartdoc-category>
       </template>
-   
-
-      <!-- Comment -->
-      <!--  TODO(alanknight): The div with itemList and panel are here to
-      convince it to use the right paragraph spacing. Seems pretty awful. -->
-      <div id="itemList"><section class="description panel"></section></div>
-      {{addComment('dartdoc-class')}}
-
-      <div class="accordion" id="accordion-grouping">
-          <template if="{{shouldShowConstructors}}">
-            <dartdoc-category category="{{constructors}}"
-              class="accordion-group">
-            </dartdoc-category>
-          </template>
-          <template if="{{shouldShowMethods}}">
-            <dartdoc-category category="{{methods}}"
-                class="accordion-group">
-            </dartdoc-category>
-          </template>
-          <template if="{{shouldShowOperators}}">
-            <dartdoc-category category="{{operators}}" 
-                class="accordion-group">
-            </dartdoc-category>
-          </template>
-          <template if="{{shouldShowStaticMethods}}">
-            <dartdoc-category category="{{staticMethods}}"
-                class="accordion-group">
-            </dartdoc-category>
-          </template>
-          <template if="{{shouldShowVariables}}">
-            <dartdoc-category category="{{variables}}" 
-                class="accordion-group">
-            </dartdoc-category>
-          </template>
-          <template if="{{shouldShowStaticVariables}}">
-            <dartdoc-category category="{{staticVariables}}" 
-                class="accordion-group">
-            </dartdoc-category>
-          </template>
-      </div>
-    </template>
+      <template if="{{shouldShowFunctions}}">
+        <dartdoc-category category="{{item.functions}}" class="accordion-group">
+        </dartdoc-category>
+      </template>
+      <template if="{{shouldShowOperators}}">
+        <dartdoc-category category="{{item.operators}}"
+            class="accordion-group">
+        </dartdoc-category>
+      </template>
+      <template if="{{shouldShowStaticFunctions}}">
+        <dartdoc-category category="{{item.staticFunctions}}"
+            class="accordion-group">
+        </dartdoc-category>
+      </template>
+      <template if="{{shouldShowVariables}}">
+        <dartdoc-category category="{{item.variables}}" class="accordion-group">
+        </dartdoc-category>
+      </template>
+      <template if="{{shouldShowStaticVariables}}">
+        <dartdoc-category category="{{item.staticVariables}}"
+            class="accordion-group">
+        </dartdoc-category>
+      </template>
+    </div>
+  </template>
 
   <script type="application/dart" src="class.dart"></script>
 </polymer-element>

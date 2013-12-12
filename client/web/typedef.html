@@ -1,30 +1,25 @@
-<!DOCTYPE html>
-<link rel="import" href="parameters.html">
 <link rel="import" href="annotations.html">
+<link rel="import" href="comment.html">
+<link rel="import" href="parameters.html">
 
 <polymer-element name="dartdoc-typedef" attributes="item">
   <template>
-    
-      <div class="page-header"><h1>{{name}} typedef</h1></div>
+    <div class="page-header"><h1>{{item.name}} typedef</h1></div>
 
+    <!-- Signature -->
+    <div class="panel-heading">
+      <dartdoc-annotation annotations="{{item.annotations}}">
+      </dartdoc-annotation>
 
-      <!-- Signature --> 
-      <div class="panel-heading">
-        <dartdoc-annotation annotations="{{annotations}}">
-        </dartdoc-annotation>
+      <p class="panel-title">typedef
+        <a href="#{{item.type.location}}">{{item.type.simpleType}}</a>
+        {{item.name}}
+        <dartdoc-parameter parameters="{{item.parameters}}"></dartdoc-parameter>
+      </p>
+    </div>
 
-        <p class="panel-title">typedef
-          <a href="#{{location}}">
-            {{simpleType}}
-          </a>{{name}}
-          <dartdoc-parameter parameters="{{parameters}}">
-          </dartdoc-parameter>
-        </p>
-      </div>
-
-      <!-- Comment -->
-      <section class="description"></section>
-      {{addComment('dartdoc-typedef')}}
+    <!-- Comment -->
+    <div is="dartdoc-comment" item="{{item}}"></div>
   </template>
 
   <script type="application/dart" src="typedef.dart"></script>

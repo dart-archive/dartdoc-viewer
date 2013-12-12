@@ -14,13 +14,11 @@
  */
 library search;
 
-import 'dart:async';
 import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/location.dart';
-import 'dart:math';
 
-/** Search Index */
-@reflectable Map<String, String> index = {};
+/** Search Index. */
+final SearchIndex searchIndex = new SearchIndex();
 
 @reflectable class SearchResult implements Comparable {
 
@@ -61,21 +59,7 @@ import 'dart:math';
   toString() => "SearchResult($element, $type, $score)";
 }
 
-/// The value of each type of member.
-@reflectable const Map<String, int> value = const {
-  'library' : 2,
-  'class' : 2,
-  'typedef' : 3,
-  'method' : 4,
-  'getter' : 4,
-  'setter' : 4,
-  'operator' : 4,
-  'property' : 4,
-  'constructor' : 4
-};
-
 bool _nullFilter(_) => true;
-
 
 /// Represents a hit when searching, and stores basic information about the
 /// matched item.
@@ -88,16 +72,27 @@ class Hit {
   // Really an enum of the keys in [value]
   final String type;
 
-  factory Hit(String name, String lower) {
+  factory Hit(SearchIndex index, String name, String lower) {
     var withoutDom =
         lower.contains('.dom.') ? lower.replaceFirst('.dom', '') : lower;
-    var type = index[name];
+    var type = index.map[name];
     return new Hit.withFinals(name, withoutDom, type);
   }
 
   Hit.withFinals(this.name, this.lower, this.type);
 
-  get weight => value[type];
+  /// The search result value based on the type of member.
+  get weight => const {
+    'library' : 2,
+    'class' : 2,
+    'typedef' : 3,
+    'method' : 4,
+    'getter' : 4,
+    'setter' : 4,
+    'operator' : 4,
+    'property' : 4,
+    'constructor' : 4
+  }[type];
 
   toString() => "Hit($name)";
 
@@ -110,7 +105,7 @@ class Hit {
 /// searches with very large numbers of matches (e.g. single letters)
 const int MAX_RESULTS_TO_CONSIDER = 1000;
 
-List<String> splitQueryTerms(String query) {
+List<String> _splitQueryTerms(String query) {
   var queryList = query.trim().toLowerCase().split(' ');
   queryList = queryList.map((x) => x.replaceAll(":", '-')).toList();
   // If someone types a dot we don't know if they meant e.g. polymer.builder
@@ -135,21 +130,21 @@ List<String> splitQueryTerms(String query) {
  * A score is given to each potential search result based off how likely it is
  * the appropriate qualified name to return for the search query.
  */
-@reflectable
-List<SearchResult> lookupSearchResults(String query, int maxResults,
-    [Function filter = _nullFilter]) {
+// TODO(jmesserly): should this be a "lookup" method on SearchIndex?
+List<SearchResult> lookupSearchResults(SearchIndex index, String query,
+    int maxResults, [Function filter = _nullFilter]) {
   if (query == '') return [];
 
   var stopwatch = new Stopwatch()..start();
 
   var scoredResults = <SearchResult>[];
   var resultSet = new List<Hit>();
-  var queryList = splitQueryTerms(query);
+  var queryList = _splitQueryTerms(query);
 
-  for (var key in index.keys) {
+  for (var key in index.map.keys) {
     var lower = key.toLowerCase();
     if (queryList.any((q) => lower.contains(q))) {
-        resultSet.add(new Hit(key, lower));
+      resultSet.add(new Hit(index, key, lower));
     }
   }
 
@@ -235,15 +230,35 @@ List<SearchResult> lookupSearchResults(String query, int maxResults,
     return [];
   }
   scoredResults.sort();
-  updatePositions(scoredResults.take(maxResults).toList());
   if (scoredResults.length > maxResults) {
-    return scoredResults.take(maxResults).toList();
-  } else {
-    return scoredResults;
+    scoredResults = scoredResults.take(maxResults).toList();
+  }
+  _updatePositions(scoredResults);
+  return scoredResults;
+}
+
+class SearchIndex {
+  Map<String, String> _map = {};
+  Map<String, String> get map => _map;
+  set map(Map<String, String> value) {
+    if (_onLoad == null) {
+      throw new StateError('cannot initialize SearchIndex twice.');
+    }
+    _map = value;
+    for (var load in _onLoad) load();
+    _onLoad = null;
+  }
+
+  List<Function> _onLoad = [];
+
+  /** Called when the index is loaded. Not called if already loaded. */
+  void onLoad(void callback()) {
+    if (_onLoad == null) return; // already loaded
+    _onLoad.add(callback);
   }
 }
 
-@reflectable void updatePositions(List<SearchResult> list) {
+void _updatePositions(List<SearchResult> list) {
   for(int i = 0; i < list.length; i++) {
     list[i].position = i;
   }

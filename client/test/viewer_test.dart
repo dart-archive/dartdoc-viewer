@@ -2,15 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library viewer_test;
-
-import 'dart:html';
+library test.viewer_test;
 
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/search.dart';
-import 'package:unittest/html_enhanced_config.dart';
+import 'package:unittest/html_config.dart';
 import 'package:unittest/unittest.dart';
 import 'package:yaml/yaml.dart';
 import 'package:polymer/polymer.dart';
@@ -28,7 +26,7 @@ String parameter = '''"name" : "input"
 "optional" : "true"
 "named" : "true"
 "default" : "true"
-"type" : 
+"type" :
   - "inner" :
     "outer" : "dart.core.String"
 "value" : "\\\"test\\\""
@@ -40,7 +38,7 @@ String variable = '''"name" : "variable"
 "final" : "false"
 "static" : "false"
 "constant" : "false"
-"type" : 
+"type" :
   - "inner" :
     "outer" : "dart.core.String"
 "annotations" :''';
@@ -51,8 +49,8 @@ String genericOneLevelVariable = '''"name" : "generic"
 "final" : "false"
 "static" : "false"
 "constant" : "false"
-"type" : 
-  - "inner" : 
+"type" :
+  - "inner" :
       - "inner" :
         "outer" : "dart.core.String"
     "outer" : "dart.core.List"
@@ -64,13 +62,13 @@ String genericTwoLevelVariable = '''"name" : "generic"
 "final" : "false"
 "static" : "false"
 "constant" : "false"
-"type" : 
-  - "inner" : 
+"type" :
+  - "inner" :
       - "inner" :
           - "inner" :
             "outer" : "dart.core.int"
           - "inner" :
-            "outer" : "dart.core.String" 
+            "outer" : "dart.core.String"
         "outer" : "dart.core.Map"
     "outer" : "dart.core.List"
 "annotations" :''';
@@ -89,11 +87,11 @@ String setter = '''"abstract" : "false"
     "named" : "false"
     "optional" : "false"
     "type" :
-      - "inner" : 
+      - "inner" :
         "outer" : "dart.core.int"
     "value" : "null"
 "qualifiedName" : "Library.Class.length="
-"return" : 
+"return" :
   - "inner" :
     "outer" : "void"
 "static" : "false"''';
@@ -104,9 +102,9 @@ String method =  '''"name" : "getA"
 "static" : "false"
 "constant" : "false"
 "abstract" : "false"
-"annotations" : 
-"return" : 
-  - "inner" : 
+"annotations" :
+"return" :
+  - "inner" :
     "outer" : "Library.A"
 "parameters" :
   "testInt" :
@@ -114,8 +112,8 @@ String method =  '''"name" : "getA"
     "optional" : "false"
     "named" : "false"
     "default" : "false"
-    "type" : 
-      - "inner" : 
+    "type" :
+      - "inner" :
         "outer" : "dart.core.int"
     "value" : "null"
     "annotations" :''';
@@ -129,15 +127,15 @@ String clazz = '''"name" : "A"
   - "Library.B"
   - "Library.C"
 "variables" :
-"annotations" : 
+"annotations" :
 "generics" :
-"methods" : 
+"methods" :
   "getters" :
   "setters" :
   "constructors" :
     "" :
       "abstract" : "false"
-      "annotations" : 
+      "annotations" :
       "comment" :
       "commentfrom" : ""
       "constant" : "false"
@@ -158,7 +156,7 @@ String clazz = '''"name" : "A"
       "constant" : "false"
       "abstract" : "false"
       "annotations" :
-      "return" : 
+      "return" :
         - "inner" :
           "outer" : "void"
       "parameters" :''';
@@ -189,7 +187,7 @@ String dependencies =  '''"name" : "Library"
     "final" : "false"
     "static" : "false"
     "constant" : "false"
-    "type" : 
+    "type" :
       - "inner" :
         "outer" : "Library.A"
     "annotations" :
@@ -206,8 +204,8 @@ String dependencies =  '''"name" : "Library"
       "constant" : "false"
       "static" : "false"
       "abstract" : "false"
-      "return" : 
-        - "inner" : 
+      "return" :
+        - "inner" :
           "outer" : "Library.A"
       "parameters" :
         "testA" :
@@ -216,11 +214,11 @@ String dependencies =  '''"name" : "Library"
           "optional" : "false"
           "named" : "false"
           "default" : "false"
-          "type" : 
+          "type" :
             - "inner" :
               "outer" : "Library.A"
           "value" : "null"
-      "annotations" : 
+      "annotations" :
 "classes" :
   "class" :
     - "name" : "A"
@@ -241,13 +239,13 @@ String annotationsAndGenerics = '''"name" : "Library"
     "final" : "false"
     "static" : "false"
     "constant" : "false"
-    "type" : 
-      - "inner" : 
+    "type" :
+      - "inner" :
           - "inner" :
               - "inner" :
                 "outer" : "Library.A"
               - "inner" :
-                "outer" : "Library.A" 
+                "outer" : "Library.A"
             "outer" : "Library.B"
         "outer" : "Library.C"
     "annotations" :
@@ -288,11 +286,11 @@ String annotationsAndGenerics = '''"name" : "Library"
 String clazzA = '''"name" : "A"
 "qualifiedName" : "Library.A"
 "isAbstract" : "false"
-"annotations" : 
-"generics" : 
+"annotations" :
+"generics" :
 "comment" : ""
 "superclass" : "Library.B"
-"implements" : 
+"implements" :
   - "Library.B"
 "inheritedVariables" :
   "inheritance" :
@@ -307,7 +305,7 @@ String clazzA = '''"name" : "A"
       - "inner" :
         "outer" : "dart.core.String"
     "annotations" :
-"variables" : 
+"variables" :
   "inheritance" :
     "name" : "inheritance"
     "qualifiedName" : "Library.A.inheritance"
@@ -330,9 +328,9 @@ String clazzA = '''"name" : "A"
       "static" : "false"
       "constant" : "false"
       "abstract" : "false"
-      "annotations" : 
-      "return" : 
-        - "inner" : 
+      "annotations" :
+      "return" :
+        - "inner" :
           "outer" : "Library.B"
       "parameters" :
         "testInt" :
@@ -340,8 +338,8 @@ String clazzA = '''"name" : "A"
           "optional" : "false"
           "named" : "false"
           "default" : "false"
-          "type" : 
-            - "inner" : 
+          "type" :
+            - "inner" :
               "outer" : "Library.C"
           "value" : "null"
           "annotations" :
@@ -352,10 +350,10 @@ String clazzB = '''"name" : "B"
 "qualifiedName" : "Library.B"
 "annotations" :
 "isAbstract" : "true"
-"generics" : 
+"generics" :
 "comment" : ""
 "superclass" : "dart.core.Object"
-"implements" : 
+"implements" :
 "variables" :
   "inheritance" :
     "name" : "inheritance"
@@ -374,10 +372,10 @@ String clazzC =  '''"name" : "C"
 "qualifiedName" : "Library.C"
 "annotations" :
 "isAbstract" : "true"
-"generics" : 
+"generics" :
 "comment" : ""
 "superclass" : "Library.A"
-"implements" : 
+"implements" :
 "inheritedVariables" :
   "inheritance" :
     "name" : "inheritance"
@@ -391,7 +389,7 @@ String clazzC =  '''"name" : "C"
       - "inner" :
         "outer" : "dart.core.String"
     "annotations" :
-"variables" : 
+"variables" :
 "methods" :''';
 
 String manyLibrariesIndex = '''dart.core library
@@ -425,12 +423,12 @@ Library1.Class.from constructor''';
 
 @initMethod void main() {
   isYaml = true;
-  useHtmlEnhancedConfiguration();
+  useHtmlConfiguration();
 
   test('read_empty', () {
     // Check that read_yaml reads the right data.
     retrieveFileContents('yaml/empty.yaml').then(expectAsync1((data) {
-      expect(data, equals(empty));
+      expect(_fixYamlString(data), empty);
       // Test that reading in an empty file doesn't throw an exception.
       expect(() => loadData(data), returnsNormally);
     }));
@@ -439,7 +437,7 @@ Library1.Class.from constructor''';
   test('parameter_test', () {
     // Check that read_yaml reads the right data.
     retrieveFileContents('yaml/parameter.yaml').then(expectAsync1((data) {
-      expect(data, equals(parameter));
+      expect(_fixYamlString(data), parameter);
     }));
 
     var currentMap = loadYaml(parameter);
@@ -453,7 +451,7 @@ Library1.Class.from constructor''';
   test('variable_test', () {
     // Check that read_yaml reads the right data.
     retrieveFileContents('yaml/variable.yaml').then(expectAsync1((data) {
-      expect(data, equals(variable));
+      expect(_fixYamlString(data), variable);
     }));
 
     var yaml = loadYaml(variable);
@@ -529,7 +527,7 @@ Library1.Class.from constructor''';
   test('method_test', () {
     // Check that read_yaml reads the right data.
     retrieveFileContents('yaml/method.yaml').then(expectAsync1((data) {
-      expect(data, equals(method));
+      expect(_fixYamlString(data), method);
     }));
 
     var yaml = loadYaml(method);
@@ -545,7 +543,7 @@ Library1.Class.from constructor''';
   test('clazz_test', () {
     // Check that read_yaml reads the right data.
     retrieveFileContents('yaml/class.yaml').then(expectAsync1((data) {
-      expect(data, equals(clazz));
+      expect(_fixYamlString(data), clazz);
     }));
 
     var yaml = loadYaml(clazz);
@@ -568,19 +566,17 @@ Library1.Class.from constructor''';
     expect(constructor.isConstructor, isTrue);
     expect(constructor.decoratedName != constructor.name, isTrue);
 
-    var implements = item.implements;
-    expect(implements is List, isTrue);
-    implements.forEach((interface) =>
-        expect(interface is LinkableType, isTrue));
+    for (var interface in item.interfaces) {
+       expect(interface is LinkableType, isTrue);
+    }
 
-    var superClass = item.superClass;
-    expect(superClass is LinkableType, isTrue);
+    expect(item.superClass is LinkableType, isTrue);
   });
 
   test('library_test', () {
     // Check that read_yaml reads the right data.
     retrieveFileContents('yaml/library.yaml').then(expectAsync1((data) {
-      expect(data, equals(library));
+      expect(_fixYamlString(data), library);
     }));
 
     var yaml = loadYaml(library);
@@ -609,8 +605,9 @@ Library1.Class.from constructor''';
     expect(clazz is Class, isTrue);
     clazz.loadValues(loadYaml(clazzA));
 
-    var implements = clazz.implements;
-    implements.forEach((element) => expect(element is LinkableType, isTrue));
+    for (var element in clazz.interfaces) {
+      expect(element is LinkableType, isTrue);
+    }
   });
 
   // Test that links that are in scope are aliased to the correct objects.
@@ -650,8 +647,8 @@ Library1.Class.from constructor''';
     location = pageIndex[parameter.type.outer.location];
     expect(location, equals(classA));
 
-    var implements = classA.implements.first;
-    location = pageIndex[implements.location];
+    var interfaces = classA.interfaces.first;
+    location = pageIndex[interfaces.location];
     expect(location, equals(classB));
 
     var superClass = classC.superClass;
@@ -661,22 +658,23 @@ Library1.Class.from constructor''';
 
   // Test that search returns the desired members
   test('many_library_index_search_test', () {
-    index = {};
+    var searchIndex = new SearchIndex();
+    var index = searchIndex.map;
     var members = manyLibrariesIndex.split('\n');
     members.forEach((element) {
       var splitElements = element.split(' ');
       index[splitElements[0]] = splitElements[1];
     });
 
-    var results = lookupSearchResults('dart', 10);
+    var results = lookupSearchResults(searchIndex, 'dart', 10);
 //    // Expect the top 4 results to be libraries.
 //    // TODO(alanknight): This is no longer true, and it's not clear
-//    // if it ought to be. Revisit search algorithm and test. 
+//    // if it ought to be. Revisit search algorithm and test.
 //    for (int i = 0; i < 4; i++) {
 //      expect(index.map[results[i].element], equals('library'));
 //    }
 
-    results = lookupSearchResults('object', 10);
+    results = lookupSearchResults(searchIndex, 'object', 10);
     expect(results[0].element, equals('dart.core.Object'));
     for (int i = 1; i < 4; i++) {
       expect(results[i].element.startsWith('dart.core.Object.'), isTrue);
@@ -810,14 +808,15 @@ Library1.Class.from constructor''';
 
   // Test that search returns the desired members
   test('many_library_index_search_test', () {
-    index = {};
+    var searchIndex = new SearchIndex();
+    var index = searchIndex.map;
     var members = manyLibrariesIndex.split('\n');
     members.forEach((element) {
       var splitElements = element.split(' ');
       index[splitElements[0]] = splitElements[1];
     });
 
-    var results = lookupSearchResults('dart', 10);
+    var results = lookupSearchResults(searchIndex, 'dart', 10);
     // Expect the top 4 results to be libraries.
     // TODO(alanknight) : This is no longer true, and it's not clear
     // if it ought to be. Revisit search algorithm and tests.
@@ -825,7 +824,7 @@ Library1.Class.from constructor''';
 //      expect(index.map[results[i].element], equals('library'));
 //    }
 
-    results = lookupSearchResults('object', 10);
+    results = lookupSearchResults(searchIndex, 'object', 10);
     expect(results[0].element, equals('dart.core.Object'));
     for (int i = 1; i < 4; i++) {
       expect(results[i].element.startsWith('dart.core.Object.'), isTrue);
@@ -835,34 +834,36 @@ Library1.Class.from constructor''';
 
   // Test searching with a single library in the index.
   test('search_single_library_test', () {
-    index = {};
+    var searchIndex = new SearchIndex();
+    var index = searchIndex.map;
     var members = oneLibraryIndex.split('\n');
     members.forEach((element) {
       var splitElements = element.split(' ');
       index[splitElements[0]] = splitElements[1];
     });
 
-    var results = lookupSearchResults('Class.from', 2);
-    expect(results[0].element, equals('Library1.Class.from'));
+    var results = lookupSearchResults(searchIndex, 'Class.from', 2);
     expect(results.length, equals(2)); // Returns the constructor and the class.
+    expect(results[0].element, equals('Library1.Class.from'));
+    expect(results[1].element, equals('Library1.Class'));
 
-    results = lookupSearchResults('Class', 6);
+    results = lookupSearchResults(searchIndex, 'Class', 6);
     expect(results[0].element, equals('Library1.Class'));
     expect(results.any((x) => x.element == 'Library1.Class.'), isTrue);
     expect(results.length, equals(5));
     expect(results[2].score, equals(results[3].score));
     expect(results[3].score, equals(results[4].score));
 
-    results = lookupSearchResults('variable', 2);
+    results = lookupSearchResults(searchIndex, 'variable', 2);
     var expected = ['Library1.variable', 'Library1.Class.variable'];
     expect(expected.contains(results[0].element), isTrue);
     expect(expected.contains(results[1].element), isTrue);
 
-    results = lookupSearchResults('method', 2);
+    results = lookupSearchResults(searchIndex, 'method', 2);
     expect(results[0].element, equals('Library1.Class.method'));
     expect(results.length, equals(1));
 
-    results = lookupSearchResults('Library', 9);
+    results = lookupSearchResults(searchIndex, 'Library', 9);
     expect(results[0].element, equals('Library1'));
     expect(results[1].element, equals('Library1.Class'));
     // The remaining results should all have the same score.
@@ -872,3 +873,7 @@ Library1.Class.from constructor''';
     expect(results.length, equals(8));
   });
 }
+
+/// Our YAML literals avoid trailing whitespace. Remove it from loaded files so
+/// they match.
+String _fixYamlString(String str) => str.replaceAll(' \n', '\n');

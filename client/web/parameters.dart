@@ -2,63 +2,46 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library parameters;
+library web.parameters;
 
 import 'dart:html';
-
 import 'package:dartdoc_viewer/item.dart';
 import 'package:polymer/polymer.dart';
-
-import 'app.dart';
 import 'member.dart';
+import 'type.dart';
 
 @CustomTag("dartdoc-parameter")
 class ParameterElement extends DartdocElement {
+  @published List<Parameter> parameters = const [];
+
   ParameterElement.created() : super.created();
 
-  get observables => concat(super.observables, const [#required, #optional,
-      #optionalOpeningDelimiter, #optionalClosingDelimiter]);
-  get methodsToCall => concat(super.methodsToCall, const [#addAllParameters]);
+  void parametersChanged() {
+    var required = [], optional = [];
+    if (parameters != null) {
+      for (var p in parameters) {
+        (p.isOptional ? optional : required).add(p);
+      }
+    }
 
-  List<Parameter> _parameters = const [];
-  @published get parameters => _parameters;
-  @published set parameters(newParameters) {
-    notifyObservables(() => _parameters = newParameters);
-  }
-
-  // Required parameters.
-  @observable List<Parameter> get required =>
-    parameters.where((parameter) => !parameter.isOptional).toList();
-
-  // Optional parameters.
-  @observable List<Parameter> get optional =>
-    parameters.where((parameter) => parameter.isOptional).toList();
-
-  @observable get optionalOpeningDelimiter =>
-      optional.isEmpty ? '' : optional.first.isNamed ? '{' : '[';
-
-  @observable get optionalClosingDelimiter =>
-      optional.isEmpty ? '' : optional.first.isNamed ? '}' : ']';
-
-  addAllParameters() {
-    var location = shadowRoot.querySelector('.required');
-    if (location == null) return;
-    location.children.clear();
-    location.appendText('(');
-    addParameters(required, 'required', location);
-    addParameters(optional, 'optional', location);
-    location.appendText(')');
+    this.children.clear();
+    this.appendText('(');
+    addParameters(required, 'required', optional);
+    addParameters(optional, 'optional', optional);
+    this.appendText(')');
   }
 
   /// Adds [elements] to the tag with class [className].
-  void addParameters(List<Parameter> elements, String className, var location) {
+  void addParameters(List<Parameter> elements, String className,
+      List<Parameter> optional) {
     if (elements.isEmpty) return;
-    if (location == null) return;
     var outerSpan = new SpanElement();
     if (className == 'optional') {
+      var optionalOpeningDelimiter =
+          optional.isEmpty ? '' : optional.first.isNamed ? '{' : '[';
       outerSpan.appendText(optionalOpeningDelimiter);
     }
-    elements.forEach((element) {
+    for (var element in elements) {
       // Since a dartdoc-annotation cannot be instantiated from Dart code,
       // the annotations must be built manually.
       element.annotations.annotations.forEach((annotation) {
@@ -71,7 +54,7 @@ class ParameterElement extends DartdocElement {
       // Skip dynamic as an outer parameter type (but not as generic)
       var space = '';
       if (!element.type.isDynamic) {
-        outerSpan.append(MemberElement.createInner(element.type));
+        outerSpan.append(new TypeElement()..type = element.type);
         space = ' ';
       }
       var parameterName = new AnchorElement()
@@ -85,10 +68,12 @@ class ParameterElement extends DartdocElement {
           element != elements.last) {
         outerSpan.appendText(', ');
       }
-    });
+    }
     if (className == 'optional') {
+      var optionalClosingDelimiter =
+          optional.isEmpty ? '' : optional.first.isNamed ? '}' : ']';
       outerSpan.appendText(optionalClosingDelimiter);
     }
-    location.children.add(outerSpan);
+    this.append(outerSpan);
   }
 }

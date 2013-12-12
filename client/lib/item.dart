@@ -19,11 +19,10 @@ import 'package:dartdoc_viewer/location.dart';
 /**
  * Anything that holds values and can be displayed.
  */
-
 nothing() => null;
 
 @reflectable class Container extends Observable {
-  @observable final String name;
+  final String name;
   @observable String comment = '<span></span>';
   bool get hasComment => !hasNoComment;
   bool get hasNoComment =>
@@ -34,8 +33,8 @@ nothing() => null;
   String toString() => "$runtimeType($name)";
 }
 
-// Wraps a comment in span element to make it a single HTML Element.
-@reflectable String _wrapComment(String comment) {
+/** Wraps a comment in span element to make it a single HTML Element. */
+String _wrapComment(String comment) {
   if (comment == null) comment = '';
   return '<div>$comment</div>';
 }
@@ -45,7 +44,7 @@ nothing() => null;
  */
 @reflectable class Category extends Container {
 
-  List<Container> content = [];
+  ObservableList<Container> content = toObservable([]);
   Set<String> memberNames = new Set<String>();
   int inheritedCounter = 0;
   int memberCounter = 0;
@@ -211,7 +210,7 @@ nothing() => null;
 
   Item get owner => pageIndex[location.parentQualifiedName];
 
-  Item get home => owner == null ? null : owner.home;
+  Home get home => owner == null ? null : owner.home;
 }
 
 /// Sorts each inner [List] by qualified names.
@@ -372,11 +371,8 @@ int _compareLibraryNames(String a, String b) {
   Home home;
 
   /// Creates a [Library] placeholder object with null fields.
-  Library.forPlaceholder(Map library)
-    : super(
-        library['qualifiedName'],
-        library['name'],
-        library['preview']);
+  Library.forPlaceholder(Map map)
+      : super(map['qualifiedName'], map['name'], map['preview']);
 
   /// Normal constructor for testing.
   Library(Map yaml) : super(yaml['qualifiedName'], yaml['name'], '') {
@@ -386,11 +382,11 @@ int _compareLibraryNames(String a, String b) {
 
   void addToHierarchy() {
     super.addToHierarchy();
-    [classes, typedefs, errors, functions].forEach((category) {
-      category.content.forEach((clazz) {
+    for (var category in [classes, typedefs, errors, functions]) {
+      for (var clazz in category.content) {
         buildHierarchy(clazz, this);
-      });
-    });
+      }
+    }
   }
 
   void loadValues(Map yaml) {
@@ -457,9 +453,8 @@ int _compareLibraryNames(String a, String b) {
   Category operators;
   LinkableType superClass;
   bool isAbstract;
-  String previewComment;
   AnnotationGroup annotations;
-  List<LinkableType> implements = [];
+  List<LinkableType> interfaces = [];
   List<LinkableType> subclasses = [];
   List<String> generics = [];
 
@@ -540,7 +535,7 @@ int _compareLibraryNames(String a, String b) {
     subclasses = yaml['subclass'] == null ? [] :
       yaml['subclass'].map((item) => new LinkableType(item)).toList();
     annotations = new AnnotationGroup(yaml['annotations']);
-    implements = yaml['implements'] == null ? [] :
+    interfaces = yaml['implements'] == null ? [] :
         yaml['implements'].map((item) => new LinkableType(item)).toList();
     var genericValues = yaml['generics'];
     if (genericValues != null) {
@@ -642,7 +637,7 @@ int _compareLibraryNames(String a, String b) {
 
   Item memberNamed(String name, {Function orElse : nothing}) {
     for (var annotation in annotations) {
-      if (annotation.name == name) return annotation;
+      if (annotation.qualifiedName == name) return annotation;
     }
     return orElse();
   }

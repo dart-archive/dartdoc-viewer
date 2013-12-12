@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library category;
+library web.category;
 
 import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/item.dart';
@@ -17,142 +17,66 @@ import 'dart:html';
  */
  @CustomTag("dartdoc-category")
 class CategoryElement extends DartdocElement {
+  @published Category category;
 
-  CategoryElement.created() : super.created() {
-    new PathObserver(viewer, "isDesktop").changes.listen((changes) {
-      isExpanded = viewer.isDesktop;
-    });
-    new PathObserver(viewer, "isInherited").changes.listen((changes) {
-      _flushCache();
-      addChildren();
-    });
-    style.setProperty('display', 'block');
-    setCaretStyle();
-    setDivClass();
-    setLineHeight();
-  }
+  @observable String title;
+  @observable String stylizedName;
+  @observable var categoryContent;
+  @observable List<Method> categoryMethods;
+  @observable List<Variable> categoryVariables;
+  @observable List categoryEverythingElse;
 
-  @observable void addChildren() {
-    if (shadowRoot == null) return;
-
-    var elements = [];
-    var types = {
-      'dartdoc-variable' : categoryVariables,
-      'dartdoc-item' : categoryEverythingElse,
-      'method-panel' : categoryMethods
-    };
-    types.forEach((tagName, items) {
-      for (var subItem in items) {
-        var newItem = document.createElement(tagName);
-        newItem.item = subItem;
-        newItem.classes.add("panel");
-        elements.add(newItem);
-      }
-    });
-    var root = shadowRoot.querySelector("#itemList");
-    root.children.clear();
-    root.children.addAll(elements);
-  }
-
-  get observables => concat(super.observables,
-    const [#category, #categoryContent, #categoryVariables,
-    #categoryMethods, #categoryEverythingElse, #currentLocation, #title,
-    #stylizedName]);
-
-  Category _category;
-  @published Category get category => _category;
-  @published set category(newCategory) {
-    if (newCategory == null || newCategory is! Container ||
-        newCategory == _category) return;
-    _flushCache();
-    notifyObservables(() {
-      _category = newCategory;
-      _flushCache();
-    });
-    addChildren();
-  }
-
-  @observable String get title => category == null ? '' : category.name;
-
-  @observable String get stylizedName =>
-      category == null ? '' : category.name.replaceAll(' ', '-');
-
-  @observable get categoryContent => category == null ? [] : category.content;
-
-  @observable get categoryMethods {
-    if (_methodsCache != null) return _methodsCache;
-    _methodsCache = categoryContent.where(
-        (each) => each is Method && (!each.isInherited || viewer.isInherited))
-            .toList();
-    return _methodsCache;
-  }
-
-  @observable get categoryVariables {
-    if (_variablesCache != null) return _variablesCache;
-    _variablesCache = categoryContent.where(
-        (each) => each is Variable && (!each.isInherited || viewer.isInherited))
-            .toList();
-    return _variablesCache;
-  }
-
-  @observable get categoryEverythingElse {
-    if (_everythingElseCache != null) return _everythingElseCache;
-    _everythingElseCache = categoryContent.where(
-        (each) => each is! Variable && each is! Method &&
-            (!each.isInherited || viewer.isInherited)).toList();
-    return _everythingElseCache;
-  }
-  var _methodsCache = null;
-  var _variablesCache = null;
-  var _everythingElseCache = null;
-
-  _flushCache() {
-    _methodsCache = null;
-    _variablesCache = null;
-    _everythingElseCache = null;
-  }
-
-  @observable get accordionStyle => isExpanded ? '' : 'collapsed';
-
-  // TODO(alanknight): If these are observable variables, how come I still have
-  // to explicitly notify when I change them?
+  @observable String accordionStyle;
   @observable String divClass;
   @observable String caretStyle;
   @observable String lineHeight;
 
-  var validator = new NodeValidatorBuilder()
-    ..allowHtml5(uriPolicy: new SameProtocolUriPolicy())
-    ..allowCustomElement("method-panel", attributes: ["item"])
-    ..allowCustomElement("dartdoc-item", attributes: ["item"])
-    ..allowCustomElement("dartdoc-variable", attributes: ["item"])
-    ..allowCustomElement("dartdoc-category-interior", attributes: ["item"])
-    ..allowTagExtension("method-panel", "div", attributes: ["item"]);
-
-  bool _isExpanded = viewer.isDesktop;
-  bool get isExpanded => _isExpanded;
-  set isExpanded(bool expanded) {
-    _isExpanded = expanded;
-    setCaretStyle();
-    setDivClass();
-    setLineHeight();
+  CategoryElement.created() : super.created() {
+    registerObserver('viewer', viewer.changes.listen((changes) {
+      if (changes.any((c) => c.name == #isInherited)) {
+        categoryChanged();
+      }
+      if (changes.any((c) => c.name == #isDesktop)) {
+        _isExpanded = viewer.isDesktop;
+      }
+    }));
+    _isExpanded = viewer.isDesktop;
   }
 
-  void setDivClass() {
-    divClass = isExpanded ? 'collapse in' : 'collapse';
-    notifyPropertyChange(#divClass, null, divClass);
+  bool __isExpanded;
+  bool get _isExpanded => __isExpanded;
+  set _isExpanded(bool expanded) {
+    __isExpanded = expanded;
+    accordionStyle = expanded ? '' : 'collapsed';
+    divClass = expanded ? 'collapse in' : 'collapse';
+    caretStyle = expanded ? '' : 'caret';
+    lineHeight = expanded ? 'auto' : '0px';
   }
-  void setCaretStyle() {
-    caretStyle = isExpanded ? '' : 'caret';
-    notifyPropertyChange(#caretStyle, null, caretStyle);
-  }
-  void setLineHeight() {
-    lineHeight = isExpanded ? 'auto' : '0px';
-    notifyPropertyChange(#lineHeight, null, caretStyle);
+
+  void categoryChanged() {
+    title = category == null ? '' : category.name;
+    stylizedName = category == null ? '' : category.name.replaceAll(' ', '-');
+    categoryContent = category == null ? [] : category.content;
+
+    categoryMethods = [];
+    categoryVariables = [];
+    categoryEverythingElse = [];
+    for (var c in categoryContent) {
+      if (c.isInherited && !viewer.isInherited) continue;
+
+      List list;
+      if (c is Method) {
+        list = categoryMethods;
+      } else if (c is Variable) {
+        list = categoryVariables;
+      } else {
+        list = categoryEverythingElse;
+      }
+      list.add(c);
+    }
   }
 
   hideShow(event, detail, AnchorElement target) {
-    isExpanded = !isExpanded;
+    _isExpanded = !_isExpanded;
   }
-
-  @observable get currentLocation => window.location.toString();
 }

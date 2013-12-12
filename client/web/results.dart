@@ -2,14 +2,12 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library results;
+library web.results;
 
 import 'package:dartdoc_viewer/data.dart';
-import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
-import 'member.dart';
 import 'dart:html';
 
 /**
@@ -17,31 +15,33 @@ import 'dart:html';
  */
 @CustomTag("search-result")
 class Result extends AnchorElement with Polymer, Observable {
+  @published SearchResult item;
 
-  Result.created() : super.created();
+  /// The name of this member.
+  @observable String descriptiveName;
 
-  SearchResult _item;
+  /// The type of this member.
+  @observable String descriptiveType;
 
-  @published get item => _item;
-  set item(newItem) {
-    var oldItem = item;
-    var oldObservables = [descriptiveName, descriptiveType, outerLibrary];
-    _item = newItem;
-    notifyPropertyChange(#item, oldItem, newItem);
-    notifyPropertyChange(#descriptiveName, oldObservables.first,
-        descriptiveName);
-    notifyPropertyChange(#descriptiveType, oldObservables[1],
-        descriptiveName);
-    notifyPropertyChange(#outerLibrary, oldObservables.last, descriptiveName);
+  /// The library containing this member.
+  @observable String outerLibrary;
+
+  Result.created() : super.created() {
+    polymerCreated();
+  }
+
+  itemChanged() {
+    descriptiveName = _getDescriptiveName();
+    descriptiveType = _getDescriptiveType();
+    outerLibrary = _getOuterLibrary();
   }
 
   get applyAuthorStyles => true;
 
-  @observable String get membertype => item == null ? 'none' : item.type;
-  @observable String get qualifiedname => item == null ? 'none' : item.element;
+  String get membertype => item == null ? 'none' : item.type;
+  String get qualifiedname => item == null ? 'none' : item.element;
 
-  /// The name of this member.
-  String get descriptiveName {
+  String _getDescriptiveName() {
     if (qualifiedname == null) return '';
     // TODO(alanknight) : Look at unifying this with Location
     var name = qualifiedname.split('.');
@@ -58,8 +58,7 @@ class Result extends AnchorElement with Polymer, Observable {
     return name.last;
   }
 
-  /// The type of this member.
-  String get descriptiveType {
+  String _getDescriptiveType() {
     if (item == null) return '';
     var loc = new DocsLocation(item.element);
     if (membertype == 'class')
@@ -68,14 +67,13 @@ class Result extends AnchorElement with Polymer, Observable {
       return loc.packageName == null ?
           'library' : 'library in ${loc.packageName}';
     }
-    var ownerType = index[loc.parentQualifiedName];
+    var ownerType = searchIndex.map[loc.parentQualifiedName];
     if (ownerType == 'class')
       return '$membertype in ${loc.parentName}';
     return membertype;
   }
 
-  /// The library containing this member.
-  String get outerLibrary {
+  String _getOuterLibrary() {
     if (membertype == 'library') return '';
     var loc = new DocsLocation(qualifiedname);
     var libraryName = loc.libraryQualifiedName;

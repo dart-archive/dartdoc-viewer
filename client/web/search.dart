@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library search_box;
+library web.search;
 
 import 'dart:async';
 import 'dart:html';
@@ -11,45 +11,38 @@ import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
-import 'results.dart';
-import 'member.dart';
 
 /**
  * Component implementing the Dartdoc_viewer search.
  */
 @CustomTag("search-box")
-class Search extends DartdocElement {
+class Search extends PolymerElement {
+  @published String searchQuery;
+
+  @observable bool isFocused = false;
+  @observable ObservableList<SearchResult> results = toObservable([]);
+  @observable String dropdownOpen;
+  int currentIndex = -1;
 
   Search.created() : super.created();
 
-  List<SearchResult> results = [];
+  get syntax => defaultSyntax;
+  get applyAuthorStyles => true;
 
-  @observable bool isFocused = false;
-
-  String _searchQuery = "";
-  @published get searchQuery => _searchQuery;
-  @published set searchQuery(newQuery) {
-    _searchQuery = newQuery;
-    updateResults();
-  }
-
-  @observable bool get hasNoResults => results.isEmpty;
-
-  @observable String get dropdownOpen =>
-      !searchQuery.isEmpty && isFocused ? 'open' : '';
-
-  int currentIndex = -1;
-
-  void updateResults() {
+  void searchQueryChanged() {
     currentIndex = -1;
     results.clear();
     results.addAll(lookupSearchResults(
+        searchIndex,
         searchQuery,
         viewer.isDesktop ? 10 : 5,
         locationValidInContext));
-    notifyPropertyChange(#results, null, results);
-    notifyPropertyChange(#hasNoResults, null, hasNoResults);
-    notifyPropertyChange(#dropdownOpen, null, dropdownOpen);
+
+    _updateDropdownOpen();
+  }
+
+  void _updateDropdownOpen() {
+    dropdownOpen = !searchQuery.isEmpty && isFocused ? 'open' : '';
   }
 
   /// Return true if we consider [location] valid in the current context. This
@@ -72,7 +65,7 @@ class Search extends DartdocElement {
 
   void onBlurCallback(_) {
     isFocused = false;
-    notifyPropertyChange(#dropdownOpen, 'open', '');
+    _updateDropdownOpen();
   }
 
   void onFocusCallback(_) {
@@ -80,35 +73,39 @@ class Search extends DartdocElement {
   }
 
   void onSubmitCallback(event, detail, target) {
-    if (!results.isEmpty) {
-      String refId;
-      if (target != null ) {
-        // We get either the li or a element depending if we click or
-        // hit enter, so check both.
-        refId = target.dataset['ref-id'];
-        var parentRefId = target.parent.dataset['ref-id'];
-        if (refId == null) refId = parentRefId;
-      }
-      if (refId == null || refId.isEmpty) {
-        // If nothing is focused, use the first search result.
-        refId = results.first.element;
-      }
-      var encoded = Uri.encodeFull(refId);
-      viewer.handleLink(encoded);
-      window.history.pushState("#$encoded", viewer.title, "#$encoded");
-      searchQuery = "";
-      results.clear();
+    if (results.isEmpty) return;
+
+    String refId;
+    if (target != null ) {
+      // We get either the li or a element depending if we click or
+      // hit enter, so check both.
+      refId = target.dataset['ref-id'];
+      var parentRefId = target.parent.dataset['ref-id'];
+      if (refId == null) refId = parentRefId;
     }
+    if (refId == null || refId.isEmpty) {
+      // If nothing is focused, use the first search result.
+      refId = results.first.element;
+    }
+    var newLocation = new LinkableType(refId).location;
+    var encoded = Uri.encodeFull(newLocation);
+    viewer.handleLink(encoded);
+    window.history.pushState("#$encoded", viewer.title, "#$encoded");
+    searchQuery = "";
+    results.clear();
   }
 
   void enteredView() {
     super.enteredView();
-    Element.focusEvent.forTarget(xtag, useCapture: true)
-        .listen(onFocusCallback);
-    Element.blurEvent.forTarget(xtag, useCapture: true)
-        .listen(onBlurCallback);
-    onKeyDown.listen(handleUpDown);
-    window.onKeyDown.listen(shortcutHandler);
+
+    registerObserver('onfocus', Element.focusEvent
+        .forTarget(this, useCapture: true).listen(onFocusCallback));
+
+    registerObserver('onblur',  Element.blurEvent
+        .forTarget(this, useCapture: true).listen(onBlurCallback));
+    registerObserver('onkeydown', onKeyDown.listen(handleUpDown));
+    registerObserver('window.onkeydown',
+        window.onKeyDown.listen(shortcutHandler));
   }
 
   void handleUpDown(KeyboardEvent e) {

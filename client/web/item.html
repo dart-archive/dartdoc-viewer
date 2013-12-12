@@ -1,10 +1,14 @@
-<!DOCTYPE html>
+<link rel="import" href="comment.html">
 <link rel="import" href="parameters.html">
 
-<polymer-element name="dartdoc-item" attributes="item">
+<polymer-element name="dartdoc-item">
   <template>
     <ul class="nav nav-pills nav-stacked">
       <li id="nameGoesHere">
+        <a href="#{{item.linkHref}}" id="{{idName}}">{{item.decoratedName}}</a>
+        <template if="{{item.previewComment}}">
+          <hr><div is="dartdoc-comment" preview item="{{item}}"></div>
+        </template>
       </li>
     </ul>
   </template>

@@ -1,68 +1,91 @@
-<!DOCTYPE html>
-<link rel="import" href="item.html">
-<link rel="import" href="category.html">
-<link rel="import" href="parameters.html">
 <link rel="import" href="annotations.html">
+<link rel="import" href="category.html">
+<link rel="import" href="comment.html">
+<link rel="import" href="item.html">
+<link rel="import" href="link.html">
+<link rel="import" href="parameters.html">
+<link rel="import" href="type.html">
 
-<!-- TODO(tmandel): Reduce redundancy here and in method-panel.html -->
-<polymer-element name="dartdoc-method" attributes="item">
+<polymer-element name="dartdoc-method">
   <template>
-      <dartdoc-annotation annotations="{{annotations}}">
-      </dartdoc-annotation>
+    <dartdoc-annotation annotations="{{item.annotations}}"></dartdoc-annotation>
 
-      <!-- Return Type -->
-      <div class="page-header">
-        <h1>
-          {{modifiers}}
-
-          <span class="type">
-          </span>
-          {{createMethodType()}}
-          <template if="{{item.isOperator}}">operator</template>
-          {{item.decoratedName}}
-           <!-- Parameters -->
-          <dartdoc-parameter parameters="{{parameters}}"></dartdoc-parameter>
-        </h1>
-      </div>
-
-      <p class="text-right"><dfn>
-        <template if="{{isInherited}}">
-          Inherited from
-          <template if="{{exists(inheritedFrom.location)}}">
-            <a href="#{{inheritedFrom.loc.withAnchor}}">
-              {{inheritedFrom.simpleType}}
-            </a>
-          </template>
-          <template if="{{!exists(inheritedFrom.location)}}">
-            <i>{{inheritedFrom.simpleType}}</i>
-          </template>
+    <!-- Return Type -->
+    <div class="page-header">
+      <h1>
+        {{modifiers}}
+        <template if="{{isNotConstructor}}">
+          <dartdoc-type type="{{item.type}}"></dartdoc-type>
         </template>
-      </dfn></p>
+        <template if="{{item.isOperator}}">operator</template>
+        {{item.decoratedName}}
+         <!-- Parameters -->
+        <dartdoc-parameter parameters="{{item.parameters}}"></dartdoc-parameter>
+      </h1>
+    </div>
 
-      <!-- Comment -->
-      <section class="description">
-      </section>
-      <template if="{{viewer.isInherited || !hasInheritedComment}}">
-        {{addComment('dartdoc-method')}}
+    <p class="text-right"><dfn>
+      <template if="{{isInherited}}">
+        Inherited from
+        <dartdoc-link type="{{inheritedFrom}}"></dartdoc-link>
       </template>
+    </dfn></p>
 
-      <p class="text-right"><dfn>
-        <template if="{{shouldShowMethodComment && hasInheritedComment}}">
-          <template if="{{viewer.isInherited}}">
-            Comment inherited from
-            <template if="{{exists(commentFrom.location)}}">
-              <a href="#{{commentFrom.loc.withAnchor}}">
-                {{commentFrom.simpleType}}
-              </a>
-            </template>
-            <template if="{{!exists(commentFrom.location)}}">
-              <i>{{commentFrom.simpleType}}</i>
-            </template>
-          </template>
-        </template>
-      </dfn></p>
-
+    <!-- Comment -->
+    <template if="{{shouldShowComment}}">
+      <div is="dartdoc-comment" item="{{item}}"></div>
     </template>
 
-  <script type="application/dart" src="method.dart"></script>
+    <p class="text-right"><dfn>
+      <template if="{{shouldShowCommentFrom}}">
+        Comment inherited from
+        <dartdoc-link type="{{commentFrom}}"></dartdoc-link>
+      </template>
+    </dfn></p>
+
+  </template>
 </polymer-element>
+
+<!-- TODO(tmandel): Reduce redundancy with dartdoc-method -->
+<polymer-element name="method-panel">
+  <template>
+    <div class="panel-heading">
+      <dartdoc-annotation annotations="{{item.annotations}}">
+      </dartdoc-annotation>
+      <!-- Return Type -->
+      <p>
+        <span>
+          {{modifiers}}
+          <template if="{{isNotConstructor}}">
+            <dartdoc-type type="{{item.type}}"></dartdoc-type>
+          </template>
+          <b><a id="{{idName}}" href="#{{item.anchorHref}}">
+          {{item.decoratedName}}</a></b>
+          <dartdoc-parameter parameters="{{item.parameters}}">
+          </dartdoc-parameter>
+        </span>
+      </p>
+    </div>
+
+    <p class="text-right"><dfn>
+      <template if="{{isInherited}}">
+        Inherited from
+        <dartdoc-link type="{{inheritedFrom}}"></dartdoc-link>
+      </template>
+    </dfn></p>
+
+    <!-- Comment -->
+    <template if="{{shouldShowComment}}">
+      <div is="dartdoc-comment" item="{{item}}"></div>
+    </template>
+
+    <p class="text-right"><dfn>
+      <template if="{{shouldShowCommentFrom}}">
+        Comment inherited from
+        <dartdoc-link type="{{commentFrom}}"></dartdoc-link>
+      </template>
+    </dfn></p>
+  </template>
+</polymer-element>
+
+<script type="application/dart" src="method.dart"></script>
