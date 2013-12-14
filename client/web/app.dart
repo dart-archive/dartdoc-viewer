@@ -110,12 +110,16 @@ class Viewer extends Observable {
   // Private constructor for singleton instantiation.
   Viewer._() {
     var manifest = retrieveFileContents(sourcePath);
-    finished = manifest.then((response) {
+    var libraryFuture = manifest.then((response) {
       var libraries = JSON.decode(response);
       isYaml = libraries['filetype'] == 'yaml';
       homePage = new Home(libraries);
     });
-
+    var indexFuture = retrieveFileContents('docs/index.json').then(
+        (String json) {
+            searchIndex.map = JSON.decode(json);
+         });
+    finished = Future.wait([libraryFuture, indexFuture]);
     _updateDesktopMode(null);
     window.onResize.listen(_updateDesktopMode);
   }
@@ -363,9 +367,6 @@ void navigate(event) {
     } else {
       viewer.currentPage = viewer.homePage;
     }
-    retrieveFileContents('docs/index.json').then((String json) {
-      searchIndex.map = JSON.decode(json);
-    });
   });
 }
 
