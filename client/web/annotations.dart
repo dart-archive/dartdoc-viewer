@@ -21,17 +21,16 @@ class AnnotationElement extends PolymerElement {
     // TODO(jmesserly): we should be able to build this content via template
     var out = new StringBuffer();
     for (var annotation in annotations.annotations) {
-      out.write('<i><a href="#${annotation.link.location}">'
-          '${annotation.link.simpleType}</a></i>');
+      out.write('<a href="#${annotation.link.location}">'
+          '${annotation.link.simpleType}</a>');
       var hasParams = annotation.parameters.isNotEmpty;
       if (hasParams) out.write("(");
-      out.write(annotation.parameters.join(",&nbsp;"));
+      out.write(annotation.parameters.join(", "));
       if (hasParams) out.write(")");
     }
     if (annotations.supportedBrowsers.isNotEmpty) {
-      out.write("<br><i>Supported on: ");
-      out.write(annotations.supportedBrowsers.join(",&nbsp;"));
-      out.write("</i><br>");
+      out.write("<br>Supported on: ");
+      out.write(annotations.supportedBrowsers.join(", "));
     }
     this.setInnerHtml(out.toString(), treeSanitizer: nullSanitizer);
   }

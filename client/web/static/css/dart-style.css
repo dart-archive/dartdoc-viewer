@@ -1,6 +1,6 @@
 /* ***** Fonts ***** */
-@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
-@import url(http://fonts.googleapis.com/css?family=Roboto:300,400);
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400);
 
 
 body {
@@ -806,6 +806,10 @@ method-panel,
 dartdoc-page,
 dartdoc-variable {
   display: block;
+}
+
+dartdoc-annotation {
+  font-style: italic;
 }
 
 #nav-collapse-button.visible {

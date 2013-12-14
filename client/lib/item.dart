@@ -12,15 +12,16 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:polymer/polymer.dart';
 import 'package:yaml/yaml.dart';
 import 'package:dartdoc_viewer/location.dart';
+import 'package:collection_helpers/equality.dart';
 
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
 @reflectable const docsPath = 'docs/';
 
-/**
- * Anything that holds values and can be displayed.
- */
 nothing() => null;
 
+/**
+ * Abstract class for anything that holds values and can be displayed.
+ */
 @reflectable class Container extends Observable {
   final String name;
   @observable String comment = '<span></span>';
@@ -643,6 +644,7 @@ int _compareLibraryNames(String a, String b) {
   }
 
   AnnotationGroup(List annotes) {
+    var set = [].toSet();
     if (annotes != null) {
       annotes.forEach((annotation) {
         if (annotation['name'] == 'metadata.SupportedBrowser') {
@@ -650,9 +652,11 @@ int _compareLibraryNames(String a, String b) {
         } else if (annotation['name'] == 'metadata.DomName') {
           domName = annotation['parameters'].first;
         } else {
-          annotations.add(new Annotation(annotation));
+          set.add(new Annotation(annotation));
         }
       });
+    annotations = set.toList();
+    annotations.sort((a, b) => a.shortName.compareTo(b.shortName));
     }
   }
 }
@@ -671,6 +675,18 @@ int _compareLibraryNames(String a, String b) {
     link = new LinkableType(qualifiedName);
     parameters = yaml['parameters'] == null ? [] : yaml['parameters'];
   }
+
+  get hashCode => parameters.fold(
+      qualifiedName.hashCode,
+      (a, param) => a ^ param.hashCode);
+
+  static var listComparison = const ListEquality();
+  operator ==(other) => qualifiedName == other.qualifiedName &&
+      listComparison.equals(parameters, other.parameters);
+
+  get shortName => new DocsLocation(qualifiedName).lastName;
+
+  toString() => 'Annotation($shortName)';
 }
 
 /**
