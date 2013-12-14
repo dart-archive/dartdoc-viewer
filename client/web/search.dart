@@ -17,7 +17,7 @@ import 'package:polymer/polymer.dart';
  */
 @CustomTag("search-box")
 class Search extends PolymerElement {
-  @published String searchQuery;
+  @published String searchQuery = '';
 
   @observable bool isFocused = false;
   @observable ObservableList<SearchResult> results = toObservable([]);
