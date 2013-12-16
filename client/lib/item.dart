@@ -644,7 +644,7 @@ int _compareLibraryNames(String a, String b) {
   }
 
   AnnotationGroup(List annotes) {
-    var set = [].toSet();
+    var set = new Set();
     if (annotes != null) {
       annotes.forEach((annotation) {
         if (annotation['name'] == 'metadata.SupportedBrowser') {
@@ -676,13 +676,13 @@ int _compareLibraryNames(String a, String b) {
     parameters = yaml['parameters'] == null ? [] : yaml['parameters'];
   }
 
+  /// Hash by XORing together our name and parameters.
   get hashCode => parameters.fold(
       qualifiedName.hashCode,
       (a, param) => a ^ param.hashCode);
 
-  static var listComparison = const ListEquality();
   operator ==(other) => qualifiedName == other.qualifiedName &&
-      listComparison.equals(parameters, other.parameters);
+      const ListEquality().equals(parameters, other.parameters);
 
   get shortName => new DocsLocation(qualifiedName).lastName;
 
