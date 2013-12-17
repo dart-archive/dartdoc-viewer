@@ -18,9 +18,9 @@ class ClassElement extends MemberElement {
 
   final ObservableList lazyConstructors = new ObservableList();
   final ObservableList lazyOperators = new ObservableList();
-  final ObservableList lazyFunctions = new ObservableList();
+  final ObservableList lazyInstanceFunctions = new ObservableList();
   final ObservableList lazyStaticFunctions = new ObservableList();
-  final ObservableList lazyVariables = new ObservableList();
+  final ObservableList lazyInstanceVariables = new ObservableList();
   final ObservableList lazyStaticVariables = new ObservableList();
 
   LazyListLoader _loader;
@@ -59,16 +59,16 @@ class ClassElement extends MemberElement {
     _loader = new LazyListLoader([
       _filterInherited(item.constructors),
       _filterInherited(item.operators),
-      _filterInherited(item.functions),
+      _filterInherited(item.instanceFunctions),
       _filterInherited(item.staticFunctions),
-      _filterInherited(item.variables),
+      _filterInherited(item.instanceVariables),
       _filterInherited(item.staticVariables),
     ], [
       lazyConstructors,
       lazyOperators,
-      lazyFunctions,
+      lazyInstanceFunctions,
       lazyStaticFunctions,
-      lazyVariables,
+      lazyInstanceVariables,
       lazyStaticVariables
     ])..start(eager: viewer.activeMember != '');
   }
