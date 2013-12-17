@@ -40,7 +40,10 @@ const int desktopSizeBoundary = 1006;
 /// The [Viewer] object being displayed.
 final Viewer viewer = new Viewer._();
 
-MainElement dartdocMain = querySelector("#dartdoc-main");
+MainElement get dartdocMain => _dartdocMain == null ?
+    _dartdocMain = querySelector("#dartdoc-main") :
+    _dartdocMain;
+MainElement _dartdocMain;
 
 /// The Dartdoc Viewer application state.
 class Viewer extends Observable {
@@ -353,10 +356,10 @@ void navigate(event) {
     dartdocMain.collapseSearchAndOptionsIfNeeded();
     dartdocMain.hideOrShowNavigation();
   });
-  // If we do this directly, then the dartdocMain element may not be available
-  // yet. This happens when compiled to JS, but not in Dartium. So insert a
-  // delay. Ugh.
-  new Future.value(null).then((_) => dartdocMain.hideOrShowNavigation());
+
+  Polymer.onReady.then((_) {
+    dartdocMain.hideOrShowNavigation;
+  });
 
   startHistory();
   // If a user navigates to a page other than the homepage, the viewer
