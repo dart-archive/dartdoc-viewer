@@ -358,7 +358,7 @@ void navigate(event) {
   });
 
   Polymer.onReady.then((_) {
-    dartdocMain.hideOrShowNavigation;
+    dartdocMain.hideOrShowNavigation();
   });
 
   startHistory();
