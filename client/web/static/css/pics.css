@@ -115,7 +115,7 @@ TODO(janicejl): Currently uses fixed widths, change to use flex-box in future.
 }
 
 #library-panel {
-  max-height: 90%;
+  bottom: 20px;
   width: 200px;
   overflow: auto;
 }
@@ -237,8 +237,6 @@ TODO(janicejl): Currently uses fixed widths, change to use flex-box in future.
 #library-panel .list-group-item {
   font-size: 12px;
   color: #5a5a5a;
-  border-top: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
   border-right: none;
   border-left: none;
   text-decoration: none;
