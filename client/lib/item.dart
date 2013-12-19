@@ -531,7 +531,7 @@ int _compareLibraryNames(String a, String b) {
   void loadValues(Map yaml) {
     flushCaches();
     comment = _wrapComment(yaml['comment']);
-    isAbstract = yaml['isAbstract'] == 'true';
+    isAbstract = _boolFor('isAbstract', yaml);
     superClass = new LinkableType(yaml['superclass']);
     subclasses = yaml['subclass'] == null ? [] :
       yaml['subclass'].map((item) => new LinkableType(item)).toList();
@@ -749,9 +749,9 @@ int _compareLibraryNames(String a, String b) {
       String commentFrom: '', this.owner})
         : super(yaml['name'], yaml['qualifiedName'],
             _wrapComment(yaml['comment'])) {
-    this.isStatic = yaml['static'] == 'true';
-    this.isAbstract = yaml['abstract'] == 'true';
-    this.isConstant = yaml['constant'] == 'true';
+    this.isStatic = _boolFor('static', yaml);
+    this.isAbstract = _boolFor('abstract', yaml);
+    this.isConstant = _boolFor('constant', yaml);
     this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
     this.type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
@@ -844,9 +844,9 @@ int _compareLibraryNames(String a, String b) {
   Item owner;
 
   Parameter(this.name, Map yaml, [this.owner]) {
-    this.isOptional = yaml['optional'] == 'true';
-    this.isNamed = yaml['named'] == 'true';
-    this.hasDefault = yaml['default'] == 'true';
+    this.isOptional = _boolFor('optional', yaml);
+    this.isNamed = _boolFor('named', yaml);
+    this.hasDefault = _boolFor('default', yaml);
     this.type = new NestedType(yaml['type'].first);
     this.defaultValue = yaml['value'];
     annotations = new AnnotationGroup(yaml['annotations']);
@@ -911,10 +911,10 @@ int _compareLibraryNames(String a, String b) {
     this.isSetter = isSetter;
     this.inheritedFrom = inheritedFrom;
     this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
-    isFinal = yaml['final'] == 'true';
-    isStatic = yaml['static'] == 'true';
-    isConstant = yaml['constant'] == 'true';
-    isAbstract = yaml['abstract'] == 'true';
+    isFinal = _boolFor('final', yaml);
+    isStatic = _boolFor('static', yaml);
+    isConstant = _boolFor('constant', yaml);
+    isAbstract = _boolFor('abstract', yaml);
     if (isGetter) {
       type = new NestedType(yaml['return'].first);
     } else if (isSetter) {
@@ -1002,4 +1002,13 @@ int _compareLibraryNames(String a, String b) {
   String get qualifiedName => location;
 
   get isDynamic => simpleType == 'dynamic';
+}
+
+
+bool _boolFor(String key, Map input) {
+  var value = input[key];
+  if (value == true || value == 'true') return true;
+  if (value == null || value == false || value == 'false') return false;
+  throw new FormatException("Invalid format, expected boolean key: $key"
+      " value: $value");
 }

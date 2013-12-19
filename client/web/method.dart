@@ -21,7 +21,6 @@ class MethodElement extends InheritedElement {
   @observable bool isNotConstructor;
   @observable String modifiers;
   @observable String constantModifier;
-  @observable String abstractModifier;
   @observable String staticModifier;
 
   MethodElement.created() : super.created();
@@ -34,7 +33,6 @@ class MethodElement extends InheritedElement {
 
     isNotConstructor = !item.isConstructor;
     constantModifier = item.isConstant ? 'const' : '';
-    abstractModifier = item.isAbstract ? 'abstract' : '';
     staticModifier = item.isStatic ? 'static' : '';
     modifiers = constantModifier + staticModifier;
   }
