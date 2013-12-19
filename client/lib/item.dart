@@ -12,6 +12,7 @@ import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:polymer/polymer.dart';
 import 'package:yaml/yaml.dart';
 import 'package:dartdoc_viewer/location.dart';
+import 'package:dartdoc_viewer/search.dart' show searchIndex;
 import 'package:collection_helpers/equality.dart';
 
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
@@ -647,9 +648,9 @@ int _compareLibraryNames(String a, String b) {
     var set = new Set();
     if (annotes != null) {
       annotes.forEach((annotation) {
-        if (annotation['name'] == 'metadata.SupportedBrowser') {
+        if (annotation['name'].split(".").last == 'SupportedBrowser') {
           supportedBrowsers.add(annotation['parameters'].toList().join(' '));
-        } else if (annotation['name'] == 'metadata.DomName') {
+        } else if (annotation['name'].split(".").last == 'DomName') {
           domName = annotation['parameters'].first;
         } else {
           set.add(new Annotation(annotation));
@@ -992,6 +993,8 @@ int _compareLibraryNames(String a, String b) {
   LinkableType(String type) {
     loc = new DocsLocation(type);
   }
+
+  bool get isDocumented => searchIndex.map.containsKey(qualifiedName);
 
   /// The simple name for this type.
   String get simpleType => loc.locationWithoutAnchor.name;

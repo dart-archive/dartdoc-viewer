@@ -21,12 +21,19 @@ class AnnotationElement extends PolymerElement {
     // TODO(jmesserly): we should be able to build this content via template
     var out = new StringBuffer();
     for (var annotation in annotations.annotations) {
-      out.write('<a href="#${annotation.link.location}">'
-          '${annotation.link.simpleType}</a>');
+      if (annotation.link.isDocumented) {
+        out.write('<a href="#${annotation.link.location}">'
+            '${annotation.link.simpleType}</a>');
+      } else {
+        out.write(annotation.link.simpleType);
+      }
       var hasParams = annotation.parameters.isNotEmpty;
       if (hasParams) out.write("(");
       out.write(annotation.parameters.join(", "));
       if (hasParams) out.write(")");
+      if (annotation != annotations.annotations.last) {
+        out.write(", ");
+      }
     }
     if (annotations.supportedBrowsers.isNotEmpty) {
       out.write("<br>Supported on: ");
