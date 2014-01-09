@@ -25,6 +25,7 @@ class MainElement extends DartdocElement {
   @observable String showOrHideLibraries;
   @observable String showOrHideMinimap;
   @observable String showOrHideInherited;
+  @observable String showOrHideObjectMembers;
   @observable String showOrHidePackages;
 
   /// Records the timestamp of the event that opened the options menu.
@@ -66,6 +67,7 @@ class MainElement extends DartdocElement {
     showOrHideLibraries = viewer.isPanel ? 'Hide' : 'Show';
     showOrHideMinimap = viewer.isMinimap ? 'Hide' : 'Show';
     showOrHideInherited = viewer.isInherited ? 'Hide' : 'Show';
+    showOrHideObjectMembers = viewer.showObjectMembers ? 'Hide' : 'Show';
     showOrHidePackages = viewer.showPkgLibraries ? 'Hide' : 'Show';
   }
 
@@ -73,6 +75,7 @@ class MainElement extends DartdocElement {
 
   togglePanel() => viewer.togglePanel();
   toggleInherited() => viewer.toggleInherited();
+  toggleObjectMembers() => viewer.toggleObjectMembers();
   toggleMinimap() => viewer.toggleMinimap();
   togglePkg() => viewer.togglePkg();
 

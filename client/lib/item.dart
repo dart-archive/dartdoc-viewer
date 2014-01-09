@@ -152,6 +152,31 @@ String _wrapComment(String comment) {
 
   bool get hasNonInherited => inheritedCounter < memberCounter;
 
+  List filteredContent(Filter filter) {
+    if (filter.shouldShowEverything) return content;
+    return content.where((c) => filter.shouldShow(c)).toList();
+  }
+}
+
+/**
+ * Filters [Item]s according to visibility settings, primarily
+ * inheritance.
+ */
+class Filter {
+  bool showInherited = true;
+  bool showObjectMembers = false;
+
+  bool get shouldShowEverything => showInherited && showObjectMembers;
+
+  bool shouldShow(Item item) {
+    if (!item.isInherited) return true;
+    var itemWeKnowCanBeInherited = item;
+    if (itemWeKnowCanBeInherited.inheritedFrom.startsWith('dart-core.Object')) {
+      return showInherited && showObjectMembers;
+    } else {
+      return showInherited;
+    }
+  }
 }
 
 /**
@@ -499,6 +524,9 @@ int _compareLibraryNames(String a, String b) {
     }
     return _staticFunctions;
   }
+
+  List<Category> get categories => [constructors, operators,
+      instanceFunctions, staticFunctions, instanceVariables, staticVariables];
 
   /// Creates a [Class] placeholder object with null fields.
   Class.forPlaceholder(String location, String previewComment)

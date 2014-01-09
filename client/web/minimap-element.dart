@@ -26,7 +26,7 @@ class MinimapElement extends PolymerElement {
   MinimapElement.created() : super.created() {
     registerObserver('isInherited', viewer.changes.listen((changes) {
       for (var change in changes) {
-        if (change.name == #isInherited) {
+        if (change.name == #isInherited || change.name == #showObjectMembers) {
           categoryChanged();
           return;
         }
@@ -46,7 +46,7 @@ class MinimapElement extends PolymerElement {
     itemChanged();
     camelCaseName = toCamelCase(category.name.toLowerCase());
     // Note: ObservableList for isNotEmpty
-    itemsToShow = new ObservableList.from(category.content.where(
-        (x) => !x.isInherited || viewer.isInherited));
+    itemsToShow =
+        new ObservableList.from(category.filteredContent(viewer.filter));
   }
 }

@@ -27,7 +27,8 @@ class ClassElement extends MemberElement {
 
   ClassElement.created() : super.created() {
     registerObserver('viewer', viewer.changes.listen((changes) {
-      if (changes.any((c) => c.name == #isInherited)) {
+      if (changes.any((c) =>
+          c.name == #isInherited || c.name == #showObjectMembers)) {
         _loadCategories();
       }
     }));
@@ -56,28 +57,17 @@ class ClassElement extends MemberElement {
 
   _loadCategories() {
     if (_loader != null) _loader.cancel();
-    _loader = new LazyListLoader([
-      _filterInherited(item.constructors),
-      _filterInherited(item.operators),
-      _filterInherited(item.instanceFunctions),
-      _filterInherited(item.staticFunctions),
-      _filterInherited(item.instanceVariables),
-      _filterInherited(item.staticVariables),
-    ], [
-      lazyConstructors,
-      lazyOperators,
-      lazyInstanceFunctions,
-      lazyStaticFunctions,
-      lazyInstanceVariables,
-      lazyStaticVariables
-    ])..start(eager: viewer.activeMember != '');
-  }
-
-  List _filterInherited(Category category) {
-    if (viewer.isInherited || category.inheritedCounter == 0) {
-      return category.content;
-    }
-    return category.content.where((c) => !c.isInherited).toList();
+    var categories =
+    _loader = new LazyListLoader(
+      item.categories.map((x) => x.filteredContent(viewer.filter)).toList(),
+      [
+        lazyConstructors,
+        lazyOperators,
+        lazyInstanceFunctions,
+        lazyStaticFunctions,
+        lazyInstanceVariables,
+        lazyStaticVariables
+      ])..start(eager: viewer.activeMember != '');
   }
 
   itemChanged() {
