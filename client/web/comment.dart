@@ -97,7 +97,6 @@ class CommentElement extends DivElement with Polymer, Observable {
 
   void _resolveLink(AnchorElement link) {
     if (link.href != '') return;
-
     var loc = new DocsLocation(link.text);
     if (_replaceWithParameterReference(link, loc)) return;
     if (searchIndex.map.containsKey(link.text)) {
@@ -118,7 +117,6 @@ class CommentElement extends DivElement with Polymer, Observable {
       _setLinkReference(link, loc);
       return;
     }
-
     // If markdown links to private or otherwise unknown members are
     // found, make them <i> tags instead of <a> tags for CSS.
     link.replaceWith(new Element.tag('i')..text = link.text);
