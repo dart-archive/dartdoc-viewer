@@ -141,7 +141,6 @@ String _wrapComment(String comment) {
     if (!memberNames.contains(item.name)) {
       memberCounter++;
       inheritedCounter++;
-     //pageIndex['${clazz.qualifiedName}.${item.name}'] = item;
       content.add(item);
     } else {
       var member = content.firstWhere((innerItem) =>
@@ -173,7 +172,6 @@ String _wrapComment(String comment) {
 
   /// Adds this [Item] to [pageIndex] and updates all necessary members.
   void addToHierarchy() {
-    print('adding thissss to page index $qualifiedName');
     pageIndex[qualifiedName] = this;
   }
 
@@ -287,7 +285,6 @@ int _compareLibraryNames(String a, String b) {
 
     _sort([this.libraries]);
     makeMainLibrarySpecial(yaml);
-    print("adding also to pageIndex $qualifiedName");
     pageIndex[qualifiedName] = this;
     if (isTopLevelHome) pageIndex[''] = this;
   }
@@ -577,7 +574,6 @@ int _compareLibraryNames(String a, String b) {
     _sort([this.functions.content, this.variables.content,
            this.constructs.content, this.operators.content]);
     isLoaded = true;
-    print('is loadeed and the page index is $pageIndex');
   }
 
   /// Adds an inherited variable to [variables] if not present.
@@ -762,10 +758,7 @@ int _compareLibraryNames(String a, String b) {
     annotations = new AnnotationGroup(yaml['annotations']);
   }
 
-  void addToHierarchy() {
-    // TODO(alanknight): Conditionally calling super is very unpleasant.
-    //if (inheritedFrom != '') super.addToHierarchy();
-  }
+  void addToHierarchy() {}
 
   void addInheritedComment(item) {
     if (hasNoComment) {

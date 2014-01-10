@@ -79,10 +79,6 @@ class DocsLocation {
     memberName = _check(memberMatch);
     subMemberName = _check(subMemberMatch);
     anchor = _check(anchorMatch);
-
-    if (uri == 'barback/barback.Transformer.noSuchMethod' || uri == 'barback/barback.Transformer.apply') {
-      print('hi package $packageName libraryName $libraryName member $memberName submember $subMemberName anchor $anchor');
-    }
   }
 
   /// The URI hash string without its leading hash
