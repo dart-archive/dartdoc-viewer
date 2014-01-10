@@ -97,17 +97,48 @@ class CommentElement extends DivElement with Polymer, Observable {
 
   void _resolveLink(AnchorElement link) {
     if (link.href != '') return;
+
+    var printStuff = false;
+    if (link.text == 'barback/barback.Transformer.noSuchMethod' || link.text == 'barback/barback.Transformer.apply'){
+      printStuff = true;
+      print('about to start!');
+    }
     var loc = new DocsLocation(link.text);
-    if (_replaceWithParameterReference(link, loc)) return;
+    if (_replaceWithParameterReference(link, loc)) {if (printStuff) {print('replace with parameter ref');} return;}
     if (searchIndex.map.containsKey(link.text)) {
+      _setLinkReference(link, loc);
+      if (printStuff) {
+        print('set link ref ${link.text}');
+        print('~~~ data ${loc.packagePlus} and also ${loc.libraryPlus} wat packageName ${loc.packageName}');
+      }
+      return;
+    }
+
+    // Not everything that has links is in the index (examples are local links
+    // to inherited methods like noSuchMethod). Check the parent and
+    // see if you can link from there.
+    if (searchIndex.map.containsKey(loc.parentQualifiedName)) {
+      if (printStuff) {
+        print('yarble ${loc.withAnchor} ${(new LinkableType(loc.withAnchor)).location}'); // TODO: use @id_methoname
+      }
       _setLinkReference(link, loc);
       return;
     }
+
     loc.packageName = null;
     if (searchIndex.map.containsKey(loc.withAnchor)) {
       _setLinkReference(link, loc);
+      if (printStuff) {
+        print('set link ref with anchor');
+      }
       return;
     }
+
+    if (printStuff) {
+      print('failure original ${link.text} vs ${loc.withoutAnchor} and tiered ${loc.parentLocation.withoutAnchor}');
+      print('--more data ${loc.packagePlus} and also ${loc.libraryPlus} wat packageName ${loc.packageName}');
+    }
+
     // If markdown links to private or otherwise unknown members are
     // found, make them <i> tags instead of <a> tags for CSS.
     link.replaceWith(new Element.tag('i')..text = link.text);

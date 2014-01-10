@@ -141,7 +141,7 @@ String _wrapComment(String comment) {
     if (!memberNames.contains(item.name)) {
       memberCounter++;
       inheritedCounter++;
-      pageIndex['${clazz.qualifiedName}.${item.name}'] = item;
+     //pageIndex['${clazz.qualifiedName}.${item.name}'] = item;
       content.add(item);
     } else {
       var member = content.firstWhere((innerItem) =>
@@ -173,6 +173,7 @@ String _wrapComment(String comment) {
 
   /// Adds this [Item] to [pageIndex] and updates all necessary members.
   void addToHierarchy() {
+    print('adding thissss to page index $qualifiedName');
     pageIndex[qualifiedName] = this;
   }
 
@@ -286,6 +287,7 @@ int _compareLibraryNames(String a, String b) {
 
     _sort([this.libraries]);
     makeMainLibrarySpecial(yaml);
+    print("adding also to pageIndex $qualifiedName");
     pageIndex[qualifiedName] = this;
     if (isTopLevelHome) pageIndex[''] = this;
   }
@@ -575,6 +577,7 @@ int _compareLibraryNames(String a, String b) {
     _sort([this.functions.content, this.variables.content,
            this.constructs.content, this.operators.content]);
     isLoaded = true;
+    print('is loadeed and the page index is $pageIndex');
   }
 
   /// Adds an inherited variable to [variables] if not present.
@@ -582,7 +585,7 @@ int _compareLibraryNames(String a, String b) {
     if (items != null) {
       items.values.forEach((item) {
         var object = new Variable(item, isSetter: isSetter,
-            isGetter: isGetter, inheritedFrom: item['qualifiedName'],
+            isGetter: isGetter, inheritedFrom: item['inheritedFrom'],
             commentFrom: item['commentFrom'], owner: this);
         variables.addInheritedItem(this, object);
       });
@@ -594,7 +597,7 @@ int _compareLibraryNames(String a, String b) {
     if (items != null) {
       items.values.forEach((item) {
         var object = new Method(item, isOperator: isOperator,
-            inheritedFrom: item['qualifiedName'],
+            inheritedFrom: item['inheritedFrom'],
             commentFrom: item['commentFrom'], className: name, owner: this);
         var location = isOperator ? this.operators : this.functions;
         location.addInheritedItem(this, object);
@@ -761,7 +764,7 @@ int _compareLibraryNames(String a, String b) {
 
   void addToHierarchy() {
     // TODO(alanknight): Conditionally calling super is very unpleasant.
-    if (inheritedFrom != '') super.addToHierarchy();
+    //if (inheritedFrom != '') super.addToHierarchy();
   }
 
   void addInheritedComment(item) {
