@@ -53,12 +53,26 @@ class DocsLocation {
   }
 
   DocsLocation.clone(DocsLocation original) {
-    packageName == original.packageName;
-    libraryName == original.libraryName;
+    packageName = original.packageName;
+    libraryName = original.libraryName;
     memberName = original.memberName;
     subMemberName = original.subMemberName;
     anchor = original.anchor;
   }
+
+  bool operator ==(other) {
+    if (other is! DocsLocation) return false;
+    return packageName == other.packageName
+        && libraryName == other.libraryName
+        && memberName == other.memberName
+        && subMemberName == other.subMemberName
+        && anchor == other.anchor;
+  }
+
+  /// This isn't a particularly good hash code, but we don't really hash
+  /// these very much. Just XOR together all the fields.
+  int get hashCode => packageName.hashCode ^ libraryName.hashCode ^
+      memberName.hashCode ^ subMemberName.hashCode ^ anchor.hashCode;
 
   void _extractPieces(String uri) {
 
@@ -142,25 +156,28 @@ class DocsLocation {
 
   /// Return a minimal list of the items along our path, using [root] for
   /// context. The [root] is of type Home, and it returns a list of Item,
-  /// but we can't see those types from here.
-  @reflectable List items(root) {
+  /// but we can't see those types from here. The [includeAllItems] parameter
+  /// determines if we return a fixed-length list with all items included,
+  /// which may be null, or if we just include the items with values.
+  @reflectable List items(root, {bool includeAllItems: false}) {
     // TODO(alanknight): Re-arrange the structure so that we can see
     // those types without needing to import html as well.
     var items = [];
-    var package = packageName == null
+    var package, library, member, subMember;
+    package = packageName == null
         ? null
         : root.memberNamed(packageName);
     if (package != null) items.add(package);
     if (libraryName == null) return items;
     var home = items.isEmpty ? root : items.last;
-    var library = home.memberNamed(libraryName);
-    if (library == null) return items;
+    library = home.memberNamed(libraryName);
+    if (library == null && !includeAllItems) return items;
     items.add(library);
-    var member = memberName == null
+    member = memberName == null
         ? null : library.memberNamed(memberName);
     if (member != null) {
       items.add(member);
-      var subMember = subMemberName;
+      subMember = subMemberName;
       if (subMember != null) {
         var lookupName = subMemberName;
         if (subMember.contains('-')) {
@@ -172,7 +189,11 @@ class DocsLocation {
       }
       if (subMember != null) items.add(subMember);
     }
-    return items;
+    if (includeAllItems) {
+      return [package, library, member, subMember];
+    } else {
+      return items;
+    }
   }
 
   /// Find the part of us that refers to an [Item] accessible from
@@ -191,6 +212,39 @@ class DocsLocation {
     var myItems = items(root);
     if (myItems.isEmpty) return null;
     return myItems.last;
+  }
+
+  /// Find the item that corresponds to the last field in the location.
+  /// As compared to [item], which will just return the last found
+  /// [Item], this will return null if there's not a match for the
+  /// last item.
+  exactItem(root) {
+    var myItems = items(root, includeAllItems: true);
+    if (subMemberName != null) return myItems[3];
+    if (memberName != null) return myItems[2];
+    if (libraryName != null) return myItems[1];
+    if (packageName != null) return myItems[0];
+    return null;
+  }
+
+  /// Given a location with an @id_ anchor, transform it into one with
+  /// a corresponding sub-member.
+  DocsLocation get asSubMemberNotAnchor {
+    if (anchor == null) return this;
+    if (subMemberName != null || anchor.length <= 3) {
+      throw new FormatException("DocsLocation invalid: $this");
+    }
+    var result = new DocsLocation.clone(this);
+    result.subMemberName = anchor.substring(3, anchor.length);
+    result.anchor = null;
+    return result;
+  }
+
+  /// Given a potentially invalid location, find the parent location
+  /// which is valid.
+  DocsLocation firstValidParent(root) {
+    var myItem = item(root);
+    return myItem == null ? root.location : myItem.location;
   }
 
   /// Return the item in the list that corresponds to the thing we represent.
