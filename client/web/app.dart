@@ -103,6 +103,13 @@ class Viewer extends Observable {
   /// State for whether or not inherited members should be shown.
   @observable bool isInherited = true;
 
+  /// Should members inherited from Object be shown.
+  @observable bool showObjectMembers = false;
+
+  Filter get filter => new Filter()
+    ..showInherited = isInherited
+    ..showObjectMembers = showObjectMembers;
+
   /// The current element on the current page being shown (e.g. #dartdoc-top).
   String _hash;
 
@@ -324,6 +331,11 @@ class Viewer extends Observable {
   /// Toggles showing inherited members.
   void toggleInherited() {
     isInherited = !isInherited;
+  }
+
+  /// Toggles showing members inherited from Object.
+  void toggleObjectMembers() {
+    showObjectMembers = !showObjectMembers;
   }
 }
 
