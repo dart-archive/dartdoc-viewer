@@ -94,6 +94,8 @@ class MainElement extends DartdocElement {
     // but it could still use cleanup.
     var permanentHeaders = shadowRoot.querySelectorAll(".navbar-brand");
     var searchAndOptions = shadowRoot.querySelector("#searchAndOptions");
+    var searchBox = shadowRoot.querySelector("search-box");
+    if (searchBox.isFocused) return;
     var wholeThing = shadowRoot.querySelector(".navbar-fixed-top");
     var navbar = shadowRoot.querySelector("#navbar");
     var collapsible = shadowRoot.querySelector("#nav-collapse-content");
@@ -160,6 +162,8 @@ class MainElement extends DartdocElement {
   }
 
   void hideOrShowNavigation({bool hide: true, Element nav}) {
+    var searchBox = shadowRoot.querySelector("search-box");
+    if (searchBox.isFocused) return;
     if (nav == null) nav = shadowRoot.querySelector("#nav-collapse-content");
     var button = shadowRoot.querySelector("#nav-collapse-button");
     if (hide && button.getComputedStyle().display != 'none') {
