@@ -453,7 +453,7 @@ int _compareLibraryNames(String a, String b) {
     }
   }
 
-  bool get isDartLibrary => name.startsWith("dart-");
+  bool get isDartLibrary => home != null && home.isTopLevelHome;
 
   Item memberNamed(String name, {Function orElse : nothing}) {
     if (name == null) return orElse();
