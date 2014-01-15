@@ -193,7 +193,10 @@ class Viewer extends Observable {
     var pageAndLocationAgree = (page == matchingItem ||
         (matchingItem != null && page == matchingItem.owner));
     if (page == null || !pageAndLocationAgree) {
-      return handleLink(_replaceLocation(location.firstValidParent(homePage)));
+      var newLocation = location.firstValidParent(homePage);
+      if (newLocation != location) {
+        return handleLink(_replaceLocation(newLocation));
+      }
     }
     // Avoid reloading the page if it isn't necessary.
     if (page != null && page != currentPage) {
