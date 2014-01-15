@@ -188,7 +188,7 @@ class Viewer extends Observable {
   Future _updatePage(Item page, DocsLocation location) {
     // If we have an invalid location, we walk up until we find the first
     // portion that's valid. e.g. dare-core.Object@id_blah => dart-core.Object
-    var canonicalLocation = location.asSubMemberNotAnchor;
+    var canonicalLocation = location.asMemberOrSubMemberNotAnchor;
     var matchingItem = canonicalLocation.exactItem(homePage);
     var pageAndLocationAgree = (page == matchingItem ||
         (matchingItem != null && page == matchingItem.owner));

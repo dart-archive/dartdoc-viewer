@@ -229,13 +229,18 @@ class DocsLocation {
 
   /// Given a location with an @id_ anchor, transform it into one with
   /// a corresponding sub-member.
-  DocsLocation get asSubMemberNotAnchor {
+  DocsLocation get asMemberOrSubMemberNotAnchor {
     if (anchor == null) return this;
     if (subMemberName != null || anchor.length <= 3) {
       throw new FormatException("DocsLocation invalid: $this");
     }
     var result = new DocsLocation.clone(this);
-    result.subMemberName = anchor.substring(3, anchor.length);
+    var newName = anchor.substring(3, anchor.length);
+    if (result.memberName == null) {
+      result.memberName = newName;
+    } else {
+      result.subMemberName = newName;
+    }
     result.anchor = null;
     return result;
   }

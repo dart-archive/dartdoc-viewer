@@ -13,7 +13,7 @@ import 'package:polymer/polymer.dart';
 import 'package:yaml/yaml.dart';
 import 'package:dartdoc_viewer/location.dart';
 import 'package:dartdoc_viewer/search.dart' show searchIndex;
-import 'package:collection_helpers/equality.dart';
+import 'package:collection/equality.dart';
 
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
 @reflectable const docsPath = 'docs/';
@@ -185,6 +185,7 @@ class Filter {
   /// A list of [Item]s representing the path to this [Item].
   List<Item> path = [];
   @observable final String qualifiedName;
+  Item _owner;
 
   Item(String name, this.qualifiedName, [String comment])
       : super(name, comment);
@@ -234,7 +235,8 @@ class Filter {
 
   Item memberNamed(String name, {Function orElse : nothing}) => nothing();
 
-  Item get owner => pageIndex[location.parentQualifiedName];
+  Item get owner => _owner == null ?
+      _owner = pageIndex[location.parentQualifiedName] : _owner;
 
   Home get home => owner == null ? null : owner.home;
 }
@@ -767,23 +769,23 @@ int _compareLibraryNames(String a, String b) {
   String inheritedFrom;
   String commentFrom;
   String className;
-  Class owner;
   bool isOperator;
   AnnotationGroup annotations;
   NestedType type;
 
   Method(Map yaml, {this.isConstructor: false, this.className: '',
       this.isOperator: false, this.inheritedFrom: '',
-      String commentFrom: '', this.owner})
+      String commentFrom: '', owner: null})
         : super(yaml['name'], yaml['qualifiedName'],
             _wrapComment(yaml['comment'])) {
-    this.isStatic = _boolFor('static', yaml);
-    this.isAbstract = _boolFor('abstract', yaml);
-    this.isConstant = _boolFor('constant', yaml);
-    this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
-    this.type = new NestedType(yaml['return'].first);
+    isStatic = _boolFor('static', yaml);
+    isAbstract = _boolFor('abstract', yaml);
+    isConstant = _boolFor('constant', yaml);
+    commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
+    type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
     annotations = new AnnotationGroup(yaml['annotations']);
+    _owner = owner;
   }
 
   void addToHierarchy() {}
@@ -926,16 +928,16 @@ int _compareLibraryNames(String a, String b) {
   Parameter setterParameter;
   NestedType type;
   AnnotationGroup annotations;
-  Class owner;
 
   Variable(Map yaml, {bool isGetter: false, bool isSetter: false,
-      String inheritedFrom: '', String commentFrom: '', this.owner})
+      String inheritedFrom: '', String commentFrom: '', owner: null})
       : super(yaml['name'], yaml['qualifiedName'],
           _wrapComment(yaml['comment'])) {
     this.isGetter = isGetter;
     this.isSetter = isSetter;
     this.inheritedFrom = inheritedFrom;
     this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
+    _owner = owner;
     isFinal = _boolFor('final', yaml);
     isStatic = _boolFor('static', yaml);
     isConstant = _boolFor('constant', yaml);
