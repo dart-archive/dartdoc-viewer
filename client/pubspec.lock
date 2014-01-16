@@ -12,7 +12,7 @@ packages:
   barback:
     description: barback
     source: hosted
-    version: "0.11.0"
+    version: "0.11.0+1"
   browser:
     description: browser
     source: hosted
@@ -23,10 +23,6 @@ packages:
     version: "0.9.0"
   collection_helpers:
     description: collection_helpers
-    source: hosted
-    version: "0.9.2"
-  csslib:
-    description: csslib
     source: hosted
     version: "0.9.2"
   custom_element:
@@ -60,7 +56,7 @@ packages:
   polymer:
     description: polymer
     source: hosted
-    version: "0.9.3+3"
+    version: "0.9.4"
   polymer_expressions:
     description: polymer_expressions
     source: hosted
@@ -88,7 +84,7 @@ packages:
   unittest:
     description: unittest
     source: hosted
-    version: "0.9.2+1"
+    version: "0.9.3"
   unmodifiable_collection:
     description: unmodifiable_collection
     source: hosted

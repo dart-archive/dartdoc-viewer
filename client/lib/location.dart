@@ -33,6 +33,11 @@ final anchorMatch = new RegExp(r'\@([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%\.\,]+)');
 /// the method `noSuchMethod` from the parameter `invocation`.
 const PARAMETER_SEPARATOR = ",";
 
+/// The character used to separate the class name from the constructor
+/// name, e.g. `Future.Future-delayed`. Will occur by itself for
+/// an unnamed constructor. e.g. `Future.Future-`
+const CONSTRUCTOR_SEPARATOR = "-";
+
 // This represents a component described by a URI and can give us
 // the URI given the component or vice versa.
 class DocsLocation {
@@ -99,6 +104,11 @@ class DocsLocation {
     memberName = _check(memberMatch);
     subMemberName = _check(subMemberMatch);
     anchor = _check(anchorMatch);
+    if (position < uri.length && anchor == null) {
+      // allow an anchor that's just dotted, not @ if we don't find an @
+      // form and we haven't reached the end.
+      anchor = uri.substring(position + 1, uri.length);
+    }
   }
 
   /// The URI hash string without its leading hash
@@ -194,11 +204,14 @@ class DocsLocation {
       }
       if (subMember != null) items.add(subMember);
       if (anchor != null) {
+        // The anchor might be for a parameter of either a method or a function.
+        var container = subMember == null ? member : subMember;
         // Try the anchor both as itself and as id_$anchor
-        anchorItem = subMember.parameterNamed(anchor);
+        anchorItem = container.parameterNamed(anchor);
         if (anchorItem == null) {
-          anchorItem = subMember.parameterNamed(toHash(anchor));
+          anchorItem = container.parameterNamed(toHash(anchor));
         }
+        if (anchorItem != null) items.add(anchorItem);
       }
     }
     if (includeAllItems) {
@@ -312,6 +325,7 @@ class DocsLocation {
   /// Return the last component for which we have a value, not counting
   /// the anchor.
   @reflectable String get lastName {
+    if (anchor != null) return anchor;
     if (subMemberName != null) return subMemberName;
     if (memberName != null) return memberName;
     if (libraryName != null) return libraryName;

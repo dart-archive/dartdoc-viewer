@@ -218,16 +218,22 @@ class Filter {
   /// The [DocsLocation] for our URI.
   DocsLocation get location => new DocsLocation(qualifiedName);
 
-  /// The link to an anchor within a larger page, if appropriate.
-  DocsLocation anchorHrefLocationFrom(aLocation) {
-    var basic = aLocation;
-    var parent = aLocation.parentLocation;
+  /// The link to an anchor within a larger page, if appropriate. So
+  /// e.g. instead of `dart-core.Object.toString`,
+  /// `dart-core.Object@id_toString`
+  DocsLocation get anchorHrefLocation {
+    var basic = localLocation;
+    var parent = basic.parentLocation;
     if (parent.isEmpty) return parent;
-    parent.anchor = parent.toHash(basic.componentNames.last);
+    parent.anchor = parent.toHash(hashDecoratedName);
     return parent;
   }
 
-  DocsLocation get anchorHrefLocation => anchorHrefLocationFrom(location);
+  /// A location based on the actual page we're in, rather than our inherited
+  /// location. e.g. `dart-async.Future.noSuchMethod` rather than
+  /// the original method location of `dart-core.Object.noSuchMethod`.
+  /// For non-inherited items, this will just be the [location].
+  DocsLocation get localLocation => location;
 
   String get anchorHref => anchorHrefLocation.withAnchor;
 
@@ -749,6 +755,11 @@ int _compareLibraryNames(String a, String b) {
 
   Parameter parameterNamed(String name) =>
       parameters.firstWhere((x) => x.name == name, orElse: () => null);
+
+  Item memberNamed(String name, {Function orElse : nothing}) {
+    var result = parameterNamed(name);
+    return result == null ? orElse() : result;
+  }
 }
 
 /**
@@ -815,41 +826,10 @@ int _compareLibraryNames(String a, String b) {
   /// [Item]'s name with its properties properly appended for anchor linking.
   /// Overridden to allow for different behavior for constructor "methods"
   /// (we append the className in case the constructor is unnamed).
-  String get hashDecoratedName => isConstructor ? '$className.$name' : name;
+  String get hashDecoratedName => isConstructor ?
+      '$className$CONSTRUCTOR_SEPARATOR$name' : name;
 
   get linkHref => anchorHref;
-
-  /// The link to an anchor within a larger page, if appropriate.
-  DocsLocation anchorHrefLocationFrom(DocsLocation aLocation) {
-    if (isConstructor) {
-      // Constructor anchor links require special parsing because in the
-      // yaml/json data we prepend the class in the "member name" so that
-      // unnamed constructors have a distinct, linkable reference.
-      var parent = aLocation.parentLocation;
-      if (!parent.isEmpty) {
-        // Update the anchor.
-        parent.anchor = parent.toHash(
-            '${aLocation.memberName}.${aLocation.subMemberName}');
-      }
-      return parent;
-    } else {
-      return super.anchorHrefLocationFrom(aLocation);
-    }
-  }
-
-  /// The link to an anchor within a larger page, if appropriate.
-  /// Note that for an inherited method, the qualified name refers to where
-  /// it is actually defined. This returns a link into the local page, which
-  /// is based on the owner.
-  DocsLocation get anchorHrefLocation {
-    if (isUnnamedConstructor) {
-        localLocation.anchor =
-            localLocation.toHash(localLocation.memberName);
-        return localLocation;
-    } else {
-      return anchorHrefLocationFrom(localLocation);
-    }
-  }
 
   /// A location based on the actual page we're in, rather than our inherited
   /// location.
@@ -869,23 +849,22 @@ int _compareLibraryNames(String a, String b) {
 /**
  * A single parameter to a [Method].
  */
-@reflectable class Parameter {
+@reflectable class Parameter extends Item {
 
-  String name;
   bool isOptional;
   bool isNamed;
   bool hasDefault;
   NestedType type;
   String defaultValue;
   AnnotationGroup annotations;
-  Item owner;
 
-  Parameter(this.name, Map yaml, [this.owner]) {
-    this.isOptional = _boolFor('optional', yaml);
-    this.isNamed = _boolFor('named', yaml);
-    this.hasDefault = _boolFor('default', yaml);
-    this.type = new NestedType(yaml['type'].first);
-    this.defaultValue = yaml['value'];
+  Parameter(name, Map yaml, [owner]) : super(name, null) {
+    isOptional = _boolFor('optional', yaml);
+    isNamed = _boolFor('named', yaml);
+    hasDefault = _boolFor('default', yaml);
+    type = new NestedType(yaml['type'].first);
+    defaultValue = yaml['value'];
+    _owner = owner;
     annotations = new AnnotationGroup(yaml['annotations']);
   }
 
@@ -909,20 +888,18 @@ int _compareLibraryNames(String a, String b) {
     return owner.isOwnedBy(possibleOwner);
   }
 
-  // For a method parameter we use the special anchor @method.parameter
+  // For a method parameter we use the special anchor @method,parameter
   // because the parameter name may not be unique on the page
   DocsLocation get anchorHrefLocation {
     if (owner == null) return null;
-    var parameterLoc = owner.location.parentLocation;
-    // TODO(efortuna): Refactor DocsLocation so we don't do this special casing
-    // of unnamed methods (constructors).
-    if (owner is Method && (owner as Method).isUnnamedConstructor) {
-      parameterLoc = owner.location;
-    }
-    parameterLoc.anchor = parameterLoc.toHash(
-        "${owner.hashDecoratedName}$PARAMETER_SEPARATOR$name");
-    return parameterLoc;
+    var ownerLocation = owner.anchorHrefLocation;
+    var ownerAnchor = ownerLocation.anchor;
+    ownerLocation.anchor = ownerAnchor == null ?
+        hashDecoratedName : "$ownerAnchor$hashDecoratedName";
+    return ownerLocation;
   }
+
+  String get hashDecoratedName => "$PARAMETER_SEPARATOR$name";
 
   String get anchorHref => anchorHrefLocation.withAnchor;
 
@@ -986,20 +963,19 @@ int _compareLibraryNames(String a, String b) {
     if (inheritedFrom != '') super.addToHierarchy();
   }
 
-  /// The link to an anchor within a larger page, if appropriate.
-  /// Note that for an inherited variable, the qualified name refers to where
-  /// it is actually defined. This returns a link into the local page, which
-  /// is based on the owner.
-  DocsLocation get anchorHrefLocation => anchorHrefLocationFrom(localLocation);
-
   /// A location based on the actual page we're in, rather than our inherited
-  /// location.
+  /// location, since the qualified name refers to the original.
   DocsLocation get localLocation {
     if (!isInherited || owner == null) return location;
     var local = owner.location;
     local.subMemberName = name;
     return local;
   }
+
+  /// Setters come out as variables, and can have parameter names, but
+  /// we ignore them in comments right now.
+  // TODO(alanknight): Handle setter parameter references properly.
+  Parameter parameterNamed(String name) => null;
 }
 
 /**

@@ -81,18 +81,11 @@ class CommentElement extends DivElement with Polymer, Observable {
   /// dart-core.Object@id_doStuff.param. Return true if we did so.
   bool _replaceWithParameterReference(AnchorElement link, DocsLocation loc) {
     var item = loc.item(viewer.homePage);
-    if (item is! Method) return false;
-    var itemLocation = item.location;
-    var itemName = itemLocation.withoutAnchor;
-    if (itemLocation.withoutAnchor.length >= link.text.length) return false;
-    var parameter = link.text.substring(itemName.length + 1);
-    var parent = itemLocation.parentLocation;
-    parent.anchor = loc.toHash(
-        "${itemLocation.lastName.replaceAll('-', '.')}"
-        "${PARAMETER_SEPARATOR}$parameter");
-    link.replaceWith(new AnchorElement()
-        ..href = '#${parent.withAnchor}'
-        ..text = parameter);
+    if (item is! Parameter) return false;
+    var newAnchor = new AnchorElement()
+      ..href = "#${item.anchorHref}"
+      ..text = loc.lastName;
+    link.replaceWith(newAnchor);
     return true;
   }
 

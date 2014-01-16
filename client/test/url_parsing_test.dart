@@ -26,6 +26,10 @@ var urls = {
   "intl/intl.Intl@id_foo" : ["intl", "intl", "Intl", null, "id_foo"],
   "intl/intl.Intl.message" : ["intl", "intl", "Intl", "message", null],
   "intl@id_foo" : [null, "intl", null, null, "id_foo"],
+  "dart-async.Future@id_then,onError" :
+      [null, "dart-async", "Future", null, "id_then,onError"],
+  "dart-core.List.List-filled.value" :
+    [null, "dart-core", "List", "List-filled", "value"],
 };
 
 // Convert the map results to a list that's easier to write the expected
@@ -38,6 +42,29 @@ main() {
     test("test parsing $uri", () {
       var location = new DocsLocation(uri);
       expect(location.allComponentNames, result);
+    });
+
+    test("Converting hashes", () {
+      var basic = "dart-async.Future@id_then,onError";
+      var constructor = "dart-async.Future@id_Future-delayed";
+      var constructorParam = "dart-async.Future@id_Future-delayed,duration";
+      var unnamedConstructor = "dart-async.Future@id_Future-";
+      var unnamedConstructorParam = "dart-async.Future@id_Future-,computation";
+      var basic1 = "dart-async.Future.then@onError";
+      var constructor1 = "dart-async.Future.Future-delayed";
+      var constructorParam1 = "dart-async.Future.Future-delayed@duration";
+      var unnamedConstructor1 = "dart-async.Future.Future-";
+      var unnamedConstructorParam1 = "dart-async.Future.Future-@computation";
+      var hashForm = [basic, constructor, constructorParam, unnamedConstructor,
+          unnamedConstructorParam];
+      var fullForm = [basic1, constructor1, constructorParam1,
+          unnamedConstructor1, unnamedConstructorParam1];
+      var forms = new Map.fromIterables(hashForm, fullForm);
+      forms.forEach((hashed, full) {
+        var converted = new DocsLocation(hashed).asMemberOrSubMemberNotAnchor;
+        var fullLocation = new DocsLocation(full);
+        expect(converted, fullLocation);
+      });
     });
   });
 }
