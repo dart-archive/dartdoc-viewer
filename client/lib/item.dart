@@ -238,6 +238,13 @@ class Filter {
   Item get owner => _owner == null ?
       _owner = pageIndex[location.parentQualifiedName] : _owner;
 
+  /// Return true if [possibleOwner] is anywhere in our chain of owners.
+  bool isOwnedBy(Item possibleOwner) {
+    if (owner == null || possibleOwner == null) return false;
+    if (owner == possibleOwner) return true;
+    return owner.isOwnedBy(possibleOwner);
+  }
+
   Home get home => owner == null ? null : owner.home;
 }
 
@@ -739,6 +746,9 @@ int _compareLibraryNames(String a, String b) {
     }
     return values;
   }
+
+  Parameter parameterNamed(String name) =>
+      parameters.firstWhere((x) => x.name == name, orElse: () => null);
 }
 
 /**
@@ -892,6 +902,13 @@ int _compareLibraryNames(String a, String b) {
     return '';
   }
 
+  /// Return true if [possibleOwner] is anywhere in our chain of owners.
+  bool isOwnedBy(Item possibleOwner) {
+    if (owner == null || possibleOwner == null) return false;
+    if (owner == possibleOwner) return true;
+    return owner.isOwnedBy(possibleOwner);
+  }
+
   // For a method parameter we use the special anchor @method.parameter
   // because the parameter name may not be unique on the page
   DocsLocation get anchorHrefLocation {
@@ -903,7 +920,7 @@ int _compareLibraryNames(String a, String b) {
       parameterLoc = owner.location;
     }
     parameterLoc.anchor = parameterLoc.toHash(
-        "${owner.hashDecoratedName}_$name");
+        "${owner.hashDecoratedName}$PARAMETER_SEPARATOR$name");
     return parameterLoc;
   }
 

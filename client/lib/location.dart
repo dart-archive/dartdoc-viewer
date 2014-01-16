@@ -25,7 +25,13 @@ final memberMatch = new RegExp(r'\.(\w+)');
 /// "className-constructorName" (if constructorName is empty, it will just be
 /// "className-".
 final subMemberMatch = new RegExp(r'\.([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%]+)');
-final anchorMatch = new RegExp(r'\@([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%\.]+)');
+final anchorMatch = new RegExp(r'\@([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%\.\,]+)');
+
+/// The character used to separator the parameter from the method in a
+/// link which is to a method on the same page as its class. So, e.g.
+/// in `dart-core.Object@id_noSuchMethod,invocation` this separates
+/// the method `noSuchMethod` from the parameter `invocation`.
+const PARAMETER_SEPARATOR = ",";
 
 // This represents a component described by a URI and can give us
 // the URI given the component or vice versa.
@@ -130,7 +136,7 @@ class DocsLocation {
   /// with a leading period if the [subMemberName] is non-empty.
   @reflectable get subMemberPlus =>
       subMemberName == null ? '' : '.$subMemberName';
-  /// The trailing anchor e.g. #id_hashCode, including the leading hash.
+  /// The trailing anchor e.g. @id_hashCode, including the leading @.
   @reflectable get anchorPlus => anchor == null ? '' : '@$anchor';
 
   /// Return a list of the components' basic names. Omits the anchor, but
@@ -163,7 +169,7 @@ class DocsLocation {
     // TODO(alanknight): Re-arrange the structure so that we can see
     // those types without needing to import html as well.
     var items = [];
-    var package, library, member, subMember;
+    var package, library, member, subMember, anchorItem;
     package = packageName == null
         ? null
         : root.memberNamed(packageName);
@@ -177,10 +183,9 @@ class DocsLocation {
         ? null : library.memberNamed(memberName);
     if (member != null) {
       items.add(member);
-      subMember = subMemberName;
-      if (subMember != null) {
+      if (subMemberName != null) {
         var lookupName = subMemberName;
-        if (subMember.contains('-')) {
+        if (subMemberName.contains('-')) {
           // Constructors are hyphenated Classname-constructorname. We want to
           // look up just the constructor name.
           lookupName = subMemberName.substring(subMemberName.indexOf('-') + 1);
@@ -188,9 +193,16 @@ class DocsLocation {
         subMember = member.memberNamed(lookupName);
       }
       if (subMember != null) items.add(subMember);
+      if (anchor != null) {
+        // Try the anchor both as itself and as id_$anchor
+        anchorItem = subMember.parameterNamed(anchor);
+        if (anchorItem == null) {
+          anchorItem = subMember.parameterNamed(toHash(anchor));
+        }
+      }
     }
     if (includeAllItems) {
-      return [package, library, member, subMember];
+      return [package, library, member, subMember, anchorItem];
     } else {
       return items;
     }
@@ -220,6 +232,7 @@ class DocsLocation {
   /// last item.
   exactItem(root) {
     var myItems = items(root, includeAllItems: true);
+    if (anchor != null) return myItems[4];
     if (subMemberName != null) return myItems[3];
     if (memberName != null) return myItems[2];
     if (libraryName != null) return myItems[1];
@@ -235,13 +248,18 @@ class DocsLocation {
       throw new FormatException("DocsLocation invalid: $this");
     }
     var result = new DocsLocation.clone(this);
-    var newName = anchor.substring(3, anchor.length);
-    if (result.memberName == null) {
-      result.memberName = newName;
-    } else {
-      result.subMemberName = newName;
-    }
     result.anchor = null;
+    var newName = anchor.substring(3, anchor.length);
+    var withParameterName = newName.split(PARAMETER_SEPARATOR);
+    var parameterName =
+        (withParameterName.length > 1) ? withParameterName[1] : null;
+    if (result.memberName == null) {
+      result.memberName = withParameterName.first;
+      result.subMemberName = parameterName;
+    } else {
+      result.subMemberName = withParameterName.first;
+      result.anchor = parameterName;
+    }
     return result;
   }
 

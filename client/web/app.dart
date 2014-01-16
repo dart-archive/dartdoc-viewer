@@ -191,7 +191,7 @@ class Viewer extends Observable {
     var canonicalLocation = location.asMemberOrSubMemberNotAnchor;
     var matchingItem = canonicalLocation.exactItem(homePage);
     var pageAndLocationAgree = (page == matchingItem ||
-        (matchingItem != null && page == matchingItem.owner));
+        matchingItem.isOwnedBy(page));
     if (page == null || !pageAndLocationAgree) {
       var newLocation = location.firstValidParent(homePage);
       if (newLocation != location) {

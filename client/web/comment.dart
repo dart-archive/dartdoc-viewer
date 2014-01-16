@@ -88,7 +88,8 @@ class CommentElement extends DivElement with Polymer, Observable {
     var parameter = link.text.substring(itemName.length + 1);
     var parent = itemLocation.parentLocation;
     parent.anchor = loc.toHash(
-        "${itemLocation.lastName.replaceAll('-', '.')}_$parameter");
+        "${itemLocation.lastName.replaceAll('-', '.')}"
+        "${PARAMETER_SEPARATOR}$parameter");
     link.replaceWith(new AnchorElement()
         ..href = '#${parent.withAnchor}'
         ..text = parameter);
