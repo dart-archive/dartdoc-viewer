@@ -251,6 +251,11 @@ class Filter {
     return owner.isOwnedBy(possibleOwner);
   }
 
+  /// Return the first item in our chain of parents (including ourselves) which
+  /// can serve as a page. For most things that's this item itself, but
+  /// some, e.g. Variable, cannot.
+  Item get firstItemUsableAsPage => this;
+
   Home get home => owner == null ? null : owner.home;
 }
 
@@ -903,6 +908,11 @@ int _compareLibraryNames(String a, String b) {
 
   String get anchorHref => anchorHrefLocation.withAnchor;
 
+  /// Return the first item in our chain of parents (including ourselves) which
+  /// can serve as a page. For most things that's this item itself, but
+  /// some, e.g. Variable, cannot.
+  Item get firstItemUsableAsPage => owner;
+
   toString() => "Parameter named $name in $owner";
 }
 
@@ -976,6 +986,11 @@ int _compareLibraryNames(String a, String b) {
   /// we ignore them in comments right now.
   // TODO(alanknight): Handle setter parameter references properly.
   Parameter parameterNamed(String name) => null;
+
+  /// Return the first item in our chain of parents (including ourselves) which
+  /// can serve as a page. For most things that's this item itself, but
+  /// some, e.g. Variable, cannot.
+  Item get firstItemUsableAsPage => owner;
 }
 
 /**

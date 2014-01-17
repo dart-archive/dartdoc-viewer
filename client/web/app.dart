@@ -184,20 +184,47 @@ class Viewer extends Observable {
     return null;
   }
 
-  /// Updates [currentPage] to be [page].
-  Future _updatePage(Item page, DocsLocation location) {
-    // If we have an invalid location, we walk up until we find the first
-    // portion that's valid. e.g. dare-core.Object@id_blah => dart-core.Object
+  /// We are given a page and a location which is either the same or a
+  /// reference to some anchor within that page. Make sure they are valid
+  /// and return a List of (page, location) which may have been modified.
+  List _pageAndLocationFor(Item page, DocsLocation location) {
+    // Fall back to home if we haven't found anything at all. This should
+    // only happen on an invalid initial page or to terminate recursion.
+    if (location.isEmpty || location == homePage.location) {
+       return [homePage, homePage.location];
+    }
+
+    var usablePage = page.firstItemUsableAsPage;
+
+    // Page and location match exactly.
     var canonicalLocation = location.asMemberOrSubMemberNotAnchor;
     var matchingItem = canonicalLocation.exactItem(homePage);
-    var pageAndLocationAgree = (page == matchingItem ||
-        (matchingItem != null && matchingItem.isOwnedBy(page)));
-    if (page == null || !pageAndLocationAgree) {
-      var newLocation = location.firstValidParent(homePage);
-      if (newLocation != location) {
-        return handleLink(_replaceLocation(newLocation));
-      }
+    if (usablePage == matchingItem) return [usablePage, location];
+
+    // No matching item, try the parent location.
+    if (matchingItem == null) {
+      return _pageAndLocationFor(usablePage, canonicalLocation.parentLocation);
     }
+
+    // Location is a sub-element of page.
+    if (matchingItem.isOwnedBy(usablePage)) {
+      return [usablePage, matchingItem.anchorHrefLocation];
+    }
+
+    // Location seems to be junk. Find the first valid parent and use its page.
+    var validParent = location.firstValidParent(homePage);
+    return [validParent.exactItem(homePage), location];
+  }
+
+  /// Updates [currentPage] to be [page].
+  Future _updatePage(Item page, DocsLocation location) {
+    var replacement = _pageAndLocationFor(page, location);
+    var newPage = replacement.first;
+    var newLocation = replacement.last;
+    if (page != newPage || location != newLocation) {
+      return handleLink(_replaceLocation(newLocation));
+    }
+
     // Avoid reloading the page if it isn't necessary.
     if (page != null && page != currentPage) {
       var main = window.document.querySelector("#dartdoc-main");

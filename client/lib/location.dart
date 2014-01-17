@@ -207,9 +207,9 @@ class DocsLocation {
         // The anchor might be for a parameter of either a method or a function.
         var container = subMember == null ? member : subMember;
         // Try the anchor both as itself and as id_$anchor
-        anchorItem = container.parameterNamed(anchor);
+        anchorItem = container.memberNamed(anchor);
         if (anchorItem == null) {
-          anchorItem = container.parameterNamed(toHash(anchor));
+          anchorItem = container.memberNamed(toHash(anchor));
         }
         if (anchorItem != null) items.add(anchorItem);
       }
