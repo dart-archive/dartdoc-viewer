@@ -98,17 +98,6 @@ background-image: url('../method_private.png');
   overflow: auto;
 }
 
-/*
-TODO(janicejl): Currently uses fixed widths, change to use flex-box in future.
-*/
-#minimap ul {
-  list-style: disc url('../smallcorner.png');
-}
-
-#minimap ul ul {
-  list-style: disc url('../smallcorner.png');
-}
-
 #minimap li.active a {
   font-weight: bolder;
   color: #333;
@@ -211,23 +200,18 @@ TODO(janicejl): Currently uses fixed widths, change to use flex-box in future.
 .affix-right {
   top: 120px;
   border: none;
-  /*width: 170px !important;*/
-  background: #0489c3;
-}
-
-.affix-right a {
-  color: #fff;
+  background: #eee
 }
 
 #minimap ul {
-  list-style: disc url('../smallcorner-white.png');
-  padding-left: 25px;
+  list-style: none;
+  padding-left: 20px;
 }
 
-#minimap ul ul {
-  list-style: disc url('../smallcorner-white.png');
+.minimap-sublist {
+  padding-left: 20px;
+  list-style: none;
 }
-
 
 /* Library Panel */
 #library-panel {
