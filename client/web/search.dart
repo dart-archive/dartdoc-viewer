@@ -65,7 +65,7 @@ class Search extends PolymerElement {
 
   void onBlurCallback(_) {
     isFocused = false;
-    _updateDropdownOpen();
+    new Future.value(null).then((_) => _updateDropdownOpen());
   }
 
   void onFocusCallback(_) {
