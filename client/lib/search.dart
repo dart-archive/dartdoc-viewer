@@ -148,11 +148,15 @@ List<SearchResult> lookupSearchResults(SearchIndex index, String query,
     }
   }
 
-  for (Hit r in resultSet.take(MAX_RESULTS_TO_CONSIDER)) {
+  // For very short queries, limit the number of results we even look at.
+  // For longer ones, be willing to spend more time scoring the results.
+  var resultsToConsider = query.length > 4 ?
+      resultSet : resultSet.take(MAX_RESULTS_TO_CONSIDER);
+  for (Hit r in resultsToConsider) {
     /// If it is taking too long to compute the search results, time out and
     /// return an empty list of results.
-   if (stopwatch.elapsedMilliseconds > 500) {
-      return [];
+    if (stopwatch.elapsedMilliseconds > 500) {
+      break;
     }
     int score = 0;
 
@@ -224,11 +228,6 @@ List<SearchResult> lookupSearchResults(SearchIndex index, String query,
     scoredResults.add(new SearchResult(r.name, r.type, score));
   }
 
-  /// If it is taking too long to compute the search results, time out and
-  /// return an empty list of results.
-  if (stopwatch.elapsedMilliseconds > 500) {
-    return [];
-  }
   scoredResults.sort();
   if (scoredResults.length > maxResults) {
     scoredResults = scoredResults.take(maxResults).toList();
