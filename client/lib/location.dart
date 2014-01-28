@@ -189,6 +189,12 @@ class DocsLocation {
     library = home.memberNamed(libraryName);
     if (library == null && !includeAllItems) return items;
     items.add(library);
+    // If we don't have a library, we can't have members or sub-members,
+    // so short-circuit out of here. Either this is just a package, or it's
+    // an invalid location.
+    if (library == null) {
+      return includeAllItems ? [null, null, null, null, null] : items;
+    }
     member = memberName == null
         ? null : library.memberNamed(memberName);
     if (member != null) {
@@ -214,11 +220,9 @@ class DocsLocation {
         if (anchorItem != null) items.add(anchorItem);
       }
     }
-    if (includeAllItems) {
-      return [package, library, member, subMember, anchorItem];
-    } else {
-      return items;
-    }
+    return includeAllItems ?
+        [package, library, member, subMember, anchorItem] :
+        items;
   }
 
   /// Find the part of us that refers to an [Item] accessible from

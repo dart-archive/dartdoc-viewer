@@ -294,7 +294,7 @@ class Viewer extends Observable {
     if (lib == null) {
       lib = viewer.homePage.memberNamed(location.libraryName);
     }
-    if (lib == null) return new Future.value(null);
+    if (lib == null) return new Future.value(homePage);
     return lib.load();
   }
 
