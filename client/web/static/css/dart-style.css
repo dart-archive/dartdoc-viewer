@@ -298,10 +298,12 @@ i.icon-close-x {
 
 .navbar-nav > li > .dropdown-menu > li > a {
     text-decoration: none;
+    cursor: pointer;
 }
 
 .navbar-nav > li > .dropdown-toggle {
     text-align: right;
+    cursor: pointer;
 }
 
 .navbar-search .search-query {

@@ -359,7 +359,8 @@ class Viewer extends Observable {
       _updatePage(viewer.homePage, location);
       return new Future.value(true);
     }
-    return _loadAndUpdatePage(location);
+    showLoadIndicator();
+    return _loadAndUpdatePage(location)..whenComplete(hideLoadIndicator);
     // TODO(alanknight) : This is now letting the history automatically
     // update, even for non-found items. Is that an issue?
   }
@@ -389,6 +390,25 @@ class Viewer extends Observable {
   void toggleObjectMembers() {
     showObjectMembers = !showObjectMembers;
   }
+
+
+  Element _loadIndicator;
+
+  /// When we have to fetch the JSON for an Item, display a spinning
+  /// indicator to show the user that something is happening.
+  Element get loadIndicator {
+    if (_loadIndicator == null) {
+      _loadIndicator = dartdocMain.shadowRoot
+          .querySelector("#loading-indicator");
+    }
+    return _loadIndicator;
+  }
+
+  /// Make the indicator that we're loading data visible.
+  showLoadIndicator() => loadIndicator.style.display = '';
+
+  /// Hide the indicator that we're loading data.
+  hideLoadIndicator() => loadIndicator.style.display = 'none';
 }
 
 /// The path of this app on startup.
@@ -400,9 +420,7 @@ String location;
 /// Listens for browser navigation and acts accordingly.
 void startHistory() {
   location = window.location.hash.replaceFirst('#', '');
-  // TODO(alanknight): onPopState doesn't work in IE, so using onHashChange.
-  // window.onPopState.listen(navigate);
-  window.onHashChange.listen(navigate);
+  windowLocation.changes.listen(navigate);
 }
 
 void navigate(event) {

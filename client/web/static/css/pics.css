@@ -136,6 +136,7 @@ background-image: url('../method_private.png');
 .search-result {
   width: 280px;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .search-result:focus,
@@ -299,4 +300,11 @@ background-image: url('../method_private.png');
   margin-bottom: 5px;
   font-size: 16px;
   line-height: 19px;
+}
+
+#loading-indicator {
+  position: absolute;
+  left: 500px;
+  top: 200px;
+  z-index: 2500;
 }
