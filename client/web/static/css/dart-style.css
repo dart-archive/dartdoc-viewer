@@ -668,6 +668,14 @@ b {
     margin-top:0px;
 }
 
+/* A lot of the HTML comments also have <h1> comments which are
+   is ridiculously large. */
+.description h1 {
+    font-size:17px;
+    margin-bottom:0px;
+    margin-top:0px;
+}
+
 #itemList .panel li {
     font-size:15px !important;
 }
