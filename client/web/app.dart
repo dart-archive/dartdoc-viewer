@@ -55,6 +55,12 @@ class Viewer extends Observable {
   /// The homepage from which every [Item] can be reached.
   @observable Home homePage;
 
+  /// The page we should display first and which we go back to if
+  /// there's an error and we can't find any sub-page. By default
+  /// this is the same as the homePage, but if we're showing
+  /// docs for a package, it may be different.
+  @observable Item startPage;
+
   bool _showPkgLibraries = false;
   @observable bool get showPkgLibraries => _showPkgLibraries;
   @observable set showPkgLibraries(bool newValue) {
@@ -124,6 +130,9 @@ class Viewer extends Observable {
       var libraries = JSON.decode(response);
       isYaml = libraries['filetype'] == 'yaml';
       homePage = new Home(libraries);
+      var startPageName = libraries['startPage'];
+      startPage = startPageName == null ? homePage :
+          homePage.memberNamed(startPageName, orElse: () => homePage);
     });
     var indexFuture = retrieveFileContents('docs/index.json').then(
         (String json) {
@@ -191,7 +200,7 @@ class Viewer extends Observable {
     // Fall back to home if we haven't found anything at all. This should
     // only happen on an invalid initial page or to terminate recursion.
     if (location.isEmpty || location == homePage.location) {
-       return [homePage, homePage.location];
+       return [startPage, startPage.location];
     }
 
     var usablePage = page.firstItemUsableAsPage;
@@ -468,7 +477,7 @@ void navigate(event) {
     if (location != null && location != '') {
       viewer.handleLink(location);
     } else {
-      viewer.currentPage = viewer.homePage;
+      viewer.currentPage = viewer.startPage;
     }
   });
 }
