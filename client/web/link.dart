@@ -8,6 +8,7 @@ import 'dart:html';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart' show searchIndex;
 import 'package:polymer/polymer.dart';
+import 'package:dartdoc_viewer/location.dart';
 
 // TODO(jmesserly): just extend HtmlElement?
 @CustomTag("dartdoc-link")
@@ -28,7 +29,7 @@ class LinkElement extends PolymerElement {
     Element child;
     final location = type.loc.withoutAnchor;
     if (searchIndex.map.containsKey(location)) {
-      child = new AnchorElement()..href = '#${type.loc.withAnchor}';
+      child = new AnchorElement()..href = locationPrefixed(type.loc.withAnchor);
     } else {
       child = new Element.tag('i');
     }

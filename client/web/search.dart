@@ -90,7 +90,8 @@ class Search extends PolymerElement {
     var newLocation = new LinkableType(refId).location;
     var encoded = Uri.encodeFull(newLocation);
     viewer.handleLink(encoded);
-    window.history.pushState("#$encoded", viewer.title, "#$encoded");
+    window.history.pushState(locationPrefixed(encoded),
+        viewer.title, locationPrefixed(encoded));
     searchQuery = "";
     results.clear();
   }

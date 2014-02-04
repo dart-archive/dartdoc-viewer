@@ -38,6 +38,28 @@ const PARAMETER_SEPARATOR = ",";
 /// an unnamed constructor. e.g. `Future.Future-`
 const CONSTRUCTOR_SEPARATOR = "-";
 
+/// The prefix to be used for anchors. This is here so that we can easily
+/// factor it out into being #! and use the _escaped_fragment_ scheme
+/// for providing static versions of pages if we get them. See
+/// https://developers.google.com/webmasters/ajax-crawling/
+const AJAX_LOCATION_PREFIX = "#!";
+const BASIC_LOCATION_PREFIX = "#";
+
+// Prefix the string with the separator we are using between the main
+// URL and the location.
+locationPrefixed(String s) => "$BASIC_LOCATION_PREFIX$s";
+
+// Remove the anchor prefix from [s] if it's present.
+locationDeprefixed(String s) {
+  if (s.startsWith(AJAX_LOCATION_PREFIX)) {
+    return s.substring(AJAX_LOCATION_PREFIX.length, s.length);
+  } else if (s.startsWith(BASIC_LOCATION_PREFIX)) {
+    return s.substring(BASIC_LOCATION_PREFIX.length, s.length);
+  } else {
+    return s;
+  }
+}
+
 // This represents a component described by a URI and can give us
 // the URI given the component or vice versa.
 class DocsLocation {
@@ -88,7 +110,8 @@ class DocsLocation {
   void _extractPieces(String uri) {
 
     if (uri == null || uri.length == 0) return;
-    var position = (uri[0] == "#") ? 1 : 0;
+    var position = uri.startsWith(AJAX_LOCATION_PREFIX) ?
+        AJAX_LOCATION_PREFIX.length : 0;
 
     _check(regex) {
       var match = regex.matchAsPrefix(uri, position);
@@ -113,7 +136,7 @@ class DocsLocation {
 
   /// The URI hash string without its leading hash
   /// and without any trailing anchor portion, e.g. for
-  /// http://site/#args/args.ArgParser#id_== it would return args/argsArgParser
+  /// http://site/#args/args.ArgParser@id_== it would return args/argsArgParser
   @reflectable String get withoutAnchor =>
       [packagePlus, libraryPlus, memberPlus, subMemberPlus].join("");
 
@@ -122,8 +145,8 @@ class DocsLocation {
 
   /// The full URI hash string without the leading hash character.
   /// e.g. for
-  /// http://site/#args/args.ArgParser#id_==
-  /// it would return args/argsArgParser#id_==
+  /// http://site/#args/args.ArgParser@id_==
+  /// it would return args/argsArgParser@id_==
   @reflectable String get withAnchor => withoutAnchor + anchorPlus;
 
   @reflectable DocsLocation get locationWithoutAnchor =>

@@ -5,6 +5,7 @@
 library web.typedef;
 
 import 'package:dartdoc_viewer/item.dart';
+import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
 import 'member.dart';
 
@@ -16,4 +17,6 @@ class TypedefElement extends MemberElement {
   get defaultItem => _defaultItem;
   static final _defaultItem =
       new Typedef({'name' : 'loading', 'qualifiedName' : 'loading'});
+
+  String get prefixedLocation => locationPrefixed(item.type.location);
 }

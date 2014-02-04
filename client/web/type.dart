@@ -6,6 +6,7 @@ library web.type;
 
 import 'dart:html';
 import 'package:dartdoc_viewer/item.dart';
+import 'package:dartdoc_viewer/location.dart';
 import 'package:dartdoc_viewer/search.dart' show searchIndex;
 import 'package:polymer/polymer.dart';
 
@@ -37,7 +38,7 @@ class TypeElement extends PolymerElement {
     if (searchIndex.map.containsKey(type.outer.qualifiedName)) {
       var outer = new AnchorElement()
         ..text = type.outer.simpleType
-        ..href = '#${type.outer.location}';
+        ..href = locationPrefixed(type.outer.location);
       span.append(outer);
     } else {
       span.appendText(type.outer.simpleType);

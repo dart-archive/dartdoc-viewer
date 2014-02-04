@@ -250,7 +250,7 @@ class Viewer extends Observable {
   String _replaceLocation(DocsLocation location) {
     var newUri = location.withAnchor;
     var encoded = Uri.encodeFull(newUri);
-    window.location.replace("#$encoded");
+    window.location.replace(locationPrefixed(encoded));
     return encoded;
   }
 
@@ -345,11 +345,11 @@ class Viewer extends Observable {
     // Links are the hash part of the URI without the leading #.
     // Valid forms for links are
     // home - the global home page
-    // library.memberName.subMember#anchor
-    // where #anchor is optional and library can be any of
+    // library.memberName.subMember@anchor
+    // where @anchor is optional and library can be any of
     // dart:library, library-foo, package-foo/library-bar
     // So we need an unambiguous form.
-    // [package/]libraryWithDashes[.class.method]#anchor
+    // [package/]libraryWithDashes[.class.method]@anchor
 
     // We will tolerate colons in the location instead of dashes, though
     var decoded = Uri.decodeFull(uri);
@@ -417,15 +417,33 @@ String _pathname;
 /// The latest url reached by a popState event.
 String location;
 
+/// The google crawler will try to translate #! anchors into query parameters
+/// with an _escaped_fragment_ in front of them. Assume that's the only query
+/// parameter.
+const _ESCAPED_FRAGMENT = '?_escaped_fragment_=';
+
+/// From the URL, determine what location it corresponds to. We will
+/// accept hashes that start with [AJAX_LOCATION_PREFIX],
+/// [BASIC_LOCATION_PREFIX], and [_ESCAPED_FRAGMENT].
+String findLocation() {
+  var hash = window.location.hash;
+  var query = window.location.search;
+  if (query.startsWith(_ESCAPED_FRAGMENT)) {
+    return query.substring(_ESCAPED_FRAGMENT.length, query.length);
+  } else {
+    return locationDeprefixed(hash);
+  }
+}
+
 /// Listens for browser navigation and acts accordingly.
 void startHistory() {
-  location = window.location.hash.replaceFirst('#', '');
+  location = findLocation();
   windowLocation.changes.listen(navigate);
 }
 
 void navigate(event) {
   // TODO(alanknight): Should we be URI encoding/decoding this?
-  var newLocation = window.location.hash.replaceFirst('#', '');
+  var newLocation = findLocation();
   if (viewer.homePage != null) {
     viewer.handleLink(newLocation);
   }

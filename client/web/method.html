@@ -59,7 +59,7 @@
           <template if="{{isNotConstructor}}">
             <dartdoc-type type="{{item.type}}"></dartdoc-type>
           </template>
-          <b><a id="{{idName}}" href="#{{item.anchorHref}}">
+          <b><a id="{{idName}}" href="{{item.prefixedAnchorHref}}">
           {{item.decoratedName}}</a></b>
           <dartdoc-parameter parameters="{{item.parameters}}">
           </dartdoc-parameter>

@@ -37,7 +37,8 @@ class MinimapElement extends PolymerElement {
   itemChanged() {
     if (category == null || item == null) return;
 
-    categoryLink = '#${item.linkHref}@${category.name.replaceAll(" ", "-")}';
+    categoryLink =
+        '${item.prefixedLinkHref}@${category.name.replaceAll(" ", "-")}';
   }
 
   categoryChanged() {

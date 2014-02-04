@@ -215,6 +215,9 @@ class Filter {
   /// Creates a link for the href attribute of an [AnchorElement].
   String get linkHref => qualifiedName;
 
+  /// [linkHref] but with the leading # separator.
+  String get prefixedLinkHref => locationPrefixed(linkHref);
+
   /// The [DocsLocation] for our URI.
   DocsLocation get location => new DocsLocation(qualifiedName);
 
@@ -236,6 +239,9 @@ class Filter {
   DocsLocation get localLocation => location;
 
   String get anchorHref => anchorHrefLocation.withAnchor;
+
+  /// [anchorHref] but with the leading # separator.
+  String get prefixedAnchorHref => locationPrefixed(anchorHref);
 
   bool get isLoaded => true;
 

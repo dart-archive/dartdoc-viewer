@@ -2,7 +2,8 @@
 <template>
   <div class="list-group affix-left" id="library-panel">
     <template repeat="{{viewer.libraries}}">
-      <a href="#{{linkHref}}" class="list-group-item">{{decoratedName}}</a>
+      <a href="{{prefixedLinkHref}}" class="list-group-item">
+          {{decoratedName}}</a>
     </template>
   </div>
 </template>

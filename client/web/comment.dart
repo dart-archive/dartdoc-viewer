@@ -83,7 +83,7 @@ class CommentElement extends DivElement with Polymer, Observable {
     var item = loc.item(viewer.homePage);
     if (item is! Parameter) return false;
     var newAnchor = new AnchorElement()
-      ..href = "#${item.anchorHref}"
+      ..href = item.prefixedAnchorHref
       ..text = loc.lastName;
     link.replaceWith(newAnchor);
     return true;
@@ -119,7 +119,7 @@ class CommentElement extends DivElement with Polymer, Observable {
   void _setLinkReference(AnchorElement link, DocsLocation loc) {
     var linkable = new LinkableType(loc.withAnchor);
     link
-      ..href = '#${linkable.location}'
+      ..href = locationPrefixed(linkable.location)
       ..text = linkable.simpleType;
   }
 }

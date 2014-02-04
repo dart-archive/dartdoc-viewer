@@ -6,6 +6,7 @@ library web.parameters;
 
 import 'dart:html';
 import 'package:dartdoc_viewer/item.dart';
+import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
 import 'member.dart';
 import 'type.dart';
@@ -47,7 +48,7 @@ class ParameterElement extends DartdocElement {
       element.annotations.annotations.forEach((annotation) {
         var anchor = new AnchorElement()
           ..text = '@${annotation.simpleType}'
-          ..href = '#${annotation.location}';
+          ..href = '${locationPrefixed(annotation.location)}';
         outerSpan.append(anchor);
         outerSpan.appendText(' ');
       });
@@ -59,8 +60,8 @@ class ParameterElement extends DartdocElement {
       }
       var parameterName = new AnchorElement()
         ..text = element.name
-        ..href = "#${element.anchorHref}"
-        ..id = "${element.anchorHrefLocation.anchor}";
+        ..href = element.prefixedAnchorHref
+        ..id = element.anchorHrefLocation.anchor;
       outerSpan.appendText(space);
       outerSpan.append(parameterName);
       outerSpan.appendText(element.decoration);

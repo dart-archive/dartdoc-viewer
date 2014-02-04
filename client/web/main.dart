@@ -148,7 +148,7 @@ class MainElement extends DartdocElement {
     _buildIdentifier = ''; // Don't try twice.
     retrieveFileContents('docs/VERSION').then((version) {
       _buildIdentifier = notifyPropertyChange(#buildIdentifier,
-          _buildIdentifier, "r $version");
+          _buildIdentifier, version);
     }).catchError((_) => null);
     return '';
   }
