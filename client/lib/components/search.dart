@@ -6,7 +6,8 @@ library web.search;
 
 import 'dart:async';
 import 'dart:html';
-import 'app.dart';
+import 'package:dartdoc_viewer/app.dart';
+import 'package:dartdoc_viewer/shared.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:dartdoc_viewer/location.dart';
