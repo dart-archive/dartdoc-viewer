@@ -77,13 +77,10 @@ class Search extends PolymerElement {
     if (results.isEmpty) return;
 
     String refId;
-    if (target != null ) {
-      // We get either the li or a element depending if we click or
-      // hit enter, so check both.
-      refId = target.dataset['ref-id'];
-      var parentRefId = target.parent.dataset['ref-id'];
-      if (refId == null) refId = parentRefId;
-    }
+    var actualTarget = event.path.firstWhere(
+        (x) => x is Element && x.dataset['ref-id'] != null,
+        orElse: () => target);
+    refId = actualTarget.dataset['ref-id'];
     if (refId == null || refId.isEmpty) {
       // If nothing is focused, use the first search result.
       refId = results.first.element;
