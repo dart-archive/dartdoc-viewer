@@ -80,7 +80,7 @@ class Search extends PolymerElement {
     var actualTarget = event.path.firstWhere(
         (x) => x is Element && x.dataset['ref-id'] != null,
         orElse: () => target);
-    refId = actualTarget.dataset['ref-id'];
+    refId = actualTarget == null ? null : actualTarget.dataset['ref-id'];
     if (refId == null || refId.isEmpty) {
       // If nothing is focused, use the first search result.
       refId = results.first.element;

@@ -959,7 +959,7 @@ int _compareLibraryNames(String a, String b) {
       var parameters = yaml['parameters'];
       var parameterName = parameters.keys.first;
       setterParameter = new Parameter(parameterName,
-          parameters[parameterName]);
+          parameters[parameterName], this);
     } else {
       type = new NestedType(yaml['type'].first);
     }

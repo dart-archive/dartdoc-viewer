@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <link rel="import" href="annotations.html">
+<link rel="import" href="parameters.html">
 <link rel="import" href="type.html">
 
 <polymer-element name="variable-heading" attributes="item">
@@ -10,11 +11,8 @@
     <template if="{{item.isSetter}}">
       set
       <b><a id="{{idName}}" href="{{item.prefixedAnchorHref}}"
-          >{{name}}</a></b>(<dartdoc-annotation 
-          annotations="{{item.setterParameter.annotations}}">
-      </dartdoc-annotation><dartdoc-type 
-          type="{{item.setterParameter.type}}"></dartdoc-type>
-      {{item.setterParameter.decoratedName}})
+          >{{name}}</a></b><dartdoc-parameter 
+          parameters="{{item.parameters}}"></dartdoc-parameter>
     </template>
     <template if="{{isNotSetter}}">
       <dartdoc-type type="{{item.type}}"></dartdoc-type>
