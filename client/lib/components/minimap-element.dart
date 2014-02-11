@@ -22,7 +22,7 @@ class MinimapElement extends PolymerElement {
   @observable ObservableList<Item> itemsToShow;
 
   get syntax => defaultSyntax;
-  get applyAuthorStyles => true;
+  bool get applyAuthorStyles => true;
 
   MinimapElement.created() : super.created() {
     registerObserver('isInherited', viewer.changes.listen((changes) {
@@ -35,14 +35,14 @@ class MinimapElement extends PolymerElement {
     }));
   }
 
-  itemChanged() {
+  void itemChanged() {
     if (category == null || item == null) return;
 
     categoryLink =
         '${item.prefixedLinkHref}@${category.name.replaceAll(" ", "-")}';
   }
 
-  categoryChanged() {
+  void categoryChanged() {
     if (category == null || item == null) return;
 
     itemChanged();

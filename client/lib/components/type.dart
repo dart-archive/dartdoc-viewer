@@ -20,7 +20,7 @@ class TypeElement extends PolymerElement {
   factory TypeElement() => new Element.tag('dartdoc-type');
   TypeElement.created() : super.created();
 
-  enteredView() {
+  void enteredView() {
     super.enteredView();
     typeChanged();
     searchIndex.onLoad(typeChanged);

@@ -13,8 +13,8 @@ import 'package:dartdoc_viewer/member.dart';
 class TypedefElement extends MemberElement {
   TypedefElement.created() : super.created();
 
-  wrongClass(newItem) => newItem is! Typedef;
-  get defaultItem => _defaultItem;
+  bool wrongClass(newItem) => newItem is! Typedef;
+  Typedef get defaultItem => _defaultItem;
   static final _defaultItem =
       new Typedef({'name' : 'loading', 'qualifiedName' : 'loading'});
 

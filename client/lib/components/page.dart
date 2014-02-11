@@ -20,7 +20,7 @@ class PageElement extends DartdocElement {
 
   PageElement.created() : super.created();
 
-  itemChanged() {
+  void itemChanged() {
     isLibrary = item is Library;
     isMethod = item is Method;
     isClass = item is Class;

@@ -51,17 +51,17 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
   DartdocElement.created() : super.created();
 
   get syntax => defaultSyntax;
-  get applyAuthorStyles => true;
+  bool get applyAuthorStyles => true;
 
   Viewer get viewer => app.viewer;
 
-  enteredView() {
+  void enteredView() {
     super.enteredView();
     // Handle clicks and redirect.
     onClick.listen(handleClick);
   }
 
-  var _pathname = window.location.pathname;
+  String get _pathname => window.location.pathname;
 
   void handleClick(Event e) {
     if (e.target is AnchorElement) {
@@ -127,12 +127,12 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
     }));
   }
 
-  itemChanged() {
+  void itemChanged() {
     super.itemChanged();
     _update();
   }
 
-  _update() {
+  void _update() {
     if (item == null) return;
 
     isInherited = item.inheritedFrom != '' && item.inheritedFrom != null;

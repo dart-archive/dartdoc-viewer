@@ -13,9 +13,9 @@ import 'package:dartdoc_viewer/member.dart';
 class MinimapElementLibrary extends MemberElement {
   MinimapElementLibrary.created() : super.created();
 
-  wrongClass(newItem) => newItem is! Library;
+  bool wrongClass(newItem) => newItem is! Library;
 
-  get defaultItem => _defaultItem;
+  Library get defaultItem => _defaultItem;
   static final _defaultItem = new Library.forPlaceholder({
     'name': 'loading', 'qualifiedName': 'loading', 'preview': 'loading' });
 }

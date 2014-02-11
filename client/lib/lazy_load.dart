@@ -4,7 +4,6 @@
 
 library web.lazy_load;
 
-import 'dart:async';
 import 'dart:html';
 
 /**

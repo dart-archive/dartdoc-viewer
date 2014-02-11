@@ -5,11 +5,12 @@
 library web.main;
 
 import 'dart:html';
-import 'package:dartdoc_viewer/item.dart';
-import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/app.dart';
+import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/member.dart';
+import 'package:dartdoc_viewer/read_yaml.dart';
+import 'search.dart';
 
 // TODO(alanknight): Clean up the dart-style CSS file's formatting once
 // it's stable.
@@ -29,14 +30,11 @@ class MainElement extends DartdocElement {
   @observable String showOrHidePackages;
 
   /// Records the timestamp of the event that opened the options menu.
-  var _openedAt;
-
-  /// Remember where we think the top of the main body normally ought to be.
-  String originalPadding;
+  int _openedAt;
 
   MainElement.created() : super.created();
 
-  enteredView() {
+  void enteredView() {
     super.enteredView();
 
     registerObserver('viewer', viewer.changes.listen(_onViewerChange));
@@ -71,13 +69,13 @@ class MainElement extends DartdocElement {
     showOrHidePackages = viewer.showPkgLibraries ? 'Hide' : 'Show';
   }
 
-  query(String selectors) => shadowRoot.querySelector(selectors);
+  Element query(String selectors) => shadowRoot.querySelector(selectors);
 
-  togglePanel() => viewer.togglePanel();
-  toggleInherited() => viewer.toggleInherited();
-  toggleObjectMembers() => viewer.toggleObjectMembers();
-  toggleMinimap() => viewer.toggleMinimap();
-  togglePkg() => viewer.togglePkg();
+  void togglePanel() => viewer.togglePanel();
+  void toggleInherited() => viewer.toggleInherited();
+  void toggleObjectMembers() => viewer.toggleObjectMembers();
+  void toggleMinimap() => viewer.toggleMinimap();
+  void togglePkg() => viewer.togglePkg();
 
   /// We want the search and options to collapse into a menu button if there
   /// isn't room for them to fit, but the amount of room taken up by the
@@ -94,7 +92,7 @@ class MainElement extends DartdocElement {
     // but it could still use cleanup.
     var permanentHeaders = shadowRoot.querySelectorAll(".navbar-brand");
     var searchAndOptions = shadowRoot.querySelector("#searchAndOptions");
-    var searchBox = shadowRoot.querySelector("search-box");
+    var searchBox = shadowRoot.querySelector("search-box") as Search;
     if (searchBox.isFocused) return;
     var wholeThing = shadowRoot.querySelector(".navbar-fixed-top");
     var navbar = shadowRoot.querySelector("#navbar");
@@ -162,7 +160,7 @@ class MainElement extends DartdocElement {
   }
 
   void hideOrShowNavigation({bool hide: true, Element nav}) {
-    var searchBox = shadowRoot.querySelector("search-box");
+    var searchBox = shadowRoot.querySelector("search-box") as Search;
     if (searchBox.isFocused) return;
     if (nav == null) nav = shadowRoot.querySelector("#nav-collapse-content");
     var button = shadowRoot.querySelector("#nav-collapse-button");

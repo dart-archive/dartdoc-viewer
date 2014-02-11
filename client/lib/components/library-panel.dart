@@ -4,8 +4,6 @@
 
 library web.library_panel;
 
-import 'dart:html';
-import 'package:dartdoc_viewer/item.dart';
 import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/member.dart';
 

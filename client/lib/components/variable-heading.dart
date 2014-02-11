@@ -17,12 +17,12 @@ class VariableHeading extends MemberElement {
 
   VariableHeading.created() : super.created();
 
-  get defaultItem => _defaultItem;
+  Variable get defaultItem => _defaultItem;
   static final _defaultItem =
       new Variable({'type' : [null], 'name' : 'loading'});
-  wrongClass(newItem) => newItem is! Variable;
+  bool wrongClass(newItem) => newItem is! Variable;
 
-  itemChanged() {
+  void itemChanged() {
     super.itemChanged();
     if (item == null) return;
 

@@ -73,8 +73,11 @@ class AnalyticsTransformer extends Transformer {
       if (configAsset == null) return null;
       return configAsset.readAsString();
     }).then((configContent) {
-      if (configContent == null) return null;
-      var config = new _Config.fromContent(configContent);
+      _Config config = null;
+
+      if(configContent != null) {
+        config = new _Config.fromContent(configContent);
+      }
 
       if (config == null) {
         transform.logger.warning('No config used.');

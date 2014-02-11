@@ -47,7 +47,7 @@ class CategoryElement extends DartdocElement {
 
   bool __isExpanded;
   bool get _isExpanded => __isExpanded;
-  set _isExpanded(bool expanded) {
+  void set _isExpanded(bool expanded) {
     __isExpanded = expanded;
     accordionStyle = expanded ? '' : 'collapsed';
     divClass = expanded ? 'collapse in' : 'collapse';
@@ -64,13 +64,13 @@ class CategoryElement extends DartdocElement {
   void variablesChanged() => _updateHasItems();
   void methodsChanged() => _updateHasItems();
 
-  _updateHasItems() {
+  void _updateHasItems() {
     hasItems = items != null && items.isNotEmpty ||
         variables != null && variables.isNotEmpty ||
         methods != null && methods.isNotEmpty;
   }
 
-  hideShow(event, detail, AnchorElement target) {
+  void hideShow(event, detail, AnchorElement target) {
     _isExpanded = !_isExpanded;
   }
 }

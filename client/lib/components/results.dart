@@ -36,7 +36,7 @@ class Result extends AnchorElement with Polymer, Observable {
     outerLibrary = _getOuterLibrary();
   }
 
-  get applyAuthorStyles => true;
+  bool get applyAuthorStyles => true;
 
   String get membertype => item == null ? 'none' : item.type;
   String get qualifiedname => item == null ? 'none' : item.element;

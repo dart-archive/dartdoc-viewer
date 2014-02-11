@@ -8,7 +8,6 @@ import 'dart:async';
 import 'dart:html';
 import 'package:dartdoc_viewer/app.dart';
 import 'package:dartdoc_viewer/shared.dart';
-import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:dartdoc_viewer/location.dart';
 import 'package:polymer/polymer.dart';
@@ -28,7 +27,7 @@ class Search extends PolymerElement {
   Search.created() : super.created();
 
   get syntax => defaultSyntax;
-  get applyAuthorStyles => true;
+  bool get applyAuthorStyles => true;
 
   void searchQueryChanged() {
     currentIndex = -1;
@@ -147,5 +146,5 @@ class Search extends PolymerElement {
     }
   }
 
-  get searchBox => shadowRoot.querySelector('#q');
+  InputElement get searchBox => shadowRoot.querySelector('#q');
 }

@@ -13,7 +13,6 @@
 // TODO(janicejl): Add a link to the dart docgen landing page in future.
 library web.app;
 
-import 'dart:async';
 import 'dart:html' show Element, querySelector, window, ScrollAlignment,
     Event, AnchorElement;
 

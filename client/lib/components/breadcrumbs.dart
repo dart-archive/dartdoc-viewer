@@ -17,9 +17,9 @@ class Breadcrumbs extends PolymerElement {
   Breadcrumbs.created() : super.created();
 
   get syntax => defaultSyntax;
-  get applyAuthorStyles => true;
+  bool get applyAuthorStyles => true;
 
-  enteredView() {
+  void enteredView() {
     super.enteredView();
     registerObserver('viewer', viewer.changes.listen((changes) {
       for (var change in changes) {
@@ -32,7 +32,7 @@ class Breadcrumbs extends PolymerElement {
     _updateBreadcrumbs();
   }
 
-  _updateBreadcrumbs() {
+  void _updateBreadcrumbs() {
     breadcrumbs = [];
     lastCrumb = null;
     if (viewer.homePage != null && viewer.currentPage != null) {

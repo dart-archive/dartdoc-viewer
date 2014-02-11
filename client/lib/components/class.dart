@@ -34,7 +34,8 @@ class ClassElement extends MemberElement {
     }));
   }
 
-  get defaultItem => _defaultItem;
+  Class get defaultItem => _defaultItem;
+
   static final _defaultItem = new Class.forPlaceholder('loading.loading',
       'loading');
 
@@ -47,7 +48,7 @@ class ClassElement extends MemberElement {
     shadowRoot.querySelector('#subclass-button').classes.add('hidden');
   }
 
-  leftView() {
+  void leftView() {
     super.leftView();
     if (_loader != null) {
       _loader.cancel();
@@ -55,7 +56,7 @@ class ClassElement extends MemberElement {
     }
   }
 
-  _loadCategories() {
+  void _loadCategories() {
     if (_loader != null) _loader.cancel();
     var categories =
     _loader = new LazyListLoader(
@@ -70,7 +71,7 @@ class ClassElement extends MemberElement {
       ])..start(eager: viewer.activeMember != '');
   }
 
-  itemChanged() {
+  void itemChanged() {
     super.itemChanged();
 
     _loadCategories();
@@ -81,7 +82,7 @@ class ClassElement extends MemberElement {
     }
   }
 
-  addInterfaces() {
+  void addInterfaces() {
     var p = shadowRoot.querySelector("#interfaces");
     if (p == null) return;
     p.children.clear();
@@ -96,7 +97,7 @@ class ClassElement extends MemberElement {
     }
   }
 
-  addSubclasses() {
+  void addSubclasses() {
     if (item.qualifiedName == 'dart.core.Object') return;
 
     var p = shadowRoot.querySelector("#subclasses");
@@ -139,7 +140,7 @@ class ClassElement extends MemberElement {
     });
   }
 
-  makeLink(cls, {hidden : false}) =>
+  AnchorElement makeLink(cls, {bool hidden : false}) =>
     new AnchorElement()
       ..href = "#${cls.location}"
       ..id = 'subclass-hidden'
