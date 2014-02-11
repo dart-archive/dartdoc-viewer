@@ -85,7 +85,7 @@ class Search extends PolymerElement {
       // If nothing is focused, use the first search result.
       refId = results.first.element;
     }
-    var newLocation = new LinkableType(refId).location;
+    var newLocation = new DocsLocation(refId).withAnchor;
     var encoded = Uri.encodeFull(newLocation);
     viewer.handleLink(encoded);
     window.history.pushState(locationPrefixed(encoded),
