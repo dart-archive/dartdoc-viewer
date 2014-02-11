@@ -213,7 +213,7 @@ class Filter {
   @observable bool get isInherited => false;
 
   /// Creates a link for the href attribute of an [AnchorElement].
-  String get linkHref => qualifiedName;
+  String get linkHref => Uri.encodeFull(qualifiedName);
 
   /// [linkHref] but with the leading # separator.
   String get prefixedLinkHref => locationPrefixed(linkHref);
@@ -238,7 +238,7 @@ class Filter {
   /// For non-inherited items, this will just be the [location].
   DocsLocation get localLocation => location;
 
-  String get anchorHref => anchorHrefLocation.withAnchor;
+  String get anchorHref => Uri.encodeFull(anchorHrefLocation.withAnchor);
 
   /// [anchorHref] but with the leading # separator.
   String get prefixedAnchorHref => locationPrefixed(anchorHref);
