@@ -21,3 +21,6 @@ client/local
 
 # Compiled python bytecode can be recreated by rerunning the scripts.
 *.pyc
+
+# Don't commit an actual config file
+client/asset/config.yaml
