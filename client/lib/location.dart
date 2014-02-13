@@ -113,7 +113,6 @@ class DocsLocation {
       memberName.hashCode ^ subMemberName.hashCode ^ anchor.hashCode;
 
   void _extractPieces(String uri) {
-
     if (uri == null || uri.length == 0) return;
     var position = uri.startsWith(AJAX_LOCATION_PREFIX) ?
         AJAX_LOCATION_PREFIX.length : 0;
@@ -271,8 +270,7 @@ class DocsLocation {
   /// parameter doesn't have an [Item]. The [root] parameter is a Home.
   Item item(Item root) {
     var myItems = items(root);
-    if (myItems.isEmpty) return null;
-    return myItems.last;
+    return myItems.isEmpty ? null : myItems.last;
   }
 
   /// Find the item that corresponds to the last field in the location.
@@ -327,9 +325,7 @@ class DocsLocation {
 
   /// Change [hash] into the form we use for identifying a doc entry within
   /// a larger page.
-  @reflectable String toHash(String hash) {
-    return 'id_' + hash;
-  }
+  @reflectable String toHash(String hash) => 'id_' + hash;
 
   /// The string that identifies our parent (e.g. the package containing a
   /// library, or the class containing a method) or an empty string if
@@ -342,17 +338,13 @@ class DocsLocation {
   @reflectable DocsLocation get parentLocation =>
       new DocsLocation.fromList(componentNames..removeLast());
 
-  @reflectable DocsLocation get asHash {
-    var hash = parentLocation;
-    hash.anchor = toHash(name);
-    return hash;
-  }
+  @reflectable DocsLocation get asHash =>
+      parentLocation..anchor = toHash(name);
 
   /// The simple name of our parent
   @reflectable String get parentName {
     var names = componentNames;
-    if (names.length < 2) return '';
-    return names[names.length - 2];
+    return names.length < 2 ? '' : names[names.length - 2];
   }
 
   @reflectable bool get isEmpty => packageName == null && libraryName == null
