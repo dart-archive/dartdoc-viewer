@@ -105,7 +105,7 @@ class Viewer extends Observable {
       var libraries = JSON.decode(response);
       isYaml = libraries['filetype'] == 'yaml';
       homePage = new Home(libraries);
-      var startPageName = libraries['startPage'];
+      var startPageName = libraries['start-page'];
       startPage = startPageName == null ? homePage :
           homePage.memberNamed(startPageName, orElse: () => homePage);
     });
