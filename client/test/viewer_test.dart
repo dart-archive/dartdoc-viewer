@@ -427,7 +427,7 @@ Library1.Class.from constructor''';
 
   test('read_empty', () {
     // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/empty.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/empty.yaml').then(expectAsync((data) {
       expect(_fixYamlString(data), empty);
       // Test that reading in an empty file doesn't throw an exception.
       expect(() => loadData(data), returnsNormally);
@@ -436,7 +436,7 @@ Library1.Class.from constructor''';
 
   test('parameter_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/parameter.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/parameter.yaml').then(expectAsync((data) {
       expect(_fixYamlString(data), parameter);
     }));
 
@@ -450,7 +450,7 @@ Library1.Class.from constructor''';
 
   test('variable_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/variable.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/variable.yaml').then(expectAsync((data) {
       expect(_fixYamlString(data), variable);
     }));
 
@@ -526,7 +526,7 @@ Library1.Class.from constructor''';
 
   test('method_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/method.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/method.yaml').then(expectAsync((data) {
       expect(_fixYamlString(data), method);
     }));
 
@@ -542,7 +542,7 @@ Library1.Class.from constructor''';
 
   test('clazz_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/class.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/class.yaml').then(expectAsync((data) {
       expect(_fixYamlString(data), clazz);
     }));
 
@@ -575,7 +575,7 @@ Library1.Class.from constructor''';
 
   test('library_test', () {
     // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/library.yaml').then(expectAsync1((data) {
+    retrieveFileContents('yaml/library.yaml').then(expectAsync((data) {
       expect(_fixYamlString(data), library);
     }));
 

@@ -1,13 +1,13 @@
 name: dartdoc_viewer
 description: Dart API Reference
 dependencies:
-  browser: any
-  polymer: any
-  polymer_expressions: any
-  yaml: any
+  browser: '>=0.9.1 <0.10.0'
+  polymer: '>=0.9.5 <0.10.0'
+  polymer_expressions: '>=0.9.1 <0.10.0'
+  yaml: '>=0.9.0 <0.10.0'
 dev_dependencies:
-  barback: any
-  unittest: any
+  barback: '>=0.11.0 <0.12.0'
+  unittest: '>=0.10.0 <0.11.0'
 transformers:
 - polymer:
     entry_points: web/index.html
