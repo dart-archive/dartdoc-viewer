@@ -47,7 +47,7 @@ const CONSTRUCTOR_SEPARATOR = "-";
 /// for providing static versions of pages if we get them. See
 /// https://developers.google.com/webmasters/ajax-crawling/
 const AJAX_LOCATION_PREFIX = "#!";
-const BASIC_LOCATION_PREFIX = "#";
+const BASIC_LOCATION_PREFIX = "&";
 
 /// Prefix the string with the separator we are using between the main
 /// URL and the location.

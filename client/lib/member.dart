@@ -63,6 +63,7 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
 
   String get _pathname => window.location.pathname;
 
+  /// #### Does this even do anything??
   void handleClick(Event e) {
     if (e.target is AnchorElement) {
       var anchor = e.target;

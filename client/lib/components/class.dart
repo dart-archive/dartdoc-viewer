@@ -10,6 +10,7 @@ import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/app.dart';
 import 'package:dartdoc_viewer/lazy_load.dart';
 import 'package:dartdoc_viewer/member.dart';
+import 'package:dartdoc_viewer/location.dart';
 
 
 @CustomTag("dartdoc-class")
@@ -142,7 +143,7 @@ class ClassElement extends MemberElement {
 
   AnchorElement makeLink(cls, {bool hidden : false}) =>
     new AnchorElement()
-      ..href = "#${cls.location}"
+      ..href = "$BASIC_LOCATION_PREFIX${cls.location}"
       ..id = 'subclass-hidden'
       ..classes = (hidden ? ['hidden'] : [])
       ..text = cls.simpleType;

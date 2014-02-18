@@ -7,6 +7,7 @@ library web.annotations;
 import 'package:dartdoc_viewer/item.dart';
 import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/member.dart';
+import 'package:dartdoc_viewer/location.dart';
 
 // TODO(jmesserly): just extend HtmlElement?
 @CustomTag('dartdoc-annotation')
@@ -22,7 +23,7 @@ class AnnotationElement extends PolymerElement {
     var out = new StringBuffer();
     for (var annotation in annotations.annotations) {
       if (annotation.link.isDocumented) {
-        out.write('<a href="#${annotation.link.location}">'
+        out.write('<a href="$BASIC_LOCATION_PREFIX${annotation.link.location}">'
             '${annotation.link.simpleType}</a>');
       } else {
         out.write(annotation.link.simpleType);
