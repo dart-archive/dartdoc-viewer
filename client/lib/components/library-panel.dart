@@ -27,6 +27,9 @@ class LibraryPanel extends DartdocElement {
     onMutation(shadowRoot).then(_updateActiveLibrary);
   }
 
+  foo(a, b, c) =>
+      print("foo");
+
   void _updateActiveLibrary(_) {
     for (var a in shadowRoot.querySelectorAll('a')) {
       a.classes.toggle('active', a.text == viewer.currentPage.decoratedName);
