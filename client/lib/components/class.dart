@@ -144,6 +144,7 @@ class ClassElement extends MemberElement {
   AnchorElement makeLink(cls, {bool hidden : false}) =>
     new AnchorElement()
       ..href = "$BASIC_LOCATION_PREFIX${cls.location}"
+      ..onClick.listen((event) => rerouteLink(event, null, event.target))
       ..id = 'subclass-hidden'
       ..classes = (hidden ? ['hidden'] : [])
       ..text = cls.simpleType;

@@ -92,7 +92,9 @@ class CommentElement extends DivElement with Polymer, Observable {
   void _resolveLink(AnchorElement link) {
     if (link.href != '') return;
     var loc = new DocsLocation(link.text);
-    if (_replaceWithParameterReference(link, loc)) return;
+    var replaced = _replaceWithParameterReference(link, loc);
+    link.onClick.listen((event) => rerouteLink(event, null, event.target));
+    if (replaced) return;
     if (searchIndex.map.containsKey(link.text)) {
       _setLinkReference(link, loc);
       return;
@@ -122,4 +124,8 @@ class CommentElement extends DivElement with Polymer, Observable {
       ..href = locationPrefixed(linkable.location)
       ..text = linkable.simpleType;
   }
+
+  /// This is called from the template, so needs to be available
+  /// as an instance method.
+  void rerouteLink(event, detail, target) => routeLink(event, detail, target);
 }

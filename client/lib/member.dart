@@ -55,36 +55,9 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
 
   Viewer get viewer => app.viewer;
 
-  void enteredView() {
-    super.enteredView();
-    // Handle clicks and redirect.
-    onClick.listen(handleClick);
-  }
-
   String get _pathname => window.location.pathname;
 
-  rerouteLink(event, detail, target) {
-//    if (target is ! AnchorElement) return;
-//    var href = target.href;
-//    var startIndex = href.lastIndexOf(BASIC_LOCATION_PREFIX);
-//    var ourLinkPart = href.substring(startIndex + 1);
-//    print(ourLinkPart);
-//    viewer.handleLink(ourLinkPart);
-//    event.preventDefault();
-  }
-
-  /// #### Does this even do anything??
-  void handleClick(Event e) {
-    if (e.target is AnchorElement) {
-      var anchor = e.target;
-      if (anchor.host == window.location.host
-          && anchor.pathname == _pathname && !(e as MouseEvent).ctrlKey) {
-        e.preventDefault();
-        var location = anchor.hash.substring(1, anchor.hash.length);
-        viewer.handleLink(location);
-      }
-    }
-  }
+  rerouteLink(event, detail, target) => routeLink(event, detail, target);
 }
 
 //// This is a web component to be extended by all Dart members with comments.
@@ -157,5 +130,18 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
         (!hasInheritedComment || viewer.isInherited);
     shouldShowCommentFrom = item.hasComment &&
         hasInheritedComment && viewer.isInherited;
+  }
+}
+
+/// The user has clicked on a link. If it's one of ours, just update
+/// the current item and page and don't navigate.
+void routeLink(Event e, detail, target) {
+  if (target is ! AnchorElement) return;
+  if (target.host == window.location.host
+//      && target.pathname == _pathname
+      && !(e as MouseEvent).ctrlKey) {
+    e.preventDefault();
+    var location = anchor.hash.substring(1, anchor.hash.length);
+    app.viewer.handleLink(location);
   }
 }

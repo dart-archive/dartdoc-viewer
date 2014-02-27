@@ -24,7 +24,7 @@ class AnnotationElement extends PolymerElement {
     for (var annotation in annotations.annotations) {
       if (annotation.link.isDocumented) {
         out.write('<a href="$BASIC_LOCATION_PREFIX${annotation.link.location}"'
-            ' on-click="{{rerouteLink}}>'
+            ' on-click="{{routeLink}}>'
             '${annotation.link.simpleType}</a>');
       } else {
         out.write(annotation.link.simpleType);

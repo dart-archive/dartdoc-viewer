@@ -29,7 +29,7 @@ final memberMatch = new RegExp(r'\.(\w+)');
 /// "className-constructorName" (if constructorName is empty, it will just be
 /// "className-".
 final subMemberMatch = new RegExp(r'\.([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%]+)');
-final anchorMatch = new RegExp(r'\@([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%\.\,]+)');
+final anchorMatch = new RegExp(r'\#([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%\.\,]+)');
 
 /// The character used to separator the parameter from the method in a
 /// link which is to a method on the same page as its class. So, e.g.
@@ -46,8 +46,9 @@ const CONSTRUCTOR_SEPARATOR = "-";
 /// factor it out into being #! and use the _escaped_fragment_ scheme
 /// for providing static versions of pages if we get them. See
 /// https://developers.google.com/webmasters/ajax-crawling/
-const AJAX_LOCATION_PREFIX = "#!";
+const AJAX_LOCATION_PREFIX = BASIC_LOCATION_PREFIX;
 const BASIC_LOCATION_PREFIX = r"$";
+const ANCHOR_STRING = "#";
 
 /// Prefix the string with the separator we are using between the main
 /// URL and the location.
@@ -112,10 +113,13 @@ class DocsLocation {
   int get hashCode => packageName.hashCode ^ libraryName.hashCode ^
       memberName.hashCode ^ subMemberName.hashCode ^ anchor.hashCode;
 
-  void _extractPieces(String uri) {
-    if (uri == null || uri.length == 0) return;
-    var position = uri.startsWith(AJAX_LOCATION_PREFIX) ?
-        AJAX_LOCATION_PREFIX.length : 0;
+  /// Create the location from the pieces in [uri]. It will accept things
+  /// that both do and do not start with
+  void _extractPieces(String fullUri) {
+    if (fullUri == null || fullUri.length == 0) return;
+    var startOfOurChunk = fullUri.lastIndexOf(BASIC_LOCATION_PREFIX);
+    var uri = startOfOurChunk == -1 ? fullUri : fullUri.substring(startOfOurChunk);
+    var position = 0;
 
     _check(regex) {
       var match = regex.matchAsPrefix(uri, position);
@@ -178,7 +182,7 @@ class DocsLocation {
       subMemberName == null ? '' : '.$subMemberName';
 
   /// The trailing anchor e.g. @id_hashCode, including the leading @.
-  @reflectable get anchorPlus => anchor == null ? '' : '@$anchor';
+  @reflectable get anchorPlus => anchor == null ? '' : '#ANCHOR_STRING$anchor';
 
   /// Return a list of the components' basic names. Omits the anchor, but
   /// includes the package name, even if it is null.

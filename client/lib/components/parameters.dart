@@ -47,7 +47,8 @@ class ParameterElement extends DartdocElement {
       // the annotations must be built manually.
       element.annotations.annotations.forEach((annotation) {
         var anchor = new AnchorElement()
-          ..text = '@${annotation.simpleType}'
+          ..text = '$ANCHOR_STRING${annotation.simpleType}'
+          ..onClick.listen((event) => rerouteLink(event, null, event.target))
           ..href = '${locationPrefixed(annotation.location)}';
         outerSpan.append(anchor);
         outerSpan.appendText(' ');
@@ -61,6 +62,7 @@ class ParameterElement extends DartdocElement {
       var parameterName = new AnchorElement()
         ..text = element.name
         ..href = element.prefixedAnchorHref
+        ..onClick.listen((event) => rerouteLink(event, null, event.target))
         ..id = element.anchorHrefLocation.anchor;
       outerSpan.appendText(space);
       outerSpan.append(parameterName);

@@ -147,4 +147,8 @@ class Search extends PolymerElement {
   }
 
   InputElement get searchBox => shadowRoot.querySelector('#q');
+
+  /// This is called from the template, so needs to be available
+  /// as an instance method.
+  void rerouteLink(event, detail, target) => routeLink(event, detail, target);
 }
