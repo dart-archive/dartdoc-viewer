@@ -12,7 +12,8 @@
       </dartdoc-annotation>
 
       <p class="panel-title">typedef
-        <a href="{{prefixedLocation}}">{{item.type.simpleType}}</a>
+        <a href="{{prefixedLocation}}"
+            on-click="{{rerouteLink}}">{{item.type.simpleType}}</a>
         {{item.name}}
         <dartdoc-parameter parameters="{{item.parameters}}"></dartdoc-parameter>
       </p>

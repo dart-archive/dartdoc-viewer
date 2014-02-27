@@ -63,6 +63,16 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
 
   String get _pathname => window.location.pathname;
 
+  rerouteLink(event, detail, target) {
+//    if (target is ! AnchorElement) return;
+//    var href = target.href;
+//    var startIndex = href.lastIndexOf(BASIC_LOCATION_PREFIX);
+//    var ourLinkPart = href.substring(startIndex + 1);
+//    print(ourLinkPart);
+//    viewer.handleLink(ourLinkPart);
+//    event.preventDefault();
+  }
+
   /// #### Does this even do anything??
   void handleClick(Event e) {
     if (e.target is AnchorElement) {

@@ -220,6 +220,7 @@ class Viewer extends Observable {
       currentPage = page;
     }
     _hash = location.anchorPlus;
+    _replaceLocation(location);
     _scrollScreen(location.anchorPlus);
     return new Future.value(true);
   }
@@ -236,10 +237,13 @@ class Viewer extends Observable {
 
   /// Replace the window location with [location]
   String _replaceLocation(DocsLocation location) {
-    var newUri = location.withAnchor;
+    var baseUri = window.location.pathname;
+    var startOfOurPart = baseUri.lastIndexOf(BASIC_LOCATION_PREFIX);
+    var standardPart = startOfOurPart == -1 ? baseUri : baseUri.substring(0, startOfOurPart);
+    var newUri = standardPart + locationPrefixed(location.withAnchor);
     var encoded = Uri.encodeFull(newUri);
-    window.history.pushState(null, null, encoded);
-//    window.location.replace(locationPrefixed(encoded));
+    window.history.pushState(encoded, "abc", encoded);
+//    window.location.replace(encoded);
     return encoded;
   }
 
