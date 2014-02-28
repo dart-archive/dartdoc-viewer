@@ -147,7 +147,7 @@ class MainElement extends DartdocElement {
     if (_buildIdentifier != null) return _buildIdentifier;
 
     _buildIdentifier = ''; // Don't try twice.
-    retrieveFileContents('docs/VERSION').then((version) {
+    retrieveFileContents(versionPath).then((version) {
       _buildIdentifier = notifyPropertyChange(#buildIdentifier,
           _buildIdentifier, version);
     }).catchError((_) => null);

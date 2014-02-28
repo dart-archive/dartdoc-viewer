@@ -16,7 +16,14 @@ import 'package:dartdoc_viewer/search.dart' show searchIndex;
 import 'package:collection/equality.dart';
 
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
-@reflectable const docsPath = 'docs/';
+@reflectable final docsPath = '$docsEntryPoint/docs/';
+
+// TODO(janicejl): JSON path should not be hardcoded.
+// Path to the JSON file being read in. This file will always be in JSON
+// format and contains the format of the rest of the files.
+final String sourcePath = '${docsPath}library_list.json';
+
+final String versionPath = '${docsPath}VERSION';
 
 nothing() => null;
 

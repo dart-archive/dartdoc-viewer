@@ -38,30 +38,18 @@ String location;
 /// parameter.
 const _ESCAPED_FRAGMENT = '?_escaped_fragment_=';
 
-/// From the URL, determine what location it corresponds to. We will
-/// accept hashes that start with [AJAX_LOCATION_PREFIX],
-/// [BASIC_LOCATION_PREFIX], and [_ESCAPED_FRAGMENT].
-String findLocation() {
-  var hash = window.location.hash;
-  var query = window.location.search;
-  if (query.startsWith(_ESCAPED_FRAGMENT)) {
-    return query.substring(_ESCAPED_FRAGMENT.length, query.length);
-  } else {
-    return locationDeprefixed(hash);
-  }
-}
-
 /// Listens for browser navigation and acts accordingly.
 void startHistory() {
-  location = findLocation();
-  windowLocation.changes.listen(navigate);
+  location = window.location.pathname;
+  // TODO(alanknight): This won't work on IE9. Not clear if anything will.
+  window.onPopState.listen(navigate);
 }
 
 void navigate(event) {
   // TODO(alanknight): Should we be URI encoding/decoding this?
-  var newLocation = findLocation();
+  var newLocation = window.location.pathname;
   if (viewer.homePage != null) {
-    viewer.handleLink(newLocation);
+    viewer.handleLink(newLocation, false);
   }
 }
 

@@ -6,6 +6,7 @@ library location;
 
 import 'package:observe/observe.dart';
 import 'item.dart';
+import 'dart:html';
 
 // These regular expressions are not strictly accurate for picking Dart
 // identifiers out of arbitrary text, e.g. identifiers must start with an
@@ -42,24 +43,30 @@ const PARAMETER_SEPARATOR = ",";
 /// an unnamed constructor. e.g. `Future.Future-`
 const CONSTRUCTOR_SEPARATOR = "-";
 
-/// The prefix to be used for anchors. This is here so that we can easily
-/// factor it out into being #! and use the _escaped_fragment_ scheme
-/// for providing static versions of pages if we get them. See
-/// https://developers.google.com/webmasters/ajax-crawling/
-const AJAX_LOCATION_PREFIX = BASIC_LOCATION_PREFIX;
 const BASIC_LOCATION_PREFIX = r"$";
 const ANCHOR_STRING = "#";
 
 /// Prefix the string with the separator we are using between the main
 /// URL and the location.
-String locationPrefixed(String s) => "$BASIC_LOCATION_PREFIX$s";
+String locationPrefixed(String s) => "$entryPoint$BASIC_LOCATION_PREFIX$s";
+
+/// The prefix on our URLs. Used to construct absolute URLs because we
+/// use / in to separate packages, which messes up relative URLs
+String entryPoint = window.location.pathname.split(BASIC_LOCATION_PREFIX)[0];
+
+/// To fetch docs we need a slightly different URL. The cases are that we
+/// might be in development and serving something like /client/web/index.html
+/// or we might be serving channel/stable/, or just /
+/// In the first case we need to be up one level, in the others we just serve
+/// directly.
+String docsEntryPoint = entryPoint.substring(0, entryPoint.lastIndexOf('/'));
 
 /// Remove the anchor prefix from [s] if it's present.
 String locationDeprefixed(String s) {
-  if (s.startsWith(AJAX_LOCATION_PREFIX)) {
-    return s.substring(AJAX_LOCATION_PREFIX.length, s.length);
+  if (s.startsWith(entryPoint)) {
+    return s.substring(entryPoint.length);
   } else if (s.startsWith(BASIC_LOCATION_PREFIX)) {
-    return s.substring(BASIC_LOCATION_PREFIX.length, s.length);
+    return s.substring(BASIC_LOCATION_PREFIX.length);
   } else {
     return s;
   }
@@ -114,10 +121,13 @@ class DocsLocation {
       memberName.hashCode ^ subMemberName.hashCode ^ anchor.hashCode;
 
   /// Create the location from the pieces in [uri]. It will accept things
-  /// that both do and do not start with
+  /// that both do and do not start with our leading string. We also
+  /// assume that anything that starts with a leading slash and does not
+  /// have our indicator means the home page.
   void _extractPieces(String fullUri) {
     if (fullUri == null || fullUri.length == 0) return;
     var startOfOurChunk = fullUri.lastIndexOf(BASIC_LOCATION_PREFIX) + 1;
+    if (startOfOurChunk == 0 && fullUri.startsWith('/')) return;
     var uri = startOfOurChunk == 0 ?
         fullUri : fullUri.substring(startOfOurChunk);
     var position = 0;

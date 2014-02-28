@@ -205,12 +205,13 @@ class Viewer extends Observable {
   }
 
   /// Updates [currentPage] to be [page].
-  Future _updatePage(Item page, DocsLocation location) {
+  Future _updatePage(Item page, DocsLocation location,
+                     [bool shouldPush = true]) {
     var replacement = _pageAndLocationFor(page, location);
     var newPage = replacement.first;
     var newLocation = replacement.last;
     if (page != newPage || location != newLocation) {
-      return handleLink(_replaceLocation(newLocation));
+      return handleLink(_replaceLocation(newLocation), shouldPush);
     }
 
     // Avoid reloading the page if it isn't necessary.
@@ -220,7 +221,7 @@ class Viewer extends Observable {
       currentPage = page;
     }
     _hash = location.anchorPlus;
-    _replaceLocation(location);
+    _replaceLocation(location, shouldPush);
     _scrollScreen(location.anchorPlus);
     return new Future.value(true);
   }
@@ -236,14 +237,12 @@ class Viewer extends Observable {
   }
 
   /// Replace the window location with [location]
-  String _replaceLocation(DocsLocation location) {
-    var baseUri = window.location.pathname;
-    var startOfOurPart = baseUri.indexOf(BASIC_LOCATION_PREFIX);
-    var standardPart = startOfOurPart == -1 ?
-        baseUri : baseUri.substring(0, startOfOurPart);
-    var newUri = standardPart + locationPrefixed(location.withAnchor);
+  String _replaceLocation(DocsLocation location, [bool shouldPush = true]) {
+    var newUri = locationPrefixed(location.withAnchor);
     var encoded = Uri.encodeFull(newUri);
-    window.history.pushState(encoded, "abc", encoded);
+    if (shouldPush) {
+      window.history.pushState(null, "", encoded);
+    }
 //    window.location.replace(encoded);
     return encoded;
   }
@@ -251,7 +250,7 @@ class Viewer extends Observable {
   /// Loads the [libraryName] [Library] and [className] [Class] if necessary
   /// and updates the current page to the member described by [location]
   /// once the correct member is found and loaded.
-  Future _loadAndUpdatePage(DocsLocation location) {
+  Future _loadAndUpdatePage(DocsLocation location, [bool shouldPush = true]) {
     // If it's loaded, it will be in the index.
     var destination = pageIndex[location.withoutAnchor];
     if (destination == null) {
@@ -259,11 +258,12 @@ class Viewer extends Observable {
       if (newLocation != location) {
         return handleLink(_replaceLocation(newLocation));
       } else {
-        return getItem(location).then((items) =>
-            _updatePage(location.itemFromList(items.toList()), location));
+        return getItem(location).then((items) => _updatePage(
+            location.itemFromList(items.toList()), location, shouldPush));
       }
     } else {
-      return destination.load().then((_) => _updatePage(destination, location));
+      return destination.load().then((_) =>
+          _updatePage(destination, location, shouldPush));
     }
   }
 
@@ -334,8 +334,10 @@ class Viewer extends Observable {
   /// [currentPage] is updated and state is not pushed to the history api.
   /// Returns a [Future] to determine if a link was found or not.
   /// [location] is a [String] path to the location (either a qualified name
-  /// or a url path).
-  Future handleLink(String uri) {
+  /// or a url path).  The [shouldPush] parameter tells us if we should do
+  /// a pushState of the navigation. Normally we do, but if this was a
+  /// result of navigating using the back/forward buttons we shouldn't.
+  Future handleLink(String uri, [bool shouldPush = true]) {
     // Links are the hash part of the URI without the leading #.
     // Valid forms for links are
     // home - the global home page
@@ -350,11 +352,12 @@ class Viewer extends Observable {
     var location = new DocsLocation(decoded);
 
     if (location.libraryName == 'home') {
-      _updatePage(homePage, location);
+      _updatePage(homePage, location, shouldPush);
       return new Future.value(true);
     }
     showLoadIndicator();
-    return _loadAndUpdatePage(location)..whenComplete(hideLoadIndicator);
+    return _loadAndUpdatePage(location, shouldPush)
+        ..whenComplete(hideLoadIndicator);
     // TODO(alanknight) : This is now letting the history automatically
     // update, even for non-found items. Is that an issue?
   }
