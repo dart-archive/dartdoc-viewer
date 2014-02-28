@@ -55,8 +55,6 @@ class NullTreeSanitizer implements NodeTreeSanitizer {
 
   Viewer get viewer => app.viewer;
 
-  String get _pathname => window.location.pathname;
-
   rerouteLink(event, detail, target) => routeLink(event, detail, target);
 }
 
@@ -141,7 +139,8 @@ void routeLink(Event e, detail, target) {
 //      && target.pathname == _pathname
       && !(e as MouseEvent).ctrlKey) {
     e.preventDefault();
-    var location = anchor.hash.substring(1, anchor.hash.length);
-    app.viewer.handleLink(location);
+    var newUri = target.href;
+    var location = new DocsLocation(newUri);
+    app.viewer.handleLink(location.withAnchor);
   }
 }

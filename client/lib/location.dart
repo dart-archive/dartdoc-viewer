@@ -117,8 +117,9 @@ class DocsLocation {
   /// that both do and do not start with
   void _extractPieces(String fullUri) {
     if (fullUri == null || fullUri.length == 0) return;
-    var startOfOurChunk = fullUri.lastIndexOf(BASIC_LOCATION_PREFIX);
-    var uri = startOfOurChunk == -1 ? fullUri : fullUri.substring(startOfOurChunk);
+    var startOfOurChunk = fullUri.lastIndexOf(BASIC_LOCATION_PREFIX) + 1;
+    var uri = startOfOurChunk == 0 ?
+        fullUri : fullUri.substring(startOfOurChunk);
     var position = 0;
 
     _check(regex) {
@@ -182,7 +183,7 @@ class DocsLocation {
       subMemberName == null ? '' : '.$subMemberName';
 
   /// The trailing anchor e.g. @id_hashCode, including the leading @.
-  @reflectable get anchorPlus => anchor == null ? '' : '#ANCHOR_STRING$anchor';
+  @reflectable get anchorPlus => anchor == null ? '' : '$ANCHOR_STRING$anchor';
 
   /// Return a list of the components' basic names. Omits the anchor, but
   /// includes the package name, even if it is null.

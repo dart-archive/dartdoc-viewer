@@ -17,7 +17,8 @@ BSD-style license that can be found in the LICENSE file.
             aria-labelledby="dropdownMenu" on-click="{{onSubmitCallback}}">
           <template if="{{results.isEmpty}}">
             <li class="search-result disabled">
-              <a tabindex="-1" href="$">No Results.</a>
+              <a tabindex="-1" href=""
+                  on-click="{{rerouteLink}}">No Results.</a>
             </li>
           </template>
           <template repeat="{{results}}">

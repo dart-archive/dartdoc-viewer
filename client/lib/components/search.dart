@@ -10,6 +10,7 @@ import 'package:dartdoc_viewer/app.dart';
 import 'package:dartdoc_viewer/shared.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:dartdoc_viewer/location.dart';
+import 'package:dartdoc_viewer/member.dart';
 import 'package:polymer/polymer.dart';
 
 /**

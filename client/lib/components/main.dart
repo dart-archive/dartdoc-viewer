@@ -11,6 +11,7 @@ import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/member.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'search.dart';
+import 'package:dartdoc_viewer/location.dart';
 
 // TODO(alanknight): Clean up the dart-style CSS file's formatting once
 // it's stable.
@@ -28,6 +29,8 @@ class MainElement extends DartdocElement {
   @observable String showOrHideInherited;
   @observable String showOrHideObjectMembers;
   @observable String showOrHidePackages;
+
+  @observable final homePage = '${BASIC_LOCATION_PREFIX}home';
 
   /// Records the timestamp of the event that opened the options menu.
   int _openedAt;

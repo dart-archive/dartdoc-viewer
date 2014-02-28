@@ -238,8 +238,9 @@ class Viewer extends Observable {
   /// Replace the window location with [location]
   String _replaceLocation(DocsLocation location) {
     var baseUri = window.location.pathname;
-    var startOfOurPart = baseUri.lastIndexOf(BASIC_LOCATION_PREFIX);
-    var standardPart = startOfOurPart == -1 ? baseUri : baseUri.substring(0, startOfOurPart);
+    var startOfOurPart = baseUri.indexOf(BASIC_LOCATION_PREFIX);
+    var standardPart = startOfOurPart == -1 ?
+        baseUri : baseUri.substring(0, startOfOurPart);
     var newUri = standardPart + locationPrefixed(location.withAnchor);
     var encoded = Uri.encodeFull(newUri);
     window.history.pushState(encoded, "abc", encoded);
