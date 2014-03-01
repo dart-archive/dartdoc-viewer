@@ -109,7 +109,7 @@ class Viewer extends Observable {
       startPage = startPageName == null ? homePage :
           homePage.memberNamed(startPageName, orElse: () => homePage);
     });
-    var indexFuture = retrieveFileContents('docs/index.json').then(
+    var indexFuture = retrieveFileContents('${docsPath}index.json').then(
         (String json) {
             searchIndex.map = JSON.decode(json);
          });

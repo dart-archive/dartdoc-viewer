@@ -43,7 +43,7 @@ const PARAMETER_SEPARATOR = ",";
 /// an unnamed constructor. e.g. `Future.Future-`
 const CONSTRUCTOR_SEPARATOR = "-";
 
-const BASIC_LOCATION_PREFIX = r"$";
+const BASIC_LOCATION_PREFIX = r"/dartdoc-viewer/";
 const ANCHOR_STRING = "#";
 
 /// Prefix the string with the separator we are using between the main
@@ -56,10 +56,18 @@ String entryPoint = window.location.pathname.split(BASIC_LOCATION_PREFIX)[0];
 
 /// To fetch docs we need a slightly different URL. The cases are that we
 /// might be in development and serving something like /client/web/index.html
-/// or we might be serving channel/stable/, or just /
+/// or we might be serving channels/stable/, or just /
 /// In the first case we need to be up one level, in the others we just serve
 /// directly.
-String docsEntryPoint = entryPoint.substring(0, entryPoint.lastIndexOf('/'));
+String get docsEntryPoint {
+  // TODO(alanknight): This is a horrible hack.
+  /// #### This should at least cache the answer. ######################################################
+  if (entryPoint.endsWith("index.html")) {
+    return entryPoint.substring(0, entryPoint.lastIndexOf('/') + 1);
+  } else if (entryPoint.endsWith("/")) {
+      return entryPoint.substring(0, entryPoint.length - 1);
+  } else return entryPoint;
+}
 
 /// Remove the anchor prefix from [s] if it's present.
 String locationDeprefixed(String s) {
@@ -126,10 +134,10 @@ class DocsLocation {
   /// have our indicator means the home page.
   void _extractPieces(String fullUri) {
     if (fullUri == null || fullUri.length == 0) return;
-    var startOfOurChunk = fullUri.lastIndexOf(BASIC_LOCATION_PREFIX) + 1;
-    if (startOfOurChunk == 0 && fullUri.startsWith('/')) return;
-    var uri = startOfOurChunk == 0 ?
-        fullUri : fullUri.substring(startOfOurChunk);
+    var startOfOurChunk = fullUri.lastIndexOf(BASIC_LOCATION_PREFIX);
+    if (startOfOurChunk == -1 && fullUri.startsWith('/')) return;
+    var uri = startOfOurChunk == -1 ? fullUri :
+      fullUri.substring(startOfOurChunk + BASIC_LOCATION_PREFIX.length);
     var position = 0;
 
     _check(regex) {
