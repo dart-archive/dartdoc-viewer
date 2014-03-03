@@ -16,6 +16,7 @@ import 'search.dart';
 // it's stable.
 @CustomTag("dartdoc-main")
 class MainElement extends DartdocElement {
+  @observable String version;
   @observable String pageContentClass;
   @observable bool shouldShowLibraryPanel;
   @observable bool shouldShowLibraryMinimap;
@@ -28,6 +29,18 @@ class MainElement extends DartdocElement {
   @observable String showOrHideInherited;
   @observable String showOrHideObjectMembers;
   @observable String showOrHidePackages;
+
+  @observable get showVersion {
+    if (version == null) {
+      version = ''; // Don't try twice.
+      retrieveFileContents('docs/VERSION').then((value) {
+        version = value;
+        notifyPropertyChange(#showVersion, false, true);
+      }).catchError((_) => null);
+    }
+
+    return version.isNotEmpty;
+  }
 
   /// Records the timestamp of the event that opened the options menu.
   int _openedAt;
@@ -137,18 +150,6 @@ class MainElement extends DartdocElement {
   void hideOptionsMenu() {
     var list = shadowRoot.querySelector(".dropdown-menu").parent;
     list.classes.remove("open");
-  }
-
-  var _buildIdentifier;
-  @observable get buildIdentifier {
-    if (_buildIdentifier != null) return _buildIdentifier;
-
-    _buildIdentifier = ''; // Don't try twice.
-    retrieveFileContents('docs/VERSION').then((version) {
-      _buildIdentifier = notifyPropertyChange(#buildIdentifier,
-          _buildIdentifier, version);
-    }).catchError((_) => null);
-    return '';
   }
 
   /// Collapse/expand the navbar when in mobile. Workaround for something
