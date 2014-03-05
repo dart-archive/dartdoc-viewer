@@ -18,7 +18,7 @@ import 'package:collection/equality.dart';
 // TODO(tmandel): Don't hardcode in a path if it can be avoided.
 @reflectable const docsPath = 'docs/';
 
-nothing() => null;
+_returnNull() => null;
 
 /**
  * Abstract class for anything that holds values and can be displayed.
@@ -48,7 +48,7 @@ String _wrapComment(String comment) =>
   int inheritedCounter = 0;
   int memberCounter = 0;
 
-  Item memberNamed(String name, {orElse : nothing}) =>
+  Item memberNamed(String name, {orElse : _returnNull}) =>
       content.firstWhere((x) => x.name == name, orElse: orElse);
 
   Category.forClasses(List<Map> classes, String name,
@@ -239,7 +239,7 @@ class Filter {
 
   bool get isLoaded => true;
 
-  Item memberNamed(String name, {Function orElse : nothing}) => nothing();
+  Item memberNamed(String name, {Function orElse : _returnNull}) => _returnNull();
 
   Item get owner => _owner == null ?
       _owner = pageIndex[location.parentQualifiedName] : _owner;
@@ -354,7 +354,7 @@ int _compareLibraryNames(String a, String b) {
     }
   }
 
-  Item memberNamed(String name, {Function orElse : nothing}) {
+  Item memberNamed(String name, {Function orElse : _returnNull}) {
     return libraries.firstWhere(
         (each) => each.name == name || each.decoratedName == name,
         orElse: orElse);
@@ -376,11 +376,11 @@ int _compareLibraryNames(String a, String b) {
  */
 @reflectable abstract class LazyItem extends Item {
   bool isLoaded = false;
-  String previewComment;
+  final String previewComment;
 
-  LazyItem(String qualifiedName, String name, previewComment,
-      [String comment]) : previewComment = previewComment ,
-      super(name, qualifiedName, comment);
+  LazyItem(String qualifiedName, String name, this.previewComment,
+      [String comment])
+      : super(name, qualifiedName, comment);
 
   /// Loads this [Item]'s data and populates all fields.
   Future load() {
@@ -468,11 +468,11 @@ int _compareLibraryNames(String a, String b) {
 
   bool get isDartLibrary => home != null && home.isTopLevelHome;
 
-  Item memberNamed(String name, {Function orElse : nothing}) {
+  Item memberNamed(String name, {Function orElse : _returnNull}) {
     if (name == null || !isLoaded) return orElse();
     for (var category in
         [classes, functions, variables, operators, typedefs, errors]) {
-      var member = category.memberNamed(name, orElse: nothing);
+      var member = category.memberNamed(name, orElse: _returnNull);
       if (member != null) return member;
     }
     return orElse();
@@ -652,12 +652,12 @@ int _compareLibraryNames(String a, String b) {
     return out.toString();
   }
 
-  Item memberNamed(String name, {Function orElse : nothing}) {
+  Item memberNamed(String name, {Function orElse : _returnNull}) {
     if (name == null) return orElse();
     for (var category in
         [annotations, constructs, functions, operators, variables]) {
       var member =  category == null ? null :
-          category.memberNamed(name, orElse: nothing);
+          category.memberNamed(name, orElse: _returnNull);
       if (member != null) return member;
     }
     return orElse();
@@ -673,7 +673,7 @@ int _compareLibraryNames(String a, String b) {
   List<Annotation> annotations = [];
   String domName;
 
-  Item memberNamed(String name, {Function orElse : nothing}) =>
+  Item memberNamed(String name, {Function orElse : _returnNull}) =>
     annotations.firstWhere((a) => a.qualifiedName == name, orElse: orElse);
 
   AnnotationGroup(List annotes) {
@@ -743,7 +743,7 @@ int _compareLibraryNames(String a, String b) {
   Parameter parameterNamed(String name) =>
       parameters.firstWhere((x) => x.name == name, orElse: () => null);
 
-  Item memberNamed(String name, {Function orElse : nothing}) {
+  Item memberNamed(String name, {Function orElse : _returnNull}) {
     var result = parameterNamed(name);
     return result == null ? orElse() : result;
   }
@@ -753,14 +753,17 @@ int _compareLibraryNames(String a, String b) {
  * An [Item] that describes a single Dart typedef.
  */
 @reflectable class Typedef extends Parameterized {
-  LinkableType type;
-  AnnotationGroup annotations;
+  final LinkableType type;
+  final AnnotationGroup annotations;
+  final String previewComment;
 
-  Typedef(Map yaml) : super(yaml['name'], yaml['qualifiedName'],
-      _wrapComment(yaml['comment'])) {
-    type = new LinkableType(yaml['return']);
+  Typedef(Map yaml)
+      : type = new LinkableType(yaml['return']),
+        annotations = new AnnotationGroup(yaml['annotations']),
+        previewComment = yaml['preview'],
+        super(yaml['name'], yaml['qualifiedName'],
+            _wrapComment(yaml['comment'])) {
     parameters = getParameters(yaml['parameters']);
-    annotations = new AnnotationGroup(yaml['annotations']);
   }
 }
 
