@@ -2,8 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/** Transfomer used for pub-serve and pub-deploy. */
-library polymer.transformer;
+library dartdoc_viewer.transformer;
 
 import 'dart:async';
 import 'package:barback/barback.dart';
