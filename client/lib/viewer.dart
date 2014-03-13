@@ -223,6 +223,7 @@ class Viewer extends Observable {
       currentPage = page;
     }
     _hash = location.anchorPlus;
+    _tracker.track(window.location.href);
     _scrollScreen(location.anchorPlus);
     return new Future.value(true);
   }
@@ -242,7 +243,6 @@ class Viewer extends Observable {
     var newUri = location.withAnchor;
     var encoded = Uri.encodeFull(newUri);
     window.location.replace(locationPrefixed(encoded));
-    _tracker.track(window.location.href);
     return encoded;
   }
 
