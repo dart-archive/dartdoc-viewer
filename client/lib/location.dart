@@ -49,6 +49,8 @@ const CONSTRUCTOR_SEPARATOR = "-";
 const AJAX_LOCATION_PREFIX = "#!";
 const BASIC_LOCATION_PREFIX = "#";
 
+const ANCHOR_PLUS_PREFIX = '@';
+
 /// Prefix the string with the separator we are using between the main
 /// URL and the location.
 String locationPrefixed(String s) => "$BASIC_LOCATION_PREFIX$s";
@@ -178,7 +180,8 @@ class DocsLocation {
       subMemberName == null ? '' : '.$subMemberName';
 
   /// The trailing anchor e.g. @id_hashCode, including the leading @.
-  @reflectable get anchorPlus => anchor == null ? '' : '@$anchor';
+  @reflectable get anchorPlus =>
+      anchor == null ? '' : ANCHOR_PLUS_PREFIX + anchor;
 
   /// Return a list of the components' basic names. Omits the anchor, but
   /// includes the package name, even if it is null.

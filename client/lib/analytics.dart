@@ -6,6 +6,8 @@ library dartdoc_viewer.analytics;
 
 import 'dart:js';
 
+import 'location.dart';
+
 /// Used to send analytics information for dartdoc-viewer
 class Tracker {
   String _lastLoc;
@@ -16,13 +18,23 @@ class Tracker {
   ///
   /// Does not track sequential visits to members within a class
   void track(String locationHref) {
-    var atIndex = locationHref.indexOf('@');
-    if (atIndex > 0) {
-      locationHref = locationHref.substring(0, atIndex);
+    var url = Uri.parse(locationHref);
+    var path = url.path;
+    if (url.query != '') {
+      path = '$path?${url.query}';
     }
 
-    if (_lastLoc != locationHref) {
-      _lastLoc = locationHref;
+    if (url.fragment != '') {
+      path = '$path#${url.fragment}';
+    }
+
+    var atIndex = path.indexOf(ANCHOR_PLUS_PREFIX);
+    if (atIndex > 0) {
+      path = path.substring(0, atIndex);
+    }
+
+    if (_lastLoc != path) {
+      _lastLoc = path;
       _track();
     }
   }
