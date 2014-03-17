@@ -14,7 +14,7 @@ final defaultSyntax = new _DefaultSyntaxWithEvents();
 // TODO(janicejl): JSON path should not be hardcoded.
 // Path to the JSON file being read in. This file will always be in JSON
 // format and contains the format of the rest of the files.
-String sourcePath = 'docs/library_list.json';
+const String sourcePath = 'docs/library_list.json';
 
 /// This is the cut off point between mobile and desktop in pixels.
 // TODO(janicejl): Use pixel desity rather than how many pixels. Look at:

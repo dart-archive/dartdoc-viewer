@@ -837,21 +837,22 @@ int _compareLibraryNames(String a, String b) {
  */
 @reflectable class Parameter extends Item {
 
-  bool isOptional;
-  bool isNamed;
-  bool hasDefault;
-  NestedType type;
-  String defaultValue;
-  AnnotationGroup annotations;
+  final bool isOptional;
+  final bool isNamed;
+  final bool hasDefault;
+  final NestedType type;
+  final String defaultValue;
+  final AnnotationGroup annotations;
 
-  Parameter(name, Map yaml, [owner]) : super(name, null) {
-    isOptional = _boolFor('optional', yaml);
-    isNamed = _boolFor('named', yaml);
-    hasDefault = _boolFor('default', yaml);
-    type = new NestedType(yaml['type'].first);
-    defaultValue = yaml['value'];
+  Parameter(String name, Map yaml, [Item owner])
+      : isOptional = _boolFor('optional', yaml),
+        isNamed = _boolFor('named', yaml),
+        hasDefault = _boolFor('default', yaml),
+        type = new NestedType(yaml['type'].first),
+        defaultValue = yaml['value'],
+        annotations = new AnnotationGroup(yaml['annotations']),
+        super(name, null) {
     _owner = owner;
-    annotations = new AnnotationGroup(yaml['annotations']);
   }
 
   String get decoratedName => '$name$decoration';
@@ -891,7 +892,7 @@ int _compareLibraryNames(String a, String b) {
   /// some, e.g. Variable, cannot.
   Item get firstItemUsableAsPage => owner;
 
-  toString() => "Parameter named $name in $owner";
+  String toString() => "Parameter named $name in $owner";
 }
 
 /**
@@ -899,28 +900,29 @@ int _compareLibraryNames(String a, String b) {
  */
 @reflectable class Variable extends Parameterized {
 
-  bool isFinal;
-  bool isStatic;
-  bool isAbstract;
-  bool isConstant;
-  bool isGetter;
-  bool isSetter;
-  String inheritedFrom;
+  final bool isFinal;
+  final bool isStatic;
+  final bool isAbstract;
+  final bool isConstant;
+  final bool isGetter;
+  final bool isSetter;
+  final String inheritedFrom;
+  final AnnotationGroup annotations;
   String commentFrom;
   Parameter setterParameter;
   NestedType type;
-  AnnotationGroup annotations;
 
   Variable(Map yaml, {this.isGetter: false, this.isSetter: false,
       this.inheritedFrom: '', String commentFrom: '', Item owner})
-      : super(yaml['name'], yaml['qualifiedName'],
-          _wrapComment(yaml['comment'])) {
+      : isFinal = _boolFor('final', yaml),
+        isStatic = _boolFor('static', yaml),
+        isConstant = _boolFor('constant', yaml),
+        isAbstract = _boolFor('abstract', yaml),
+        annotations = new AnnotationGroup(yaml['annotations']),
+        super(yaml['name'], yaml['qualifiedName'],
+            _wrapComment(yaml['comment'])) {
     this.commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
     _owner = owner;
-    isFinal = _boolFor('final', yaml);
-    isStatic = _boolFor('static', yaml);
-    isConstant = _boolFor('constant', yaml);
-    isAbstract = _boolFor('abstract', yaml);
     if (isGetter) {
       type = new NestedType(yaml['return'].first);
     } else if (isSetter) {
@@ -932,7 +934,6 @@ int _compareLibraryNames(String a, String b) {
     } else {
       type = new NestedType(yaml['type'].first);
     }
-    annotations = new AnnotationGroup(yaml['annotations']);
   }
 
   void addInheritedComment(Item item) {
@@ -968,10 +969,12 @@ int _compareLibraryNames(String a, String b) {
  * A Dart type that potentially contains generic parameters.
  */
 @reflectable class NestedType {
-  LinkableType outer;
-  List<NestedType> inner = [];
+  final LinkableType outer;
+  final List<NestedType> inner;
 
-  NestedType(Map yaml) {
+  factory NestedType(Map yaml) {
+    LinkableType outer;
+    var inner = <NestedType>[];
     if (yaml == null) {
       outer = new LinkableType('void');
     } else {
@@ -980,9 +983,14 @@ int _compareLibraryNames(String a, String b) {
       if (innerMap != null)
       innerMap.forEach((element) => inner.add(new NestedType(element)));
     }
+    return new NestedType._(outer, inner);
   }
 
-  get isDynamic => outer.isDynamic;
+  NestedType._(this.outer, this.inner);
+
+  bool get isDynamic => outer.isDynamic;
+
+  String toString() => 'NestedType: ${outer.qualifiedName}';
 }
 
 /**
@@ -990,25 +998,24 @@ int _compareLibraryNames(String a, String b) {
  */
 @reflectable class LinkableType {
   /// The resolved qualified name of the type this [LinkableType] represents.
-  DocsLocation loc;
+  final DocsLocation loc;
 
   /// The constructor resolves the library name by finding the correct library
   /// from [libraryNames] and changing [type] to match.
-  LinkableType(String type) {
-    loc = new DocsLocation(type);
-  }
+  LinkableType(String type) : this.loc = new DocsLocation(type);
 
   bool get isDocumented => searchIndex.map.containsKey(qualifiedName);
 
   /// The simple name for this type.
   String get simpleType => loc.locationWithoutAnchor.name;
 
-  /// The [Item] describing this type if it has been loaded, otherwise null.
   String get location => loc.withoutAnchor;
 
   String get qualifiedName => location;
 
-  get isDynamic => simpleType == 'dynamic';
+  bool get isDynamic => simpleType == 'dynamic';
+
+  String toString() => 'LinkableType: $qualifiedName';
 }
 
 
