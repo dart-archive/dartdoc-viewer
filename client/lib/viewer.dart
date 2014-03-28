@@ -243,11 +243,20 @@ class Viewer extends Observable {
   /// Replace the window location with [location]
   String _replaceLocation(DocsLocation location, [bool shouldPush = true]) {
     var newUri = locationPrefixed(location.withAnchor);
+    if (location.libraryName == 'home') {
+      window.document.title = "Dart API Docs";
+      window.document.querySelector(".nameMarker").text =
+          "Dart API Documentation Home";
+    } else {
+      print(location);
+      window.document.title = "${location.withoutAnchor} API Docs";
+      window.document.querySelector(".nameMarker").text =
+          "Dart API Documentation for ${location.withoutAnchor}";
+    }
     var encoded = Uri.encodeFull(newUri);
     if (shouldPush) {
       window.history.pushState(null, "", encoded);
     }
-//    window.location.replace(encoded);
     return encoded;
   }
 
