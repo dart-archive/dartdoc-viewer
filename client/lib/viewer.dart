@@ -16,10 +16,13 @@ import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/location.dart';
 import 'package:dartdoc_viewer/read_yaml.dart';
 import 'package:dartdoc_viewer/search.dart';
+
+import 'analytics.dart' as analytics;
 import 'shared.dart';
 
 /// The Dartdoc Viewer application state.
 class Viewer extends Observable {
+  final _tracker = new analytics.Tracker();
 
   @observable bool isDesktop;
 
@@ -222,6 +225,7 @@ class Viewer extends Observable {
     }
     _hash = location.anchorPlus;
     _replaceLocation(location, shouldPush);
+    _tracker.track(window.location.href);
     _scrollScreen(location.anchorPlus);
     return new Future.value(true);
   }

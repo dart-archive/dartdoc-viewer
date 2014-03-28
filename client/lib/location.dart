@@ -46,6 +46,8 @@ const CONSTRUCTOR_SEPARATOR = "-";
 const BASIC_LOCATION_PREFIX = r"/dartdoc-viewer/";
 const ANCHOR_STRING = "#";
 
+const ANCHOR_PLUS_PREFIX = '@';
+
 /// Prefix the string with the separator we are using between the main
 /// URL and the location.
 String locationPrefixed(String s) => "$entryPoint$BASIC_LOCATION_PREFIX$s";
@@ -54,14 +56,20 @@ String locationPrefixed(String s) => "$entryPoint$BASIC_LOCATION_PREFIX$s";
 /// use / in to separate packages, which messes up relative URLs
 String entryPoint = window.location.pathname.split(BASIC_LOCATION_PREFIX)[0];
 
+/// The entry point for JSON docs.
+String get docsEntryPoint => _docsEntryPoint == null ?
+    _docsEntryPoint = computeDocsEntryPoint() : _docsEntryPoint;
+
+/// Cache the root URL for the JSON docs.
+String _docsEntryPoint;
+
 /// To fetch docs we need a slightly different URL. The cases are that we
 /// might be in development and serving something like /client/web/index.html
 /// or we might be serving channels/stable/, or just /
 /// In the first case we need to be up one level, in the others we just serve
 /// directly.
-String get docsEntryPoint {
+String computeDocsEntryPoint() {
   // TODO(alanknight): This is a horrible hack.
-  /// #### This should at least cache the answer. ######################################################
   if (entryPoint.endsWith("index.html")) {
     return entryPoint.substring(0, entryPoint.lastIndexOf('/') + 1);
   } else if (entryPoint.endsWith("/")) {

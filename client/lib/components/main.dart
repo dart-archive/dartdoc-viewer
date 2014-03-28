@@ -17,7 +17,7 @@ import 'package:dartdoc_viewer/location.dart';
 // it's stable.
 @CustomTag("dartdoc-main")
 class MainElement extends DartdocElement {
-  @observable String version = 'Unknown';  // ###### TODO ### Workaround for the docs/VERSION relative path not working. It lost whatever I was doing in the @#$@# merge.
+  @observable String version;
   @observable String pageContentClass;
   @observable bool shouldShowLibraryPanel;
   @observable bool shouldShowLibraryMinimap;
@@ -35,9 +35,8 @@ class MainElement extends DartdocElement {
 
   @observable get showVersion {
     if (version == null) {
-      version = 'Unknown'; // Don't try twice.
-      retrieveFileContents('docs/VERSION').then((value) {
-        print("Got version, value = $value");
+      version = ''; // Don't try twice.
+      retrieveFileContents('$docsEntryPoint/docs/VERSION').then((value) {
         version = value;
         notifyPropertyChange(#showVersion, false, true);
       }).catchError((_) => null);
