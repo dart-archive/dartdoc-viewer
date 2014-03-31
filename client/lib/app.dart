@@ -41,8 +41,19 @@ const _ESCAPED_FRAGMENT = '?_escaped_fragment_=';
 /// Listens for browser navigation and acts accordingly.
 void startHistory() {
   location = window.location.pathname;
+  // Allow for the location to be in the hash, in the old style.
+  var hashLocation = parseFragmentLocation();
+  if (hashLocation != null && !hashLocation.isEmpty) {
+    location = hashLocation;
+  }
   // TODO(alanknight): This won't work on IE9. Not clear if anything will.
   window.onPopState.listen(navigate);
+}
+
+/// Read the old-style URL fragment.
+String parseFragmentLocation() {
+  var hash = locationDeprefixed(window.location.hash);
+  return hash.startsWith("id_") ? '' : hash;
 }
 
 void navigate(event) {

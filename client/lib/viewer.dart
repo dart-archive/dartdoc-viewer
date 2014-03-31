@@ -248,7 +248,6 @@ class Viewer extends Observable {
       window.document.querySelector(".nameMarker").text =
           "Dart API Documentation Home";
     } else {
-      print(location);
       window.document.title = "${location.withoutAnchor} API Docs";
       window.document.querySelector(".nameMarker").text =
           "Dart API Documentation for ${location.withoutAnchor}";

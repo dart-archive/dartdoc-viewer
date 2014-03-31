@@ -45,6 +45,7 @@ const CONSTRUCTOR_SEPARATOR = "-";
 
 const BASIC_LOCATION_PREFIX = r"/dartdoc-viewer/";
 const ANCHOR_STRING = "#";
+const OLD_LOCATION_PREFIX = '#';
 
 const ANCHOR_PLUS_PREFIX = '@';
 
@@ -83,6 +84,8 @@ String locationDeprefixed(String s) {
     return s.substring(entryPoint.length);
   } else if (s.startsWith(BASIC_LOCATION_PREFIX)) {
     return s.substring(BASIC_LOCATION_PREFIX.length);
+  } else if (s.startsWith(OLD_LOCATION_PREFIX)) {
+    return s.substring(OLD_LOCATION_PREFIX.length);
   } else {
     return s;
   }
