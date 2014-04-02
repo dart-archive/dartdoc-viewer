@@ -23,6 +23,8 @@ import 'package:collection/equality.dart';
 // format and contains the format of the rest of the files.
 final String sourcePath = '${docsPath}library_list.json';
 
+/// The path to a string that will identify our version, shown at the bottom
+/// of the page.
 final String versionPath = '${docsPath}VERSION';
 
 _returnNull() => null;

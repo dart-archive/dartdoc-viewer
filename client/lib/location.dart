@@ -43,8 +43,18 @@ const PARAMETER_SEPARATOR = ",";
 /// an unnamed constructor. e.g. `Future.Future-`
 const CONSTRUCTOR_SEPARATOR = "-";
 
+/// The prefix we use in the URL to identify where the location portion of
+/// the URL is.
 const BASIC_LOCATION_PREFIX = r"/dartdoc-viewer/";
+
+/// The separator to use between the "anchor" portion of the location, which
+/// is shown as part of the larger page, and the main portion. This doesn't
+/// necessarily correspond to an HTML anchor, though it may.
 const ANCHOR_STRING = "#";
+
+/// In the previous version, which used fragments for the whole location,
+/// the prefix used to separate the location from the rest of the URL. We
+/// now convert these to new-style locations.
 const OLD_LOCATION_PREFIX = '#';
 
 const ANCHOR_PLUS_PREFIX = '@';
@@ -70,7 +80,8 @@ String _docsEntryPoint;
 /// In the first case we need to be up one level, in the others we just serve
 /// directly.
 String computeDocsEntryPoint() {
-  // TODO(alanknight): This is a horrible hack.
+  // TODO(alanknight): There must be some better way than hard-coding
+  // the test for index.html.
   if (entryPoint.endsWith("index.html")) {
     return entryPoint.substring(0, entryPoint.lastIndexOf('/') + 1);
   } else if (entryPoint.endsWith("/")) {
