@@ -40,7 +40,7 @@ const _ESCAPED_FRAGMENT = '?_escaped_fragment_=';
 
 /// Listens for browser navigation and acts accordingly.
 void startHistory() {
-  location = window.location.pathname;
+  location = window.location.pathname + window.location.hash;
   // Allow for the location to be in the hash, in the old style.
   var hashLocation = parseFragmentLocation();
   if (hashLocation != null && !hashLocation.isEmpty) {
@@ -58,7 +58,7 @@ String parseFragmentLocation() {
 
 void navigate(event) {
   // TODO(alanknight): Should we be URI encoding/decoding this?
-  var newLocation = window.location.pathname;
+  var newLocation = window.location.pathname + window.location.hash;
   if (viewer.homePage != null) {
     viewer.handleLink(newLocation, false);
   }
