@@ -65,7 +65,17 @@ String locationPrefixed(String s) => "$entryPoint$BASIC_LOCATION_PREFIX$s";
 
 /// The prefix on our URLs. Used to construct absolute URLs because we
 /// use / in to separate packages, which messes up relative URLs
-String entryPoint = window.location.pathname.split(BASIC_LOCATION_PREFIX)[0];
+String get entryPoint =>
+    _entryPoint == null ? _entryPoint = computeEntryPoint() : _entryPoint;
+
+String _entryPoint;
+
+/// Compute the entry point for the docs URL. If it's at the root, then
+/// we treat it as empty, otherwise we get double-forward slashes.
+String computeEntryPoint() {
+  var basic = window.location.pathname.split(BASIC_LOCATION_PREFIX)[0];
+  return basic == '/' ? '' : basic;
+}
 
 /// The entry point for JSON docs.
 String get docsEntryPoint => _docsEntryPoint == null ?
