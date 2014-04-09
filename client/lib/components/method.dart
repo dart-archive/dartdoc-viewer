@@ -10,13 +10,12 @@ import 'package:dartdoc_viewer/member.dart';
 import 'package:dartdoc_viewer/item.dart';
 
 
-@initMethod _init() {
+@initMethod registerMethodElement() {
   Polymer.register('method-panel', MethodElement);
   Polymer.register('dartdoc-method', MethodElement);
 }
 
 /// Shared type for dartdoc-method and method-panel
-@reflectable
 class MethodElement extends InheritedElement {
   @observable bool isNotConstructor;
   @observable String modifiers;

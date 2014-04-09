@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="static/css/pics.css">
   <link rel="stylesheet" href="static/css/prettify.css">
   <link rel="stylesheet" href="static/css/print.css">
+  <link rel="import" href="packages/polymer/polymer.html">
   <link rel="import" href="packages/dartdoc_viewer/components/category.html">
   <link rel="import" href="packages/dartdoc_viewer/components/item.html">
   <link rel="import" href="packages/dartdoc_viewer/components/minimap-element.html">
@@ -15,7 +16,6 @@
   <link rel="import" href="packages/dartdoc_viewer/components/library-panel.html">
   <link rel="import" href="packages/dartdoc_viewer/components/minimap-class.html">
   <link rel="import" href="packages/dartdoc_viewer/components/main.html">
-  <script src="packages/browser/interop.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dart API Reference</title>
 </head>
@@ -25,6 +25,12 @@
   Don't change it or search indexing will break. -->
   <p class="nameMarker">Dart API Documentation</p>
   <script src="static/js/prettify.js"></script>
-  <script type="application/dart">export "package:dartdoc_viewer/app.dart";</script>
+  <script type="application/dart;component=1">
+    import 'package:polymer/polymer.dart' show initMethod;
+    import 'package:dartdoc_viewer/app.dart' show initApp;
+    // TODO(sigmund): ideally using 'export' should work, but for some reason
+    // polymer's bootstrap is not picking up exported initMethods.
+    @initMethod main() => initApp();
+  </script>
   <!-- Google Analytics -->
 </body>
