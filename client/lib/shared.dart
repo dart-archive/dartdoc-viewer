@@ -32,7 +32,7 @@ MainElement _dartdocMain;
 // TODO(jmesserly): for now we disable polymer expressions
 class _DefaultSyntaxWithEvents extends BindingDelegate {
   prepareBinding(String path, name, node) {
-    if (name.startsWith('on-')) Polymer.prepareBinding(path, name, node);
+    if (name.startsWith('on-')) return Polymer.prepareBinding(path, name, node);
     return super.prepareBinding(path, name, node);
   }
 }

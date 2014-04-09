@@ -22,6 +22,12 @@
 <body>
   <dartdoc-main id="dartdoc-main"></dartdoc-main>
   <script src="static/js/prettify.js"></script>
-  <script type="application/dart">export "package:dartdoc_viewer/app.dart";</script>
+  <script type="application/dart;component=1">
+    import 'package:polymer/polymer.dart' show initMethod;
+    import 'package:dartdoc_viewer/app.dart' show initApp;
+    // TODO(sigmund): ideally using 'export' should work, but for some reason
+    // polymer's bootstrap is not picking up exported initMethods.
+    @initMethod main() => initApp();
+  </script>
   <!-- Google Analytics -->
 </body>
