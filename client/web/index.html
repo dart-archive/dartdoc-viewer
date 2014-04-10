@@ -20,6 +20,11 @@
   <title>Dart API Reference</title>
 </head>
 <body>
+  <!--  Note that you will have to manually edit the polymer output to
+  put this script ahead of platform.js right now. -->
+  <script>window.Platform = window.Platform || {};
+      Platform.flags = Platform.flags || {};
+      Platform.flags.shadow = 'noThankYou';</script>
   <dartdoc-main id="dartdoc-main"></dartdoc-main>
   <!-- The server-side script insertName.py looks for exactly this string.
   Don't change it or search indexing will break. -->
