@@ -1,5 +1,12 @@
 <!doctype html>
 <head>
+  <!--  Note that you will have to manually edit the polymer output to
+  put this script ahead of platform.js right now.
+  TODO(kevmoo) Remove once use of applyAuthorStyle is removed
+  https://code.google.com/p/dart/issues/detail?id=18293 -->
+  <script>window.Platform = window.Platform || {};
+      Platform.flags = Platform.flags || {};
+      Platform.flags.shadow = 'noThankYou';</script>
   <meta charset="utf-8">
   <link rel="stylesheet" href="static/css/bootstrap.css">
   <link rel="stylesheet" href="static/css/dart-style.css">
