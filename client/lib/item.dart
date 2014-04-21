@@ -664,15 +664,13 @@ class Class extends LazyItem {
 
   Item memberNamed(String name, {Function orElse : _returnNull}) {
     if (name == null) return orElse();
-    for (var category in
-        [annotations, constructs, functions, operators, variables]) {
-      var member =  category == null ? null :
+    for (var category in [constructs, functions, operators, variables]) {
+      var member = category == null ? null :
           category.memberNamed(name, orElse: _returnNull);
       if (member != null) return member;
     }
     return orElse();
   }
-
 }
 
 /**
@@ -682,9 +680,6 @@ class AnnotationGroup {
   List<String> supportedBrowsers = [];
   List<Annotation> annotations = [];
   String domName;
-
-  Item memberNamed(String name, {Function orElse : _returnNull}) =>
-    annotations.firstWhere((a) => a.qualifiedName == name, orElse: orElse);
 
   AnnotationGroup(List annotes) {
     var set = new Set();
@@ -708,24 +703,24 @@ class AnnotationGroup {
  * A single annotation to an [Item].
  */
 class Annotation {
-  String qualifiedName;
-  LinkableType link;
-  List<String> parameters;
+  final String qualifiedName;
+  final LinkableType link;
+  final List<String> parameters;
 
-  Annotation(Map yaml) {
-    qualifiedName = yaml['name'];
-    link = new LinkableType(qualifiedName);
-    parameters = yaml['parameters'] == null ? [] : yaml['parameters'];
-  }
+  Annotation(Map yaml)
+      : this.qualifiedName = yaml['name'],
+        this.link = new LinkableType(yaml['name']),
+        this.parameters = yaml['parameters'] == null ? [] : yaml['parameters'];
 
   /// Hash by XORing together our name and parameters.
-  get hashCode => parameters.fold(
+  int get hashCode => parameters.fold(
       qualifiedName.hashCode, (a, param) => a ^ param.hashCode);
 
-  operator ==(other) => qualifiedName == other.qualifiedName &&
+  bool operator ==(Object other) => other is Annotation &&
+      qualifiedName == other.qualifiedName &&
       const ListEquality().equals(parameters, other.parameters);
 
-  get shortName => new DocsLocation(qualifiedName).lastName;
+  String get shortName => new DocsLocation(qualifiedName).lastName;
 
   toString() => 'Annotation($shortName)';
 }
@@ -781,29 +776,29 @@ class Typedef extends Parameterized {
  * An [Item] that describes a single Dart method.
  */
 class Method extends Parameterized {
-  bool isStatic;
-  bool isAbstract;
-  bool isConstant;
-  bool isConstructor;
-  String inheritedFrom;
+  final bool isStatic;
+  final bool isAbstract;
+  final bool isConstant;
+  final bool isConstructor;
+  final String inheritedFrom;
+  final String className;
+  final bool isOperator;
+  final AnnotationGroup annotations;
+  final NestedType type;
   String commentFrom;
-  String className;
-  bool isOperator;
-  AnnotationGroup annotations;
-  NestedType type;
 
   Method(Map yaml, {this.isConstructor: false, this.className: '',
       this.isOperator: false, this.inheritedFrom: '',
       String commentFrom: '', owner: null})
-        : super(yaml['name'], yaml['qualifiedName'],
+      : this.isStatic = _boolFor('static', yaml),
+        this.isAbstract = _boolFor('abstract', yaml),
+        this.isConstant = _boolFor('constant', yaml),
+        this.type = new NestedType(yaml['return'].first),
+        this.annotations = new AnnotationGroup(yaml['annotations']),
+        super(yaml['name'], yaml['qualifiedName'],
             _wrapComment(yaml['comment'])) {
-    isStatic = _boolFor('static', yaml);
-    isAbstract = _boolFor('abstract', yaml);
-    isConstant = _boolFor('constant', yaml);
     commentFrom = commentFrom == '' ? yaml['commentFrom'] : commentFrom;
-    type = new NestedType(yaml['return'].first);
     parameters = getParameters(yaml['parameters']);
-    annotations = new AnnotationGroup(yaml['annotations']);
     _owner = owner;
   }
 

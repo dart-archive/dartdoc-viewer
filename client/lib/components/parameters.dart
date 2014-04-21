@@ -5,10 +5,12 @@
 library web.parameters;
 
 import 'dart:html';
-import 'package:dartdoc_viewer/item.dart';
-import 'package:dartdoc_viewer/location.dart';
+
 import 'package:polymer/polymer.dart';
+
+import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/member.dart';
+
 import 'type.dart';
 
 @CustomTag("dartdoc-parameter")
@@ -53,6 +55,7 @@ class ParameterElement extends DartdocElement {
         outerSpan.append(anchor);
         outerSpan.appendText(' ');
       });
+
       // Skip dynamic as an outer parameter type (but not as generic)
       var space = '';
       if (!element.type.isDynamic) {

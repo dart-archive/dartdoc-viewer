@@ -17,8 +17,9 @@ class GoogleWebmasterVerifier extends Transformer {
 
   GoogleWebmasterVerifier.asPlugin();
 
-  Future<bool> isPrimary(Asset asset) {
-    var contains = asset.id.path.startsWith('asset/config.yaml');
+  Future<bool> isPrimary(assetOrId) {
+    var id = assetOrId is Asset ? assetOrId.id : assetOrId;
+    var contains = id.path.startsWith('asset/config.yaml');
     return new Future.value(contains);
   }
 
@@ -60,8 +61,10 @@ class AnalyticsTransformer extends Transformer {
 
   AnalyticsTransformer.asPlugin();
 
-  Future<bool> isPrimary(Asset asset) =>
-      new Future.value(asset.id.path == _INDEX_FILE_PATH);
+  Future<bool> isPrimary(assetOrId) {
+    var id = assetOrId is Asset ? assetOrId.id : assetOrId;
+    return new Future.value(id.path == _INDEX_FILE_PATH);
+  }
 
   Future apply(Transform transform) {
     var configAssetId = new AssetId(_PACKAGE_NAME, _CONFIG_PATH);

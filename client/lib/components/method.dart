@@ -24,9 +24,9 @@ class MethodElement extends InheritedElement {
 
   MethodElement.created() : super.created();
 
-  wrongClass(newItem) => newItem is! Method;
+  bool wrongClass(newItem) => newItem is! Method;
 
-  itemChanged() {
+  void itemChanged() {
     super.itemChanged();
     if (item == null) return;
 
@@ -36,7 +36,8 @@ class MethodElement extends InheritedElement {
     modifiers = constantModifier + staticModifier;
   }
 
-  get defaultItem => _defaultItem;
+  Method get defaultItem => _defaultItem;
+
   static final _defaultItem = new Method({
     "name" : "Loading",
     "qualifiedName" : "Loading",
