@@ -4,7 +4,7 @@ packages:
   analyzer:
     description: analyzer
     source: hosted
-    version: "0.13.5"
+    version: "0.13.6"
   args:
     description: args
     source: hosted
@@ -12,7 +12,7 @@ packages:
   barback:
     description: barback
     source: hosted
-    version: "0.13.0"
+    version: "0.12.0"
   browser:
     description: browser
     source: hosted
