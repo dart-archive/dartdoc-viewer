@@ -220,7 +220,9 @@ class Viewer extends Observable {
     // Avoid reloading the page if it isn't necessary.
     if (page != null && page != currentPage) {
       var main = window.document.querySelector("#dartdoc-main");
-      main.hideOrShowNavigation(hide: true);
+      if (main != null) {
+        main.hideOrShowNavigation(hide: true);
+      }
       currentPage = page;
     }
     _hash = location.anchorPlus;
@@ -407,17 +409,20 @@ class Viewer extends Observable {
   /// indicator to show the user that something is happening.
   Element get loadIndicator {
     if (_loadIndicator == null) {
-      _loadIndicator = dartdocMain.shadowRoot
-          .querySelector("#loading-indicator");
+      var shadow = dartdocMain.shadowRoot;
+      if (shadow == null) return null;
+      _loadIndicator = shadow.querySelector("#loading-indicator");
     }
     return _loadIndicator;
   }
 
   /// Make the indicator that we're loading data visible.
-  showLoadIndicator() => loadIndicator.style.display = '';
+  showLoadIndicator() =>
+      loadIndicator == null ? null : loadIndicator.style.display = '';
 
   /// Hide the indicator that we're loading data.
-  hideLoadIndicator() => loadIndicator.style.display = 'none';
+  hideLoadIndicator() =>
+      loadIndicator == null ? null : loadIndicator.style.display = 'none';
 }
 
 Iterable _concat(Iterable list1, Iterable list2) =>
