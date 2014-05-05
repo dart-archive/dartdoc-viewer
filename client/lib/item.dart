@@ -676,9 +676,13 @@ class AnnotationGroup {
     if (annotes != null) {
       annotes.forEach((annotation) {
         if (annotation['name'].endsWith('.SupportedBrowser')) {
-          supportedBrowsers.add(annotation['parameters'].toList().join(' '));
+          supportedBrowsers.add(annotation['parameters'].toList()
+              .map((e) => _stripOffQuotes(e))
+              .map((e) => _makeConstantPretty(e)).join(' '));
         } else if (annotation['name'].endsWith('.DomName')) {
           domName = annotation['parameters'].first;
+          // Strip off enclosing quotation marks.
+          domName = _stripOffQuotes(domName);
         } else {
           set.add(new Annotation(annotation));
         }
@@ -686,6 +690,16 @@ class AnnotationGroup {
     annotations = set.toList()
         ..sort((a, b) => a.shortName.compareTo(b.shortName));
     }
+  }
+
+  /** Helper method to remove the quotes from an annotation value. */
+  String _stripOffQuotes(String s) => s.startsWith("'") || s.startsWith('"') ?
+      s.substring(1, s.length - 1) : s;
+  String _makeConstantPretty(String s) {
+    s = s.replaceAll('SupportedBrowser.', '');
+    s = s.toLowerCase();
+    s = s[0].toUpperCase() + s.substring(1);
+    return s;
   }
 }
 
