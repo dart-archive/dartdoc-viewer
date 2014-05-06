@@ -25,7 +25,7 @@ class AnnotationElement extends PolymerElement {
       if (annotation.link.isDocumented) {
         out.write('<a href="$BASIC_LOCATION_PREFIX${annotation.link.location}"'
             ' on-click="{{routeLink}}>'
-            '${annotation.link.simpleType}</a>');
+            '${annotation.shortName}</a>');
       } else {
         out.write(annotation.link.simpleType);
       }
@@ -34,7 +34,7 @@ class AnnotationElement extends PolymerElement {
       out.write(annotation.parameters.join(", "));
       if (hasParams) out.write(")");
       if (annotation != annotations.annotations.last) {
-        out.write(", ");
+        out.write(",<br />");
       }
     }
     if (annotations.supportedBrowsers.isNotEmpty) {
