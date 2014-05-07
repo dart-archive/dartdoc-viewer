@@ -23,6 +23,7 @@ class CategoryElement extends DartdocElement {
   // null. We do it this way to keep the <template if> outside of the
   // <template repeat>, so the repeat is more strongly typed.
   @published ObservableList<Item> items;
+  @published ObservableList<Typedef> typedefs;
   @published ObservableList<Variable> variables;
   @published ObservableList<Method> methods;
 
@@ -63,11 +64,13 @@ class CategoryElement extends DartdocElement {
   void itemsChanged() => _updateHasItems();
   void variablesChanged() => _updateHasItems();
   void methodsChanged() => _updateHasItems();
+  void typedefsChanged() => _updateHasItems();
 
   void _updateHasItems() {
     hasItems = items != null && items.isNotEmpty ||
         variables != null && variables.isNotEmpty ||
-        methods != null && methods.isNotEmpty;
+        methods != null && methods.isNotEmpty ||
+        typedefs != null && typedefs.isNotEmpty;
   }
 
   void hideShow(event, detail, AnchorElement target) {

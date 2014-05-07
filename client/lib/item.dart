@@ -841,6 +841,37 @@ class Method extends Parameterized {
   String toString() => decoratedName;
 }
 
+/** The signature for a function that is passed in as a parameter to a method.*/
+class Closure extends Parameterized {
+  List<Parameter> parameters;
+  final NestedType returnType;
+  final String name;
+
+  Closure(String name, Map yaml, [Item owner]) :
+    name = name,
+    returnType = new NestedType(yaml['return'].first),
+    super('closure', null) {
+    parameters = getParameters(yaml['parameters']);
+    _owner = owner;
+  }
+
+  // For a method parameter we use the special anchor @method,parameter
+  // because the parameter name may not be unique on the page
+  DocsLocation get anchorHrefLocation {
+   if (owner == null) return null;
+
+   var ownerLocation = owner.anchorHrefLocation;
+   var ownerAnchor = ownerLocation.anchor;
+   ownerLocation.anchor = ownerAnchor == null ?
+       hashDecoratedName : "$ownerAnchor$hashDecoratedName";
+   return ownerLocation;
+  }
+
+  String get anchorHref => anchorHrefLocation.withAnchor;
+
+  String get hashDecoratedName => "$PARAMETER_SEPARATOR$name";
+}
+
 /**
  * A single parameter to a [Method].
  */
@@ -852,6 +883,7 @@ class Parameter extends Item {
   final NestedType type;
   final String defaultValue;
   final AnnotationGroup annotations;
+  final Closure functionDeclaration;
 
   Parameter(String name, Map yaml, [Item owner])
       : isOptional = _boolFor('optional', yaml),
@@ -860,6 +892,8 @@ class Parameter extends Item {
         type = new NestedType(yaml['type'].first),
         defaultValue = yaml['value'],
         annotations = new AnnotationGroup(yaml['annotations']),
+        functionDeclaration = yaml['functionDeclaration'] == null? null
+            : new Closure(name, yaml['functionDeclaration'], owner),
         super(name, null) {
     _owner = owner;
   }
