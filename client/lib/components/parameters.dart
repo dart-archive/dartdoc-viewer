@@ -11,11 +11,15 @@ import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/member.dart';
 
+import 'closure.dart';
 import 'type.dart';
 
 @CustomTag("dartdoc-parameter")
 class ParameterElement extends DartdocElement {
   @published List<Parameter> parameters = const [];
+
+
+  factory ParameterElement() => new Element.tag('dartdoc-parameter');
 
   ParameterElement.created() : super.created();
 
@@ -62,14 +66,21 @@ class ParameterElement extends DartdocElement {
         outerSpan.append(new TypeElement()..type = element.type);
         space = ' ';
       }
-      var parameterName = new AnchorElement()
-        ..text = element.name
-        ..href = element.prefixedAnchorHref
-        ..onClick.listen((event) => rerouteLink(event, null, event.target))
-        ..id = element.anchorHrefLocation.anchor;
+
       outerSpan.appendText(space);
-      outerSpan.append(parameterName);
+      if (element.functionDeclaration != null) {
+        outerSpan.append(
+            new ClosureElement()..closure = element.functionDeclaration);
+      } else {
+        var parameterName = new AnchorElement()
+          ..text = element.name
+          ..href = element.prefixedAnchorHref
+          ..id = element.anchorHrefLocation.anchor;
+
+        outerSpan.append(parameterName);
+      }
       outerSpan.appendText(element.decoration);
+
       if (className == 'required' && optional.isNotEmpty ||
           element != elements.last) {
         outerSpan.appendText(', ');
