@@ -101,6 +101,11 @@ class Viewer extends Observable {
   /// This will be empty if we simply want to select the library or class.
   String get activeMember => _hash;
 
+  /// This value is true when all the generated docs are for a single package.
+  /// In that case we do not display the package name (in the breadcrumbs for
+  /// example) since it is the same throughout.
+  bool viewingSinglePackage = false;
+
   // Private constructor for singleton instantiation.
   Viewer() {
     var manifest = retrieveFileContents(sourcePath);
@@ -111,6 +116,9 @@ class Viewer extends Observable {
       var startPageName = libraries['start-page'];
       startPage = startPageName == null ? homePage :
           homePage.memberNamed(startPageName, orElse: () => homePage);
+
+      viewingSinglePackage = (libraries['libraries'].map(
+          (e) => e['packageName']).toSet()..remove('')).length == 1;
     });
     var indexFuture = retrieveFileContents('docs/index.json').then(
         (String json) {
