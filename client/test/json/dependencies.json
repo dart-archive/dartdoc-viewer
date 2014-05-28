@@ -1,0 +1,78 @@
+{
+  "name" : "Library",
+  "qualifiedName" : "Library",
+  "annotations" : [],
+  "comment" : "<p>This is a library.</p>",
+  "variables" : {
+    "variable" : {
+      "name" : "variable",
+      "qualifiedName" : "Library.variable",
+      "comment" : "<p>This is a test comment</p>",
+      "final" : "false",
+      "static" : "false",
+      "constant" : "false",
+      "type" : [
+        {
+          "inner" : [],
+          "outer" : "Library.A"
+        }
+      ],
+      "annotations" : []
+    }
+  },
+  "functions" : {
+    "setters" : {},
+    "getters" : {},
+    "constructors" : {},
+    "operators" : {},
+    "methods" : {
+      "changeA" : {
+        "name" : "changeA",
+        "qualifiedName" : "Library.changeA",
+        "comment" : "",
+        "constant" : "false",
+        "static" : "false",
+        "abstract" : "false",
+        "return" : [
+          {
+            "inner" : [],
+            "outer" : "Library.A"
+          }
+        ],
+        "parameters" : {
+          "testA" : {
+            "name" : "testA",
+            "annotations" : [],
+            "optional" : "false",
+            "named" : "false",
+            "default" : "false",
+            "type" : [
+              {
+                "inner" : [],
+                "outer" : "Library.A"
+              }
+            ],
+            "value" : "null"
+          }
+        },
+        "annotations" : []
+      }
+    }
+  },
+  "classes" : {
+    "class" : [
+      {
+        "name" : "A",
+        "qualifiedName" : "Library.A"
+      },
+      {
+        "name" : "B",
+        "qualifiedName" : "Library.B"
+      },
+      {
+        "name" : "C",
+        "qualifiedName" : "Library.C"
+      }
+    ]
+  }
+}

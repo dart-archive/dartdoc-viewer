@@ -8,15 +8,15 @@ import 'dart:html';
 import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/app.dart';
 import 'package:dartdoc_viewer/item.dart';
+import 'package:dartdoc_viewer/location.dart';
 import 'package:dartdoc_viewer/member.dart';
-import 'package:dartdoc_viewer/read_yaml.dart';
 import 'search.dart';
 
 // TODO(alanknight): Clean up the dart-style CSS file's formatting once
 // it's stable.
 @CustomTag("dartdoc-main")
 class MainElement extends DartdocElement {
-  @observable String version;
+  @observable String sdkVersionString;
   @observable String pageContentClass;
   @observable bool shouldShowLibraryPanel;
   @observable bool shouldShowLibraryMinimap;
@@ -30,20 +30,14 @@ class MainElement extends DartdocElement {
   @observable String showOrHideObjectMembers;
   @observable String showOrHidePackages;
 
-  @observable get showVersion {
-    if (version == null) {
-      version = ''; // Don't try twice.
-      retrieveFileContents('docs/VERSION').then((value) {
-        version = value;
-        notifyPropertyChange(#showVersion, false, true);
-      }).catchError((_) => null);
-    }
-
-    return version.isNotEmpty;
-  }
+  /// The version of the docs that are being hosted on this main site, defaults
+  /// to nothing, aka "latest".
+  String hostDocsVersion = '';
 
   /// Records the timestamp of the event that opened the options menu.
   int _openedAt;
+
+  @observable final homePage = '${BASIC_LOCATION_PREFIX}home';
 
   MainElement.created() : super.created();
 
@@ -83,6 +77,43 @@ class MainElement extends DartdocElement {
   }
 
   Element query(String selectors) => shadowRoot.querySelector(selectors);
+
+  /// Helper for finding the specific SDK version and channel if we want to
+  /// link back to the canonical api.dartlang.org.
+  String _versionSubstringHelper(Pattern start, [Pattern end]) {
+    if (sdkVersionString != '') {
+      var index = sdkVersionString.lastIndexOf(start);
+      if (index != -1) {
+        var substringEndIndex = sdkVersionString.length;
+        if (end != null) {
+          substringEndIndex = sdkVersionString.indexOf(end, index);
+        }
+        if (substringEndIndex != -1) {
+          return sdkVersionString.substring(index + 1, substringEndIndex);
+        }
+      }
+    }
+    return '';
+  }
+
+  /// Determine what SDK channel (if applicable, for documenting packages) the
+  /// package is built off of. Default to bleeding edge.
+  String get sdkChannel {
+    String channelString = _versionSubstringHelper('.', '-');
+    if (channelString != 'edge' && channelString != '') return channelString;
+    return 'be';
+  }
+
+  /// Determine the actual SDK revision number (if applicable and available)
+  /// that this package was built with.
+  String get sdkRevisionNum {
+    var result = _versionSubstringHelper('.');
+    if (result != '') return result + VERSION_NUM_SEPARATOR;
+    return result;
+  }
+
+  String get highLevelSdkVersion => sdkVersionString.indexOf('-') != -1?
+      sdkVersionString.substring(0, sdkVersionString.indexOf('-')) : '';
 
   void togglePanel() => viewer.togglePanel();
   void toggleInherited() => viewer.toggleInherited();

@@ -21,9 +21,9 @@
         </button>
 
         <a href="http://api.dartlang.org/" class="navbar-brand header-logo"></a>
-        <a href="#home"
+        <a href="{{homePage}}" on-click="{{rerouteLink}}"
           class="navbar-brand btn-link">
-          Dart API Reference
+          API Reference
         </a>
         <div class="collapse in" id="nav-collapse-content">
           <dartdoc-breadcrumbs id="navbar"
@@ -78,8 +78,8 @@
         <dartdoc-minimap-class item="{{viewer.currentPage}}">
         </dartdoc-minimap-class>
       </template>
-      <template if="{{showVersion}}">
-        <div>Version {{version}}</div>
+      <template if="{{sdkVersionString}}">
+        <div>with SDK Version {{highLevelSdkVersion}}</div>
       </template>
     </div>
   </template>

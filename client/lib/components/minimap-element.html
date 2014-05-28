@@ -2,11 +2,13 @@
   <template>
     <template if="{{itemsToShow.isNotEmpty}}">
       <li>
-        <a id="{{camelCaseName}}" href="{{categoryLink}}">{{category.name}}</a>
+        <a id="{{camelCaseName}}" on-click="{{rerouteLink}}"
+            href="{{categoryLink}}">{{category.name}}</a>
       </li>
       <ul class="minimap-sublist collapse in">
         <template repeat="{{itemsToShow}}">
-          <li><a href="{{prefixedAnchorHref}}">{{decoratedName}}</a></li>
+          <li><a href="{{prefixedAnchorHref}}"
+              on-click="{{rerouteLink}}">{{decoratedName}}</a></li>
         </template>
       </ul>
     </template>

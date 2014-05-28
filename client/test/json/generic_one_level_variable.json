@@ -1,0 +1,20 @@
+{
+  "name" : "generic",
+  "qualifiedName" : "Library.generic",
+  "comment" : "<p>This is a test comment for generic types</p>",
+  "final" : "false",
+  "static" : "false",
+  "constant" : "false",
+  "type" : [
+    {
+      "inner" : [
+        {
+          "inner" : [],
+          "outer" : "dart.core.String"
+        }
+      ],
+      "outer" : "dart.core.List"
+    }
+  ],
+  "annotations" : []
+}

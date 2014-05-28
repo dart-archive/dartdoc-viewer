@@ -1,0 +1,55 @@
+{
+  "name" : "A",
+  "qualifiedName" : "Library.A",
+  "comment" : "<p>This class is used for testing.</p>",
+  "isAbstract" : "false",
+  "superclass" : "dart.core.Object",
+  "implements" : [
+    "Library.B",
+    "Library.C"
+  ],
+  "variables" : {},
+  "annotations" : [],
+  "generics" : {},
+  "methods" : {
+    "getters" : {},
+    "setters" : {},
+    "constructors" : {
+      "" : {
+        "abstract" : false,
+        "annotations" : [],
+        "comment" : "",
+        "commentFrom" : "",
+        "constant" : false,
+        "name" : "",
+        "parameters" : {},
+        "qualifiedName" : "Library.A.",
+        "return" : [
+          { "inner" : [],
+            "outer" : "Library.A"
+          }
+        ],
+        "static" : "false"
+      }
+    },
+    "operators" : {},
+    "methods" : {
+      "doAction" : {
+        "name" : "doAction",
+        "qualifiedName" : "Library.A.doAction",
+        "comment" : "<p>This is a test comment</p>.",
+        "static" : "true",
+        "constant" : "false",
+        "abstract" : "false",
+        "annotations" : [],
+        "return" : [
+          {
+            "inner" : [],
+            "outer" : "void"
+          }
+        ],
+        "parameters" : {}
+      }
+    }
+  }
+}
