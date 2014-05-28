@@ -1,0 +1,15 @@
+{
+  "name" : "variable",
+  "qualifiedName" : "Library.variable",
+  "comment" : "<p>This is a test comment</p>",
+  "final" : "false",
+  "static" : "false",
+  "constant" : "false",
+  "type" : [
+    {
+      "inner" : [],
+      "outer" : "dart.core.String"
+    }
+  ],
+  "annotations" : []
+}

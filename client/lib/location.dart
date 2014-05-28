@@ -5,6 +5,9 @@
 library location;
 
 import 'item.dart';
+import 'package:dartdoc_viewer/app.dart' show viewer;
+import 'package:dartdoc_viewer/shared.dart';
+
 import 'dart:html';
 
 // These regular expressions are not strictly accurate for picking Dart
@@ -28,8 +31,14 @@ final memberMatch = new RegExp(r'\.(\w+)');
 /// Constructors always contain a "-" and are of the form
 /// "className-constructorName" (if constructorName is empty, it will just be
 /// "className-".
-final subMemberMatch = new RegExp(r'\.([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%]+)');
-final anchorMatch = new RegExp(r'\#([\w\<\+\|\[\]\>\/\^\=\&\~\*\-\%\.\,]+)');
+final subMemberMatch = new RegExp(r'\.([\w\<\+\|\[\]\>\/\^\=\&\*\-\%]+)');
+
+RegExp get anchorMatch {
+  var anchorPrefix = ANCHOR_STRING;
+  if (useHistory) anchorPrefix = ANCHOR_PLUS_PREFIX;
+  return new RegExp(r'\' + anchorPrefix +
+      r'([\w\<\+\|\[\]\>\/\^\=\&\*\-\%\.\,]+)');
+}
 
 /// The character used to separator the parameter from the method in a
 /// link which is to a method on the same page as its class. So, e.g.
@@ -44,51 +53,58 @@ const CONSTRUCTOR_SEPARATOR = "-";
 
 /// The prefix we use in the URL to identify where the location portion of
 /// the URL is.
-const BASIC_LOCATION_PREFIX = r"/dartdoc-viewer/";
+String get BASIC_LOCATION_PREFIX => useHistory? r"/dartdoc-viewer/" :
+    ANCHOR_STRING;
 
 /// The separator to use between the "anchor" portion of the location, which
 /// is shown as part of the larger page, and the main portion. This doesn't
 /// necessarily correspond to an HTML anchor, though it may.
 const ANCHOR_STRING = "#";
 
-/// In the previous version, which used fragments for the whole location,
-/// the prefix used to separate the location from the rest of the URL. We
-/// now convert these to new-style locations.
-const OLD_LOCATION_PREFIX = '#';
-
 const ANCHOR_PLUS_PREFIX = '@';
+
+/// Character to separate the version number (if present) from the actual member
+/// name.
+const VERSION_NUM_SEPARATOR = '~';
+
+/// String to identify an anchor on a subproperty on a page (for example, a
+/// parameter name in a method).
+const ID_STRING = 'id_';
 
 /// Prefix the string with the separator we are using between the main
 /// URL and the location.
-String locationPrefixed(String s) => "$entryPoint$BASIC_LOCATION_PREFIX$s";
+String locationPrefixed(String s) =>
+    "$entryPoint$BASIC_LOCATION_PREFIX$getVersionStr$s";
+
+/// When we can, return the prefixed (link local to this app) link to the item.
+/// Otherwise, return the canonical link to the Dart SDK documentation (if
+/// redirectToDartlang is true).
+String prefixedLocationWhenPossible(DocsLocation location, String linkVersion)
+    => viewer.redirectToDartlang && location.isSDK ?
+        fullDartlangLocation(linkVersion) : locationPrefixed(linkVersion);
+
+/// Return the full URL for dart core APIs.
+String fullDartlangLocation(String location) =>
+    'https://api.dartlang.org/apidocs/channels/${dartdocMain.sdkChannel}'
+    '/dartdoc-viewer/${dartdocMain.sdkRevisionNum}' + location;
+
+String get getVersionStr {
+  if (dartdocMain.hostDocsVersion != '') {
+    return dartdocMain.hostDocsVersion + VERSION_NUM_SEPARATOR;
+  }
+  return dartdocMain.hostDocsVersion;
+}
 
 /// The prefix on our URLs. Used to construct absolute URLs because we
 /// use / in to separate packages, which messes up relative URLs
-String get entryPoint =>
-    _entryPoint == null ? _entryPoint = computeEntryPoint() : _entryPoint;
-
-String _entryPoint;
-
-/// Compute the entry point for the docs URL. If it's at the root, then
-/// we treat it as empty, otherwise we get double-forward slashes.
-String computeEntryPoint() {
+String get entryPoint {
+  if (!useHistory) return '';
   var basic = window.location.pathname.split(BASIC_LOCATION_PREFIX)[0];
   return basic == '/' ? '' : basic;
 }
 
 /// The entry point for JSON docs.
-String get docsEntryPoint => _docsEntryPoint == null ?
-    _docsEntryPoint = computeDocsEntryPoint() : _docsEntryPoint;
-
-/// Cache the root URL for the JSON docs.
-String _docsEntryPoint;
-
-/// To fetch docs we need a slightly different URL. The cases are that we
-/// might be in development and serving something like /client/web/index.html
-/// or we might be serving channels/stable/, or just /
-/// In the first case we need to be up one level, in the others we just serve
-/// directly.
-String computeDocsEntryPoint() {
+String get docsEntryPoint {
   // TODO(alanknight): There must be some better way than hard-coding
   // the test for index.html.
   if (entryPoint.endsWith("index.html")) {
@@ -100,14 +116,14 @@ String computeDocsEntryPoint() {
 
 /// Remove the anchor prefix from [s] if it's present.
 String locationDeprefixed(String s) {
-  if (s.startsWith(entryPoint)) {
-    return s.substring(entryPoint.length);
-  } else if (s.startsWith(BASIC_LOCATION_PREFIX)) {
-    return s.substring(BASIC_LOCATION_PREFIX.length);
-  } else if (s.startsWith(OLD_LOCATION_PREFIX)) {
-    return s.substring(OLD_LOCATION_PREFIX.length);
+  var result = s;
+  if (useHistory && s.startsWith(entryPoint)) {
+    result = s.substring(entryPoint.length);
+  }
+  if (result.startsWith(BASIC_LOCATION_PREFIX)) {
+    return result.substring(BASIC_LOCATION_PREFIX.length);
   } else {
-    return s;
+    return result;
   }
 }
 
@@ -163,16 +179,19 @@ class DocsLocation {
   /// that both do and do not start with our leading string. We also
   /// assume that anything that starts with a leading slash and does not
   /// have our indicator means the home page.
-  void _extractPieces(String fullUri) {
-    if (fullUri == null || fullUri.length == 0) return;
-    var startOfOurChunk = fullUri.lastIndexOf(BASIC_LOCATION_PREFIX);
-    if (startOfOurChunk == -1 && fullUri.startsWith('/')) return;
-    var uri = startOfOurChunk == -1 ? fullUri :
-      fullUri.substring(startOfOurChunk + BASIC_LOCATION_PREFIX.length);
+  void _extractPieces(String uri) {
+    if (uri == null || uri.length == 0) return;
+    var resultUri = uri;
+    if (useHistory) {
+      var startOfOurChunk = uri.lastIndexOf(BASIC_LOCATION_PREFIX);
+      if (startOfOurChunk == -1 && uri.startsWith('/')) return;
+      resultUri = startOfOurChunk == -1 ? uri :
+        uri.substring(startOfOurChunk + BASIC_LOCATION_PREFIX.length);
+    }
     var position = 0;
 
     _check(regex) {
-      var match = regex.matchAsPrefix(uri, position);
+      var match = regex.matchAsPrefix(resultUri, position);
       if (match != null) {
         var matchedString = match.group(1);
         position = position + match.group(0).length;
@@ -185,10 +204,10 @@ class DocsLocation {
     memberName = _check(memberMatch);
     subMemberName = _check(subMemberMatch);
     anchor = _check(anchorMatch);
-    if (position < uri.length && anchor == null) {
+    if (position < resultUri.length && anchor == null) {
       // allow an anchor that's just dotted, not @ if we don't find an @
       // form and we haven't reached the end.
-      anchor = uri.substring(position + 1, uri.length);
+      anchor = resultUri.substring(position + 1, resultUri.length);
     }
   }
 
@@ -345,12 +364,12 @@ class DocsLocation {
   /// a corresponding sub-member.
   DocsLocation get asMemberOrSubMemberNotAnchor {
     if (anchor == null) return this;
-    if (subMemberName != null || anchor.length <= 3) {
+    if (subMemberName != null || anchor.length <= ID_STRING.length) {
       throw new FormatException("DocsLocation invalid: $this");
     }
     var result = new DocsLocation.clone(this);
     result.anchor = null;
-    var newName = anchor.substring(3, anchor.length);
+    var newName = anchor.substring(ID_STRING.length, anchor.length);
     var withParameterName = newName.split(PARAMETER_SEPARATOR);
     var parameterName =
         (withParameterName.length > 1) ? withParameterName[1] : null;
@@ -379,7 +398,7 @@ class DocsLocation {
 
   /// Change [hash] into the form we use for identifying a doc entry within
   /// a larger page.
-  String toHash(String hash) => 'id_' + hash;
+  String toHash(String hash) => ID_STRING + hash;
 
   /// The string that identifies our parent (e.g. the package containing a
   /// library, or the class containing a method) or an empty string if
@@ -414,6 +433,10 @@ class DocsLocation {
     if (packageName != null) return packageName;
     return null;
   }
+
+  /// Return true if this is a location documenting an item only defined in the
+  /// Dart SDK.
+  bool get isSDK => libraryName != null && libraryName.startsWith('dart-');
 
   toString() => 'DocsLocation($withAnchor)';
 }

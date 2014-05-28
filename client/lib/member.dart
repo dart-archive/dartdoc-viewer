@@ -134,13 +134,13 @@ abstract class InheritedElement extends MemberElement {
 /// The user has clicked on a link. If it's one of ours, just update
 /// the current item and page and don't navigate.
 void routeLink(Event e, detail, target) {
+  if (!useHistory) return; // No-op.
   if (target is ! AnchorElement) return;
   if (target.host == window.location.host
-//      && target.pathname == _pathname
       && !(e as MouseEvent).ctrlKey) {
     e.preventDefault();
     var newUri = target.href;
     var location = new DocsLocation(newUri);
-    app.viewer.handleLink(location.withAnchor);
+    app.viewer.handleLink(location.withAnchor, useHistory);
   }
 }

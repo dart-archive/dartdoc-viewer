@@ -6,7 +6,6 @@ library web.type;
 
 import 'dart:html';
 import 'package:dartdoc_viewer/item.dart';
-import 'package:dartdoc_viewer/location.dart';
 import 'package:dartdoc_viewer/member.dart';
 import 'package:dartdoc_viewer/search.dart' show searchIndex;
 import 'package:polymer/polymer.dart';
@@ -40,7 +39,7 @@ class TypeElement extends PolymerElement {
       var outer = new AnchorElement()
         ..text = type.outer.simpleType
         ..onClick.listen((event) => routeLink(event, null, event.target))
-        ..href = locationPrefixed(type.outer.location);
+        ..href = type.outer.prefixedLocation;
       span.append(outer);
     } else {
       span.appendText(type.outer.simpleType);

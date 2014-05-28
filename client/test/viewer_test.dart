@@ -6,391 +6,13 @@ library test.viewer_test;
 
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
-import 'package:dartdoc_viewer/read_yaml.dart';
+import 'package:dartdoc_viewer/read_json.dart';
 import 'package:dartdoc_viewer/search.dart';
 import 'package:unittest/html_config.dart';
 import 'package:unittest/unittest.dart';
-import 'package:yaml/yaml.dart';
 import 'package:polymer/polymer.dart';
 
-// TODO(alanknight): These tests mostly exercise parsing YAML in the expected
-// form. Convert them to use JSON, and add tests.
-
-// Since YAML is sensitive to whitespace, these are declared in the top-level
-// for readability and to avoid possible parsing errors.
-String empty = '';
-
-// The 'value' field is escaped more than normal to
-// account for the use of literal strings.
-String parameter = '''"name" : "input"
-"optional" : "true"
-"named" : "true"
-"default" : "true"
-"type" :
-  - "inner" :
-    "outer" : "dart.core.String"
-"value" : "\\\"test\\\""
-"annotations" :''';
-
-String variable = '''"name" : "variable"
-"qualifiedName" : "Library.variable"
-"comment" : "<p>This is a test comment</p>"
-"final" : "false"
-"static" : "false"
-"constant" : "false"
-"type" :
-  - "inner" :
-    "outer" : "dart.core.String"
-"annotations" :''';
-
-String genericOneLevelVariable = '''"name" : "generic"
-"qualifiedName" : "Library.generic"
-"comment" : "<p>This is a test comment for generic types</p>"
-"final" : "false"
-"static" : "false"
-"constant" : "false"
-"type" :
-  - "inner" :
-      - "inner" :
-        "outer" : "dart.core.String"
-    "outer" : "dart.core.List"
-"annotations" :''';
-
-String genericTwoLevelVariable = '''"name" : "generic"
-"qualifiedName" : "Library.generic"
-"comment" : "<p>This is a test comment for generic types</p>"
-"final" : "false"
-"static" : "false"
-"constant" : "false"
-"type" :
-  - "inner" :
-      - "inner" :
-          - "inner" :
-            "outer" : "dart.core.int"
-          - "inner" :
-            "outer" : "dart.core.String"
-        "outer" : "dart.core.Map"
-    "outer" : "dart.core.List"
-"annotations" :''';
-
-String setter = '''"abstract" : "false"
-"annotations" :
-"comment" : "<p>This is a setter</p>"
-"commentfrom" : ""
-"constant" : "false"
-"name" : "length="
-"parameters" :
-  "newLength" :
-    "annotations" :
-    "default" : "false"
-    "name" : "newLength"
-    "named" : "false"
-    "optional" : "false"
-    "type" :
-      - "inner" :
-        "outer" : "dart.core.int"
-    "value" : "null"
-"qualifiedName" : "Library.Class.length="
-"return" :
-  - "inner" :
-    "outer" : "void"
-"static" : "false"''';
-
-String method =  '''"name" : "getA"
-"qualifiedName" : "Library.getA"
-"comment" : ""
-"static" : "false"
-"constant" : "false"
-"abstract" : "false"
-"annotations" :
-"return" :
-  - "inner" :
-    "outer" : "Library.A"
-"parameters" :
-  "testInt" :
-    "name" : "testInt"
-    "optional" : "false"
-    "named" : "false"
-    "default" : "false"
-    "type" :
-      - "inner" :
-        "outer" : "dart.core.int"
-    "value" : "null"
-    "annotations" :''';
-
-String clazz = '''"name" : "A"
-"qualifiedName" : "Library.A"
-"comment" : "<p>This class is used for testing.</p>"
-"isAbstract" : "false"
-"superclass" : "dart.core.Object"
-"implements" :
-  - "Library.B"
-  - "Library.C"
-"variables" :
-"annotations" :
-"generics" :
-"methods" :
-  "getters" :
-  "setters" :
-  "constructors" :
-    "" :
-      "abstract" : "false"
-      "annotations" :
-      "comment" :
-      "commentfrom" : ""
-      "constant" : "false"
-      "name" : ""
-      "parameters" :
-      "qualifiedName" : "Library.A."
-      "return" :
-        - "inner" :
-          "outer" : "Library.A"
-      "static" : "false"
-  "operators" :
-  "methods" :
-    "doAction" :
-      "name" : "doAction"
-      "qualifiedName" : "Library.A.doAction"
-      "comment" : "<p>This is a test comment</p>."
-      "static" : "true"
-      "constant" : "false"
-      "abstract" : "false"
-      "annotations" :
-      "return" :
-        - "inner" :
-          "outer" : "void"
-      "parameters" :''';
-
-String library = '''"name" : "Library"
-"qualifiedName" : "Library"
-"comment" : "<p>This is a library.</p>"
-"variables" :
-"functions" :
-"annotations" :
-"classes" :
-  "class" :
-    - "name" : "Library.A"
-      "preview" : "<p>This is a preview comment</p>"
-  "error" :
-  "typedef" :''';
-
-// A string of YAML with return types that are in scope for testing links.
-String dependencies =  '''"name" : "Library"
-"qualifiedName" : "Library"
-"annotations" :
-"comment" : "<p>This is a library.</p>"
-"variables" :
-  "variable" :
-    "name" : "variable"
-    "qualifiedName" : "Library.variable"
-    "comment" : "<p>This is a test comment</p>"
-    "final" : "false"
-    "static" : "false"
-    "constant" : "false"
-    "type" :
-      - "inner" :
-        "outer" : "Library.A"
-    "annotations" :
-"functions" :
-  "setters" :
-  "getters" :
-  "constructors" :
-  "operators" :
-  "methods" :
-    "changeA" :
-      "name" : "changeA"
-      "qualifiedName" : "Library.changeA"
-      "comment" : ""
-      "constant" : "false"
-      "static" : "false"
-      "abstract" : "false"
-      "return" :
-        - "inner" :
-          "outer" : "Library.A"
-      "parameters" :
-        "testA" :
-          "name" : "testA"
-          "annotations" :
-          "optional" : "false"
-          "named" : "false"
-          "default" : "false"
-          "type" :
-            - "inner" :
-              "outer" : "Library.A"
-          "value" : "null"
-      "annotations" :
-"classes" :
-  "class" :
-    - "name" : "A"
-      "qualifiedName" : "Library.A"
-    - "name" : "B"
-      "qualifiedName" : "Library.B"
-    - "name" : "C"
-      "qualifiedName" : "Library.C"''';
-
-String annotationsAndGenerics = '''"name" : "Library"
-"qualifiedName" : "Library"
-"comment" : "<p>This is an annotation test</p>"
-"variables" :
-  "generic" :
-    "name" : "generic"
-    "qualifiedName" : "Library.generic"
-    "comment" : "<p>This is a test comment for generic types</p>"
-    "final" : "false"
-    "static" : "false"
-    "constant" : "false"
-    "type" :
-      - "inner" :
-          - "inner" :
-              - "inner" :
-                "outer" : "Library.A"
-              - "inner" :
-                "outer" : "Library.A"
-            "outer" : "Library.B"
-        "outer" : "Library.C"
-    "annotations" :
-  "variable" :
-    "name" : "variable"
-    "qualifiedName" : "Library.variable"
-    "comment" : ""
-    "final" : "false"
-    "static" : "false"
-    "constant" : "false"
-    "type" :
-      - "inner" :
-        "outer" : "Library.A"
-    "annotations" :
-      - "name" : "Library.B"
-        "parameters" :
-          - "firstParameter"
-          - "secondParameter"
-      - "name" : "Library.A"
-        "parameters" :
-"functions" :
-  "setters" :
-  "getters" :
-  "constructors" :
-  "operators" :
-  "methods" :
-"classes" :
-  "class" :
-    - "name" : "A"
-      "qualifiedName" : "Library.A"
-    - "name" : "B"
-      "qualifiedName" : "Library.B"
-    - "name" : "C"
-      "qualifiedName" : "Library.C"
-  "error" :
-  "typedef" :''';
-
-String clazzA = '''"name" : "A"
-"qualifiedName" : "Library.A"
-"isAbstract" : "false"
-"annotations" :
-"generics" :
-"comment" : ""
-"superclass" : "Library.B"
-"implements" :
-  - "Library.B"
-"inheritedVariables" :
-  "inheritance" :
-    "name" : "inheritance"
-    "qualifiedName" : "Library.B.inheritance"
-    "comment" : "<p>Comment for Library.B.inheritance</p>"
-    "commentFrom" : ""
-    "final" : "false"
-    "static" : "false"
-    "constant" : "false"
-    "type" :
-      - "inner" :
-        "outer" : "dart.core.String"
-    "annotations" :
-"variables" :
-  "inheritance" :
-    "name" : "inheritance"
-    "qualifiedName" : "Library.A.inheritance"
-    "comment" : ""
-    "final" : "false"
-    "static" : "false"
-    "constant" : "false"
-    "type" :
-      - "inner" :
-        "outer" : "dart.core.String"
-    "annotations" :
-"methods" :
-  "constructors" :
-  "getters" :
-  "methods" :
-    "getA" :
-      "name" : "getA"
-      "qualifiedName" : "Library.A.getA"
-      "comment" : ""
-      "static" : "false"
-      "constant" : "false"
-      "abstract" : "false"
-      "annotations" :
-      "return" :
-        - "inner" :
-          "outer" : "Library.B"
-      "parameters" :
-        "testInt" :
-          "name" : "testInt"
-          "optional" : "false"
-          "named" : "false"
-          "default" : "false"
-          "type" :
-            - "inner" :
-              "outer" : "Library.C"
-          "value" : "null"
-          "annotations" :
-  "operators" :
-  "setters" :''';
-
-String clazzB = '''"name" : "B"
-"qualifiedName" : "Library.B"
-"annotations" :
-"isAbstract" : "true"
-"generics" :
-"comment" : ""
-"superclass" : "dart.core.Object"
-"implements" :
-"variables" :
-  "inheritance" :
-    "name" : "inheritance"
-    "qualifiedName" : "Library.B.inheritance"
-    "comment" : "<p>Comment for Library.B.inheritance</p>"
-    "final" : "false"
-    "static" : "false"
-    "constant" : "false"
-    "type" :
-      - "inner" :
-        "outer" : "dart.core.String"
-    "annotations" :
-"methods" :''';
-
-String clazzC =  '''"name" : "C"
-"qualifiedName" : "Library.C"
-"annotations" :
-"isAbstract" : "true"
-"generics" :
-"comment" : ""
-"superclass" : "Library.A"
-"implements" :
-"inheritedVariables" :
-  "inheritance" :
-    "name" : "inheritance"
-    "qualifiedName" : "Library.A.inheritance"
-    "comment" : "<p>Comment for Library.B.inheritance</p>"
-    "commentFrom" : "Library.B.inheritance"
-    "final" : "false"
-    "static" : "false"
-    "constant" : "false"
-    "type" :
-      - "inner" :
-        "outer" : "dart.core.String"
-    "annotations" :
-"variables" :
-"methods" :''';
+import 'dart:convert';
 
 String manyLibrariesIndex = '''dart.core library
 dart.core.Object class
@@ -421,239 +43,396 @@ Library1.Class.variable property
 Library1.Class. constructor
 Library1.Class.from constructor''';
 
+String clazzB = '''{
+  "name" : "B",
+  "qualifiedName" : "Library.B",
+  "comment" : "<p>This class is used for testing.</p>",
+  "isAbstract" : "true",
+  "superclass" : "dart.core.Object",
+  "implements" : [],
+  "variables": {
+      "inheritance" : {
+        "name" : "inheritance",
+        "qualifiedName" : "Library.B.inheritance",
+        "comment" : "<p>Comment for Library.B.inheritance</p>",
+        "final" : "false",
+        "static" : "false",
+        "constant" : "false",
+        "type" : [
+          {
+            "inner" : [],
+            "outer" : "dart.core.String"
+          }
+        ],
+        "annotations" : []
+      }
+  },
+  "annotations" : [],
+  "generics" : {},
+  "methods" : {}
+}''';
+
+String clazzC = '''{
+  "name" : "C",
+  "qualifiedName" : "Library.C",
+  "comment" : "",
+  "isAbstract" : "true",
+  "superclass" : "Library.A",
+  "implements" : [],
+  "inheritedVariables": {
+      "inheritance" : {
+        "name" : "inheritance",
+        "qualifiedName" : "Library.A.inheritance",
+        "comment" : "<p>Comment for Library.B.inheritance</p>",
+        "commentFrom" : "Library.B.inheritance",
+        "final" : "false",
+        "static" : "false",
+        "constant" : "false",
+        "type" : [
+          {
+            "inner" : [],
+            "outer" : "dart.core.String"
+          }
+        ],
+        "annotations" : []
+      }
+  },
+  "annotations" : [],
+  "generics" : {},
+  "methods" : {}
+}''';
+
+
+String clazzA = '''{
+  "name" : "A",
+  "qualifiedName" : "Library.A",
+  "comment" : "<p>This class is used for testing.</p>",
+  "isAbstract" : "false",
+  "superclass" : "Library.B",
+  "implements" : [
+    "Library.B"
+  ],
+  "inheritedVariables" : {
+    "inheritance" : {
+      "name" : "inheritance",
+      "qualifiedName" : "Library.B.inheritance",
+      "comment" : "<p>Comment for Library.B.inheritance</p>",
+      "commentFrom": "",
+      "final" : "false",
+      "static" : "false",
+      "constant" : "false",
+      "type" : [
+        {
+          "inner" : [],
+          "outer" : "dart.core.String"
+        }
+      ],
+      "annotations" : []
+    }
+  },
+  "variables" : {
+    "inheritance" : {
+      "name" : "inheritance",
+      "qualifiedName" : "Library.A.inheritance",
+      "comment" : "",
+      "final" : "false",
+      "static" : "false",
+      "constant" : "false",
+      "type" : [
+        {
+          "inner" : [],
+          "outer" : "dart.core.String"
+        }
+      ],
+      "annotations" : []
+    }
+  },
+  "annotations" : [],
+  "generics" : {},
+  "methods" : {
+    "getters" : {},
+    "setters" : {},
+    "constructors" : {
+      "" : {
+        "abstract" : false,
+        "annotations" : [],
+        "comment" : "",
+        "commentFrom" : "",
+        "constant" : false,
+        "name" : "",
+        "parameters" : {},
+        "qualifiedName" : "Library.A.",
+        "return" : [
+          { "inner" : [],
+            "outer" : "Library.A"
+          }
+        ],
+        "static" : "false"
+      }
+    },
+    "operators" : {},
+    "methods" : {
+      "getA" : {
+        "name" : "getA",
+        "qualifiedName" : "Library.A.getA",
+        "comment" : "",
+        "static" : "false",
+        "constant" : "false",
+        "abstract" : "false",
+        "annotations" : [],
+        "return" : [
+          {
+            "inner" : [],
+            "outer" : "Library.B"
+          }
+        ],
+        "parameters" : {
+          "testInt" : {
+            "name" : "testInt",
+            "optional" : "false",
+            "named" : "false",
+            "default" : "false",
+            "type" : [
+              {
+                "inner" : [],
+                "outer" : "Library.C"
+              }
+            ],
+            "value" : "null",
+            "annotations" : []
+          }
+        }
+      }
+    }
+  }
+}''';
+
 @initMethod void main() {
-  isYaml = true;
   useHtmlConfiguration();
 
   test('read_empty', () {
-    // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/empty.yaml').then(expectAsync((data) {
-      expect(_fixYamlString(data), empty);
+    retrieveFileContents('json/empty.json').then(expectAsync((data) {
       // Test that reading in an empty file doesn't throw an exception.
       expect(() => loadData(data), returnsNormally);
     }));
   });
 
   test('parameter_test', () {
-    // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/parameter.yaml').then(expectAsync((data) {
-      expect(_fixYamlString(data), parameter);
+    retrieveFileContents('json/parameter.json').then(expectAsync((parameter) {
+      var currentMap = JSON.decode(parameter);
+      var item = new Parameter(currentMap['name'], currentMap);
+      expect(item is Parameter, isTrue);
+      expect(item.name is String, isTrue);
+      expect(item.type is NestedType, isTrue);
+      expect(item.annotations is AnnotationGroup, isTrue);
     }));
-
-    var currentMap = loadYaml(parameter);
-    var item = new Parameter(currentMap['name'], currentMap);
-    expect(item is Parameter, isTrue);
-    expect(item.name is String, isTrue);
-    expect(item.type is NestedType, isTrue);
-    expect(item.annotations is AnnotationGroup, isTrue);
   });
 
   test('variable_test', () {
-    // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/variable.yaml').then(expectAsync((data) {
-      expect(_fixYamlString(data), variable);
+    retrieveFileContents('json/variable.json').then(expectAsync((variable) {
+      var json = JSON.decode(variable);
+      var item = new Variable(json);
+      expect(item is Variable, isTrue);
+      expect(item.annotations is AnnotationGroup, isTrue);
+      expect(item.comment is String, isTrue);
+      expect(item.setterParameter, isNull);
+      expect(item.type is NestedType, isTrue);
     }));
-
-    var yaml = loadYaml(variable);
-    var item = new Variable(yaml);
-    expect(item is Variable, isTrue);
-    expect(item.annotations is AnnotationGroup, isTrue);
-    expect(item.comment is String, isTrue);
-    expect(item.setterParameter, isNull);
-    expect(item.type is NestedType, isTrue);
   });
 
   test('setter_test', () {
-    var currentMap = loadYaml(setter);
-    var item = new Variable(currentMap, isSetter: true);
-    expect(item is Variable, isTrue);
-    expect(item.annotations is AnnotationGroup, isTrue);
-    expect(item.comment is String, isTrue);
-    expect(item.type is NestedType, isTrue);
+    retrieveFileContents('json/setter.json').then(expectAsync((setter) {
+      var currentMap = JSON.decode(setter);
+      var item = new Variable(currentMap, isSetter: true);
+      expect(item is Variable, isTrue);
+      expect(item.annotations is AnnotationGroup, isTrue);
+      expect(item.comment is String, isTrue);
+      expect(item.type is NestedType, isTrue);
 
-    expect(item.setterParameter is Parameter, isTrue);
-    var parameter = item.setterParameter;
-    expect(parameter.type is NestedType, isTrue);
-    expect(parameter.annotations is AnnotationGroup, isTrue);
+      expect(item.setterParameter is Parameter, isTrue);
+      var parameter = item.setterParameter;
+      expect(parameter.type is NestedType, isTrue);
+      expect(parameter.annotations is AnnotationGroup, isTrue);
+    }));
   });
 
   // A test for A<B> type generic links.
   test('one_level_generic_variable_test', () {
-    var currentMap = loadYaml(genericOneLevelVariable);
-    var item = new Variable(currentMap);
-    expect(item is Variable, isTrue);
-    expect(item.type is NestedType, isTrue);
+    retrieveFileContents('json/generic_one_level_variable.json')
+        .then(expectAsync((genericOneLevelVariable) {
+      var currentMap = JSON.decode(genericOneLevelVariable);
+      var item = new Variable(currentMap);
+      expect(item is Variable, isTrue);
+      expect(item.type is NestedType, isTrue);
 
-    var returnType = item.type;
-    expect(returnType.outer is LinkableType, isTrue);
-    expect(returnType.inner is List<NestedType>, isTrue);
+      var returnType = item.type;
+      expect(returnType.outer is LinkableType, isTrue);
+      expect(returnType.inner is List<NestedType>, isTrue);
 
-    var innerType = returnType.inner.first;
-    expect(innerType.outer is LinkableType, isTrue);
-    expect(innerType.inner is List<NestedType>, isTrue);
-    expect(innerType.inner, isEmpty);
+      var innerType = returnType.inner.first;
+      expect(innerType.outer is LinkableType, isTrue);
+      expect(innerType.inner is List<NestedType>, isTrue);
+      expect(innerType.inner, isEmpty);
+    }));
   });
 
   // A test for A<B<C,D>> type generic links.
   test('two_level_generic_variable_test', () {
-    var currentMap = loadYaml(genericTwoLevelVariable);
-    var item = new Variable(currentMap);
-    expect(item is Variable, isTrue);
-    expect(item.type is NestedType, isTrue);
+    retrieveFileContents('json/generic_two_level_var.json')
+            .then(expectAsync((genericTwoLevelVariable) {
+      var currentMap = JSON.decode(genericTwoLevelVariable);
+      var item = new Variable(currentMap);
+      expect(item is Variable, isTrue);
+      expect(item.type is NestedType, isTrue);
 
-    var returnType = item.type;
-    expect(returnType.outer is LinkableType, isTrue);
-    expect(returnType.inner is List<NestedType>, isTrue);
+      var returnType = item.type;
+      expect(returnType.outer is LinkableType, isTrue);
+      expect(returnType.inner is List<NestedType>, isTrue);
 
-    var innerType = returnType.inner.first;
-    expect(innerType.outer is LinkableType, isTrue);
-    expect(innerType.inner is List<NestedType>, isTrue);
+      var innerType = returnType.inner.first;
+      expect(innerType.outer is LinkableType, isTrue);
+      expect(innerType.inner is List<NestedType>, isTrue);
 
-    var firstInner = innerType.inner.first;
-    expect(firstInner, isNotNull);
-    expect(firstInner is NestedType, isTrue);
-    expect(firstInner.inner is List<NestedType>, isTrue);
-    expect(firstInner.inner, isEmpty);
-    expect(firstInner.outer is LinkableType, isTrue);
+      var firstInner = innerType.inner.first;
+      expect(firstInner, isNotNull);
+      expect(firstInner is NestedType, isTrue);
+      expect(firstInner.inner is List<NestedType>, isTrue);
+      expect(firstInner.inner, isEmpty);
+      expect(firstInner.outer is LinkableType, isTrue);
 
-    var secondInner = innerType.inner[1];
-    expect(secondInner, isNotNull);
-    expect(secondInner is NestedType, isTrue);
-    expect(secondInner.inner is List<NestedType>, isTrue);
-    expect(secondInner.inner, isEmpty);
-    expect(secondInner.outer is LinkableType, isTrue);
+      var secondInner = innerType.inner[1];
+      expect(secondInner, isNotNull);
+      expect(secondInner is NestedType, isTrue);
+      expect(secondInner.inner is List<NestedType>, isTrue);
+      expect(secondInner.inner, isEmpty);
+      expect(secondInner.outer is LinkableType, isTrue);
+    }));
   });
 
   test('method_test', () {
-    // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/method.yaml').then(expectAsync((data) {
-      expect(_fixYamlString(data), method);
+    retrieveFileContents('json/method.json').then(expectAsync((method) {
+      var json = JSON.decode(method);
+      var item = new Method(json);
+      expect(item is Method, isTrue);
+
+      expect(item.type is NestedType, isTrue);
+      expect(item.parameters is List, isTrue);
+      expect(item.parameters.first is Parameter, isTrue);
+      expect(item.parameters.first.type is NestedType, isTrue);
     }));
-
-    var yaml = loadYaml(method);
-    var item = new Method(yaml);
-    expect(item is Method, isTrue);
-
-    expect(item.type is NestedType, isTrue);
-    expect(item.parameters is List, isTrue);
-    expect(item.parameters.first is Parameter, isTrue);
-    expect(item.parameters.first.type is NestedType, isTrue);
   });
 
   test('clazz_test', () {
-    // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/class.yaml').then(expectAsync((data) {
-      expect(_fixYamlString(data), clazz);
+    retrieveFileContents('json/class.json').then(expectAsync((clazz) {
+      var json = JSON.decode(clazz);
+      var item = new Class(json);
+      expect(item is Class, isTrue);
+
+      expect(item.variables is Category, isTrue);
+      expect(item.operators is Category, isTrue);
+      expect(item.constructs is Category, isTrue);
+      expect(item.functions is Category, isTrue);
+
+      var functions = item.functions;
+      expect(functions.content.first is Method, isTrue);
+
+      var method = functions.content.first;
+      expect(method.type is NestedType, isTrue);
+
+      var constructor = item.constructs.content.first;
+      expect(constructor is Method, isTrue);
+      expect(constructor.isConstructor, isTrue);
+      expect(constructor.decoratedName != constructor.name, isTrue);
+
+      for (var interface in item.interfaces) {
+         expect(interface is LinkableType, isTrue);
+      }
+
+      expect(item.superClass is LinkableType, isTrue);
     }));
-
-    var yaml = loadYaml(clazz);
-    var item = new Class(yaml);
-    expect(item is Class, isTrue);
-
-    expect(item.variables is Category, isTrue);
-    expect(item.operators is Category, isTrue);
-    expect(item.constructs is Category, isTrue);
-    expect(item.functions is Category, isTrue);
-
-    var functions = item.functions;
-    expect(functions.content.first is Method, isTrue);
-
-    var method = functions.content.first;
-    expect(method.type is NestedType, isTrue);
-
-    var constructor = item.constructs.content.first;
-    expect(constructor is Method, isTrue);
-    expect(constructor.isConstructor, isTrue);
-    expect(constructor.decoratedName != constructor.name, isTrue);
-
-    for (var interface in item.interfaces) {
-       expect(interface is LinkableType, isTrue);
-    }
-
-    expect(item.superClass is LinkableType, isTrue);
   });
 
   test('library_test', () {
-    // Check that read_yaml reads the right data.
-    retrieveFileContents('yaml/library.yaml').then(expectAsync((data) {
-      expect(_fixYamlString(data), library);
+    retrieveFileContents('json/library.json').then(expectAsync((library) {
+      var json = JSON.decode(library);
+      // Manually instantiated Library object from json.
+      var itemManual = new Library(json);
+      expect(itemManual is Library, isTrue);
+
+      // Automatically instantiated Library object from loadData in read_json.
+      var itemAutomatic = loadData(library);
+      expect(itemAutomatic is Library, isTrue);
+
+      // Test that the same results are produced.
+      expect(itemAutomatic.name, equals(itemManual.name));
+      expect(itemAutomatic.comment, equals(itemManual.comment));
+      expect(itemAutomatic.classes.content.length,
+          equals(itemManual.classes.content.length));
+
+      expect(itemManual.classes is Category, isTrue);
+      expect(itemManual.errors is Category, isTrue);
+      expect(itemManual.typedefs is Category, isTrue);
+      expect(itemManual.variables is Category, isTrue);
+      expect(itemManual.functions is Category, isTrue);
+      expect(itemManual.operators is Category, isTrue);
+
+      var clazz = itemManual.classes.content.first;
+      expect(clazz is Class, isTrue);
+      clazz.loadValues(JSON.decode(clazzA));
+
+      for (var element in clazz.interfaces) {
+        expect(element is LinkableType, isTrue);
+      }
     }));
-
-    var yaml = loadYaml(library);
-    // Manually instantiated Library object from yaml.
-    var itemManual = new Library(yaml);
-    expect(itemManual is Library, isTrue);
-
-    // Automatically instantiated Library object from loadData in read_yaml.
-    var itemAutomatic = loadData(library);
-    expect(itemAutomatic is Library, isTrue);
-
-    // Test that the same results are produced.
-    expect(itemAutomatic.name, equals(itemManual.name));
-    expect(itemAutomatic.comment, equals(itemManual.comment));
-    expect(itemAutomatic.classes.content.length,
-        equals(itemManual.classes.content.length));
-
-    expect(itemManual.classes is Category, isTrue);
-    expect(itemManual.errors is Category, isTrue);
-    expect(itemManual.typedefs is Category, isTrue);
-    expect(itemManual.variables is Category, isTrue);
-    expect(itemManual.functions is Category, isTrue);
-    expect(itemManual.operators is Category, isTrue);
-
-    var clazz = itemManual.classes.content.first;
-    expect(clazz is Class, isTrue);
-    clazz.loadValues(loadYaml(clazzA));
-
-    for (var element in clazz.interfaces) {
-      expect(element is LinkableType, isTrue);
-    }
   });
 
   // Test that links that are in scope are aliased to the correct objects.
   test('dependencies_test', () {
-    var currentMap = loadYaml(dependencies);
-    var library = new Library(currentMap);
+    retrieveFileContents('json/dependencies.json')
+        .then(expectAsync((dependencies) {
+      var currentMap = JSON.decode(dependencies);
+      var library = new Library(currentMap);
 
-    var classes = library.classes;
-    var variables = library.variables;
-    var functions = library.functions;
+      var classes = library.classes;
+      var variables = library.variables;
+      var functions = library.functions;
 
-    var variable = variables.content.first;
-    var classA, classB, classC;
-    classes.content.forEach((element) {
-      if (element.name == 'A') classA = element;
-      if (element.name == 'B') classB = element;
-      if (element.name == 'C') classC = element;
-    });
-    var function = functions.content.first;
+      var variable = variables.content.first;
+      var classA, classB, classC;
+      classes.content.forEach((element) {
+        if (element.name == 'A') classA = element;
+        if (element.name == 'B') classB = element;
+        if (element.name == 'C') classC = element;
+      });
+      var function = functions.content.first;
 
-    expect(classA.isLoaded, isFalse);
-    expect(classB.isLoaded, isFalse);
-    expect(classC.isLoaded, isFalse);
+      expect(classA.isLoaded, isFalse);
+      expect(classB.isLoaded, isFalse);
+      expect(classC.isLoaded, isFalse);
 
-    classA.loadValues(loadYaml(clazzA));
-    classB.loadValues(loadYaml(clazzB));
-    classC.loadValues(loadYaml(clazzC));
+      classA.loadValues(JSON.decode(clazzA));
+      classB.loadValues(JSON.decode(clazzB));
+      classC.loadValues(JSON.decode(clazzC));
 
-    // Test that the destination of the links are aliased with the right class.
-    var location = pageIndex[variable.type.outer.location];
-    expect(location, equals(classA));
+      // Test that the destination of the links are aliased with the right class.
+      var location = pageIndex[variable.type.outer.location];
+      expect(location, equals(classA));
 
-    location = pageIndex[function.type.outer.location];
-    expect(location, equals(classA));
+      location = pageIndex[function.type.outer.location];
+      expect(location, equals(classA));
 
-    var parameter = function.parameters.first;
-    location = pageIndex[parameter.type.outer.location];
-    expect(location, equals(classA));
+      var parameter = function.parameters.first;
+      location = pageIndex[parameter.type.outer.location];
+      expect(location, equals(classA));
 
-    var interfaces = classA.interfaces.first;
-    location = pageIndex[interfaces.location];
-    expect(location, equals(classB));
+      var interfaces = classA.interfaces.first;
+      location = pageIndex[interfaces.location];
+      expect(location, equals(classB));
 
-    var superClass = classC.superClass;
-    location = pageIndex[superClass.location];
-    expect(location, equals(classA));
+      var superClass = classC.superClass;
+      location = pageIndex[superClass.location];
+      expect(location, equals(classA));
+    }));
   });
 
   // Test that search returns the desired members
@@ -684,126 +463,139 @@ Library1.Class.from constructor''';
 
   // Test that annotations link to the proper classes.
   test('annotation_link_test', () {
-    var currentMap = loadYaml(annotationsAndGenerics);
-    var library = new Library(currentMap);
+    retrieveFileContents('json/annotations_and_generics.json')
+            .then(expectAsync((annotationsAndGenerics) {
+      var currentMap = JSON.decode(annotationsAndGenerics);
+      var library = new Library(currentMap);
 
-    var variable = library.variables.content.firstWhere((item) =>
-        item.name == 'variable');
-    var firstAnnotation = variable.annotations.annotations.first;
-    var secondAnnotation = variable.annotations.annotations[1];
+      var variable = library.variables.content.firstWhere((item) =>
+          item.name == 'variable');
+      var firstAnnotation = variable.annotations.annotations.first;
+      var secondAnnotation = variable.annotations.annotations[1];
 
-    var classA, classB;
-    library.classes.content.forEach((element) {
-      if (element.name == 'A') classA = element;
-      if (element.name == 'B') classB = element;
-    });
-    classA.loadValues(loadYaml(clazzA));
-    classB.loadValues(loadYaml(clazzB));
+      var classA, classB;
+      library.classes.content.forEach((element) {
+        if (element.name == 'A') classA = element;
+        if (element.name == 'B') classB = element;
+      });
+      classA.loadValues(JSON.decode(clazzA));
+      classB.loadValues(JSON.decode(clazzB));
 
-    expect(pageIndex[firstAnnotation.link.location], equals(classB));
-    expect(pageIndex[secondAnnotation.link.location], equals(classA));
+      expect(pageIndex[firstAnnotation.link.location], equals(classA));
+      expect(pageIndex[secondAnnotation.link.location], equals(classB));
 
-    expect(firstAnnotation.parameters.first, isNotNull);
-    expect(firstAnnotation.parameters[1], isNotNull);
+      expect(secondAnnotation.parameters.first, isNotNull);
+      expect(secondAnnotation.parameters[1], isNotNull);
+    }));
   });
 
   // Test that generic types link to the proper types.
   test('generic_type_test', () {
-    var currentMap = loadYaml(annotationsAndGenerics);
-    var library = new Library(currentMap);
+    retrieveFileContents('json/annotations_and_generics.json')
+                .then(expectAsync((annotationsAndGenerics) {
+      var currentMap = JSON.decode(annotationsAndGenerics);
+      var library = new Library(currentMap);
 
-    var variable = library.variables.content.firstWhere((item) =>
-        item.name == 'generic');
-    var type = variable.type;
+      var variable = library.variables.content.firstWhere((item) =>
+          item.name == 'generic');
+      var type = variable.type;
 
-    var classA, classB, classC;
-    library.classes.content.forEach((element) {
-      if (element.name == 'A') classA = element;
-      if (element.name == 'B') classB = element;
-      if (element.name == 'C') classC = element;
-    });
+      var classA, classB, classC;
+      library.classes.content.forEach((element) {
+        if (element.name == 'A') classA = element;
+        if (element.name == 'B') classB = element;
+        if (element.name == 'C') classC = element;
+      });
 
-    var outer = type.outer;
-    expect(pageIndex[outer.location], equals(classC));
-    var inner = type.inner;
-    type = inner.first;
-    expect(pageIndex[type.outer.location], equals(classB));
-    inner = type.inner;
-    type = inner.first;
-    expect(pageIndex[type.outer.location], equals(classA));
-    expect(type.inner, isEmpty);
-    type = inner[1];
-    expect(pageIndex[type.outer.location], equals(classA));
-    expect(type.inner, isEmpty);
+      var outer = type.outer;
+      expect(pageIndex[outer.location], equals(classC));
+      var inner = type.inner;
+      type = inner.first;
+      expect(pageIndex[type.outer.location], equals(classB));
+      inner = type.inner;
+      type = inner.first;
+      expect(pageIndex[type.outer.location], equals(classA));
+      expect(type.inner, isEmpty);
+      type = inner[1];
+      expect(pageIndex[type.outer.location], equals(classA));
+      expect(type.inner, isEmpty);
+    }));
   });
 
   // Test that member paths are correct.
   test('breadcrumbs_test', () {
-    var currentMap = loadYaml(dependencies);
-    var library = new Library(currentMap);
+    retrieveFileContents('json/dependencies.json')
+            .then(expectAsync((dependencies) {
+      var currentMap = JSON.decode(dependencies);
+      var library = new Library(currentMap);
 
-    expect(library.path[0], equals(library));
-    expect(library.path.length, equals(1));
+      expect(library.path[0], equals(library));
+      expect(library.path.length, equals(1));
 
-    var classA, classB, classC;
-    library.classes.content.forEach((element) {
-      if (element.name == 'A') classA = element;
-      if (element.name == 'B') classB = element;
-      if (element.name == 'C') classC = element;
-    });
-    classA.loadValues(loadYaml(clazzA));
-    buildHierarchy(classA, classA);
+      var classA, classB, classC;
+      library.classes.content.forEach((element) {
+        if (element.name == 'A') classA = element;
+        if (element.name == 'B') classB = element;
+        if (element.name == 'C') classC = element;
+      });
+      classA.loadValues(JSON.decode(clazzA));
+      buildHierarchy(classA, classA);
 
-    expect(classA.path[0], equals(library));
-    expect(classA.path[1], equals(classA));
+      expect(classA.path[0], equals(library));
+      expect(classA.path[1], equals(classA));
 
-    var method = classA.functions.content.first;
+      var method = classA.functions.content.first;
+      buildHierarchy(method, classA);
 
-    expect(method.path[0], equals(library));
-    expect(method.path[1], equals(classA));
-    expect(method.path[2], equals(method));
+      expect(method.path[0], equals(library));
+      expect(method.path[1], equals(classA));
+      expect(method.path[2], equals(method));
 
-    expect(classB.path[0], equals(library));
-    expect(classB.path[1], equals(classB));
+      expect(classB.path[0], equals(library));
+      expect(classB.path[1], equals(classB));
 
-    expect(classC.path[0], equals(library));
-    expect(classC.path[1], equals(classC));
+      expect(classC.path[0], equals(library));
+      expect(classC.path[1], equals(classC));
 
-    method = library.functions.content.first;
+      method = library.functions.content.first;
 
-    expect(method.path[0], equals(library));
-    expect(method.path[1], equals(method));
+      expect(method.path[0], equals(library));
+      expect(method.path[1], equals(method));
+    }));
   });
 
   // Test that methods, variables, and comments are inherited
   // correctly from public superclasses.
   test('inheritance_test', () {
-    var currentMap = loadYaml(dependencies);
-    var library = new Library(currentMap);
+    retrieveFileContents('json/dependencies.json')
+                .then(expectAsync((dependencies) {
+      var currentMap = JSON.decode(dependencies);
+      var library = new Library(currentMap);
 
-    var classA, classB, classC;
-    library.classes.content.forEach((element) {
-      if (element.name == 'A') classA = element;
-      if (element.name == 'B') classB = element;
-      if (element.name == 'C') classC = element;
-    });
-    classA.loadValues(loadYaml(clazzA));
-    buildHierarchy(classA, classA);
+      var classA, classB, classC;
+      library.classes.content.forEach((element) {
+        if (element.name == 'A') classA = element;
+        if (element.name == 'B') classB = element;
+        if (element.name == 'C') classC = element;
+      });
+      classA.loadValues(JSON.decode(clazzA));
+      buildHierarchy(classA, classA);
 
-    classB.loadValues(loadYaml(clazzB));
-    buildHierarchy(classB, classB);
+      classB.loadValues(JSON.decode(clazzB));
+      buildHierarchy(classB, classB);
 
-    classC.loadValues(loadYaml(clazzC));
-    buildHierarchy(classC, classC);
+      classC.loadValues(JSON.decode(clazzC));
+      buildHierarchy(classC, classC);
 
-    var inheritanceA = classA.variables.content.first;
-    var inheritanceB = classB.variables.content.first;
-    var inheritanceC = classC.variables.content.first;
+      var inheritanceA = classA.variables.content.first;
+      var inheritanceB = classB.variables.content.first;
+      var inheritanceC = classC.variables.content.first;
 
-    expect(inheritanceA.comment, equals(inheritanceB.comment));
-    expect(inheritanceC.comment, equals(inheritanceB.comment));
+      expect(inheritanceA.comment, equals(inheritanceB.comment));
+      expect(inheritanceC.comment, equals(inheritanceB.comment));
 
-    expect(inheritanceC.commentFrom, equals(inheritanceB.qualifiedName));
+      expect(inheritanceC.commentFrom, equals(inheritanceB.qualifiedName));
+    }));
   });
 
   // Test that search returns the desired members
@@ -873,7 +665,3 @@ Library1.Class.from constructor''';
     expect(results.length, equals(8));
   });
 }
-
-/// Our YAML literals avoid trailing whitespace. Remove it from loaded files so
-/// they match.
-String _fixYamlString(String str) => str.replaceAll(' \n', '\n');

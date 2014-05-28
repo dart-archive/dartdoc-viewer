@@ -1,0 +1,14 @@
+{
+  "name": "input",
+  "optional": "true",
+  "named": "true",
+  "default": "true",
+  "type": [
+    {
+      "inner" : [],
+      "outer" : "dart.core.String"
+    }
+  ],
+  "value": "\"test\"",
+  "annotations": []
+}

@@ -52,7 +52,9 @@ class CommentElement extends DivElement with Polymer, Observable {
     }
     if (comment != '' && comment != null) {
       // TODO(jmesserly): for now, trusting doc comment HTML.
-      _commentElement = new Element.html(comment, treeSanitizer: nullSanitizer);
+      _commentElement = new Element.div();
+      _commentElement.appendHtml(comment);
+
       var firstParagraph = (_commentElement is ParagraphElement) ?
           _commentElement : _commentElement.querySelector("p");
       if (firstParagraph != null) {
@@ -121,7 +123,7 @@ class CommentElement extends DivElement with Polymer, Observable {
   void _setLinkReference(AnchorElement link, DocsLocation loc) {
     var linkable = new LinkableType(loc.withAnchor);
     link
-      ..href = locationPrefixed(linkable.location)
+      ..href = linkable.prefixedLocation
       ..text = linkable.simpleType;
   }
 

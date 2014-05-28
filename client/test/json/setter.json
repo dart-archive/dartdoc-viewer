@@ -1,0 +1,32 @@
+{
+  "abstract" : "false",
+  "annotations" : [],
+  "comment" : "<p>This is a setter</p>",
+  "commentfrom" : "",
+  "constant" : "false",
+  "name" : "length=",
+  "parameters" : {
+    "newLength" : {
+      "annotations" : [],
+      "default" : "false",
+      "name" : "newLength",
+      "named" : "false",
+      "optional" : "false",
+      "type" : [
+        {
+          "inner" : [],
+          "outer" : "dart.core.int"
+        }
+      ],
+      "value" : "null"
+    }
+  },
+  "qualifiedName" : "Library.Class.length=",
+  "return" : [
+    {
+      "inner" : [],
+      "outer" : "void"
+    }
+  ],
+  "static" : "false"
+}

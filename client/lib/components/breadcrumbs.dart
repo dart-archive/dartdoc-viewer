@@ -40,9 +40,6 @@ class Breadcrumbs extends PolymerElement {
         breadcrumbs.add(p);
       }
       breadcrumbs = breadcrumbs.reversed.toList();
-      if (breadcrumbs.isNotEmpty) {
-        lastCrumb = breadcrumbs.removeLast();
-      }
     }
 
     // Fire an event to tell our parent that we updated, in case it wants to

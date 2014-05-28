@@ -8,15 +8,13 @@ import 'dart:html';
 import 'package:polymer/polymer.dart';
 import 'package:template_binding/template_binding.dart';
 import 'package:dartdoc_viewer/components/main.dart';
-import 'package:dartdoc_viewer/location.dart';
 
 final defaultSyntax = new _DefaultSyntaxWithEvents();
 
 /// This is the cut off point between mobile and desktop in pixels.
-// TODO(janicejl): Use pixel desity rather than how many pixels. Look at:
+// TODO(janicejl): Use pixel density rather than how many pixels. Look at:
 // http://www.mobilexweb.com/blog/ipad-mini-detection-for-html5-user-agent
 const int DESKTOP_SIZE_BOUNDARY = 1006;
-
 
 MainElement get dartdocMain => _dartdocMain == null ?
     _dartdocMain = querySelector("#dartdoc-main") :
@@ -24,6 +22,11 @@ MainElement get dartdocMain => _dartdocMain == null ?
 
 MainElement _dartdocMain;
 
+/// Set to true if we want to use the behavior of what was formerly the
+/// "useHistory" git branch. This format does not create links that are solely
+/// after a hash ("#") but rather are part of the main URL. To prevent
+/// round-tripping to the server every time the user clicks a link.
+bool useHistory = false;
 
 // TODO(jmesserly): for now we disable polymer expressions
 class _DefaultSyntaxWithEvents extends BindingDelegate {

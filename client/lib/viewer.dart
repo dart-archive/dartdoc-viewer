@@ -7,15 +7,16 @@ library viewer;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html' show Element, querySelector, window, ScrollAlignment,
-    Event, AnchorElement;
+    Event, AnchorElement, document;
 
 
 import 'package:polymer/polymer.dart';
 import 'package:dartdoc_viewer/data.dart';
 import 'package:dartdoc_viewer/item.dart';
 import 'package:dartdoc_viewer/location.dart';
-import 'package:dartdoc_viewer/read_yaml.dart';
+import 'package:dartdoc_viewer/read_json.dart';
 import 'package:dartdoc_viewer/search.dart';
+import 'package:dartdoc_viewer/shared.dart';
 
 import 'analytics.dart' as analytics;
 import 'shared.dart';
@@ -71,6 +72,12 @@ class Viewer extends Observable {
     if (_currentPage == newPage) return;
 
     _currentPage = notifyPropertyChange(#currentPage, _currentPage, newPage);
+
+    if (dartdocMain.sdkVersionString == null) {
+      retrieveFileContents('${docsPathNoVersionNum}latest.txt').then((value) {
+        dartdocMain.sdkVersionString = value;
+      }).catchError((_) => null);
+    }
     _updateLibraries();
   }
 
@@ -101,21 +108,25 @@ class Viewer extends Observable {
   /// This will be empty if we simply want to select the library or class.
   String get activeMember => _hash;
 
+  /// True if SDK links should redirect to the original api.dartlang.org site.
+  final bool redirectToDartlang;
+
   // Private constructor for singleton instantiation.
-  Viewer() {
+  Viewer({bool redirectToDartlang: true})
+      : redirectToDartlang = redirectToDartlang {
     var manifest = retrieveFileContents(sourcePath);
     var libraryFuture = manifest.then((response) {
       var libraries = JSON.decode(response);
-      isYaml = libraries['filetype'] == 'yaml';
       homePage = new Home(libraries);
       var startPageName = libraries['start-page'];
       startPage = startPageName == null ? homePage :
           homePage.memberNamed(startPageName, orElse: () => homePage);
+      dartdocMain.sdkVersionString = libraries['sdkVersion'];
     });
     var indexFuture = retrieveFileContents('${docsPath}index.json').then(
         (String json) {
-            searchIndex.map = JSON.decode(json);
-         });
+          searchIndex.map = JSON.decode(json);
+        });
 
     Future.wait([libraryFuture, indexFuture]).then((_) {
       _finishedCompleter.complete();
@@ -231,7 +242,7 @@ class Viewer extends Observable {
       currentPage = page;
     }
     _hash = location.anchorPlus;
-    _replaceLocation(location, shouldPush);
+    if (useHistory) _replaceLocation(location, shouldPush);
     _tracker.track(window.location.href);
     _scrollScreen(location.anchorPlus);
     return new Future.value(true);
@@ -249,19 +260,13 @@ class Viewer extends Observable {
 
   /// Replace the window location with [location]
   String _replaceLocation(DocsLocation location, [bool shouldPush = true]) {
-    var newUri = locationPrefixed(location.withAnchor);
-    if (location.libraryName == 'home') {
-      window.document.title = "Dart API Docs";
-      window.document.querySelector(".nameMarker").text =
-          "Dart API Documentation Home";
-    } else {
-      window.document.title = "${location.withoutAnchor} API Docs";
-      window.document.querySelector(".nameMarker").text =
-          "Dart API Documentation for ${location.withoutAnchor}";
-    }
+    var newUri = location.withAnchor;
     var encoded = Uri.encodeFull(newUri);
-    if (shouldPush) {
-      window.history.pushState(null, "", encoded);
+    var prefixed = locationPrefixed(newUri);
+    if (shouldPush && useHistory) {
+      window.history.pushState(null, "", prefixed);
+    } else if (!useHistory) {
+      window.location.replace(prefixed);
     }
     return encoded;
   }
@@ -275,7 +280,7 @@ class Viewer extends Observable {
     if (destination == null) {
       var newLocation = _rewriteLocation(location);
       if (newLocation != location) {
-        return handleLink(_replaceLocation(newLocation));
+        return handleLink(_replaceLocation(newLocation), useHistory);
       } else {
         return getItem(location).then((items) => _updatePage(
             location.itemFromList(items.toList()), location, shouldPush));
@@ -359,12 +364,21 @@ class Viewer extends Observable {
   Future handleLink(String uri, [bool shouldPush = true]) {
     // Links are the hash part of the URI without the leading #.
     // Valid forms for links are
-    // home - the global home page
-    // library.memberName.subMember@anchor
+    // [version~]home - the global home page, where version is the version of
+    //    the docs we are looking at.
+    // [version~]library.memberName.subMember@anchor
     // where @anchor is optional and library can be any of
     // dart:library, library-foo, package-foo/library-bar
     // So we need an unambiguous form.
-    // [package/]libraryWithDashes[.class.method]@anchor
+    // [version~][package/]libraryWithDashes[.class.method]@anchor
+
+    if (uri.contains(VERSION_NUM_SEPARATOR)) {
+      var deprefixedUri = locationDeprefixed(uri);
+      dartdocMain.hostDocsVersion = deprefixedUri.substring(
+          0, deprefixedUri.indexOf(VERSION_NUM_SEPARATOR));
+      uri = deprefixedUri.substring(deprefixedUri.indexOf(
+          VERSION_NUM_SEPARATOR) + VERSION_NUM_SEPARATOR.length);
+    }
 
     // We will tolerate colons in the location instead of dashes, though
     var decoded = Uri.decodeFull(uri);

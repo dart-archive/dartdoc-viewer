@@ -1,0 +1,81 @@
+{
+  "name" : "Library",
+  "qualifiedName" : "Library",
+  "comment" : "<p>This is a library.</p>",
+  "variables" : {
+    "generic" : {
+      "name" : "generic",
+      "qualifiedName" : "Library.generic",
+      "comment" : "<p>This is a test comment for generic types</p>",
+      "final" : "false",
+      "static" : "false",
+      "constant" : "false",
+      "type" : [
+        {
+          "inner" : [
+            {
+              "inner" : [
+                {
+                  "inner" : [],
+                  "outer" : "Library.A"
+                },
+                {
+                  "inner" : [],
+                  "outer" : "Library.A"
+                }
+              ],
+              "outer" : "Library.B"
+            }
+          ],
+          "outer" : "Library.C"
+        }
+      ],
+      "annotations" : []
+    },
+    "variable" : {
+      "name" : "variable",
+      "qualifiedName" : "Library.variable",
+      "comment" : "",
+      "final" : "false",
+      "static" : "false",
+      "constant" : "false",
+      "type" : [
+        {
+          "inner" : [],
+          "outer" : "Library.A"
+        }
+      ],
+      "annotations" : [
+        {
+          "name" : "Library.B",
+          "parameters" : [
+            "firstParameter",
+            "secondParameter"
+           ]
+        },
+        {
+          "name" : "Library.A",
+          "parameters" : []
+        }
+      ]
+    }
+  },
+  "functions" : {},
+  "annotations" : [],
+  "classes" : {
+    "class" : [
+      {
+        "name" : "A",
+        "qualifiedName" : "Library.A"
+      },
+      {
+        "name" : "B",
+        "qualifiedName" : "Library.B"
+      },
+      {
+        "name" : "C",
+        "qualifiedName" : "Library.C"
+      }
+    ]
+  }
+}

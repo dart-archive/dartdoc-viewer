@@ -49,16 +49,7 @@ class ParameterElement extends DartdocElement {
       outerSpan.appendText(optionalOpeningDelimiter);
     }
     for (var element in elements) {
-      // Since a dartdoc-annotation cannot be instantiated from Dart code,
-      // the annotations must be built manually.
-      element.annotations.annotations.forEach((annotation) {
-        var anchor = new AnchorElement()
-          ..text = '$ANCHOR_STRING${annotation.simpleType}'
-          ..onClick.listen((event) => rerouteLink(event, null, event.target))
-          ..href = '${locationPrefixed(annotation.location)}';
-        outerSpan.append(anchor);
-        outerSpan.appendText(' ');
-      });
+      // TODO(kevmoo): Fix annotation rendering for parameters - Issue 18133
 
       // Skip dynamic as an outer parameter type (but not as generic)
       var space = '';

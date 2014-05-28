@@ -97,9 +97,11 @@ class Search extends PolymerElement {
     if (refId == null || refId.isEmpty) return;
     var newLocation = new DocsLocation(refId).withAnchor;
     var encoded = Uri.encodeFull(newLocation);
-    viewer.handleLink(encoded);
-    window.history.pushState(locationPrefixed(encoded),
-        viewer.title, locationPrefixed(encoded));
+    viewer.handleLink(encoded, useHistory);
+    if (useHistory) {
+      window.history.pushState(locationPrefixed(encoded),
+          viewer.title, locationPrefixed(encoded));
+    }
     searchQuery = "";
     results.clear();
   }
