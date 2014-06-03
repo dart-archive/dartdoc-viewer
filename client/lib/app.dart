@@ -60,7 +60,6 @@ void navigate(event) {
 }
 
 /// Handles browser navigation.
-@initMethod
 void initApp() {
   Polymer.onReady.then((_) {
     window.onResize.listen((event) {

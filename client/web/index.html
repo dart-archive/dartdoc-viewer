@@ -21,7 +21,6 @@
   <link rel="import" href="packages/dartdoc_viewer/components/library-panel.html">
   <link rel="import" href="packages/dartdoc_viewer/components/minimap-class.html">
   <link rel="import" href="packages/dartdoc_viewer/components/main.html">
-  <script type="application/dart">export "package:polymer/init.dart";</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dart API Reference</title>
 </head>
@@ -36,12 +35,10 @@
   Don't change it or search indexing will break. -->
   <p class="nameMarker">Dart API Documentation</p>
   <script src="static/js/prettify.js"></script>
-  <script type="application/dart;component=1">
-    import 'package:polymer/polymer.dart' show initMethod;
+  <script type="application/dart">
+    import 'package:polymer/polymer.dart';
     import 'package:dartdoc_viewer/app.dart' show initApp;
-    // TODO(sigmund): ideally using 'export' should work, but for some reason
-    // polymer's bootstrap is not picking up exported initMethods.
-    @initMethod main() => initApp();
+    main() => initPolymer().run(initApp);
   </script>
   <!-- Google Analytics -->
 </body>

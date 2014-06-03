@@ -2,8 +2,7 @@ name: dartdoc_viewer
 description: Dart API Reference
 dependencies:
   browser: '>=0.10.0 <0.11.0'
-  polymer: '>=0.10.0-pre.13 <0.11.0'
-  polymer_expressions: '>=0.9.1 <0.10.0'
+  polymer: '>=0.10.0 <0.11.0'
   yaml: '>=0.9.0 <0.10.0'
 dev_dependencies:
   barback: '>=0.11.0 <0.14.0'
