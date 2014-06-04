@@ -46,6 +46,9 @@ class Container extends Observable {
       comment == '<span></span>' || comment == '<div></div>';
 
   Container(this.name, [this.comment]);
+  // The constructor below is a workaround for dartbug.com/15101, so that
+  // "pub serve" doesn't get unhappy.
+  Container.withComment(this.name, this.comment);
 
   String toString() => "$runtimeType($name)";
 }
@@ -202,7 +205,7 @@ class Item extends Container {
   @observable String version;
 
   Item(String name, this.qualifiedName, [String comment])
-      : super(name, comment);
+      : super.withComment(name, comment);
 
   /// [Item]'s name with its properties appended for user visible Strings.
   @observable String get decoratedName => name;

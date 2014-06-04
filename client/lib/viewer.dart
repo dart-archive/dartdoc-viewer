@@ -231,14 +231,7 @@ class Viewer extends Observable {
     // Avoid reloading the page if it isn't necessary.
     if (page != null && page != currentPage) {
       var main = window.document.querySelector("#dartdoc-main");
-      try {
-        // TODO(alanknight): Element is sometimes not getting upgraded
-        // before this gets called so we get the method not existing in JS.
-        // Suppress the error. dartbug.com/18380
-        main.hideOrShowNavigation(hide: true);
-      } on Error {
-        print("Catching and ignoring an error on hideOrShowNavigation");
-      }
+      main.hideOrShowNavigation(hide: true);
       currentPage = page;
     }
     _hash = location.anchorPlus;
