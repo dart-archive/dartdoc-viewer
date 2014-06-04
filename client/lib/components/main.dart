@@ -112,8 +112,9 @@ class MainElement extends DartdocElement {
     return result;
   }
 
-  String get highLevelSdkVersion => sdkVersionString.indexOf('-') != -1?
-      sdkVersionString.substring(0, sdkVersionString.indexOf('-')) : '';
+  String get highLevelSdkVersion => sdkVersionString.indexOf('-') != -1 ?
+      sdkVersionString.substring(0, sdkVersionString.indexOf('-')) :
+      sdkVersionString;
 
   void togglePanel() => viewer.togglePanel();
   void toggleInherited() => viewer.toggleInherited();

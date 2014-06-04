@@ -122,6 +122,8 @@ String locationDeprefixed(String s) {
   }
   if (result.startsWith(BASIC_LOCATION_PREFIX)) {
     return result.substring(BASIC_LOCATION_PREFIX.length);
+  } else if (result.startsWith(ANCHOR_STRING)) {
+    return result.substring(ANCHOR_STRING.length);
   } else {
     return result;
   }
