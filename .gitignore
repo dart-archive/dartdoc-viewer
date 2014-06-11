@@ -23,4 +23,4 @@ client/local
 *.pyc
 
 # Don't commit an actual config file
-client/asset/config.yaml
+client/lib/config/config.yaml
