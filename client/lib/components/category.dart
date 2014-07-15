@@ -38,7 +38,7 @@ class CategoryElement extends DartdocElement {
   @observable String lineHeight;
 
   CategoryElement.created() : super.created() {
-    registerObserver('viewer', viewer.changes.listen((changes) {
+    registerNamedObserver('viewer', viewer.changes.listen((changes) {
       if (changes.any((c) => c.name == #isDesktop)) {
         _isExpanded = viewer.isDesktop;
       }

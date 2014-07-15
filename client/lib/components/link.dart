@@ -18,8 +18,8 @@ class LinkElement extends PolymerElement {
 
   LinkElement.created() : super.created();
 
-  enteredView() {
-    super.enteredView();
+  attached() {
+    super.attached();
     searchIndex.onLoad(typeChanged);
   }
 

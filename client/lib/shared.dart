@@ -29,9 +29,12 @@ MainElement _dartdocMain;
 bool useHistory = false;
 
 // TODO(jmesserly): for now we disable polymer expressions
-class _DefaultSyntaxWithEvents extends BindingDelegate {
+class _DefaultSyntaxWithEvents extends BindingDelegate with 
+    PolymerEventBindings {
   prepareBinding(String path, name, node) {
-    if (name.startsWith('on-')) return Polymer.prepareBinding(path, name, node);
+    if (name.startsWith('on-')) {
+      return prepareEventBinding(path, name, node);
+    }
     return super.prepareBinding(path, name, node);
   }
 }

@@ -26,7 +26,7 @@ class ClassElement extends MemberElement {
   LazyListLoader _loader;
 
   ClassElement.created() : super.created() {
-    registerObserver('viewer', viewer.changes.listen((changes) {
+    registerNamedObserver('viewer', viewer.changes.listen((changes) {
       if (changes.any((c) =>
           c.name == #isInherited || c.name == #showObjectMembers)) {
         _loadCategories();
@@ -48,8 +48,8 @@ class ClassElement extends MemberElement {
     shadowRoot.querySelector('#subclass-button').classes.add('hidden');
   }
 
-  void leftView() {
-    super.leftView();
+  void detached() {
+    super.detached();
     if (_loader != null) {
       _loader.cancel();
       _loader = null;

@@ -99,7 +99,7 @@ abstract class InheritedElement extends MemberElement {
   @observable bool shouldShowCommentFrom;
 
   InheritedElement.created() : super.created() {
-    registerObserver('isInherited', viewer.changes.listen((changes) {
+    registerNamedObserver('isInherited', viewer.changes.listen((changes) {
       for (var c in changes) {
         if (c.name == #isInherited) {
           _update();
