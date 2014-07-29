@@ -136,7 +136,9 @@ class Search extends PolymerElement {
       e.preventDefault();
     } else if (e.keyCode == KeyCode.ENTER) {
       // If nothing is focused, use the first search result.
-      _navigateTo(results[currentIndex == -1 ? 0 : currentIndex].url);
+      if (results.isNotEmpty) {
+        _navigateTo(results[currentIndex == -1 ? 0 : currentIndex].url);
+      }
       e.preventDefault();
     }
   }
