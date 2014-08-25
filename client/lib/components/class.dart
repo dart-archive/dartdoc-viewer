@@ -110,10 +110,13 @@ class ClassElement extends MemberElement {
     }
     if (subclasses.length <= MAX_SUBCLASSES_TO_SHOW) return;
     var ellipsis = new AnchorElement()
-      ..classes = ["btn", "btn-link", "btn-xs"]
+      ..classes = ["btn-link"]
       ..id = "subclass-button"
       ..text = "..."
       ..onClick.listen((event) => showSubclass(null, null, null));
+    p.append(new SpanElement()
+               ..text = ', '
+               ..id = 'subclass-hidden');
     p.append(ellipsis);
     makeLinks(subclasses.skip(MAX_SUBCLASSES_TO_SHOW), hidden: true)
         .forEach(p.append);
