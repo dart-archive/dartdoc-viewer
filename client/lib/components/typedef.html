@@ -11,12 +11,12 @@
       </dartdoc-annotation>
 
       <div class="page-header">
-        <b><a id="{{idName}}" href="{{item.prefixedAnchorHref}}">
+        <b><a id="{{idName}}" _href="{{item.prefixedAnchorHref}}">
           {{item.name}}</a></b>
       </div>
 
       <p class="panel-title">typedef
-        <a href="{{prefixedLocationWhenPossible(item.type.location)}}"
+        <a _href="{{prefixedLocationWhenPossible(item.type.location)}}"
             on-click="{{rerouteLink}}">{{item.type.simpleType}}</a>
         {{item.name}}
         <dartdoc-parameter parameters="{{item.parameters}}"></dartdoc-parameter>

@@ -3,7 +3,7 @@
 <polymer-element name="dartdoc-minimap-library">
   <template>
     <div class="well well-sm nav affix-right" id="minimap">
-      <a href="{{item.prefixedLinkHref}}"
+      <a _href="{{item.prefixedLinkHref}}"
           on-click="{{rerouteLink}}">{{item.decoratedName}}</a>
       <ul>
         <dartdoc-minimap category="{{item.operators}}" item="{{item}}">

@@ -3,7 +3,7 @@
 <template>
   <div class="list-group affix-left" id="library-panel">
     <template repeat="{{viewer.libraries}}">
-      <a href="{{prefixedLinkHref}}" class="list-group-item" on-click="{{rerouteLink}}">
+      <a _href="{{prefixedLinkHref}}" class="list-group-item" on-click="{{rerouteLink}}">
           {{decoratedName}}</a>
     </template>
   </div>

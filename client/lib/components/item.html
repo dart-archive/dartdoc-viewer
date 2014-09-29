@@ -5,7 +5,7 @@
   <template>
     <ul class="nav nav-pills nav-stacked">
       <li id="nameGoesHere">
-        <a href="{{item.prefixedLinkHref}}" on-click="{{rerouteLink}}"
+        <a _href="{{item.prefixedLinkHref}}" on-click="{{rerouteLink}}"
             id="{{idName}}">
             {{item.decoratedName}}</a>
         <template if="{{item.previewComment}}">
