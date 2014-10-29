@@ -28,7 +28,6 @@ class MainElement extends DartdocElement {
   @observable String showOrHideMinimap;
   @observable String showOrHideInherited;
   @observable String showOrHideObjectMembers;
-  @observable String showOrHidePackages;
 
   /// The version of the docs that are being hosted on this main site, defaults
   /// to nothing, aka "latest".
@@ -73,7 +72,6 @@ class MainElement extends DartdocElement {
     showOrHideMinimap = viewer.isMinimap ? 'Hide' : 'Show';
     showOrHideInherited = viewer.isInherited ? 'Hide' : 'Show';
     showOrHideObjectMembers = viewer.showObjectMembers ? 'Hide' : 'Show';
-    showOrHidePackages = viewer.showPkgLibraries ? 'Hide' : 'Show';
   }
 
   Element query(String selectors) => shadowRoot.querySelector(selectors);
@@ -120,7 +118,6 @@ class MainElement extends DartdocElement {
   void toggleInherited() => viewer.toggleInherited();
   void toggleObjectMembers() => viewer.toggleObjectMembers();
   void toggleMinimap() => viewer.toggleMinimap();
-  void togglePkg() => viewer.togglePkg();
 
   /// We want the search and options to collapse into a menu button if there
   /// isn't room for them to fit, but the amount of room taken up by the

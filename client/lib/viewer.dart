@@ -40,17 +40,6 @@ class Viewer extends Observable {
   /// docs for a package, it may be different.
   @observable Item startPage;
 
-  bool _showPkgLibraries = false;
-  @observable bool get showPkgLibraries => _showPkgLibraries;
-  @observable set showPkgLibraries(bool newValue) {
-    if (_showPkgLibraries == newValue) return;
-
-    _showPkgLibraries = notifyPropertyChange(#showPkgLibraries,
-        _showPkgLibraries, newValue);
-
-    _updateLibraries();
-  }
-
   @observable List libraries;
 
   _updateLibraries() {
@@ -58,9 +47,6 @@ class Viewer extends Observable {
       libraries = [];
     } else {
       libraries = currentPage.home.libraries;
-      if (!showPkgLibraries) {
-        libraries = libraries.where((x) => x is Library).toList();
-      }
     }
   }
 
@@ -407,10 +393,6 @@ class Viewer extends Observable {
   void toggleMinimap() {
     _isMinimap = !_isMinimap;
     isMinimap = isDesktop && _isMinimap;
-  }
-
-  void togglePkg() {
-    showPkgLibraries = !showPkgLibraries;
   }
 
   /// Toggles showing inherited members.

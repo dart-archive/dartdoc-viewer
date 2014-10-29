@@ -52,7 +52,7 @@ packages:
   polymer:
     description: polymer
     source: hosted
-    version: "0.15.0"
+    version: "0.15.1+3"
   polymer_expressions:
     description: polymer_expressions
     source: hosted
@@ -80,7 +80,7 @@ packages:
   template_binding:
     description: template_binding
     source: hosted
-    version: "0.13.0"
+    version: "0.13.1"
   unittest:
     description: unittest
     source: hosted
@@ -96,7 +96,7 @@ packages:
   web_components:
     description: web_components
     source: hosted
-    version: "0.7.1"
+    version: "0.9.0"
   yaml:
     description: yaml
     source: hosted

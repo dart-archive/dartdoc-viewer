@@ -50,19 +50,7 @@ class Search extends PolymerElement {
   /// is used to filter search so that if we're inside a package we will
   /// give search priority to things within that package, or if we're
   /// not showing pkg, we will give lower priority to search results from there.
-  bool locationValidInContext(DocsLocation location) {
-    var currentContext = viewer.currentPage.home;
-    var showPkg = viewer.showPkgLibraries;
-    if (currentContext == viewer.homePage) {
-      if (viewer.showPkgLibraries) {
-        return true;
-      } else {
-        return location.packageName == null;
-      }
-    } else {
-      return location.packageName == currentContext.name;
-    }
-  }
+  bool locationValidInContext(DocsLocation location) => true;
 
   void onBlurCallback(_) {
     isFocused = false;
