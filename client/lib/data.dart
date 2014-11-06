@@ -28,7 +28,7 @@ const domLibraries = const ["dart-html", "dart-svg", "dart-web_audio",
 /// A lookup for the pages we have read from files. It does a normal lookup, but
 /// can handle library names either with hyphens, colons, or dom in their name.
 /// e.g. dart:html, dart-collections, dart-dom-web_gl.
-class _PageIndex<String, Item> extends MapBase<String, Item> {
+class _PageIndex extends MapBase<String, Item> {
   final _index = new HashMap<String, Item>();
   Item remove(String key) => _index.remove(key);
   operator [](String key) {
