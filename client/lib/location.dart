@@ -134,10 +134,25 @@ String locationDeprefixed(String s) {
 // TODO(kevmoo): make these fields final
 class DocsLocation {
   String packageName;
-  String libraryName;
+  String _libraryName;
   String memberName;
   String subMemberName;
   String anchor;
+
+  set libraryName(String name) => _libraryName = canonicalizeLibraryName(name);
+  String get libraryName => _libraryName;
+
+  /// Alias dart-dom- or dart- names to dart:
+  String canonicalizeLibraryName(String name) {
+    if (name == null) return null;
+    if (name.startsWith('dart-dom-')) {
+      return name.replaceFirst("dart-dom-", "dart:");
+    } else if (name.startsWith("dart-")) {
+      return name.replaceFirst("dart-", "dart:");
+    } else {
+      return name;
+    }
+  }
 
   // TODO(alanknight): These might be nicer to work with as immutable value
   // objects with methods to get modified versions.
