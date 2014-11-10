@@ -410,10 +410,13 @@ abstract class LazyItem extends Item {
   LazyItem(String qualifiedName, String name, this.previewComment,
       [String comment]) : super(name, qualifiedName, comment);
 
+  /// The name of the file/url path we'll use to retrieve this item's data.
+  String get fileName => qualifiedName.replaceFirst(":", "-");
+
   /// Loads this [Item]'s data and populates all fields.
   Future load() {
     if (isLoaded) return new Future.value(this);
-    var location = '$docsPath$qualifiedName.json';
+    var location = '$docsPath$fileName.json';
     var data = retrieveFileContents(location);
     return data.then((response) {
       loadValues(JSON.decode(response));
