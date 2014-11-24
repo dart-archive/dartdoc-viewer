@@ -17,7 +17,7 @@ class AnnotationElement extends PolymerElement {
 
   void annotationsChanged() {
     this.children.clear();
-    if (annotations == null || annotations.annotations.isEmpty) return;
+    if (annotations == null || annotations.hasNothingToDisplay) return;
     // TODO(jmesserly): we should be able to build this content via template
     var out = new StringBuffer();
     for (var annotation in annotations.annotations) {

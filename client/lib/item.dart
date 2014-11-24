@@ -713,35 +713,25 @@ class AnnotationGroup {
   List<Annotation> annotations = [];
   String domName;
 
+  bool get hasNothingToDisplay =>
+      annotations.isEmpty && domName == null && supportedBrowsers.isEmpty;
+
   AnnotationGroup(List annotes) {
     var set = new Set();
     if (annotes != null) {
-      annotes.forEach((annotation) {
-        if (annotation['name'].endsWith('.SupportedBrowser')) {
-          supportedBrowsers.add(annotation['parameters'].toList()
-              .map((e) => _stripOffQuotes(e))
-              .map((e) => _makeConstantPretty(e)).join(' '));
-        } else if (annotation['name'].endsWith('.DomName')) {
-          domName = annotation['parameters'].first;
-          // Strip off enclosing quotation marks.
-          domName = _stripOffQuotes(domName);
-        } else {
-          set.add(new Annotation(annotation));
+      annotes.forEach((jsonMap) {
+        var annotation = new Annotation(jsonMap);
+        if (annotation.domName != null) {
+          domName = annotation.domName;
+        } else if (annotation.supportedBrowser != null) {
+          supportedBrowsers.add(annotation.supportedBrowser);
+        } else if (annotation.shouldBeShown) {
+          set.add(annotation);
         }
       });
     annotations = set.toList()
         ..sort((a, b) => a.shortName.compareTo(b.shortName));
     }
-  }
-
-  /** Helper method to remove the quotes from an annotation value. */
-  String _stripOffQuotes(String s) => s.startsWith("'") || s.startsWith('"') ?
-      s.substring(1, s.length - 1) : s;
-  String _makeConstantPretty(String s) {
-    s = s.replaceAll('SupportedBrowser.', '');
-    s = s.toLowerCase();
-    s = s[0].toUpperCase() + s.substring(1);
-    return s;
   }
 }
 
@@ -749,14 +739,57 @@ class AnnotationGroup {
  * A single annotation to an [Item].
  */
 class Annotation {
-  final String qualifiedName;
-  final LinkableType link;
+  String qualifiedName;
+  LinkableType link;
   final List<String> parameters;
 
   Annotation(Map json)
-      : this.qualifiedName = json['name'],
-        this.link = new LinkableType(json['name']),
-        this.parameters = json['parameters'] == null ? [] : json['parameters'];
+      : this.parameters = json['parameters'] == null ? [] : json['parameters'] {
+    var rawName = json['name'];
+    if (rawName.endsWith('-')) {
+      qualifiedName = rawName.substring(0, rawName.lastIndexOf('.'));
+    } else {
+      qualifiedName = rawName;
+    }
+    link = new LinkableType(qualifiedName);
+  }
+
+  /** Returns true if this annotation should be displayed, not filtered out. */
+  bool get shouldBeShown => !notShownAnnotationNames
+      .any((name) => qualifiedName.endsWith(name));
+
+  get notShownAnnotationNames => const [
+    'metadata.DocsEditable',
+    '_js_helper.JSName',
+    '_js_helper.Creates',
+    '_js_helper.Returns'
+  ];
+
+  get domName => qualifiedName.endsWith('.DomName') ?
+      _stripOffQuotes(parameters.first) :
+      null;
+
+  /** Helper method to remove the quotes from an annotation value. */
+  String _stripOffQuotes(String s) => s.startsWith("'") || s.startsWith('"') ?
+      s.substring(1, s.length - 1) : s;
+
+  /**
+   * Make the supported browser name look nicer by removing the
+   * SupportedBrowser portion and making only the first letter uppercase.
+   */
+  String _makeConstantPretty(String s) {
+    s = s.replaceAll('SupportedBrowser.', '');
+    s = s.toLowerCase();
+    s = s[0].toUpperCase() + s.substring(1);
+    return s;
+  }
+
+  get supportedBrowser {
+    if (!qualifiedName.endsWith('.SupportedBrowser')) return null;
+    return parameters
+        .map((e) => _makeConstantPretty(_stripOffQuotes(e)))
+        .join(' ');
+  }
 
   /// Hash by XORing together our name and parameters.
   int get hashCode => parameters.fold(
