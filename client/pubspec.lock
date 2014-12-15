@@ -20,7 +20,7 @@ packages:
   code_transformers:
     description: code_transformers
     source: hosted
-    version: "0.2.3+1"
+    version: "0.2.3+2"
   collection:
     description: collection
     source: hosted
@@ -40,11 +40,11 @@ packages:
   matcher:
     description: matcher
     source: hosted
-    version: "0.11.1"
+    version: "0.11.3"
   observe:
     description: observe
     source: hosted
-    version: "0.12.1+1"
+    version: "0.12.2"
   path:
     description: path
     source: hosted
@@ -56,7 +56,7 @@ packages:
   polymer_expressions:
     description: polymer_expressions
     source: hosted
-    version: "0.13.0"
+    version: "0.13.0+1"
   pool:
     description: pool
     source: hosted
@@ -68,11 +68,11 @@ packages:
   source_maps:
     description: source_maps
     source: hosted
-    version: "0.10.0"
+    version: "0.10.0+1"
   source_span:
     description: source_span
     source: hosted
-    version: "1.0.0"
+    version: "1.0.2"
   stack_trace:
     description: stack_trace
     source: hosted
@@ -84,7 +84,7 @@ packages:
   unittest:
     description: unittest
     source: hosted
-    version: "0.11.1+1"
+    version: "0.11.4"
   utf:
     description: utf
     source: hosted
