@@ -87,12 +87,12 @@ class AnalyticsTransformer extends Transformer {
       }
 
       return transform.primaryInput.readAsString().then((String value) {
-        _populateAnalytics(value, config, transform);
+        _populateAnalyticsAndSurvey(value, config, transform);
       });
     });
   }
 
-  void _populateAnalytics(String value, _Config config, Transform transform) {
+  void _populateAnalyticsAndSurvey(String value, _Config config, Transform transform) {
     var id = transform.primaryInput.id;
 
     if (value.contains(_ANALYTICS_PLACE_HOLDER) &&
@@ -106,6 +106,13 @@ class AnalyticsTransformer extends Transformer {
     } else {
       transform.logger.warning('Did not contain the analytics place holder: '
           '$_ANALYTICS_PLACE_HOLDER');
+    }
+
+    if (value.contains(_SURVEY_PLACE_HOLDER)) {
+      value = value.replaceFirst(_SURVEY_PLACE_HOLDER, _SURVEY_CODE);
+    } else {
+      transform.logger.warning('Did not contain the survey holder: '
+          '$_SURVEY_PLACE_HOLDER');
     }
 
     var asset = new Asset.fromString(id, value);
@@ -140,6 +147,7 @@ const _CONFIG_PATH = 'lib/config/config.yaml';
 const _PACKAGE_NAME = 'dartdoc_viewer';
 const _INDEX_FILE_PATH = 'web/index.html';
 const _ANALYTICS_PLACE_HOLDER = '<!-- Google Analytics -->';
+const _SURVEY_PLACE_HOLDER =  '<!-- Survey Script -->';
 
 const _TRACKING_CODE_PLACE_HOLDER = '{TRACKING_CODE}';
 const _DOMAIN_PLACE_HOLDER = '{DOMAIN}';
@@ -154,3 +162,5 @@ const _ANALYTICS_CODE = '''<script>
   ga('send', 'pageview');
 
 </script>''';
+
+const _SURVEY_CODE = '<script async="" defer="" src="//survey.g.doubleclick.net/async_survey?site=4vq7qmqpfn4zjduve64c4h6lqa"></script>';
