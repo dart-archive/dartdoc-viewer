@@ -108,8 +108,9 @@ class AnalyticsTransformer extends Transformer {
           '$_ANALYTICS_PLACE_HOLDER');
     }
 
-    if (value.contains(_SURVEY_PLACE_HOLDER)) {
-      value = value.replaceFirst(_SURVEY_PLACE_HOLDER, _SURVEY_CODE);
+    if (value.contains(_SURVEY_PLACE_HOLDER) && config.surveySite != null) {
+      var survey = _SURVEY_CODE.replaceFirst(_SURVEY_SITE_PLACE_HOLDER, config.surveySite);
+      value = value.replaceFirst(_SURVEY_PLACE_HOLDER, survey);
     } else {
       transform.logger.warning('Did not contain the survey holder: '
           '$_SURVEY_PLACE_HOLDER');
@@ -125,16 +126,17 @@ class _Config {
   final String trackingCode;
   final String trackingDomain;
   final String siteVerification;
+  final String surveySite;
 
   factory _Config.fromContent(String content) {
     var values = yaml.loadYaml(content);
     if (values == null) return null;
 
     return new _Config(values['trackingCode'], values['trackingDomain'],
-        values['siteVerification']);
+        values['siteVerification'], values['surveySite']);
   }
 
-  _Config(this.trackingCode, this.trackingDomain, this.siteVerification) {
+  _Config(this.trackingCode, this.trackingDomain, this.siteVerification, this.surveySite) {
 
     if ((trackingCode == null) != (trackingDomain == null)) {
       throw new ArgumentError(
@@ -151,6 +153,7 @@ const _SURVEY_PLACE_HOLDER =  '<!-- Survey Script -->';
 
 const _TRACKING_CODE_PLACE_HOLDER = '{TRACKING_CODE}';
 const _DOMAIN_PLACE_HOLDER = '{DOMAIN}';
+const _SURVEY_SITE_PLACE_HOLDER = '{SURVEY_SITE}';
 
 const _ANALYTICS_CODE = '''<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -163,4 +166,4 @@ const _ANALYTICS_CODE = '''<script>
 
 </script>''';
 
-const _SURVEY_CODE = '<script async="" defer="" src="//survey.g.doubleclick.net/async_survey?site=4vq7qmqpfn4zjduve64c4h6lqa"></script>';
+const _SURVEY_CODE = '<script async="" defer="" src="//survey.g.doubleclick.net/async_survey?site={SURVEY_SITE}"></script>';
