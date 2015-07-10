@@ -53,7 +53,7 @@ class CommentElement extends DivElement with Polymer, Observable {
     if (comment != '' && comment != null) {
       // TODO(jmesserly): for now, trusting doc comment HTML.
       _commentElement = new Element.div();
-      _commentElement.appendHtml(comment);
+      _commentElement.appendHtml(comment, treeSanitizer: nullSanitizer);
 
       var firstParagraph = (_commentElement is ParagraphElement) ?
           _commentElement : _commentElement.querySelector("p");
