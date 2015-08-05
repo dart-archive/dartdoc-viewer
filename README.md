@@ -1,4 +1,4 @@
-dart-api-app
+dartdoc-viewer
 ==========
 
 The front-end Dart documentation viewer.
